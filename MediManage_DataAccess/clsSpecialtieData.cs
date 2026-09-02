@@ -1,17 +1,32 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace MediManage_DataAccess
 {
+    public class clsSpecialtyDTO
+    {
+        public int? SpecialtyID { get; set; }
+        public string SpecialtyName { get; set; }
+        public string Description { get; set; }
+        public decimal? Fees { get; set; }
+   
+        public clsSpecialtyDTO(int? specialtyID, string specialtyName, string description, decimal? fees)
+        {
+            this.SpecialtyID = specialtyID;
+            this.SpecialtyName = specialtyName;
+            this.Description = description;
+            this.Fees = fees;
+        }
+        
+    }
+
     public class clsSpecialtiesDataAccess
     {
-        public static bool? GetSpecialtyInfoByID(int? SpecialtyID, ref string SpecialtyName, ref string Description, ref decimal? Fees)
+        public static clsSpecialtyDTO GetSpecialtyInfoByID(int? SpecialtyID)
         {
-            bool? isFound = null;
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -26,15 +41,12 @@ namespace MediManage_DataAccess
                         {
                             if (reader.Read())
                             {
-                                isFound = true;
-
-                                SpecialtyName = reader["SpecialtyName"] == DBNull.Value ? null : (string)reader["SpecialtyName"];
-                                Description = reader["Description"] == DBNull.Value ? null : (string)reader["Description"];
-                                Fees = reader["Fees"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(reader["Fees"]);
-                            }
-                            else
-                            {
-                                isFound = false;
+                                return new clsSpecialtyDTO(
+                                    reader["SpecialtyID"] == DBNull.Value ? null : (int?)reader["SpecialtyID"],
+                                    reader["SpecialtyName"] == DBNull.Value ? null : (string)reader["SpecialtyName"],
+                                    reader["Description"] == DBNull.Value ? null : (string)reader["Description"],
+                                    reader["Fees"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(reader["Fees"])
+                                );
                             }
                         }
                     }
@@ -44,12 +56,12 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
-            return isFound;
+
+            return null;
         }
 
-        public static int? AddNewSpecialty(string SpecialtyName, string Description, decimal? Fees)
+        public static int? AddNewSpecialty(clsSpecialtyDTO specialtyDTO)
         {
             int? SpecialtyID = null;
 
@@ -61,9 +73,9 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@SpecialtyName", (object)SpecialtyName ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Description", (object)Description ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Fees", (object)Fees ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@SpecialtyName", (object)specialtyDTO.SpecialtyName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Description", (object)specialtyDTO.Description ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Fees", (object)specialtyDTO.Fees ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewSpecialtyID", SqlDbType.Int)
                         {
@@ -88,9 +100,9 @@ namespace MediManage_DataAccess
             return SpecialtyID;
         }
 
-        public static bool? UpdateSpecialty(int? SpecialtyID, string SpecialtyName, string Description, decimal? Fees)
+        public static bool UpdateSpecialty(clsSpecialtyDTO specialtyDTO)
         {
-            int? rowsAffected = null;
+            int rowsAffected = 0;
 
             try
             {
@@ -100,10 +112,10 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@SpecialtyID", (object)SpecialtyID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@SpecialtyName", (object)SpecialtyName ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Description", (object)Description ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Fees", (object)Fees ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@SpecialtyID", (object)specialtyDTO.SpecialtyID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@SpecialtyName", (object)specialtyDTO.SpecialtyName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Description", (object)specialtyDTO.Description ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Fees", (object)specialtyDTO.Fees ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -120,20 +132,30 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static DataTable GetAllSpecialties()
+        public static List<clsSpecialtyDTO> GetAllSpecialties()
         {
-            DataTable dt = new DataTable();
+            List<clsSpecialtyDTO> list = new List<clsSpecialtyDTO>();
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
                 {
-                    connection.Open();
                     using (SqlCommand command = new SqlCommand("SP_GetAllSpecialties", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            dt.Load(reader);
+                            while (reader.Read())
+                            {
+                                list.Add(new clsSpecialtyDTO(
+                                    reader["SpecialtyID"] == DBNull.Value ? null : (int?)reader["SpecialtyID"],
+                                    reader["SpecialtyName"] == DBNull.Value ? null : (string)reader["SpecialtyName"],
+                                    reader["Description"] == DBNull.Value ? null : (string)reader["Description"],
+                                    reader["Fees"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(reader["Fees"])
+                                ));
+                            }
                         }
                     }
                 }
@@ -144,12 +166,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return dt;
+            return list;
         }
 
         public static bool DeleteSpecialty(int? SpecialtyID)
         {
-            int? rowsAffected = 0;
+            int rowsAffected = 0;
 
             try
             {
@@ -170,12 +192,13 @@ namespace MediManage_DataAccess
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
-            return (rowsAffected > 0);
+
+            return rowsAffected > 0;
         }
 
-        public static bool? IsSpecialtyExist(int? SpecialtyID)
+        public static bool IsSpecialtyExist(int? SpecialtyID)
         {
-            bool? isFound = null;
+            bool isFound = false;
 
             try
             {
@@ -206,13 +229,9 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
 
             return isFound;
         }
     }
 }
-
-
-

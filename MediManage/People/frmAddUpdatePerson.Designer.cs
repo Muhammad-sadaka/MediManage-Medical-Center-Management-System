@@ -62,14 +62,15 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.klblChangeImage = new System.Windows.Forms.LinkLabel();
             this.klblRemove = new System.Windows.Forms.LinkLabel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.pbPersonImage = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.klblClicktoAddPhoto = new System.Windows.Forms.LinkLabel();
+            this.pbPersonImage = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPersonImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPersonImage)).BeginInit();
             this.SuspendLayout();
             // 
             // btnClose
@@ -175,6 +176,7 @@
             // dateTimePicker1
             // 
             this.dateTimePicker1.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePicker1.Location = new System.Drawing.Point(704, 248);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(500, 35);
@@ -397,9 +399,9 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.panel2.Controls.Add(this.klblClicktoAddPhoto);
             this.panel2.Controls.Add(this.klblChangeImage);
             this.panel2.Controls.Add(this.klblRemove);
-            this.panel2.Controls.Add(this.label3);
             this.panel2.Controls.Add(this.pbPersonImage);
             this.panel2.Location = new System.Drawing.Point(44, 23);
             this.panel2.Name = "panel2";
@@ -411,7 +413,7 @@
             this.klblChangeImage.ActiveLinkColor = System.Drawing.Color.Yellow;
             this.klblChangeImage.AutoSize = true;
             this.klblChangeImage.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.klblChangeImage.LinkColor = System.Drawing.Color.Red;
+            this.klblChangeImage.LinkColor = System.Drawing.Color.DarkRed;
             this.klblChangeImage.Location = new System.Drawing.Point(101, 441);
             this.klblChangeImage.Name = "klblChangeImage";
             this.klblChangeImage.Size = new System.Drawing.Size(197, 34);
@@ -419,13 +421,14 @@
             this.klblChangeImage.TabStop = true;
             this.klblChangeImage.Text = "Change Image";
             this.klblChangeImage.Visible = false;
+            this.klblChangeImage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.klblChangeImage_LinkClicked);
             // 
             // klblRemove
             // 
             this.klblRemove.ActiveLinkColor = System.Drawing.Color.Yellow;
             this.klblRemove.AutoSize = true;
             this.klblRemove.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.klblRemove.LinkColor = System.Drawing.Color.Red;
+            this.klblRemove.LinkColor = System.Drawing.Color.DarkRed;
             this.klblRemove.Location = new System.Drawing.Point(101, 492);
             this.klblRemove.Name = "klblRemove";
             this.klblRemove.Size = new System.Drawing.Size(203, 34);
@@ -433,26 +436,7 @@
             this.klblRemove.TabStop = true;
             this.klblRemove.Text = "Remove Image";
             this.klblRemove.Visible = false;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(77, 335);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(239, 34);
-            this.label3.TabIndex = 20;
-            this.label3.Text = "Click to Add photo";
-            // 
-            // pbPersonImage
-            // 
-            this.pbPersonImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.pbPersonImage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pbPersonImage.Location = new System.Drawing.Point(43, 136);
-            this.pbPersonImage.Name = "pbPersonImage";
-            this.pbPersonImage.Size = new System.Drawing.Size(312, 276);
-            this.pbPersonImage.TabIndex = 18;
-            this.pbPersonImage.TabStop = false;
+            this.klblRemove.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.klblRemove_LinkClicked);
             // 
             // label1
             // 
@@ -467,6 +451,37 @@
             // errorProvider1
             // 
             this.errorProvider1.ContainerControl = this;
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
+            // klblClicktoAddPhoto
+            // 
+            this.klblClicktoAddPhoto.ActiveLinkColor = System.Drawing.Color.Yellow;
+            this.klblClicktoAddPhoto.AutoSize = true;
+            this.klblClicktoAddPhoto.BackColor = System.Drawing.Color.White;
+            this.klblClicktoAddPhoto.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.klblClicktoAddPhoto.LinkColor = System.Drawing.Color.DarkRed;
+            this.klblClicktoAddPhoto.Location = new System.Drawing.Point(89, 362);
+            this.klblClicktoAddPhoto.Name = "klblClicktoAddPhoto";
+            this.klblClicktoAddPhoto.Size = new System.Drawing.Size(239, 34);
+            this.klblClicktoAddPhoto.TabIndex = 22;
+            this.klblClicktoAddPhoto.TabStop = true;
+            this.klblClicktoAddPhoto.Text = "Click to Add Photo";
+            this.klblClicktoAddPhoto.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.klblClicktoAddPhoto_LinkClicked);
+            // 
+            // pbPersonImage
+            // 
+            this.pbPersonImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.pbPersonImage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pbPersonImage.Image = global::MediManage.Properties.Resources.Person32;
+            this.pbPersonImage.Location = new System.Drawing.Point(68, 135);
+            this.pbPersonImage.Name = "pbPersonImage";
+            this.pbPersonImage.Size = new System.Drawing.Size(273, 277);
+            this.pbPersonImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbPersonImage.TabIndex = 18;
+            this.pbPersonImage.TabStop = false;
             // 
             // frmAddUpdatePerson
             // 
@@ -488,8 +503,8 @@
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPersonImage)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPersonImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -530,9 +545,10 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.LinkLabel klblChangeImage;
         private System.Windows.Forms.LinkLabel klblRemove;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.PictureBox pbPersonImage;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.LinkLabel klblClicktoAddPhoto;
     }
 }

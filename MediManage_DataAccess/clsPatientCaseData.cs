@@ -1,17 +1,29 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace MediManage_DataAccess
 {
+    // 1. Data Transfer Object (DTO)
+    public class clsPatientCaseDTO
+    {
+        public int? PatientCaseID { get; set; }
+        public string PatientCaseName { get; set; }
+
+        public clsPatientCaseDTO(int? patientCaseID, string patientCaseName)
+        {
+            this.PatientCaseID = patientCaseID;
+            this.PatientCaseName = patientCaseName;
+        }
+    }
+
+    // 2. Data Access Layer
     public class clsPatientCasesDataAccess
     {
-        public static bool? GetPatientCaseInfoByID(int? PatientCaseID, ref string PatientCaseName)
+        public static clsPatientCaseDTO GetPatientCaseInfoByID(int? PatientCaseID)
         {
-            bool? isFound = null;
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -26,13 +38,11 @@ namespace MediManage_DataAccess
                         {
                             if (reader.Read())
                             {
-                                isFound = true;
-
-                                PatientCaseName = reader["PatientCaseName"] == DBNull.Value ? null : (string)reader["PatientCaseName"];
-                            }
-                            else
-                            {
-                                isFound = false;
+                                return new clsPatientCaseDTO
+                                (
+                                    reader["PatientCaseID"] == DBNull.Value ? null : (int?)reader["PatientCaseID"],
+                                    reader["PatientCaseName"] == DBNull.Value ? null : (string)reader["PatientCaseName"]
+                                );
                             }
                         }
                     }
@@ -42,14 +52,14 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
-            return isFound;
+
+            return null;
         }
 
-        public static int? AddNewPatientCase(string PatientCaseName)
+        public static int? AddNewPatientCase(clsPatientCaseDTO dto)
         {
-            int? PatientCaseID = null;
+            int? patientCaseID = null;
 
             try
             {
@@ -59,7 +69,7 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@PatientCaseName", (object)PatientCaseName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PatientCaseName", (object)dto.PatientCaseName ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewPatientCaseID", SqlDbType.Int)
                         {
@@ -71,7 +81,7 @@ namespace MediManage_DataAccess
                         command.ExecuteNonQuery();
 
                         if (outputIdParam.Value != DBNull.Value)
-                            PatientCaseID = (int)outputIdParam.Value;
+                            patientCaseID = (int)outputIdParam.Value;
                     }
                 }
             }
@@ -81,12 +91,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return PatientCaseID;
+            return patientCaseID;
         }
 
-        public static bool? UpdatePatientCase(int? PatientCaseID, string PatientCaseName)
+        public static bool UpdatePatientCase(clsPatientCaseDTO dto)
         {
-            int? rowsAffected = null;
+            int rowsAffected = 0;
 
             try
             {
@@ -96,8 +106,8 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@PatientCaseID", (object)PatientCaseID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@PatientCaseName", (object)PatientCaseName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PatientCaseID", (object)dto.PatientCaseID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PatientCaseName", (object)dto.PatientCaseName ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -114,20 +124,29 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static DataTable GetAllPatientCases()
+        public static List<clsPatientCaseDTO> GetAllPatientCases()
         {
-            DataTable dt = new DataTable();
+            var patientCasesList = new List<clsPatientCaseDTO>();
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
                 {
-                    connection.Open();
                     using (SqlCommand command = new SqlCommand("SP_GetAllPatientCases", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            dt.Load(reader);
+                            while (reader.Read())
+                            {
+                                patientCasesList.Add(new clsPatientCaseDTO
+                                (
+                                    reader["PatientCaseID"] == DBNull.Value ? null : (int?)reader["PatientCaseID"],
+                                    reader["PatientCaseName"] == DBNull.Value ? null : (string)reader["PatientCaseName"]
+                                ));
+                            }
                         }
                     }
                 }
@@ -138,12 +157,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return dt;
+            return patientCasesList;
         }
 
         public static bool DeletePatientCase(int? PatientCaseID)
         {
-            int? rowsAffected = 0;
+            int rowsAffected = 0;
 
             try
             {
@@ -164,12 +183,13 @@ namespace MediManage_DataAccess
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
-            return (rowsAffected > 0);
+
+            return rowsAffected > 0;
         }
 
-        public static bool? IsPatientCaseExist(int? PatientCaseID)
+        public static bool IsPatientCaseExist(int? PatientCaseID)
         {
-            bool? isFound = null;
+            bool isFound = false;
 
             try
             {
@@ -189,7 +209,7 @@ namespace MediManage_DataAccess
                         connection.Open();
                         command.ExecuteNonQuery();
 
-                        if (returnParameter.Value != null)
+                        if (returnParameter.Value != DBNull.Value)
                         {
                             isFound = (int)returnParameter.Value == 1;
                         }
@@ -200,12 +220,9 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
 
             return isFound;
         }
     }
 }
-
-

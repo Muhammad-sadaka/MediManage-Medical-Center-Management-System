@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Win32;
 using System.Security.Cryptography;
-using MediManage_Buisness;
+using MediManage_Business;
 
 
 

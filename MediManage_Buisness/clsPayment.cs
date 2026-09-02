@@ -1,69 +1,71 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
 using MediManage_DataAccess;
 
 
-namespace MediManage_Buisness
+namespace MediManage_Business
 {
+
     public class clsPayment
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? PaymentID { set; get; }
-        public int? Bill_ID { set; get; }
-        public DateTime? PaymentDate { set; get; }
-        public int? CreatedByUserID { set; get; }
-        public decimal? Amount { set; get; }
-
-        public clsPayment()
+        public clsPaymentDTO DTO
         {
-            this.PaymentID = null;
-            this.Bill_ID = null;
-            this.PaymentDate = null;
-            this.CreatedByUserID = null;
-            this.Amount = null;
-
-            Mode = enMode.AddNew;
+            get
+            {
+                return new clsPaymentDTO
+                (
+                    this.PaymentID,
+                    this.Bill_ID,
+                    this.PaymentDate,
+                    this.CreatedByUserID,
+                    this.Amount
+                );
+            }
         }
 
-        private clsPayment(int? PaymentID, int? Bill_ID, DateTime? PaymentDate, int? CreatedByUserID, decimal? Amount)
-        {
-            this.PaymentID = PaymentID;
-            this.Bill_ID = Bill_ID;
-            this.PaymentDate = PaymentDate;
-            this.CreatedByUserID = CreatedByUserID;
-            this.Amount = Amount;
+        public int? PaymentID { get; set; }
+        public int? Bill_ID { get; set; }
+        public DateTime? PaymentDate { get; set; }
+        public int? CreatedByUserID { get; set; }
+        public decimal? Amount { get; set; }
 
-            Mode = enMode.Update;
+        public clsPayment(clsPaymentDTO dto, enMode cMode = enMode.AddNew)
+        {
+            this.PaymentID = dto.PaymentID;
+            this.Bill_ID = dto.Bill_ID;
+            this.PaymentDate = dto.PaymentDate;
+            this.CreatedByUserID = dto.CreatedByUserID;
+            this.Amount = dto.Amount;
+            this.Mode = cMode;
         }
 
         private bool _AddNewPayment()
         {
-            this.PaymentID = clsPaymentsDataAccess.AddNewPayment(this.Bill_ID, this.PaymentDate, this.CreatedByUserID, this.Amount);
-            return (this.PaymentID != null);
+            this.PaymentID = clsPaymentsDataAccess.AddNewPayment(this.DTO);
+            return (this.PaymentID.HasValue);
         }
 
         private bool _UpdatePayment()
         {
-            return clsPaymentsDataAccess.UpdatePayment(this.PaymentID, this.Bill_ID, this.PaymentDate, this.CreatedByUserID, this.Amount) ?? false;
+            return clsPaymentsDataAccess.UpdatePayment(this.DTO);
         }
 
-        public static clsPayment FindByID(int? PaymentID)
+        public static clsPayment Find(int? ID)
         {
-            if (PaymentID == null) return null;
+            clsPaymentDTO dto = clsPaymentsDataAccess.GetPaymentInfoByID(ID);
 
-            int? Bill_ID = null;
-            DateTime? PaymentDate = null;
-            int? CreatedByUserID = null;
-            decimal? Amount = null;
-
-            bool? IsFound = clsPaymentsDataAccess.GetPaymentInfoByID(PaymentID, ref Bill_ID, ref PaymentDate, ref CreatedByUserID, ref Amount);
-
-            if (IsFound == true)
-                return new clsPayment(PaymentID, Bill_ID, PaymentDate, CreatedByUserID, Amount);
+            if (dto != null)
+                return new clsPayment(dto, enMode.Update);
             else
                 return null;
+        }
+
+        public static List<clsPaymentDTO> GetAllPayments()
+        {
+            return clsPaymentsDataAccess.GetAllPayments();
         }
 
         public bool Save()
@@ -84,23 +86,18 @@ namespace MediManage_Buisness
                 case enMode.Update:
                     return _UpdatePayment();
             }
+
             return false;
         }
 
-        public static DataTable GetAllPayments()
+        public static bool DeletePayment(int? ID)
         {
-            return clsPaymentsDataAccess.GetAllPayments();
+            return clsPaymentsDataAccess.DeletePayment(ID);
         }
 
-        public static bool DeletePayment(int? PaymentID)
+        public static bool IsExist(int? ID)
         {
-            return clsPaymentsDataAccess.DeletePayment(PaymentID);
-        }
-
-        public static bool IsPaymentExist(int? PaymentID)
-        {
-            return clsPaymentsDataAccess.IsPaymentExist(PaymentID) ?? false;
+            return clsPaymentsDataAccess.IsPaymentExist(ID);
         }
     }
 }
-

@@ -1,17 +1,29 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace MediManage_DataAccess
 {
+    // 1. Data Transfer Object (DTO)
+    public class clsPaymentMethodDTO
+    {
+        public int? PaymentMethodID { get; set; }
+        public string PaymentMethodName { get; set; }
+
+        public clsPaymentMethodDTO(int? paymentMethodID, string paymentMethodName)
+        {
+            this.PaymentMethodID = paymentMethodID;
+            this.PaymentMethodName = paymentMethodName;
+        }
+    }
+
+    // 2. Data Access Layer
     public class clsPaymentMethodsDataAccess
     {
-        public static bool? GetPaymentMethodInfoByID(int? PaymentMethodID, ref string PaymentMethodName)
+        public static clsPaymentMethodDTO GetPaymentMethodInfoByID(int? PaymentMethodID)
         {
-            bool? isFound = null;
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -26,13 +38,11 @@ namespace MediManage_DataAccess
                         {
                             if (reader.Read())
                             {
-                                isFound = true;
-
-                                PaymentMethodName = reader["PaymentMethodName"] == DBNull.Value ? null : (string)reader["PaymentMethodName"];
-                            }
-                            else
-                            {
-                                isFound = false;
+                                return new clsPaymentMethodDTO
+                                (
+                                    reader["PaymentMethodID"] == DBNull.Value ? null : (int?)reader["PaymentMethodID"],
+                                    reader["PaymentMethodName"] == DBNull.Value ? null : (string)reader["PaymentMethodName"]
+                                );
                             }
                         }
                     }
@@ -42,14 +52,14 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
-            return isFound;
+
+            return null;
         }
 
-        public static int? AddNewPaymentMethod(string PaymentMethodName)
+        public static int? AddNewPaymentMethod(clsPaymentMethodDTO dto)
         {
-            int? PaymentMethodID = null;
+            int? paymentMethodID = null;
 
             try
             {
@@ -59,7 +69,7 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@PaymentMethodName", (object)PaymentMethodName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PaymentMethodName", (object)dto.PaymentMethodName ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewPaymentMethodID", SqlDbType.Int)
                         {
@@ -71,7 +81,7 @@ namespace MediManage_DataAccess
                         command.ExecuteNonQuery();
 
                         if (outputIdParam.Value != DBNull.Value)
-                            PaymentMethodID = (int)outputIdParam.Value;
+                            paymentMethodID = (int)outputIdParam.Value;
                     }
                 }
             }
@@ -81,12 +91,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return PaymentMethodID;
+            return paymentMethodID;
         }
 
-        public static bool? UpdatePaymentMethod(int? PaymentMethodID, string PaymentMethodName)
+        public static bool UpdatePaymentMethod(clsPaymentMethodDTO dto)
         {
-            int? rowsAffected = null;
+            int rowsAffected = 0;
 
             try
             {
@@ -96,8 +106,8 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@PaymentMethodID", (object)PaymentMethodID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@PaymentMethodName", (object)PaymentMethodName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PaymentMethodID", (object)dto.PaymentMethodID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PaymentMethodName", (object)dto.PaymentMethodName ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -114,20 +124,29 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static DataTable GetAllPaymentMethods()
+        public static List<clsPaymentMethodDTO> GetAllPaymentMethods()
         {
-            DataTable dt = new DataTable();
+            var paymentMethodsList = new List<clsPaymentMethodDTO>();
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
                 {
-                    connection.Open();
                     using (SqlCommand command = new SqlCommand("SP_GetAllPaymentMethods", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            dt.Load(reader);
+                            while (reader.Read())
+                            {
+                                paymentMethodsList.Add(new clsPaymentMethodDTO
+                                (
+                                    reader["PaymentMethodID"] == DBNull.Value ? null : (int?)reader["PaymentMethodID"],
+                                    reader["PaymentMethodName"] == DBNull.Value ? null : (string)reader["PaymentMethodName"]
+                                ));
+                            }
                         }
                     }
                 }
@@ -138,12 +157,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return dt;
+            return paymentMethodsList;
         }
 
         public static bool DeletePaymentMethod(int? PaymentMethodID)
         {
-            int? rowsAffected = 0;
+            int rowsAffected = 0;
 
             try
             {
@@ -164,12 +183,13 @@ namespace MediManage_DataAccess
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
-            return (rowsAffected > 0);
+
+            return rowsAffected > 0;
         }
 
-        public static bool? IsPaymentMethodExist(int? PaymentMethodID)
+        public static bool IsPaymentMethodExist(int? PaymentMethodID)
         {
-            bool? isFound = null;
+            bool isFound = false;
 
             try
             {
@@ -189,7 +209,7 @@ namespace MediManage_DataAccess
                         connection.Open();
                         command.ExecuteNonQuery();
 
-                        if (returnParameter.Value != null)
+                        if (returnParameter.Value != DBNull.Value)
                         {
                             isFound = (int)returnParameter.Value == 1;
                         }
@@ -200,13 +220,9 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
 
             return isFound;
         }
     }
 }
-
-
-

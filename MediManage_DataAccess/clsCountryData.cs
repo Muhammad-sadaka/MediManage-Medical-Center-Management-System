@@ -1,21 +1,29 @@
-﻿using MediManage_DataAccess;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 
 namespace MediManage_DataAccess
 {
+    // 1. Data Transfer Object (DTO)
+    public class clsCountryDTO
+    {
+        public int? CountryID { get; set; }
+        public string CountryName { get; set; }
+
+        public clsCountryDTO(int? countryID, string countryName)
+        {
+            this.CountryID = countryID;
+            this.CountryName = countryName;
+        }
+    }
+
+    // 2. Data Access Layer
     public class clsCountryData
     {
-        public static bool? GetCountryInfoByID(int? CountryID, ref string CountryName)
+        public static clsCountryDTO GetCountryInfoByID(int? CountryID)
         {
-            bool? isFound = null;
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -30,12 +38,11 @@ namespace MediManage_DataAccess
                         {
                             if (reader.Read())
                             {
-                                isFound = true;
-                                CountryName = reader["CountryName"] == DBNull.Value ? null : (string)reader["CountryName"];
-                            }
-                            else
-                            {
-                                isFound = false;
+                                return new clsCountryDTO
+                                (
+                                    reader["CountryID"] == DBNull.Value ? null : (int?)reader["CountryID"],
+                                    reader["CountryName"] == DBNull.Value ? null : (string)reader["CountryName"]
+                                );
                             }
                         }
                     }
@@ -45,14 +52,15 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
-            return isFound;
+
+            return null;
         }
 
-        public static int? AddNewCountry(string CountryName)
+        public static int? AddNewCountry(clsCountryDTO countryDTO)
         {
             int? CountryID = null;
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -61,7 +69,8 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@CountryName", (object)CountryName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@CountryName", (object)countryDTO.CountryName ?? DBNull.Value);
+
                         SqlParameter outputIdParam = new SqlParameter("@NewCountryID", SqlDbType.Int)
                         {
                             Direction = ParameterDirection.Output
@@ -81,12 +90,14 @@ namespace MediManage_DataAccess
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
+
             return CountryID;
         }
 
-        public static bool? UpdateCountry(int? CountryID, string CountryName)
+        public static bool UpdateCountry(clsCountryDTO countryDTO)
         {
-            int? rowsAffected = null;
+            int rowsAffected = 0;
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -95,8 +106,9 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@CountryID", (object)CountryID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@CountryName", (object)CountryName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@CountryID", (object)countryDTO.CountryID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@CountryName", (object)countryDTO.CountryName ?? DBNull.Value);
+
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
                     }
@@ -108,23 +120,33 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
                 return false;
             }
+
             return rowsAffected > 0;
         }
 
-        public static DataTable GetAllCountries()
+        public static List<clsCountryDTO> GetAllCountries()
         {
-            DataTable dt = new DataTable();
+            var countriesList = new List<clsCountryDTO>();
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
                 {
-                    connection.Open();
                     using (SqlCommand command = new SqlCommand("SP_GetAllCountries", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            dt.Load(reader);
+                            while (reader.Read())
+                            {
+                                countriesList.Add(new clsCountryDTO
+                                (
+                                    reader["CountryID"] == DBNull.Value ? null : (int?)reader["CountryID"],
+                                    reader["CountryName"] == DBNull.Value ? null : (string)reader["CountryName"]
+                                ));
+                            }
                         }
                     }
                 }
@@ -134,12 +156,14 @@ namespace MediManage_DataAccess
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
-            return dt;
+
+            return countriesList;
         }
 
         public static bool DeleteCountry(int? CountryID)
         {
-            int? rowsAffected = 0;
+            int rowsAffected = 0;
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -159,12 +183,14 @@ namespace MediManage_DataAccess
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
-            return (rowsAffected > 0);
+
+            return rowsAffected > 0;
         }
 
-        public static bool? IsCountryExist(int? CountryID)
+        public static bool IsCountryExist(int? CountryID)
         {
-            bool? isFound = null;
+            bool isFound = false;
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -173,14 +199,17 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
                         command.Parameters.AddWithValue("@CountryID", (object)CountryID ?? DBNull.Value);
+
                         SqlParameter returnParameter = new SqlParameter("@ReturnVal", SqlDbType.Int)
                         {
                             Direction = ParameterDirection.ReturnValue
                         };
                         command.Parameters.Add(returnParameter);
+
                         connection.Open();
                         command.ExecuteNonQuery();
-                        if (returnParameter.Value != null)
+
+                        if (returnParameter.Value != DBNull.Value)
                         {
                             isFound = (int)returnParameter.Value == 1;
                         }
@@ -191,8 +220,8 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
+
             return isFound;
         }
     }

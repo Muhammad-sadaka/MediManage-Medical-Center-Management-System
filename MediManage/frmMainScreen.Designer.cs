@@ -28,20 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMainScreen));
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.nightButton3 = new ReaLTaiizor.Controls.NightButton();
-            this.nightButton5 = new ReaLTaiizor.Controls.NightButton();
-            this.nightButton4 = new ReaLTaiizor.Controls.NightButton();
-            this.nightButton2 = new ReaLTaiizor.Controls.NightButton();
-            this.nightButton8 = new ReaLTaiizor.Controls.NightButton();
-            this.nightButton7 = new ReaLTaiizor.Controls.NightButton();
-            this.nightButton6 = new ReaLTaiizor.Controls.NightButton();
-            this.nightButton11 = new ReaLTaiizor.Controls.NightButton();
-            this.nightButton10 = new ReaLTaiizor.Controls.NightButton();
-            this.nightButton9 = new ReaLTaiizor.Controls.NightButton();
+            this.btnDoctorsList = new System.Windows.Forms.Button();
+            this.btnAddNewDoctor = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.btnPeopleList = new System.Windows.Forms.Button();
             this.btnAddNewPerson = new System.Windows.Forms.Button();
@@ -59,7 +52,13 @@
             this.foreverGroupBox1 = new ReaLTaiizor.Controls.ForeverGroupBox();
             this.lblTotalPatients = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.btnPatientsList = new System.Windows.Forms.Button();
+            this.btnAddNewPatient = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.btnAppointmentsList = new System.Windows.Forms.Button();
+            this.btnAddNewAppointment = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.tabPage7 = new System.Windows.Forms.TabPage();
             this.tabPage8 = new System.Windows.Forms.TabPage();
@@ -74,6 +73,7 @@
             this.tabPage9 = new System.Windows.Forms.TabPage();
             this.tabPage10 = new System.Windows.Forms.TabPage();
             this.tabPage11 = new System.Windows.Forms.TabPage();
+            this.tabPage12 = new System.Windows.Forms.TabPage();
             this.tabPage4.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.hopeTabPage1.SuspendLayout();
@@ -83,21 +83,16 @@
             this.foreverGroupBox3.SuspendLayout();
             this.foreverGroupBox2.SuspendLayout();
             this.foreverGroupBox1.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.tabPage5.SuspendLayout();
             this.tabPage8.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPage4
             // 
-            this.tabPage4.Controls.Add(this.nightButton3);
-            this.tabPage4.Controls.Add(this.nightButton5);
-            this.tabPage4.Controls.Add(this.nightButton4);
-            this.tabPage4.Controls.Add(this.nightButton2);
-            this.tabPage4.Controls.Add(this.nightButton8);
-            this.tabPage4.Controls.Add(this.nightButton7);
-            this.tabPage4.Controls.Add(this.nightButton6);
-            this.tabPage4.Controls.Add(this.nightButton11);
-            this.tabPage4.Controls.Add(this.nightButton10);
-            this.tabPage4.Controls.Add(this.nightButton9);
+            this.tabPage4.Controls.Add(this.btnDoctorsList);
+            this.tabPage4.Controls.Add(this.btnAddNewDoctor);
+            this.tabPage4.Controls.Add(this.label3);
             this.tabPage4.Location = new System.Drawing.Point(290, 0);
             this.tabPage4.Name = "tabPage4";
             this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
@@ -106,235 +101,43 @@
             this.tabPage4.Text = "Doctors";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // nightButton3
+            // btnDoctorsList
             // 
-            this.nightButton3.BackColor = System.Drawing.Color.Transparent;
-            this.nightButton3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.nightButton3.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.nightButton3.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.nightButton3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton3.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton3.HoverForeColor = System.Drawing.Color.White;
-            this.nightButton3.InterpolationType = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-            this.nightButton3.Location = new System.Drawing.Point(576, 548);
-            this.nightButton3.MinimumSize = new System.Drawing.Size(144, 47);
-            this.nightButton3.Name = "nightButton3";
-            this.nightButton3.NormalBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton3.PixelOffsetType = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-            this.nightButton3.PressedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton3.PressedForeColor = System.Drawing.Color.White;
-            this.nightButton3.Radius = 20;
-            this.nightButton3.Size = new System.Drawing.Size(274, 78);
-            this.nightButton3.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            this.nightButton3.TabIndex = 16;
-            this.nightButton3.Text = "Find Person";
+            this.btnDoctorsList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDoctorsList.Location = new System.Drawing.Point(52, 147);
+            this.btnDoctorsList.Name = "btnDoctorsList";
+            this.btnDoctorsList.Size = new System.Drawing.Size(444, 82);
+            this.btnDoctorsList.TabIndex = 19;
+            this.btnDoctorsList.Text = "Doctors List";
+            this.btnDoctorsList.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnDoctorsList.UseVisualStyleBackColor = true;
+            this.btnDoctorsList.Click += new System.EventHandler(this.btnDoctorsList_Click);
+            this.btnDoctorsList.MouseLeave += new System.EventHandler(this.btnDoctorsList_MouseLeave);
+            this.btnDoctorsList.MouseHover += new System.EventHandler(this.btnDoctorsList_MouseHover);
             // 
-            // nightButton5
+            // btnAddNewDoctor
             // 
-            this.nightButton5.BackColor = System.Drawing.Color.Transparent;
-            this.nightButton5.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.nightButton5.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.nightButton5.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.nightButton5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton5.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton5.HoverForeColor = System.Drawing.Color.White;
-            this.nightButton5.InterpolationType = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-            this.nightButton5.Location = new System.Drawing.Point(1121, 548);
-            this.nightButton5.MinimumSize = new System.Drawing.Size(144, 47);
-            this.nightButton5.Name = "nightButton5";
-            this.nightButton5.NormalBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton5.PixelOffsetType = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-            this.nightButton5.PressedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton5.PressedForeColor = System.Drawing.Color.White;
-            this.nightButton5.Radius = 20;
-            this.nightButton5.Size = new System.Drawing.Size(274, 78);
-            this.nightButton5.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            this.nightButton5.TabIndex = 15;
-            this.nightButton5.Text = "nightButton5";
+            this.btnAddNewDoctor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddNewDoctor.Location = new System.Drawing.Point(52, 253);
+            this.btnAddNewDoctor.Name = "btnAddNewDoctor";
+            this.btnAddNewDoctor.Size = new System.Drawing.Size(444, 82);
+            this.btnAddNewDoctor.TabIndex = 18;
+            this.btnAddNewDoctor.Text = "Add New Doctor";
+            this.btnAddNewDoctor.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddNewDoctor.UseVisualStyleBackColor = true;
+            this.btnAddNewDoctor.Click += new System.EventHandler(this.btnAddNewDoctor_Click);
+            this.btnAddNewDoctor.MouseLeave += new System.EventHandler(this.btnAddNewDoctor_MouseLeave);
+            this.btnAddNewDoctor.MouseHover += new System.EventHandler(this.btnAddNewDoctor_MouseHover);
             // 
-            // nightButton4
+            // label3
             // 
-            this.nightButton4.BackColor = System.Drawing.Color.Transparent;
-            this.nightButton4.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.nightButton4.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.nightButton4.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.nightButton4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton4.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton4.HoverForeColor = System.Drawing.Color.White;
-            this.nightButton4.InterpolationType = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-            this.nightButton4.Location = new System.Drawing.Point(920, 433);
-            this.nightButton4.MinimumSize = new System.Drawing.Size(144, 47);
-            this.nightButton4.Name = "nightButton4";
-            this.nightButton4.NormalBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton4.PixelOffsetType = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-            this.nightButton4.PressedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton4.PressedForeColor = System.Drawing.Color.White;
-            this.nightButton4.Radius = 20;
-            this.nightButton4.Size = new System.Drawing.Size(274, 78);
-            this.nightButton4.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            this.nightButton4.TabIndex = 14;
-            this.nightButton4.Text = "Add New Person";
-            // 
-            // nightButton2
-            // 
-            this.nightButton2.BackColor = System.Drawing.Color.Transparent;
-            this.nightButton2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.nightButton2.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.nightButton2.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.nightButton2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton2.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton2.HoverForeColor = System.Drawing.Color.White;
-            this.nightButton2.InterpolationType = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-            this.nightButton2.Location = new System.Drawing.Point(375, 433);
-            this.nightButton2.MinimumSize = new System.Drawing.Size(144, 47);
-            this.nightButton2.Name = "nightButton2";
-            this.nightButton2.NormalBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton2.PixelOffsetType = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-            this.nightButton2.PressedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton2.PressedForeColor = System.Drawing.Color.White;
-            this.nightButton2.Radius = 20;
-            this.nightButton2.Size = new System.Drawing.Size(274, 78);
-            this.nightButton2.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            this.nightButton2.TabIndex = 13;
-            this.nightButton2.Text = "People LIst";
-            // 
-            // nightButton8
-            // 
-            this.nightButton8.BackColor = System.Drawing.Color.Transparent;
-            this.nightButton8.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.nightButton8.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.nightButton8.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.nightButton8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton8.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton8.HoverForeColor = System.Drawing.Color.White;
-            this.nightButton8.InterpolationType = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-            this.nightButton8.Location = new System.Drawing.Point(224, 679);
-            this.nightButton8.MinimumSize = new System.Drawing.Size(144, 47);
-            this.nightButton8.Name = "nightButton8";
-            this.nightButton8.NormalBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton8.PixelOffsetType = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-            this.nightButton8.PressedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton8.PressedForeColor = System.Drawing.Color.White;
-            this.nightButton8.Radius = 20;
-            this.nightButton8.Size = new System.Drawing.Size(274, 78);
-            this.nightButton8.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            this.nightButton8.TabIndex = 12;
-            this.nightButton8.Text = "Find Patient";
-            // 
-            // nightButton7
-            // 
-            this.nightButton7.BackColor = System.Drawing.Color.Transparent;
-            this.nightButton7.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.nightButton7.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.nightButton7.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.nightButton7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton7.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton7.HoverForeColor = System.Drawing.Color.White;
-            this.nightButton7.InterpolationType = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-            this.nightButton7.Location = new System.Drawing.Point(224, 309);
-            this.nightButton7.MinimumSize = new System.Drawing.Size(144, 47);
-            this.nightButton7.Name = "nightButton7";
-            this.nightButton7.NormalBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton7.PixelOffsetType = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-            this.nightButton7.PressedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton7.PressedForeColor = System.Drawing.Color.White;
-            this.nightButton7.Radius = 20;
-            this.nightButton7.Size = new System.Drawing.Size(274, 78);
-            this.nightButton7.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            this.nightButton7.TabIndex = 11;
-            this.nightButton7.Text = "Patients LIst";
-            // 
-            // nightButton6
-            // 
-            this.nightButton6.BackColor = System.Drawing.Color.Transparent;
-            this.nightButton6.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.nightButton6.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.nightButton6.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.nightButton6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton6.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton6.HoverForeColor = System.Drawing.Color.White;
-            this.nightButton6.InterpolationType = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-            this.nightButton6.Location = new System.Drawing.Point(799, 309);
-            this.nightButton6.MinimumSize = new System.Drawing.Size(144, 47);
-            this.nightButton6.Name = "nightButton6";
-            this.nightButton6.NormalBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton6.PixelOffsetType = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-            this.nightButton6.PressedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton6.PressedForeColor = System.Drawing.Color.White;
-            this.nightButton6.Radius = 20;
-            this.nightButton6.Size = new System.Drawing.Size(274, 78);
-            this.nightButton6.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            this.nightButton6.TabIndex = 10;
-            this.nightButton6.Text = "Add New Patient";
-            // 
-            // nightButton11
-            // 
-            this.nightButton11.BackColor = System.Drawing.Color.Transparent;
-            this.nightButton11.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.nightButton11.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.nightButton11.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.nightButton11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton11.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton11.HoverForeColor = System.Drawing.Color.White;
-            this.nightButton11.InterpolationType = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-            this.nightButton11.Location = new System.Drawing.Point(224, 534);
-            this.nightButton11.MinimumSize = new System.Drawing.Size(144, 47);
-            this.nightButton11.Name = "nightButton11";
-            this.nightButton11.NormalBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton11.PixelOffsetType = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-            this.nightButton11.PressedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton11.PressedForeColor = System.Drawing.Color.White;
-            this.nightButton11.Radius = 20;
-            this.nightButton11.Size = new System.Drawing.Size(274, 78);
-            this.nightButton11.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            this.nightButton11.TabIndex = 9;
-            this.nightButton11.Text = "Find Doctor";
-            // 
-            // nightButton10
-            // 
-            this.nightButton10.BackColor = System.Drawing.Color.Transparent;
-            this.nightButton10.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.nightButton10.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.nightButton10.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.nightButton10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton10.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton10.HoverForeColor = System.Drawing.Color.White;
-            this.nightButton10.InterpolationType = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-            this.nightButton10.Location = new System.Drawing.Point(799, 201);
-            this.nightButton10.MinimumSize = new System.Drawing.Size(144, 47);
-            this.nightButton10.Name = "nightButton10";
-            this.nightButton10.NormalBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton10.PixelOffsetType = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-            this.nightButton10.PressedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton10.PressedForeColor = System.Drawing.Color.White;
-            this.nightButton10.Radius = 20;
-            this.nightButton10.Size = new System.Drawing.Size(274, 78);
-            this.nightButton10.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            this.nightButton10.TabIndex = 8;
-            this.nightButton10.Text = "Add New Doctor";
-            // 
-            // nightButton9
-            // 
-            this.nightButton9.BackColor = System.Drawing.Color.Transparent;
-            this.nightButton9.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.nightButton9.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.nightButton9.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.nightButton9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton9.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton9.HoverForeColor = System.Drawing.Color.White;
-            this.nightButton9.InterpolationType = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-            this.nightButton9.Location = new System.Drawing.Point(224, 201);
-            this.nightButton9.MinimumSize = new System.Drawing.Size(144, 47);
-            this.nightButton9.Name = "nightButton9";
-            this.nightButton9.NormalBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton9.PixelOffsetType = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-            this.nightButton9.PressedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton9.PressedForeColor = System.Drawing.Color.White;
-            this.nightButton9.Radius = 20;
-            this.nightButton9.Size = new System.Drawing.Size(274, 78);
-            this.nightButton9.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            this.nightButton9.TabIndex = 7;
-            this.nightButton9.Text = "Doctors LIst";
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Arial", 25.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(43, 60);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(472, 51);
+            this.label3.TabIndex = 17;
+            this.label3.Text = "Doctors                        ";
             // 
             // tabPage2
             // 
@@ -384,9 +187,9 @@
             this.label1.Font = new System.Drawing.Font("Arial", 25.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(43, 59);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(451, 51);
+            this.label1.Size = new System.Drawing.Size(475, 51);
             this.label1.TabIndex = 10;
-            this.label1.Text = "People                        ";
+            this.label1.Text = "People                          ";
             // 
             // hopeTabPage1
             // 
@@ -403,6 +206,7 @@
             this.hopeTabPage1.Controls.Add(this.tabPage9);
             this.hopeTabPage1.Controls.Add(this.tabPage10);
             this.hopeTabPage1.Controls.Add(this.tabPage11);
+            this.hopeTabPage1.Controls.Add(this.tabPage12);
             this.hopeTabPage1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.hopeTabPage1.Font = new System.Drawing.Font("Segoe UI Semibold", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.hopeTabPage1.ForeColorA = System.Drawing.Color.White;
@@ -456,8 +260,8 @@
             // 
             this.DGVTodayAppointments.AllowUserToAddRows = false;
             this.DGVTodayAppointments.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            this.DGVTodayAppointments.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle27.BackColor = System.Drawing.Color.White;
+            this.DGVTodayAppointments.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle27;
             this.DGVTodayAppointments.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.DGVTodayAppointments.BackgroundColor = System.Drawing.Color.White;
             this.DGVTodayAppointments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -466,8 +270,8 @@
             this.DGVTodayAppointments.Name = "DGVTodayAppointments";
             this.DGVTodayAppointments.ReadOnly = true;
             this.DGVTodayAppointments.RowHeadersWidth = 51;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.DGVTodayAppointments.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle28.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.DGVTodayAppointments.RowsDefaultCellStyle = dataGridViewCellStyle28;
             this.DGVTodayAppointments.RowTemplate.Height = 26;
             this.DGVTodayAppointments.Size = new System.Drawing.Size(1073, 362);
             this.DGVTodayAppointments.TabIndex = 17;
@@ -575,6 +379,9 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.btnPatientsList);
+            this.tabPage3.Controls.Add(this.btnAddNewPatient);
+            this.tabPage3.Controls.Add(this.label2);
             this.tabPage3.Location = new System.Drawing.Point(290, 0);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
@@ -583,8 +390,49 @@
             this.tabPage3.Text = "Patients";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // btnPatientsList
+            // 
+            this.btnPatientsList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPatientsList.Location = new System.Drawing.Point(52, 147);
+            this.btnPatientsList.Name = "btnPatientsList";
+            this.btnPatientsList.Size = new System.Drawing.Size(444, 82);
+            this.btnPatientsList.TabIndex = 15;
+            this.btnPatientsList.Text = "Patients List";
+            this.btnPatientsList.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnPatientsList.UseVisualStyleBackColor = true;
+            this.btnPatientsList.Click += new System.EventHandler(this.btnPatientsList_Click);
+            this.btnPatientsList.MouseLeave += new System.EventHandler(this.btnPatientsList_MouseLeave);
+            this.btnPatientsList.MouseHover += new System.EventHandler(this.btnPatientsList_MouseHover);
+            // 
+            // btnAddNewPatient
+            // 
+            this.btnAddNewPatient.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddNewPatient.Location = new System.Drawing.Point(52, 253);
+            this.btnAddNewPatient.Name = "btnAddNewPatient";
+            this.btnAddNewPatient.Size = new System.Drawing.Size(444, 82);
+            this.btnAddNewPatient.TabIndex = 14;
+            this.btnAddNewPatient.Text = "Add New Patient";
+            this.btnAddNewPatient.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddNewPatient.UseVisualStyleBackColor = true;
+            this.btnAddNewPatient.Click += new System.EventHandler(this.btnAddNewPatient_Click);
+            this.btnAddNewPatient.MouseLeave += new System.EventHandler(this.btnAddNewPatient_MouseLeave);
+            this.btnAddNewPatient.MouseHover += new System.EventHandler(this.btnAddNewPatient_MouseHover);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Arial", 25.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(43, 60);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(477, 51);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "Patients                        ";
+            // 
             // tabPage5
             // 
+            this.tabPage5.Controls.Add(this.btnAppointmentsList);
+            this.tabPage5.Controls.Add(this.btnAddNewAppointment);
+            this.tabPage5.Controls.Add(this.label4);
             this.tabPage5.Location = new System.Drawing.Point(290, 0);
             this.tabPage5.Name = "tabPage5";
             this.tabPage5.Padding = new System.Windows.Forms.Padding(3);
@@ -593,6 +441,44 @@
             this.tabPage5.Text = "Appointments";
             this.tabPage5.UseVisualStyleBackColor = true;
             // 
+            // btnAppointmentsList
+            // 
+            this.btnAppointmentsList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAppointmentsList.Location = new System.Drawing.Point(53, 146);
+            this.btnAppointmentsList.Name = "btnAppointmentsList";
+            this.btnAppointmentsList.Size = new System.Drawing.Size(444, 82);
+            this.btnAppointmentsList.TabIndex = 15;
+            this.btnAppointmentsList.Text = "Appointments List";
+            this.btnAppointmentsList.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAppointmentsList.UseVisualStyleBackColor = true;
+            this.btnAppointmentsList.Click += new System.EventHandler(this.btnAppointmentsList_Click);
+            this.btnAppointmentsList.MouseLeave += new System.EventHandler(this.btnAppointmentsList_MouseLeave);
+            this.btnAppointmentsList.MouseHover += new System.EventHandler(this.btnAppointmentsList_MouseHover);
+            // 
+            // btnAddNewAppointment
+            // 
+            this.btnAddNewAppointment.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddNewAppointment.Location = new System.Drawing.Point(53, 252);
+            this.btnAddNewAppointment.Name = "btnAddNewAppointment";
+            this.btnAddNewAppointment.Size = new System.Drawing.Size(444, 82);
+            this.btnAddNewAppointment.TabIndex = 14;
+            this.btnAddNewAppointment.Text = "Add New Appointment";
+            this.btnAddNewAppointment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddNewAppointment.UseVisualStyleBackColor = true;
+            this.btnAddNewAppointment.Click += new System.EventHandler(this.btnAddNewAppointment_Click);
+            this.btnAddNewAppointment.MouseLeave += new System.EventHandler(this.btnAddNewAppointment_MouseLeave);
+            this.btnAddNewAppointment.MouseHover += new System.EventHandler(this.btnAddNewAppointment_MouseHover);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Arial", 25.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(44, 59);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(489, 51);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "Appointments               ";
+            // 
             // tabPage6
             // 
             this.tabPage6.Location = new System.Drawing.Point(290, 0);
@@ -600,7 +486,7 @@
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage6.Size = new System.Drawing.Size(1634, 904);
             this.tabPage6.TabIndex = 5;
-            this.tabPage6.Text = "Medical Statements";
+            this.tabPage6.Text = "Medical Examinations";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
             // tabPage7
@@ -628,7 +514,7 @@
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage8.Size = new System.Drawing.Size(1634, 904);
             this.tabPage8.TabIndex = 7;
-            this.tabPage8.Text = "Invoices & Payments";
+            this.tabPage8.Text = "Medical Analyses";
             this.tabPage8.UseVisualStyleBackColor = true;
             // 
             // button1
@@ -815,7 +701,7 @@
             this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage9.Size = new System.Drawing.Size(1634, 904);
             this.tabPage9.TabIndex = 8;
-            this.tabPage9.Text = "Users";
+            this.tabPage9.Text = "Invoices & Payments";
             this.tabPage9.UseVisualStyleBackColor = true;
             // 
             // tabPage10
@@ -825,7 +711,7 @@
             this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage10.Size = new System.Drawing.Size(1634, 904);
             this.tabPage10.TabIndex = 9;
-            this.tabPage10.Text = "About";
+            this.tabPage10.Text = "Users";
             this.tabPage10.UseVisualStyleBackColor = true;
             // 
             // tabPage11
@@ -835,8 +721,18 @@
             this.tabPage11.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage11.Size = new System.Drawing.Size(1634, 904);
             this.tabPage11.TabIndex = 10;
-            this.tabPage11.Text = "Logout";
+            this.tabPage11.Text = "About";
             this.tabPage11.UseVisualStyleBackColor = true;
+            // 
+            // tabPage12
+            // 
+            this.tabPage12.Location = new System.Drawing.Point(290, 0);
+            this.tabPage12.Name = "tabPage12";
+            this.tabPage12.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage12.Size = new System.Drawing.Size(1634, 904);
+            this.tabPage12.TabIndex = 11;
+            this.tabPage12.Text = "Logout";
+            this.tabPage12.UseVisualStyleBackColor = true;
             // 
             // frmMainScreen
             // 
@@ -852,6 +748,7 @@
             this.Text = "frmMainScreen";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.hopeTabPage1.ResumeLayout(false);
@@ -865,6 +762,10 @@
             this.foreverGroupBox2.PerformLayout();
             this.foreverGroupBox1.ResumeLayout(false);
             this.foreverGroupBox1.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            this.tabPage5.ResumeLayout(false);
+            this.tabPage5.PerformLayout();
             this.tabPage8.ResumeLayout(false);
             this.tabPage8.PerformLayout();
             this.ResumeLayout(false);
@@ -893,9 +794,6 @@
         private ReaLTaiizor.Controls.NightButton nightButton1;
         private ReaLTaiizor.Controls.ParrotButton parrotButton1;
         private System.Windows.Forms.TabPage tabPage11;
-        private ReaLTaiizor.Controls.NightButton nightButton11;
-        private ReaLTaiizor.Controls.NightButton nightButton10;
-        private ReaLTaiizor.Controls.NightButton nightButton9;
         private ReaLTaiizor.Controls.ForeverGroupBox foreverGroupBox1;
         private System.Windows.Forms.Label lblTotalPatients;
         private ReaLTaiizor.Controls.ForeverGroupBox foreverGroupBox3;
@@ -906,15 +804,18 @@
         private System.Windows.Forms.Label lblTodayDate;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.DataGridView DGVTodayAppointments;
-        private ReaLTaiizor.Controls.NightButton nightButton3;
-        private ReaLTaiizor.Controls.NightButton nightButton5;
-        private ReaLTaiizor.Controls.NightButton nightButton4;
-        private ReaLTaiizor.Controls.NightButton nightButton2;
-        private ReaLTaiizor.Controls.NightButton nightButton8;
-        private ReaLTaiizor.Controls.NightButton nightButton7;
-        private ReaLTaiizor.Controls.NightButton nightButton6;
         private System.Windows.Forms.Button btnAddNewPerson;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btnPeopleList;
+        private System.Windows.Forms.Button btnPatientsList;
+        private System.Windows.Forms.Button btnAddNewPatient;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnDoctorsList;
+        private System.Windows.Forms.Button btnAddNewDoctor;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Button btnAppointmentsList;
+        private System.Windows.Forms.Button btnAddNewAppointment;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TabPage tabPage12;
     }
 }

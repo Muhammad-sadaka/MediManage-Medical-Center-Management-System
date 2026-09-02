@@ -1,17 +1,29 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace MediManage_DataAccess
 {
+    // 1. Data Transfer Object (DTO)
+    public class clsPaymentStatusDTO
+    {
+        public int? PaymentStatusID { get; set; }
+        public string PaymentStatusName { get; set; }
+
+        public clsPaymentStatusDTO(int? paymentStatusID, string paymentStatusName)
+        {
+            this.PaymentStatusID = paymentStatusID;
+            this.PaymentStatusName = paymentStatusName;
+        }
+    }
+
+    // 2. Data Access Layer
     public class clsPaymentStatusesDataAccess
     {
-        public static bool? GetPaymentStatusInfoByID(int? PaymentStatusID, ref string PaymentStatusName)
+        public static clsPaymentStatusDTO GetPaymentStatusInfoByID(int? PaymentStatusID)
         {
-            bool? isFound = null;
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -26,13 +38,11 @@ namespace MediManage_DataAccess
                         {
                             if (reader.Read())
                             {
-                                isFound = true;
-
-                                PaymentStatusName = reader["PaymentStatusName"] == DBNull.Value ? null : (string)reader["PaymentStatusName"];
-                            }
-                            else
-                            {
-                                isFound = false;
+                                return new clsPaymentStatusDTO
+                                (
+                                    reader["PaymentStatusID"] == DBNull.Value ? null : (int?)reader["PaymentStatusID"],
+                                    reader["PaymentStatusName"] == DBNull.Value ? null : (string)reader["PaymentStatusName"]
+                                );
                             }
                         }
                     }
@@ -42,14 +52,14 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
-            return isFound;
+
+            return null;
         }
 
-        public static int? AddNewPaymentStatus(string PaymentStatusName)
+        public static int? AddNewPaymentStatus(clsPaymentStatusDTO dto)
         {
-            int? PaymentStatusID = null;
+            int? paymentStatusID = null;
 
             try
             {
@@ -59,7 +69,7 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@PaymentStatusName", (object)PaymentStatusName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PaymentStatusName", (object)dto.PaymentStatusName ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewPaymentStatusID", SqlDbType.Int)
                         {
@@ -71,7 +81,7 @@ namespace MediManage_DataAccess
                         command.ExecuteNonQuery();
 
                         if (outputIdParam.Value != DBNull.Value)
-                            PaymentStatusID = (int)outputIdParam.Value;
+                            paymentStatusID = (int)outputIdParam.Value;
                     }
                 }
             }
@@ -81,12 +91,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return PaymentStatusID;
+            return paymentStatusID;
         }
 
-        public static bool? UpdatePaymentStatus(int? PaymentStatusID, string PaymentStatusName)
+        public static bool UpdatePaymentStatus(clsPaymentStatusDTO dto)
         {
-            int? rowsAffected = null;
+            int rowsAffected = 0;
 
             try
             {
@@ -96,8 +106,8 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@PaymentStatusID", (object)PaymentStatusID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@PaymentStatusName", (object)PaymentStatusName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PaymentStatusID", (object)dto.PaymentStatusID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PaymentStatusName", (object)dto.PaymentStatusName ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -114,20 +124,29 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static DataTable GetAllPaymentStatuses()
+        public static List<clsPaymentStatusDTO> GetAllPaymentStatuses()
         {
-            DataTable dt = new DataTable();
+            var paymentStatusesList = new List<clsPaymentStatusDTO>();
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
                 {
-                    connection.Open();
                     using (SqlCommand command = new SqlCommand("SP_GetAllPaymentStatuses", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            dt.Load(reader);
+                            while (reader.Read())
+                            {
+                                paymentStatusesList.Add(new clsPaymentStatusDTO
+                                (
+                                    reader["PaymentStatusID"] == DBNull.Value ? null : (int?)reader["PaymentStatusID"],
+                                    reader["PaymentStatusName"] == DBNull.Value ? null : (string)reader["PaymentStatusName"]
+                                ));
+                            }
                         }
                     }
                 }
@@ -138,12 +157,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return dt;
+            return paymentStatusesList;
         }
 
         public static bool DeletePaymentStatus(int? PaymentStatusID)
         {
-            int? rowsAffected = 0;
+            int rowsAffected = 0;
 
             try
             {
@@ -164,12 +183,13 @@ namespace MediManage_DataAccess
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
-            return (rowsAffected > 0);
+
+            return rowsAffected > 0;
         }
 
-        public static bool? IsPaymentStatusExist(int? PaymentStatusID)
+        public static bool IsPaymentStatusExist(int? PaymentStatusID)
         {
-            bool? isFound = null;
+            bool isFound = false;
 
             try
             {
@@ -189,7 +209,7 @@ namespace MediManage_DataAccess
                         connection.Open();
                         command.ExecuteNonQuery();
 
-                        if (returnParameter.Value != null)
+                        if (returnParameter.Value != DBNull.Value)
                         {
                             isFound = (int)returnParameter.Value == 1;
                         }
@@ -200,14 +220,9 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
 
             return isFound;
         }
     }
 }
-
-
-
-

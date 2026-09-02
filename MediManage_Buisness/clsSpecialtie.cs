@@ -1,65 +1,62 @@
-﻿using System;
-using System.Data;
+﻿using System.Collections.Generic;
 using MediManage_DataAccess;
 
-
-namespace MediManage_Buisness
+namespace MediManage_Business
 {
     public class clsSpecialty
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? SpecialtyID { set; get; }
-        public string SpecialtyName { set; get; }
-        public string Description { set; get; }
-        public decimal? Fees { set; get; }
+        public int? SpecialtyID { get; set; }
+        public string SpecialtyName { get; set; }
+        public string Description { get; set; }
+        public decimal? Fees { get; set; }
+
+        public clsSpecialtyDTO DTO => new clsSpecialtyDTO(this.SpecialtyID, this.SpecialtyName, this.Description, this.Fees);
 
         public clsSpecialty()
         {
             this.SpecialtyID = null;
-            this.SpecialtyName = "";
-            this.Description = "";
-            this.Fees = 0;
-
-            Mode = enMode.AddNew;
+            this.SpecialtyName = string.Empty;
+            this.Description = string.Empty;
+            this.Fees = null;
+            this.Mode = enMode.AddNew;
         }
 
-        private clsSpecialty(int? SpecialtyID, string SpecialtyName, string Description, decimal? Fees)
+        public clsSpecialty(clsSpecialtyDTO dto, enMode mode = enMode.AddNew)
         {
-            this.SpecialtyID = SpecialtyID;
-            this.SpecialtyName = SpecialtyName;
-            this.Description = Description;
-            this.Fees = Fees;
-
-            Mode = enMode.Update;
+            this.SpecialtyID = dto.SpecialtyID;
+            this.SpecialtyName = dto.SpecialtyName;
+            this.Description = dto.Description;
+            this.Fees = dto.Fees;
+            this.Mode = mode;
         }
 
         private bool _AddNewSpecialty()
         {
-            this.SpecialtyID = clsSpecialtiesDataAccess.AddNewSpecialty(this.SpecialtyName, this.Description, this.Fees);
+            this.SpecialtyID = clsSpecialtiesDataAccess.AddNewSpecialty(this.DTO);
             return (this.SpecialtyID != null);
         }
 
         private bool _UpdateSpecialty()
         {
-            return clsSpecialtiesDataAccess.UpdateSpecialty(this.SpecialtyID, this.SpecialtyName, this.Description, this.Fees) ?? false;
+            return clsSpecialtiesDataAccess.UpdateSpecialty(this.DTO);
         }
 
-        public static clsSpecialty FindByID(int? SpecialtyID)
+        public static clsSpecialty Find(int? specialtyID)
         {
-            if (SpecialtyID == null) return null;
+            clsSpecialtyDTO dto = clsSpecialtiesDataAccess.GetSpecialtyInfoByID(specialtyID);
 
-            string SpecialtyName = "";
-            string Description = "";
-            decimal? Fees = 0;
+            if (dto != null)
+                return new clsSpecialty(dto, enMode.Update);
 
-            bool? IsFound = clsSpecialtiesDataAccess.GetSpecialtyInfoByID(SpecialtyID, ref SpecialtyName, ref Description, ref Fees);
+            return null;
+        }
 
-            if (IsFound == true)
-                return new clsSpecialty(SpecialtyID, SpecialtyName, Description, Fees);
-            else
-                return null;
+        public static List<clsSpecialtyDTO> GetAllSpecialties()
+        {
+            return clsSpecialtiesDataAccess.GetAllSpecialties();
         }
 
         public bool Save()
@@ -72,31 +69,23 @@ namespace MediManage_Buisness
                         Mode = enMode.Update;
                         return true;
                     }
-                    else
-                    {
-                        return false;
-                    }
+                    return false;
 
                 case enMode.Update:
                     return _UpdateSpecialty();
             }
+
             return false;
         }
 
-        public static DataTable GetAllSpecialties()
+        public static bool DeleteSpecialty(int? specialtyID)
         {
-            return clsSpecialtiesDataAccess.GetAllSpecialties();
+            return clsSpecialtiesDataAccess.DeleteSpecialty(specialtyID);
         }
 
-        public static bool DeleteSpecialty(int? SpecialtyID)
+        public static bool IsSpecialtyExist(int? specialtyID)
         {
-            return clsSpecialtiesDataAccess.DeleteSpecialty(SpecialtyID);
-        }
-
-        public static bool IsSpecialtyExist(int? SpecialtyID)
-        {
-            return clsSpecialtiesDataAccess.IsSpecialtyExist(SpecialtyID) ?? false;
+            return clsSpecialtiesDataAccess.IsSpecialtyExist(specialtyID);
         }
     }
 }
-

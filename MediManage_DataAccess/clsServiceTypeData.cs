@@ -1,17 +1,29 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace MediManage_DataAccess
 {
+ 
+
+    public class clsServiceTypeDTO
+    {
+        public int? ServiceTypeID { get; set; }
+        public string ServicTypeName { get; set; }
+
+        public clsServiceTypeDTO(int? serviceTypeID, string servicTypeName)
+        {
+            this.ServiceTypeID = serviceTypeID;
+            this.ServicTypeName = servicTypeName;
+        }
+    }
+    
     public class clsServiceTypesDataAccess
     {
-        public static bool? GetServiceTypeInfoByID(int? ServiceTypeID, ref string ServicTypeName)
+        public static clsServiceTypeDTO GetServiceTypeInfoByID(int? ServiceTypeID)
         {
-            bool? isFound = null;
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -26,13 +38,10 @@ namespace MediManage_DataAccess
                         {
                             if (reader.Read())
                             {
-                                isFound = true;
-
-                                ServicTypeName = reader["ServicTypeName"] == DBNull.Value ? null : (string)reader["ServicTypeName"];
-                            }
-                            else
-                            {
-                                isFound = false;
+                                return new clsServiceTypeDTO(
+                                    reader["ServiceTypeID"] == DBNull.Value ? null : (int?)reader["ServiceTypeID"],
+                                    reader["ServicTypeName"] == DBNull.Value ? null : (string)reader["ServicTypeName"]
+                                );
                             }
                         }
                     }
@@ -42,12 +51,12 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
-            return isFound;
+
+            return null;
         }
 
-        public static int? AddNewServiceType(string ServicTypeName)
+        public static int? AddNewServiceType(clsServiceTypeDTO serviceTypeDTO)
         {
             int? ServiceTypeID = null;
 
@@ -58,8 +67,7 @@ namespace MediManage_DataAccess
                     using (SqlCommand command = new SqlCommand("SP_AddNewServiceType", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
-
-                        command.Parameters.AddWithValue("@ServicTypeName", (object)ServicTypeName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@ServicTypeName", (object)serviceTypeDTO.ServicTypeName ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewServiceTypeID", SqlDbType.Int)
                         {
@@ -84,9 +92,9 @@ namespace MediManage_DataAccess
             return ServiceTypeID;
         }
 
-        public static bool? UpdateServiceType(int? ServiceTypeID, string ServicTypeName)
+        public static bool UpdateServiceType(clsServiceTypeDTO serviceTypeDTO)
         {
-            int? rowsAffected = null;
+            int rowsAffected = 0;
 
             try
             {
@@ -96,8 +104,8 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@ServiceTypeID", (object)ServiceTypeID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@ServicTypeName", (object)ServicTypeName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@ServiceTypeID", (object)serviceTypeDTO.ServiceTypeID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@ServicTypeName", (object)serviceTypeDTO.ServicTypeName ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -114,20 +122,28 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static DataTable GetAllServiceTypes()
+        public static List<clsServiceTypeDTO> GetAllServiceTypes()
         {
-            DataTable dt = new DataTable();
+            List<clsServiceTypeDTO> list = new List<clsServiceTypeDTO>();
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
                 {
-                    connection.Open();
                     using (SqlCommand command = new SqlCommand("SP_GetAllServiceTypes", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            dt.Load(reader);
+                            while (reader.Read())
+                            {
+                                list.Add(new clsServiceTypeDTO(
+                                    reader["ServiceTypeID"] == DBNull.Value ? null : (int?)reader["ServiceTypeID"],
+                                    reader["ServicTypeName"] == DBNull.Value ? null : (string)reader["ServicTypeName"]
+                                ));
+                            }
                         }
                     }
                 }
@@ -138,12 +154,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return dt;
+            return list;
         }
 
         public static bool DeleteServiceType(int? ServiceTypeID)
         {
-            int? rowsAffected = 0;
+            int rowsAffected = 0;
 
             try
             {
@@ -164,12 +180,13 @@ namespace MediManage_DataAccess
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
-            return (rowsAffected > 0);
+
+            return rowsAffected > 0;
         }
 
-        public static bool? IsServiceTypeExist(int? ServiceTypeID)
+        public static bool IsServiceTypeExist(int? ServiceTypeID)
         {
-            bool? isFound = null;
+            bool isFound = false;
 
             try
             {
@@ -200,13 +217,9 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
 
             return isFound;
         }
     }
 }
-
-
-

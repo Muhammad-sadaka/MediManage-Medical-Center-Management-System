@@ -1,17 +1,39 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace MediManage_DataAccess
 {
+    // 1. Data Transfer Object (DTO)
+    public class clsBillItemDTO
+    {
+        public int? BillItemID { get; set; }
+        public int? Bill_ID { get; set; }
+        public int? ServiceTypeID { get; set; }
+        public string Description { get; set; }
+        public decimal? Price { get; set; }
+        public int? Amount { get; set; }
+        public int? Total { get; set; }
+
+        public clsBillItemDTO(int? billItemID, int? bill_ID, int? serviceTypeID, string description, decimal? price, int? amount, int? total)
+        {
+            this.BillItemID = billItemID;
+            this.Bill_ID = bill_ID;
+            this.ServiceTypeID = serviceTypeID;
+            this.Description = description;
+            this.Price = price;
+            this.Amount = amount;
+            this.Total = total;
+        }
+    }
+
+    // 2. Data Access Layer
     public class clsBillItemsDataAccess
     {
-        public static bool? GetBillItemInfoByID(int? BillItemID, ref int? Bill_ID, ref int? ServiceTypeID, ref string Description, ref decimal? Price, ref int? Amount, ref int? Total)
+        public static clsBillItemDTO GetBillItemInfoByID(int? BillItemID)
         {
-            bool? isFound = null;
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -26,18 +48,16 @@ namespace MediManage_DataAccess
                         {
                             if (reader.Read())
                             {
-                                isFound = true;
-
-                                Bill_ID = reader["Bill_ID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["Bill_ID"]);
-                                ServiceTypeID = reader["ServiceTypeID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["ServiceTypeID"]);
-                                Description = reader["Description"] == DBNull.Value ? null : (string)reader["Description"];
-                                Price = reader["Price"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(reader["Price"]);
-                                Amount = reader["Amount"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["Amount"]);
-                                Total = reader["Total"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["Total"]);
-                            }
-                            else
-                            {
-                                isFound = false;
+                                return new clsBillItemDTO
+                                (
+                                    reader["BillItemID"] == DBNull.Value ? null : (int?)reader["BillItemID"],
+                                    reader["Bill_ID"] == DBNull.Value ? null : (int?)reader["Bill_ID"],
+                                    reader["ServiceTypeID"] == DBNull.Value ? null : (int?)reader["ServiceTypeID"],
+                                    reader["Description"] == DBNull.Value ? null : (string)reader["Description"],
+                                    reader["Price"] == DBNull.Value ? null : (decimal?)reader["Price"],
+                                    reader["Amount"] == DBNull.Value ? null : (int?)reader["Amount"],
+                                    reader["Total"] == DBNull.Value ? null : (int?)reader["Total"]
+                                );
                             }
                         }
                     }
@@ -47,12 +67,12 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
-            return isFound;
+
+            return null;
         }
 
-        public static int? AddNewBillItem(int? Bill_ID, int? ServiceTypeID, string Description, decimal? Price, int? Amount, int? Total)
+        public static int? AddNewBillItem(clsBillItemDTO billItemDTO)
         {
             int? BillItemID = null;
 
@@ -64,12 +84,12 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@Bill_ID", (object)Bill_ID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@ServiceTypeID", (object)ServiceTypeID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Description", (object)Description ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Price", (object)Price ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Amount", (object)Amount ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Total", (object)Total ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Bill_ID", (object)billItemDTO.Bill_ID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@ServiceTypeID", (object)billItemDTO.ServiceTypeID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Description", (object)billItemDTO.Description ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Price", (object)billItemDTO.Price ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Amount", (object)billItemDTO.Amount ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Total", (object)billItemDTO.Total ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewBillItemID", SqlDbType.Int)
                         {
@@ -94,9 +114,9 @@ namespace MediManage_DataAccess
             return BillItemID;
         }
 
-        public static bool? UpdateBillItem(int? BillItemID, int? Bill_ID, int? ServiceTypeID, string Description, decimal? Price, int? Amount, int? Total)
+        public static bool UpdateBillItem(clsBillItemDTO billItemDTO)
         {
-            int? rowsAffected = null;
+            int rowsAffected = 0;
 
             try
             {
@@ -106,13 +126,13 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@BillItemID", (object)BillItemID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Bill_ID", (object)Bill_ID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@ServiceTypeID", (object)ServiceTypeID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Description", (object)Description ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Price", (object)Price ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Amount", (object)Amount ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Total", (object)Total ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@BillItemID", (object)billItemDTO.BillItemID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Bill_ID", (object)billItemDTO.Bill_ID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@ServiceTypeID", (object)billItemDTO.ServiceTypeID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Description", (object)billItemDTO.Description ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Price", (object)billItemDTO.Price ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Amount", (object)billItemDTO.Amount ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Total", (object)billItemDTO.Total ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -129,20 +149,34 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static DataTable GetAllBillItems()
+        public static List<clsBillItemDTO> GetAllBillItems()
         {
-            DataTable dt = new DataTable();
+            var billItemsList = new List<clsBillItemDTO>();
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
                 {
-                    connection.Open();
                     using (SqlCommand command = new SqlCommand("SP_GetAllBillItems", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            dt.Load(reader);
+                            while (reader.Read())
+                            {
+                                billItemsList.Add(new clsBillItemDTO
+                                (
+                                    reader["BillItemID"] == DBNull.Value ? null : (int?)reader["BillItemID"],
+                                    reader["Bill_ID"] == DBNull.Value ? null : (int?)reader["Bill_ID"],
+                                    reader["ServiceTypeID"] == DBNull.Value ? null : (int?)reader["ServiceTypeID"],
+                                    reader["Description"] == DBNull.Value ? null : (string)reader["Description"],
+                                    reader["Price"] == DBNull.Value ? null : (decimal?)reader["Price"],
+                                    reader["Amount"] == DBNull.Value ? null : (int?)reader["Amount"],
+                                    reader["Total"] == DBNull.Value ? null : (int?)reader["Total"]
+                                ));
+                            }
                         }
                     }
                 }
@@ -153,12 +187,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return dt;
+            return billItemsList;
         }
 
         public static bool DeleteBillItem(int? BillItemID)
         {
-            int? rowsAffected = 0;
+            int rowsAffected = 0;
 
             try
             {
@@ -179,12 +213,13 @@ namespace MediManage_DataAccess
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
-            return (rowsAffected > 0);
+
+            return rowsAffected > 0;
         }
 
-        public static bool? IsBillItemExist(int? BillItemID)
+        public static bool IsBillItemExist(int? BillItemID)
         {
-            bool? isFound = null;
+            bool isFound = false;
 
             try
             {
@@ -204,7 +239,7 @@ namespace MediManage_DataAccess
                         connection.Open();
                         command.ExecuteNonQuery();
 
-                        if (returnParameter.Value != null)
+                        if (returnParameter.Value != DBNull.Value)
                         {
                             isFound = (int)returnParameter.Value == 1;
                         }
@@ -215,12 +250,9 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
 
             return isFound;
         }
     }
 }
-
-

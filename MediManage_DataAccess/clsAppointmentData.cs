@@ -1,17 +1,61 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace MediManage_DataAccess
 {
+    // 1. Data Transfer Object (DTO)
+    public class clsAppointmentDTO
+    {
+        public int? AppointmentID { get; set; }
+        public int? PatientID { get; set; }
+        public int? DoctorID { get; set; }
+        public int? CreatedByUserID { get; set; }
+        public DateTime? BookingDate { get; set; }
+        public DateTime? AppointmentDate { get; set; }
+        public int? AppointmentCaseID { get; set; }
+        public byte? Duration { get; set; }
+        public string Reason { get; set; }
+        public string Notes { get; set; }
+
+        public clsAppointmentDTO(int? appointmentID, int? patientID, int? doctorID, int? createdByUserID,
+            DateTime? bookingDate, DateTime? appointmentDate, int? appointmentCaseID, byte? duration, string reason, string notes)
+        {
+            this.AppointmentID = appointmentID;
+            this.PatientID = patientID;
+            this.DoctorID = doctorID;
+            this.CreatedByUserID = createdByUserID;
+            this.BookingDate = bookingDate;
+            this.AppointmentDate = appointmentDate;
+            this.AppointmentCaseID = appointmentCaseID;
+            this.Duration = duration;
+            this.Reason = reason;
+            this.Notes = notes;
+        }
+    }
+
+    public class clsTodayAppointmentDTO
+    {
+        public DateTime? Time { get; set; }
+        public string PatientName { get; set; }
+        public string DoctorName { get; set; }
+        public string Status { get; set; }
+
+        public clsTodayAppointmentDTO(DateTime? time, string patientName, string doctorName, string status)
+        {
+            Time = time;
+            PatientName = patientName;
+            DoctorName = doctorName;
+            Status = status;
+        }
+    }
+
     public class clsAppointmentsDataAccess
     {
-        public static bool? GetAppointmentInfoByID(int? AppointmentID, ref int? PatientID, ref int? DoctorID, ref int? CreatedByUserID, ref DateTime? BookingDate, ref DateTime? AppointmentDate, ref int? AppointmentCaseID, ref byte? Duration, ref string Reason, ref string Notes)
+        public static clsAppointmentDTO GetAppointmentInfoByID(int? AppointmentID)
         {
-            bool? isFound = null;
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -26,21 +70,19 @@ namespace MediManage_DataAccess
                         {
                             if (reader.Read())
                             {
-                                isFound = true;
-
-                                PatientID = reader["PatientID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["PatientID"]);
-                                DoctorID = reader["DoctorID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["DoctorID"]);
-                                CreatedByUserID = reader["CreatedByUserID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["CreatedByUserID"]);
-                                BookingDate = reader["BookingDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["BookingDate"]);
-                                AppointmentDate = reader["AppointmentDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["AppointmentDate"]);
-                                AppointmentCaseID = reader["AppointmentCaseID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["AppointmentCaseID"]);
-                                Duration = reader["Duration"] == DBNull.Value ? (byte?)null : Convert.ToByte(reader["Duration"]);
-                                Reason = reader["Reason"] == DBNull.Value ? null : (string)reader["Reason"];
-                                Notes = reader["Notes"] == DBNull.Value ? null : (string)reader["Notes"];
-                            }
-                            else
-                            {
-                                isFound = false;
+                                return new clsAppointmentDTO
+                                (
+                                    reader["AppointmentID"] == DBNull.Value ? null : (int?)reader["AppointmentID"],
+                                    reader["PatientID"] == DBNull.Value ? null : (int?)reader["PatientID"],
+                                    reader["DoctorID"] == DBNull.Value ? null : (int?)reader["DoctorID"],
+                                    reader["CreatedByUserID"] == DBNull.Value ? null : (int?)reader["CreatedByUserID"],
+                                    reader["BookingDate"] == DBNull.Value ? null : (DateTime?)reader["BookingDate"],
+                                    reader["AppointmentDate"] == DBNull.Value ? null : (DateTime?)reader["AppointmentDate"],
+                                    reader["AppointmentCaseID"] == DBNull.Value ? null : (int?)reader["AppointmentCaseID"],
+                                    reader["Duration"] == DBNull.Value ? null : (byte?)reader["Duration"],
+                                    reader["Reason"] == DBNull.Value ? null : (string)reader["Reason"],
+                                    reader["Notes"] == DBNull.Value ? null : (string)reader["Notes"]
+                                );
                             }
                         }
                     }
@@ -50,12 +92,12 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
-            return isFound;
+
+            return null;
         }
 
-        public static int? AddNewAppointment(int? PatientID, int? DoctorID, int? CreatedByUserID, DateTime? BookingDate, DateTime? AppointmentDate, int? AppointmentCaseID, byte? Duration, string Reason, string Notes)
+        public static int? AddNewAppointment(clsAppointmentDTO appointmentDTO)
         {
             int? AppointmentID = null;
 
@@ -67,15 +109,15 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@PatientID", (object)PatientID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@DoctorID", (object)DoctorID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@CreatedByUserID", (object)CreatedByUserID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@BookingDate", (object)BookingDate ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@AppointmentDate", (object)AppointmentDate ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@AppointmentCaseID", (object)AppointmentCaseID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Duration", (object)Duration ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Reason", (object)Reason ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Notes", (object)Notes ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PatientID", (object)appointmentDTO.PatientID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@DoctorID", (object)appointmentDTO.DoctorID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@CreatedByUserID", (object)appointmentDTO.CreatedByUserID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@BookingDate", (object)appointmentDTO.BookingDate ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@AppointmentDate", (object)appointmentDTO.AppointmentDate ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@AppointmentCaseID", (object)appointmentDTO.AppointmentCaseID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Duration", (object)appointmentDTO.Duration ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Reason", (object)appointmentDTO.Reason ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Notes", (object)appointmentDTO.Notes ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewAppointmentID", SqlDbType.Int)
                         {
@@ -100,9 +142,9 @@ namespace MediManage_DataAccess
             return AppointmentID;
         }
 
-        public static bool? UpdateAppointment(int? AppointmentID, int? PatientID, int? DoctorID, int? CreatedByUserID, DateTime? BookingDate, DateTime? AppointmentDate, int? AppointmentCaseID, byte? Duration, string Reason, string Notes)
+        public static bool UpdateAppointment(clsAppointmentDTO appointmentDTO)
         {
-            int? rowsAffected = null;
+            int rowsAffected = 0;
 
             try
             {
@@ -112,16 +154,16 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@AppointmentID", (object)AppointmentID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@PatientID", (object)PatientID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@DoctorID", (object)DoctorID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@CreatedByUserID", (object)CreatedByUserID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@BookingDate", (object)BookingDate ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@AppointmentDate", (object)AppointmentDate ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@AppointmentCaseID", (object)AppointmentCaseID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Duration", (object)Duration ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Reason", (object)Reason ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Notes", (object)Notes ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@AppointmentID", (object)appointmentDTO.AppointmentID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PatientID", (object)appointmentDTO.PatientID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@DoctorID", (object)appointmentDTO.DoctorID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@CreatedByUserID", (object)appointmentDTO.CreatedByUserID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@BookingDate", (object)appointmentDTO.BookingDate ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@AppointmentDate", (object)appointmentDTO.AppointmentDate ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@AppointmentCaseID", (object)appointmentDTO.AppointmentCaseID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Duration", (object)appointmentDTO.Duration ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Reason", (object)appointmentDTO.Reason ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Notes", (object)appointmentDTO.Notes ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -138,20 +180,37 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static DataTable GetAllAppointments()
+        public static List<clsAppointmentDTO> GetAllAppointments()
         {
-            DataTable dt = new DataTable();
+            var appointmentsList = new List<clsAppointmentDTO>();
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
                 {
-                    connection.Open();
                     using (SqlCommand command = new SqlCommand("SP_GetAllAppointments", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            dt.Load(reader);
+                            while (reader.Read())
+                            {
+                                appointmentsList.Add(new clsAppointmentDTO
+                                (
+                                    reader["AppointmentID"] == DBNull.Value ? null : (int?)reader["AppointmentID"],
+                                    reader["PatientID"] == DBNull.Value ? null : (int?)reader["PatientID"],
+                                    reader["DoctorID"] == DBNull.Value ? null : (int?)reader["DoctorID"],
+                                    reader["CreatedByUserID"] == DBNull.Value ? null : (int?)reader["CreatedByUserID"],
+                                    reader["BookingDate"] == DBNull.Value ? null : (DateTime?)reader["BookingDate"],
+                                    reader["AppointmentDate"] == DBNull.Value ? null : (DateTime?)reader["AppointmentDate"],
+                                    reader["AppointmentCaseID"] == DBNull.Value ? null : (int?)reader["AppointmentCaseID"],
+                                    reader["Duration"] == DBNull.Value ? null : (byte?)reader["Duration"],
+                                    reader["Reason"] == DBNull.Value ? null : (string)reader["Reason"],
+                                    reader["Notes"] == DBNull.Value ? null : (string)reader["Notes"]
+                                ));
+                            }
                         }
                     }
                 }
@@ -162,12 +221,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return dt;
+            return appointmentsList;
         }
 
         public static bool DeleteAppointment(int? AppointmentID)
         {
-            int? rowsAffected = 0;
+            int rowsAffected = 0;
 
             try
             {
@@ -188,12 +247,13 @@ namespace MediManage_DataAccess
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
-            return (rowsAffected > 0);
+
+            return rowsAffected > 0;
         }
 
-        public static bool? IsAppointmentExist(int? AppointmentID)
+        public static bool IsAppointmentExist(int? AppointmentID)
         {
-            bool? isFound = null;
+            bool isFound = false;
 
             try
             {
@@ -213,7 +273,7 @@ namespace MediManage_DataAccess
                         connection.Open();
                         command.ExecuteNonQuery();
 
-                        if (returnParameter.Value != null)
+                        if (returnParameter.Value != DBNull.Value)
                         {
                             isFound = (int)returnParameter.Value == 1;
                         }
@@ -224,26 +284,36 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
 
             return isFound;
         }
 
-        public static DataTable GetTodayAppointments()
+        public static List<clsTodayAppointmentDTO> GetTodayAppointments()
         {
-            DataTable dt = new DataTable();
+            var appointmentsList = new List<clsTodayAppointmentDTO>();
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
                 {
-                    connection.Open();
-                    using (SqlCommand command = new SqlCommand(@"SP_GetTodayAppointments", connection))
+                    using (SqlCommand command = new SqlCommand("SP_GetTodayAppointments", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            dt.Load(reader);
+                            while (reader.Read())
+                            {
+                                appointmentsList.Add(new clsTodayAppointmentDTO
+                                (
+                                    reader["Time"] == DBNull.Value ? null : (DateTime?)reader["Time"],
+                                    reader["Patient Name"] == DBNull.Value ? null : (string)reader["Patient Name"],
+                                    reader["Doctor Name"] == DBNull.Value ? null : (string)reader["Doctor Name"],
+                                    reader["Status"] == DBNull.Value ? null : (string)reader["Status"]
+                                ));
+                            }
                         }
                     }
                 }
@@ -254,9 +324,7 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return dt;
+            return appointmentsList;
         }
     }
 }
-
-

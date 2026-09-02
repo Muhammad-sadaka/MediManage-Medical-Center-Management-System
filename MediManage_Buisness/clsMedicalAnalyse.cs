@@ -1,77 +1,77 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
 using MediManage_DataAccess;
 
 
-namespace MediManage_Buisness
+namespace MediManage_Business
 {
+
     public class clsMedicalAnalysis
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? MedicalAnalysisID { set; get; }
-        public string Result { set; get; }
-        public DateTime? OrderDate { set; get; }
-        public DateTime? ResultDate { set; get; }
-        public int? AnalysisStatusID { set; get; }
-        public int? AnalysisTypeID { set; get; }
-        public int? DetectionID { set; get; }
-
-        public clsMedicalAnalysis()
+        public clsMedicalAnalysisDTO DTO
         {
-            this.MedicalAnalysisID = null;
-            this.Result = "";
-            this.OrderDate = null;
-            this.ResultDate = null;
-            this.AnalysisStatusID = null;
-            this.AnalysisTypeID = null;
-            this.DetectionID = null;
-
-            Mode = enMode.AddNew;
+            get
+            {
+                return new clsMedicalAnalysisDTO
+                (
+                    this.MedicalAnalysisID,
+                    this.Result,
+                    this.OrderDate,
+                    this.ResultDate,
+                    this.AnalysisStatusID,
+                    this.AnalysisTypeID,
+                    this.DetectionID
+                );
+            }
         }
 
-        private clsMedicalAnalysis(int? MedicalAnalysisID, string Result, DateTime? OrderDate, DateTime? ResultDate, int? AnalysisStatusID, int? AnalysisTypeID, int? DetectionID)
-        {
-            this.MedicalAnalysisID = MedicalAnalysisID;
-            this.Result = Result;
-            this.OrderDate = OrderDate;
-            this.ResultDate = ResultDate;
-            this.AnalysisStatusID = AnalysisStatusID;
-            this.AnalysisTypeID = AnalysisTypeID;
-            this.DetectionID = DetectionID;
+        public int? MedicalAnalysisID { get; set; }
+        public string Result { get; set; }
+        public DateTime? OrderDate { get; set; }
+        public DateTime? ResultDate { get; set; }
+        public int? AnalysisStatusID { get; set; }
+        public int? AnalysisTypeID { get; set; }
+        public int? DetectionID { get; set; }
 
-            Mode = enMode.Update;
+        public clsMedicalAnalysis(clsMedicalAnalysisDTO dto, enMode cMode = enMode.AddNew)
+        {
+            this.MedicalAnalysisID = dto.MedicalAnalysisID;
+            this.Result = dto.Result;
+            this.OrderDate = dto.OrderDate;
+            this.ResultDate = dto.ResultDate;
+            this.AnalysisStatusID = dto.AnalysisStatusID;
+            this.AnalysisTypeID = dto.AnalysisTypeID;
+            this.DetectionID = dto.DetectionID;
+            this.Mode = cMode;
         }
 
         private bool _AddNewMedicalAnalysis()
         {
-            this.MedicalAnalysisID = clsMedicalAnalysesDataAccess.AddNewMedicalAnalysis(this.Result, this.OrderDate, this.ResultDate, this.AnalysisStatusID, this.AnalysisTypeID, this.DetectionID);
-            return (this.MedicalAnalysisID != null);
+            this.MedicalAnalysisID = clsMedicalAnalysesDataAccess.AddNewMedicalAnalysis(this.DTO);
+            return (this.MedicalAnalysisID.HasValue);
         }
 
         private bool _UpdateMedicalAnalysis()
         {
-            return clsMedicalAnalysesDataAccess.UpdateMedicalAnalysis(this.MedicalAnalysisID, this.Result, this.OrderDate, this.ResultDate, this.AnalysisStatusID, this.AnalysisTypeID, this.DetectionID) ?? false;
+            return clsMedicalAnalysesDataAccess.UpdateMedicalAnalysis(this.DTO);
         }
 
-        public static clsMedicalAnalysis FindByID(int? MedicalAnalysisID)
+        public static clsMedicalAnalysis Find(int? ID)
         {
-            if (MedicalAnalysisID == null) return null;
+            clsMedicalAnalysisDTO dto = clsMedicalAnalysesDataAccess.GetMedicalAnalysisInfoByID(ID);
 
-            string Result = "";
-            DateTime? OrderDate = null;
-            DateTime? ResultDate = null;
-            int? AnalysisStatusID = null;
-            int? AnalysisTypeID = null;
-            int? DetectionID = null;
-
-            bool? IsFound = clsMedicalAnalysesDataAccess.GetMedicalAnalysisInfoByID(MedicalAnalysisID, ref Result, ref OrderDate, ref ResultDate, ref AnalysisStatusID, ref AnalysisTypeID, ref DetectionID);
-
-            if (IsFound == true)
-                return new clsMedicalAnalysis(MedicalAnalysisID, Result, OrderDate, ResultDate, AnalysisStatusID, AnalysisTypeID, DetectionID);
+            if (dto != null)
+                return new clsMedicalAnalysis(dto, enMode.Update);
             else
                 return null;
+        }
+
+        public static List<clsMedicalAnalysisDTO> GetAllMedicalAnalyses()
+        {
+            return clsMedicalAnalysesDataAccess.GetAllMedicalAnalyses();
         }
 
         public bool Save()
@@ -92,25 +92,18 @@ namespace MediManage_Buisness
                 case enMode.Update:
                     return _UpdateMedicalAnalysis();
             }
+
             return false;
         }
 
-        public static DataTable GetAllMedicalAnalyses()
+        public static bool DeleteMedicalAnalysis(int? ID)
         {
-            return clsMedicalAnalysesDataAccess.GetAllMedicalAnalyses();
+            return clsMedicalAnalysesDataAccess.DeleteMedicalAnalysis(ID);
         }
 
-        public static bool DeleteMedicalAnalysis(int? MedicalAnalysisID)
+        public static bool IsExist(int? ID)
         {
-            return clsMedicalAnalysesDataAccess.DeleteMedicalAnalysis(MedicalAnalysisID);
-        }
-
-        public static bool IsMedicalAnalysisExist(int? MedicalAnalysisID)
-        {
-            return clsMedicalAnalysesDataAccess.IsMedicalAnalysisExist(MedicalAnalysisID) ?? false;
+            return clsMedicalAnalysesDataAccess.IsMedicalAnalysisExist(ID);
         }
     }
 }
-
-
-

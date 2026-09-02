@@ -1,17 +1,34 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace MediManage_DataAccess
 {
+    public class clsPaymentDTO
+    {
+        public int? PaymentID { get; set; }
+        public int? Bill_ID { get; set; }
+        public DateTime? PaymentDate { get; set; }
+        public int? CreatedByUserID { get; set; }
+        public decimal? Amount { get; set; }
+
+        public clsPaymentDTO(int? paymentID, int? bill_ID, DateTime? paymentDate, int? createdByUserID, decimal? amount)
+        {
+            this.PaymentID = paymentID;
+            this.Bill_ID = bill_ID;
+            this.PaymentDate = paymentDate;
+            this.CreatedByUserID = createdByUserID;
+            this.Amount = amount;
+        }
+    }
+
+    // 2. Data Access Layer
     public class clsPaymentsDataAccess
     {
-        public static bool? GetPaymentInfoByID(int? PaymentID, ref int? Bill_ID, ref DateTime? PaymentDate, ref int? CreatedByUserID, ref decimal? Amount)
+        public static clsPaymentDTO GetPaymentInfoByID(int? PaymentID)
         {
-            bool? isFound = null;
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -26,16 +43,14 @@ namespace MediManage_DataAccess
                         {
                             if (reader.Read())
                             {
-                                isFound = true;
-
-                                Bill_ID = reader["Bill_ID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["Bill_ID"]);
-                                PaymentDate = reader["PaymentDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["PaymentDate"]);
-                                CreatedByUserID = reader["CreatedByUserID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["CreatedByUserID"]);
-                                Amount = reader["Amount"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(reader["Amount"]);
-                            }
-                            else
-                            {
-                                isFound = false;
+                                return new clsPaymentDTO
+                                (
+                                    reader["PaymentID"] == DBNull.Value ? null : (int?)reader["PaymentID"],
+                                    reader["Bill_ID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["Bill_ID"]),
+                                    reader["PaymentDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["PaymentDate"]),
+                                    reader["CreatedByUserID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["CreatedByUserID"]),
+                                    reader["Amount"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(reader["Amount"])
+                                );
                             }
                         }
                     }
@@ -45,14 +60,14 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
-            return isFound;
+
+            return null;
         }
 
-        public static int? AddNewPayment(int? Bill_ID, DateTime? PaymentDate, int? CreatedByUserID, decimal? Amount)
+        public static int? AddNewPayment(clsPaymentDTO dto)
         {
-            int? PaymentID = null;
+            int? paymentID = null;
 
             try
             {
@@ -62,10 +77,10 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@Bill_ID", (object)Bill_ID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@PaymentDate", (object)PaymentDate ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@CreatedByUserID", (object)CreatedByUserID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Amount", (object)Amount ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Bill_ID", (object)dto.Bill_ID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PaymentDate", (object)dto.PaymentDate ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@CreatedByUserID", (object)dto.CreatedByUserID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Amount", (object)dto.Amount ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewPaymentID", SqlDbType.Int)
                         {
@@ -77,7 +92,7 @@ namespace MediManage_DataAccess
                         command.ExecuteNonQuery();
 
                         if (outputIdParam.Value != DBNull.Value)
-                            PaymentID = (int)outputIdParam.Value;
+                            paymentID = (int)outputIdParam.Value;
                     }
                 }
             }
@@ -87,12 +102,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return PaymentID;
+            return paymentID;
         }
 
-        public static bool? UpdatePayment(int? PaymentID, int? Bill_ID, DateTime? PaymentDate, int? CreatedByUserID, decimal? Amount)
+        public static bool UpdatePayment(clsPaymentDTO dto)
         {
-            int? rowsAffected = null;
+            int rowsAffected = 0;
 
             try
             {
@@ -102,11 +117,11 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@PaymentID", (object)PaymentID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Bill_ID", (object)Bill_ID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@PaymentDate", (object)PaymentDate ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@CreatedByUserID", (object)CreatedByUserID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Amount", (object)Amount ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PaymentID", (object)dto.PaymentID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Bill_ID", (object)dto.Bill_ID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PaymentDate", (object)dto.PaymentDate ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@CreatedByUserID", (object)dto.CreatedByUserID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Amount", (object)dto.Amount ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -123,20 +138,32 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static DataTable GetAllPayments()
+        public static List<clsPaymentDTO> GetAllPayments()
         {
-            DataTable dt = new DataTable();
+            var paymentsList = new List<clsPaymentDTO>();
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
                 {
-                    connection.Open();
                     using (SqlCommand command = new SqlCommand("SP_GetAllPayments", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            dt.Load(reader);
+                            while (reader.Read())
+                            {
+                                paymentsList.Add(new clsPaymentDTO
+                                (
+                                    reader["PaymentID"] == DBNull.Value ? null : (int?)reader["PaymentID"],
+                                    reader["Bill_ID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["Bill_ID"]),
+                                    reader["PaymentDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["PaymentDate"]),
+                                    reader["CreatedByUserID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["CreatedByUserID"]),
+                                    reader["Amount"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(reader["Amount"])
+                                ));
+                            }
                         }
                     }
                 }
@@ -147,12 +174,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return dt;
+            return paymentsList;
         }
 
         public static bool DeletePayment(int? PaymentID)
         {
-            int? rowsAffected = 0;
+            int rowsAffected = 0;
 
             try
             {
@@ -173,12 +200,13 @@ namespace MediManage_DataAccess
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
-            return (rowsAffected > 0);
+
+            return rowsAffected > 0;
         }
 
-        public static bool? IsPaymentExist(int? PaymentID)
+        public static bool IsPaymentExist(int? PaymentID)
         {
-            bool? isFound = null;
+            bool isFound = false;
 
             try
             {
@@ -198,7 +226,7 @@ namespace MediManage_DataAccess
                         connection.Open();
                         command.ExecuteNonQuery();
 
-                        if (returnParameter.Value != null)
+                        if (returnParameter.Value != DBNull.Value)
                         {
                             isFound = (int)returnParameter.Value == 1;
                         }
@@ -209,11 +237,9 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
 
             return isFound;
         }
     }
 }
-

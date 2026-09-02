@@ -1,57 +1,54 @@
-﻿using System;
-using System.Data;
+﻿using System.Collections.Generic;
 using MediManage_DataAccess;
 
 
-namespace MediManage_Buisness
+namespace MediManage_Business
 {
+
     public class clsAppointmentCase
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? AppointmentCaseID { set; get; }
-        public string AppointmentCaseName { set; get; }
-
-        public clsAppointmentCase()
+        public clsAppointmentCaseDTO AppointmentCaseDTO
         {
-            this.AppointmentCaseID = null;
-            this.AppointmentCaseName = "";
-
-            Mode = enMode.AddNew;
+            get { return new clsAppointmentCaseDTO(this.AppointmentCaseID, this.AppointmentCaseName); }
         }
 
-        private clsAppointmentCase(int? AppointmentCaseID, string AppointmentCaseName)
-        {
-            this.AppointmentCaseID = AppointmentCaseID;
-            this.AppointmentCaseName = AppointmentCaseName;
+        public int? AppointmentCaseID { get; set; }
+        public string AppointmentCaseName { get; set; }
 
-            Mode = enMode.Update;
+        public clsAppointmentCase(clsAppointmentCaseDTO dto, enMode cMode = enMode.AddNew)
+        {
+            this.AppointmentCaseID = dto.AppointmentCaseID;
+            this.AppointmentCaseName = dto.AppointmentCaseName;
+            this.Mode = cMode;
         }
 
         private bool _AddNewAppointmentCase()
         {
-            this.AppointmentCaseID = clsAppointmentCaseData.AddNewAppointmentCase(this.AppointmentCaseName);
-            return (this.AppointmentCaseID != null);
+            this.AppointmentCaseID = clsAppointmentCaseData.AddNewAppointmentCase(this.AppointmentCaseDTO);
+            return (this.AppointmentCaseID.HasValue);
         }
 
         private bool _UpdateAppointmentCase()
         {
-            return clsAppointmentCaseData.UpdateAppointmentCase(this.AppointmentCaseID, this.AppointmentCaseName) ?? false;
+            return clsAppointmentCaseData.UpdateAppointmentCase(this.AppointmentCaseDTO);
         }
 
-        public static clsAppointmentCase FindByID(int? AppointmentCaseID)
+        public static clsAppointmentCase Find(int? ID)
         {
-            if (AppointmentCaseID == null) return null;
+            clsAppointmentCaseDTO dto = clsAppointmentCaseData.GetAppointmentCaseInfoByID(ID);
 
-            string AppointmentCaseName = "";
-
-            bool? IsFound = clsAppointmentCaseData.GetAppointmentCaseInfoByID(AppointmentCaseID, ref AppointmentCaseName);
-
-            if (IsFound == true)
-                return new clsAppointmentCase(AppointmentCaseID, AppointmentCaseName);
+            if (dto != null)
+                return new clsAppointmentCase(dto, enMode.Update);
             else
                 return null;
+        }
+
+        public static List<clsAppointmentCaseDTO> GetAllAppointmentCases()
+        {
+            return clsAppointmentCaseData.GetAllAppointmentCases();
         }
 
         public bool Save()
@@ -72,24 +69,18 @@ namespace MediManage_Buisness
                 case enMode.Update:
                     return _UpdateAppointmentCase();
             }
+
             return false;
         }
 
-        public static DataTable GetAllAppointmentCases()
+        public static bool DeleteAppointmentCase(int? ID)
         {
-            return clsAppointmentCaseData.GetAllAppointmentCases();
+            return clsAppointmentCaseData.DeleteAppointmentCase(ID);
         }
 
-        public static bool DeleteAppointmentCase(int? AppointmentCaseID)
+        public static bool IsExist(int? ID)
         {
-            return clsAppointmentCaseData.DeleteAppointmentCase(AppointmentCaseID);
-        }
-
-        public static bool IsAppointmentCaseExist(int? AppointmentCaseID)
-        {
-            return clsAppointmentCaseData.IsAppointmentCaseExist(AppointmentCaseID) ?? false;
+            return clsAppointmentCaseData.IsAppointmentCaseExist(ID);
         }
     }
 }
-
-

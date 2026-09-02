@@ -1,60 +1,56 @@
-﻿using System;
-using System.Data;
+﻿using System.Collections.Generic;
 using MediManage_DataAccess;
 
-namespace MediManage_Buisness
+namespace MediManage_Business
 {
+
+
     public class clsAnalysisType
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? AnalysisTypeID { set; get; }
-        public string AnalysisTypeName { set; get; }
-        public decimal? Price { set; get; }
-
-        public clsAnalysisType()
+        public clsAnalysisTypeDTO AnalysisTypeDTO
         {
-            this.AnalysisTypeID = null;
-            this.AnalysisTypeName = "";
-            this.Price = null;
-
-            Mode = enMode.AddNew;
+            get { return new clsAnalysisTypeDTO(this.AnalysisTypeID, this.AnalysisTypeName, this.Price); }
         }
 
-        private clsAnalysisType(int? AnalysisTypeID, string AnalysisTypeName, decimal? Price)
-        {
-            this.AnalysisTypeID = AnalysisTypeID;
-            this.AnalysisTypeName = AnalysisTypeName;
-            this.Price = Price;
+        public int? AnalysisTypeID { get; set; }
+        public string AnalysisTypeName { get; set; }
+        public decimal? Price { get; set; }
 
-            Mode = enMode.Update;
+        public clsAnalysisType(clsAnalysisTypeDTO dto, enMode cMode = enMode.AddNew)
+        {
+            this.AnalysisTypeID = dto.AnalysisTypeID;
+            this.AnalysisTypeName = dto.AnalysisTypeName;
+            this.Price = dto.Price;
+            this.Mode = cMode;
         }
 
         private bool _AddNewAnalysisType()
         {
-            this.AnalysisTypeID = clsAnalysisTypeData.AddNewAnalysisType(this.AnalysisTypeName, this.Price);
-            return (this.AnalysisTypeID != null);
+            this.AnalysisTypeID = clsAnalysisTypeData.AddNewAnalysisType(this.AnalysisTypeDTO);
+            return (this.AnalysisTypeID.HasValue);
         }
 
         private bool _UpdateAnalysisType()
         {
-            return clsAnalysisTypeData.UpdateAnalysisType(this.AnalysisTypeID, this.AnalysisTypeName, this.Price) ?? false;
+            return clsAnalysisTypeData.UpdateAnalysisType(this.AnalysisTypeDTO);
         }
 
-        public static clsAnalysisType FindByID(int? AnalysisTypeID)
+        public static clsAnalysisType Find(int? ID)
         {
-            if (AnalysisTypeID == null) return null;
+            clsAnalysisTypeDTO dto = clsAnalysisTypeData.GetAnalysisTypeInfoByID(ID);
 
-            string AnalysisTypeName = "";
-            decimal? Price = null;
-
-            bool? IsFound = clsAnalysisTypeData.GetAnalysisTypeInfoByID(AnalysisTypeID, ref AnalysisTypeName, ref Price);
-
-            if (IsFound == true)
-                return new clsAnalysisType(AnalysisTypeID, AnalysisTypeName, Price);
+            if (dto != null)
+                return new clsAnalysisType(dto, enMode.Update);
             else
                 return null;
+        }
+
+        public static List<clsAnalysisTypeDTO> GetAllAnalysisTypes()
+        {
+            return clsAnalysisTypeData.GetAllAnalysisTypes();
         }
 
         public bool Save()
@@ -75,23 +71,18 @@ namespace MediManage_Buisness
                 case enMode.Update:
                     return _UpdateAnalysisType();
             }
+
             return false;
         }
 
-        public static DataTable GetAllAnalysisTypes()
+        public static bool DeleteAnalysisType(int? ID)
         {
-            return clsAnalysisTypeData.GetAllAnalysisTypes();
+            return clsAnalysisTypeData.DeleteAnalysisType(ID);
         }
 
-        public static bool DeleteAnalysisType(int? AnalysisTypeID)
+        public static bool IsExist(int? ID)
         {
-            return clsAnalysisTypeData.DeleteAnalysisType(AnalysisTypeID);
-        }
-
-        public static bool IsAnalysisTypeExist(int? AnalysisTypeID)
-        {
-            return clsAnalysisTypeData.IsAnalysisTypeExist(AnalysisTypeID) ?? false;
+            return clsAnalysisTypeData.IsAnalysisTypeExist(ID);
         }
     }
 }
-

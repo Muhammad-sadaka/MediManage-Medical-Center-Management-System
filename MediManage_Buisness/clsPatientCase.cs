@@ -1,57 +1,63 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
 using MediManage_DataAccess;
 
 
-namespace MediManage_Buisness
+namespace MediManage_Business
 {
+
+
     public class clsPatientCase
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? PatientCaseID { set; get; }
-        public string PatientCaseName { set; get; }
-
-        public clsPatientCase()
+        public clsPatientCaseDTO DTO
         {
-            this.PatientCaseID = null;
-            this.PatientCaseName = "";
-
-            Mode = enMode.AddNew;
+            get
+            {
+                return new clsPatientCaseDTO
+                (
+                    this.PatientCaseID,
+                    this.PatientCaseName
+                );
+            }
         }
 
-        private clsPatientCase(int? PatientCaseID, string PatientCaseName)
-        {
-            this.PatientCaseID = PatientCaseID;
-            this.PatientCaseName = PatientCaseName;
+        public int? PatientCaseID { get; set; }
+        public string PatientCaseName { get; set; }
 
-            Mode = enMode.Update;
+        public clsPatientCase(clsPatientCaseDTO dto, enMode cMode = enMode.AddNew)
+        {
+            this.PatientCaseID = dto.PatientCaseID;
+            this.PatientCaseName = dto.PatientCaseName;
+            this.Mode = cMode;
         }
 
         private bool _AddNewPatientCase()
         {
-            this.PatientCaseID = clsPatientCasesDataAccess.AddNewPatientCase(this.PatientCaseName);
-            return (this.PatientCaseID != null);
+            this.PatientCaseID = clsPatientCasesDataAccess.AddNewPatientCase(this.DTO);
+            return (this.PatientCaseID.HasValue);
         }
 
         private bool _UpdatePatientCase()
         {
-            return clsPatientCasesDataAccess.UpdatePatientCase(this.PatientCaseID, this.PatientCaseName) ?? false;
+            return clsPatientCasesDataAccess.UpdatePatientCase(this.DTO);
         }
 
-        public static clsPatientCase FindByID(int? PatientCaseID)
+        public static clsPatientCase Find(int? ID)
         {
-            if (PatientCaseID == null) return null;
+            clsPatientCaseDTO dto = clsPatientCasesDataAccess.GetPatientCaseInfoByID(ID);
 
-            string PatientCaseName = "";
-
-            bool? IsFound = clsPatientCasesDataAccess.GetPatientCaseInfoByID(PatientCaseID, ref PatientCaseName);
-
-            if (IsFound == true)
-                return new clsPatientCase(PatientCaseID, PatientCaseName);
+            if (dto != null)
+                return new clsPatientCase(dto, enMode.Update);
             else
                 return null;
+        }
+
+        public static List<clsPatientCaseDTO> GetAllPatientCases()
+        {
+            return clsPatientCasesDataAccess.GetAllPatientCases();
         }
 
         public bool Save()
@@ -72,26 +78,18 @@ namespace MediManage_Buisness
                 case enMode.Update:
                     return _UpdatePatientCase();
             }
+
             return false;
         }
 
-        public static DataTable GetAllPatientCases()
+        public static bool DeletePatientCase(int? ID)
         {
-            return clsPatientCasesDataAccess.GetAllPatientCases();
+            return clsPatientCasesDataAccess.DeletePatientCase(ID);
         }
 
-        public static bool DeletePatientCase(int? PatientCaseID)
+        public static bool IsExist(int? ID)
         {
-            return clsPatientCasesDataAccess.DeletePatientCase(PatientCaseID);
-        }
-
-        public static bool IsPatientCaseExist(int? PatientCaseID)
-        {
-            return clsPatientCasesDataAccess.IsPatientCaseExist(PatientCaseID) ?? false;
+            return clsPatientCasesDataAccess.IsPatientCaseExist(ID);
         }
     }
 }
-
-
-
-

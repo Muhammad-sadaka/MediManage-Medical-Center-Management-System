@@ -1,57 +1,55 @@
-﻿using System;
-using System.Data;
-using MediManage_DataAccess;
+﻿using MediManage_DataAccess;
+using System.Collections.Generic;
 
 
-namespace MediManage_Buisness
+namespace MediManage_Business
 {
+   
+
     public class clsAnalysisStatus
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? AnalysisStatusID { set; get; }
-        public string AnalysisStatusName { set; get; }
-
-        public clsAnalysisStatus()
+        public clsAnalysisStatusDTO AnalysisStatusDTO
         {
-            this.AnalysisStatusID = null;
-            this.AnalysisStatusName = "";
-
-            Mode = enMode.AddNew;
+            get { return new clsAnalysisStatusDTO(this.AnalysisStatusID, this.AnalysisStatusName); }
         }
 
-        private clsAnalysisStatus(int? AnalysisStatusID, string AnalysisStatusName)
-        {
-            this.AnalysisStatusID = AnalysisStatusID;
-            this.AnalysisStatusName = AnalysisStatusName;
+        public int? AnalysisStatusID { get; set; }
+        public string AnalysisStatusName { get; set; }
 
-            Mode = enMode.Update;
+        public clsAnalysisStatus(clsAnalysisStatusDTO dto, enMode cMode = enMode.AddNew)
+        {
+            this.AnalysisStatusID = dto.AnalysisStatusID;
+            this.AnalysisStatusName = dto.AnalysisStatusName;
+            this.Mode = cMode;
         }
 
         private bool _AddNewAnalysisStatus()
         {
-            this.AnalysisStatusID = clsAnalysisStatuseData.AddNewAnalysisStatus(this.AnalysisStatusName);
-            return (this.AnalysisStatusID != null);
+            this.AnalysisStatusID = clsAnalysisStatuseData.AddNewAnalysisStatus(this.AnalysisStatusDTO);
+            return (this.AnalysisStatusID.HasValue);
         }
 
         private bool _UpdateAnalysisStatus()
         {
-            return clsAnalysisStatuseData.UpdateAnalysisStatus(this.AnalysisStatusID, this.AnalysisStatusName) ?? false;
+            return clsAnalysisStatuseData.UpdateAnalysisStatus(this.AnalysisStatusDTO);
         }
 
-        public static clsAnalysisStatus FindByID(int? AnalysisStatusID)
+        public static clsAnalysisStatus Find(int? ID)
         {
-            if (AnalysisStatusID == null) return null;
+            clsAnalysisStatusDTO dto = clsAnalysisStatuseData.GetAnalysisStatusInfoByID(ID);
 
-            string AnalysisStatusName = "";
-
-            bool? IsFound = clsAnalysisStatuseData.GetAnalysisStatusInfoByID(AnalysisStatusID, ref AnalysisStatusName);
-
-            if (IsFound == true)
-                return new clsAnalysisStatus(AnalysisStatusID, AnalysisStatusName);
+            if (dto != null)
+                return new clsAnalysisStatus(dto, enMode.Update);
             else
                 return null;
+        }
+
+        public static List<clsAnalysisStatusDTO> GetAllAnalysisStatuses()
+        {
+            return clsAnalysisStatuseData.GetAllAnalysisStatuses();
         }
 
         public bool Save()
@@ -72,22 +70,21 @@ namespace MediManage_Buisness
                 case enMode.Update:
                     return _UpdateAnalysisStatus();
             }
+
             return false;
         }
 
-        public static DataTable GetAllAnalysisStatuses()
+        public static bool DeleteAnalysisStatus(int? ID)
         {
-            return clsAnalysisStatuseData.GetAllAnalysisStatuses();
+            return clsAnalysisStatuseData.DeleteAnalysisStatus(ID);
         }
 
-        public static bool DeleteAnalysisStatus(int? AnalysisStatusID)
+        public static bool IsExist(int? ID)
         {
-            return clsAnalysisStatuseData.DeleteAnalysisStatus(AnalysisStatusID);
-        }
-
-        public static bool IsAnalysisStatusExist(int? AnalysisStatusID)
-        {
-            return clsAnalysisStatuseData.IsAnalysisStatusExist(AnalysisStatusID) ?? false;
+            return clsAnalysisStatuseData.IsAnalysisStatusExist(ID);
         }
     }
 }
+
+
+

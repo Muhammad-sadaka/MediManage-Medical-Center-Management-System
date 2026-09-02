@@ -1,61 +1,65 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
 using MediManage_DataAccess;
 
 
-namespace MediManage_Buisness
+namespace MediManage_Business
 {
+
     public class clsMedicalPrescription
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? MedicalPrescriptionID { set; get; }
-        public int? DetectionID { set; get; }
-        public string Notes { set; get; }
-
-        public clsMedicalPrescription()
+        public clsMedicalPrescriptionDTO DTO
         {
-            this.MedicalPrescriptionID = null;
-            this.DetectionID = null;
-            this.Notes = "";
-
-            Mode = enMode.AddNew;
+            get
+            {
+                return new clsMedicalPrescriptionDTO
+                (
+                    this.MedicalPrescriptionID,
+                    this.DetectionID,
+                    this.Notes
+                );
+            }
         }
 
-        private clsMedicalPrescription(int? MedicalPrescriptionID, int? DetectionID, string Notes)
-        {
-            this.MedicalPrescriptionID = MedicalPrescriptionID;
-            this.DetectionID = DetectionID;
-            this.Notes = Notes;
+        public int? MedicalPrescriptionID { get; set; }
+        public int? DetectionID { get; set; }
+        public string Notes { get; set; }
 
-            Mode = enMode.Update;
+        public clsMedicalPrescription(clsMedicalPrescriptionDTO dto, enMode cMode = enMode.AddNew)
+        {
+            this.MedicalPrescriptionID = dto.MedicalPrescriptionID;
+            this.DetectionID = dto.DetectionID;
+            this.Notes = dto.Notes;
+            this.Mode = cMode;
         }
 
         private bool _AddNewMedicalPrescription()
         {
-            this.MedicalPrescriptionID = clsMedicalPrescriptionsDataAccess.AddNewMedicalPrescription(this.DetectionID, this.Notes);
-            return (this.MedicalPrescriptionID != null);
+            this.MedicalPrescriptionID = clsMedicalPrescriptionsDataAccess.AddNewMedicalPrescription(this.DTO);
+            return (this.MedicalPrescriptionID.HasValue);
         }
 
         private bool _UpdateMedicalPrescription()
         {
-            return clsMedicalPrescriptionsDataAccess.UpdateMedicalPrescription(this.MedicalPrescriptionID, this.DetectionID, this.Notes) ?? false;
+            return clsMedicalPrescriptionsDataAccess.UpdateMedicalPrescription(this.DTO);
         }
 
-        public static clsMedicalPrescription FindByID(int? MedicalPrescriptionID)
+        public static clsMedicalPrescription Find(int? ID)
         {
-            if (MedicalPrescriptionID == null) return null;
+            clsMedicalPrescriptionDTO dto = clsMedicalPrescriptionsDataAccess.GetMedicalPrescriptionInfoByID(ID);
 
-            int? DetectionID = null;
-            string Notes = "";
-
-            bool? IsFound = clsMedicalPrescriptionsDataAccess.GetMedicalPrescriptionInfoByID(MedicalPrescriptionID, ref DetectionID, ref Notes);
-
-            if (IsFound == true)
-                return new clsMedicalPrescription(MedicalPrescriptionID, DetectionID, Notes);
+            if (dto != null)
+                return new clsMedicalPrescription(dto, enMode.Update);
             else
                 return null;
+        }
+
+        public static List<clsMedicalPrescriptionDTO> GetAllMedicalPrescriptions()
+        {
+            return clsMedicalPrescriptionsDataAccess.GetAllMedicalPrescriptions();
         }
 
         public bool Save()
@@ -76,23 +80,18 @@ namespace MediManage_Buisness
                 case enMode.Update:
                     return _UpdateMedicalPrescription();
             }
+
             return false;
         }
 
-        public static DataTable GetAllMedicalPrescriptions()
+        public static bool DeleteMedicalPrescription(int? ID)
         {
-            return clsMedicalPrescriptionsDataAccess.GetAllMedicalPrescriptions();
+            return clsMedicalPrescriptionsDataAccess.DeleteMedicalPrescription(ID);
         }
 
-        public static bool DeleteMedicalPrescription(int? MedicalPrescriptionID)
+        public static bool IsExist(int? ID)
         {
-            return clsMedicalPrescriptionsDataAccess.DeleteMedicalPrescription(MedicalPrescriptionID);
-        }
-
-        public static bool IsMedicalPrescriptionExist(int? MedicalPrescriptionID)
-        {
-            return clsMedicalPrescriptionsDataAccess.IsMedicalPrescriptionExist(MedicalPrescriptionID) ?? false;
+            return clsMedicalPrescriptionsDataAccess.IsMedicalPrescriptionExist(ID);
         }
     }
 }
-

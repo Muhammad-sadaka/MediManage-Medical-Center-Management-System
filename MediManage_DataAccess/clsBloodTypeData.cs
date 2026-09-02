@@ -1,17 +1,29 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace MediManage_DataAccess
 {
+    // 1. Data Transfer Object (DTO)
+    public class clsBloodTypeDTO
+    {
+        public int? BloodTypeID { get; set; }
+        public string BloodTypeSymbol { get; set; }
+
+        public clsBloodTypeDTO(int? bloodTypeID, string bloodTypeSymbol)
+        {
+            this.BloodTypeID = bloodTypeID;
+            this.BloodTypeSymbol = bloodTypeSymbol;
+        }
+    }
+
+    // 2. Data Access Layer
     public class clsBloodTypesDataAccess
     {
-        public static bool? GetBloodTypeInfoByID(int? BloodTypeID, ref string BloodTypeSymbol)
+        public static clsBloodTypeDTO GetBloodTypeInfoByID(int? BloodTypeID)
         {
-            bool? isFound = null;
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -26,13 +38,11 @@ namespace MediManage_DataAccess
                         {
                             if (reader.Read())
                             {
-                                isFound = true;
-
-                                BloodTypeSymbol = reader["BloodTypeSymbol"] == DBNull.Value ? null : (string)reader["BloodTypeSymbol"];
-                            }
-                            else
-                            {
-                                isFound = false;
+                                return new clsBloodTypeDTO
+                                (
+                                    reader["BloodTypeID"] == DBNull.Value ? null : (int?)reader["BloodTypeID"],
+                                    reader["BloodTypeSymbol"] == DBNull.Value ? null : (string)reader["BloodTypeSymbol"]
+                                );
                             }
                         }
                     }
@@ -42,12 +52,12 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
-            return isFound;
+
+            return null;
         }
 
-        public static int? AddNewBloodType(string BloodTypeSymbol)
+        public static int? AddNewBloodType(clsBloodTypeDTO bloodTypeDTO)
         {
             int? BloodTypeID = null;
 
@@ -59,7 +69,7 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@BloodTypeSymbol", (object)BloodTypeSymbol ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@BloodTypeSymbol", (object)bloodTypeDTO.BloodTypeSymbol ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewBloodTypeID", SqlDbType.Int)
                         {
@@ -84,9 +94,9 @@ namespace MediManage_DataAccess
             return BloodTypeID;
         }
 
-        public static bool? UpdateBloodType(int? BloodTypeID, string BloodTypeSymbol)
+        public static bool UpdateBloodType(clsBloodTypeDTO bloodTypeDTO)
         {
-            int? rowsAffected = null;
+            int rowsAffected = 0;
 
             try
             {
@@ -96,8 +106,8 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@BloodTypeID", (object)BloodTypeID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@BloodTypeSymbol", (object)BloodTypeSymbol ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@BloodTypeID", (object)bloodTypeDTO.BloodTypeID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@BloodTypeSymbol", (object)bloodTypeDTO.BloodTypeSymbol ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -114,20 +124,29 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static DataTable GetAllBloodTypes()
+        public static List<clsBloodTypeDTO> GetAllBloodTypes()
         {
-            DataTable dt = new DataTable();
+            var bloodTypesList = new List<clsBloodTypeDTO>();
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
                 {
-                    connection.Open();
                     using (SqlCommand command = new SqlCommand("SP_GetAllBloodTypes", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            dt.Load(reader);
+                            while (reader.Read())
+                            {
+                                bloodTypesList.Add(new clsBloodTypeDTO
+                                (
+                                    reader["BloodTypeID"] == DBNull.Value ? null : (int?)reader["BloodTypeID"],
+                                    reader["BloodTypeSymbol"] == DBNull.Value ? null : (string)reader["BloodTypeSymbol"]
+                                ));
+                            }
                         }
                     }
                 }
@@ -138,12 +157,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return dt;
+            return bloodTypesList;
         }
 
         public static bool DeleteBloodType(int? BloodTypeID)
         {
-            int? rowsAffected = 0;
+            int rowsAffected = 0;
 
             try
             {
@@ -164,12 +183,13 @@ namespace MediManage_DataAccess
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
-            return (rowsAffected > 0);
+
+            return rowsAffected > 0;
         }
 
-        public static bool? IsBloodTypeExist(int? BloodTypeID)
+        public static bool IsBloodTypeExist(int? BloodTypeID)
         {
-            bool? isFound = null;
+            bool isFound = false;
 
             try
             {
@@ -189,7 +209,7 @@ namespace MediManage_DataAccess
                         connection.Open();
                         command.ExecuteNonQuery();
 
-                        if (returnParameter.Value != null)
+                        if (returnParameter.Value != DBNull.Value)
                         {
                             isFound = (int)returnParameter.Value == 1;
                         }
@@ -200,18 +220,9 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
 
             return isFound;
         }
     }
 }
-
-
-
-
-
-
-
-

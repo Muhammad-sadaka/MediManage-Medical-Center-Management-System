@@ -1,16 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace MediManage_DataAccess
 {
+    public class clsAnalysisStatusDTO
+    {
+        public int? AnalysisStatusID { get; set; }
+        public string AnalysisStatusName { get; set; }
+
+        public clsAnalysisStatusDTO(int? analysisStatusID, string analysisStatusName)
+        {
+            this.AnalysisStatusID = analysisStatusID;
+            this.AnalysisStatusName = analysisStatusName;
+        }
+    }
+
     public class clsAnalysisStatuseData
     {
-        public static bool? GetAnalysisStatusInfoByID(int? AnalysisStatusID, ref string AnalysisStatusName)
+        public static clsAnalysisStatusDTO GetAnalysisStatusInfoByID(int? AnalysisStatusID)
         {
-            bool? isFound = null;
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -25,13 +36,11 @@ namespace MediManage_DataAccess
                         {
                             if (reader.Read())
                             {
-                                isFound = true;
-
-                                AnalysisStatusName = reader["AnalysisStatusName"] == DBNull.Value ? null : (string)reader["AnalysisStatusName"];
-                            }
-                            else
-                            {
-                                isFound = false;
+                                return new clsAnalysisStatusDTO
+                                (
+                                    reader["AnalysisStatusID"] == DBNull.Value ? null : (int?)reader["AnalysisStatusID"],
+                                    reader["AnalysisStatusName"] == DBNull.Value ? null : (string)reader["AnalysisStatusName"]
+                                );
                             }
                         }
                     }
@@ -41,14 +50,14 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
-            return isFound;
+
+            return null;
         }
 
-        public static int? AddNewAnalysisStatus(string AnalysisStatusName)
+        public static int? AddNewAnalysisStatus(clsAnalysisStatusDTO statusDTO)
         {
-            int? AnalysisStatusID = null;
+            int? newID = null;
 
             try
             {
@@ -58,7 +67,7 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@AnalysisStatusName", (object)AnalysisStatusName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@AnalysisStatusName", (object)statusDTO.AnalysisStatusName ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewAnalysisStatusID", SqlDbType.Int)
                         {
@@ -70,7 +79,7 @@ namespace MediManage_DataAccess
                         command.ExecuteNonQuery();
 
                         if (outputIdParam.Value != DBNull.Value)
-                            AnalysisStatusID = (int)outputIdParam.Value;
+                            newID = (int)outputIdParam.Value;
                     }
                 }
             }
@@ -80,12 +89,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return AnalysisStatusID;
+            return newID;
         }
 
-        public static bool? UpdateAnalysisStatus(int? AnalysisStatusID, string AnalysisStatusName)
+        public static bool UpdateAnalysisStatus(clsAnalysisStatusDTO statusDTO)
         {
-            int? rowsAffected = null;
+            int rowsAffected = 0;
 
             try
             {
@@ -95,8 +104,8 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@AnalysisStatusID", (object)AnalysisStatusID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@AnalysisStatusName", (object)AnalysisStatusName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@AnalysisStatusID", (object)statusDTO.AnalysisStatusID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@AnalysisStatusName", (object)statusDTO.AnalysisStatusName ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -113,20 +122,29 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static DataTable GetAllAnalysisStatuses()
+        public static List<clsAnalysisStatusDTO> GetAllAnalysisStatuses()
         {
-            DataTable dt = new DataTable();
+            var statusList = new List<clsAnalysisStatusDTO>();
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
                 {
-                    connection.Open();
                     using (SqlCommand command = new SqlCommand("SP_GetAllAnalysisStatuses", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            dt.Load(reader);
+                            while (reader.Read())
+                            {
+                                statusList.Add(new clsAnalysisStatusDTO
+                                (
+                                    reader["AnalysisStatusID"] == DBNull.Value ? null : (int?)reader["AnalysisStatusID"],
+                                    reader["AnalysisStatusName"] == DBNull.Value ? null : (string)reader["AnalysisStatusName"]
+                                ));
+                            }
                         }
                     }
                 }
@@ -137,12 +155,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return dt;
+            return statusList;
         }
 
         public static bool DeleteAnalysisStatus(int? AnalysisStatusID)
         {
-            int? rowsAffected = 0;
+            int rowsAffected = 0;
 
             try
             {
@@ -163,12 +181,13 @@ namespace MediManage_DataAccess
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
-            return (rowsAffected > 0);
+
+            return rowsAffected > 0;
         }
 
-        public static bool? IsAnalysisStatusExist(int? AnalysisStatusID)
+        public static bool IsAnalysisStatusExist(int? AnalysisStatusID)
         {
-            bool? isFound = null;
+            bool isFound = false;
 
             try
             {
@@ -188,7 +207,7 @@ namespace MediManage_DataAccess
                         connection.Open();
                         command.ExecuteNonQuery();
 
-                        if (returnParameter.Value != null)
+                        if (returnParameter.Value != DBNull.Value)
                         {
                             isFound = (int)returnParameter.Value == 1;
                         }
@@ -199,11 +218,9 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
 
             return isFound;
         }
     }
 }
-

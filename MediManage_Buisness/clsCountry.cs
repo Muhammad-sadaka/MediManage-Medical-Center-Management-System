@@ -1,56 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using MediManage_DataAccess;
 
-namespace MediManage_Buisness
+
+namespace MediManage_Business
 {
+
     public class clsCountry
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? CountryID { set; get; }
-        public string CountryName { set; get; }
-
-        public clsCountry()
+        public clsCountryDTO CountryDTO
         {
-            this.CountryID = null;
-            this.CountryName = "";
-            Mode = enMode.AddNew;
+            get
+            {
+                return new clsCountryDTO
+                (
+                    this.CountryID,
+                    this.CountryName
+                );
+            }
         }
 
-        private clsCountry(int? CountryID, string CountryName)
+        public int? CountryID { get; set; }
+        public string CountryName { get; set; }
+
+        public clsCountry(clsCountryDTO dto, enMode cMode = enMode.AddNew)
         {
-            this.CountryID = CountryID;
-            this.CountryName = CountryName;
-            Mode = enMode.Update;
+            this.CountryID = dto.CountryID;
+            this.CountryName = dto.CountryName;
+            this.Mode = cMode;
         }
 
         private bool _AddNewCountry()
         {
-            this.CountryID = clsCountryData.AddNewCountry(this.CountryName);
-            return (this.CountryID != null);
+            this.CountryID = clsCountryData.AddNewCountry(this.CountryDTO);
+            return (this.CountryID.HasValue);
         }
 
         private bool _UpdateCountry()
         {
-            return clsCountryData.UpdateCountry(this.CountryID, this.CountryName) ?? false;
+            return clsCountryData.UpdateCountry(this.CountryDTO);
         }
 
-        public static clsCountry FindByID(int? CountryID)
+        public static clsCountry Find(int? ID)
         {
-            if (CountryID == null) return null;
-            string CountryName = "";
-            bool? IsFound = clsCountryData.GetCountryInfoByID(CountryID, ref CountryName);
+            clsCountryDTO dto = clsCountryData.GetCountryInfoByID(ID);
 
-            if (IsFound == true)
-                return new clsCountry(CountryID, CountryName);
+            if (dto != null)
+                return new clsCountry(dto, enMode.Update);
             else
                 return null;
+        }
+
+        public static List<clsCountryDTO> GetAllCountries()
+        {
+            return clsCountryData.GetAllCountries();
         }
 
         public bool Save()
@@ -67,25 +73,22 @@ namespace MediManage_Buisness
                     {
                         return false;
                     }
+
                 case enMode.Update:
                     return _UpdateCountry();
             }
+
             return false;
         }
 
-        public static DataTable GetAllCountries()
+        public static bool DeleteCountry(int? ID)
         {
-            return clsCountryData.GetAllCountries();
+            return clsCountryData.DeleteCountry(ID);
         }
 
-        public static bool DeleteCountry(int? CountryID)
+        public static bool IsExist(int? ID)
         {
-            return clsCountryData.DeleteCountry(CountryID);
-        }
-
-        public static bool IsCountryExist(int? CountryID)
-        {
-            return clsCountryData.IsCountryExist(CountryID) ?? false;
+            return clsCountryData.IsCountryExist(ID);
         }
     }
 }

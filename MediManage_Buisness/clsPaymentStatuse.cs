@@ -1,57 +1,62 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
 using MediManage_DataAccess;
 
 
-namespace MediManage_Buisness
+namespace MediManage_Business
 {
+
     public class clsPaymentStatus
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? PaymentStatusID { set; get; }
-        public string PaymentStatusName { set; get; }
-
-        public clsPaymentStatus()
+        public clsPaymentStatusDTO DTO
         {
-            this.PaymentStatusID = null;
-            this.PaymentStatusName = "";
-
-            Mode = enMode.AddNew;
+            get
+            {
+                return new clsPaymentStatusDTO
+                (
+                    this.PaymentStatusID,
+                    this.PaymentStatusName
+                );
+            }
         }
 
-        private clsPaymentStatus(int? PaymentStatusID, string PaymentStatusName)
-        {
-            this.PaymentStatusID = PaymentStatusID;
-            this.PaymentStatusName = PaymentStatusName;
+        public int? PaymentStatusID { get; set; }
+        public string PaymentStatusName { get; set; }
 
-            Mode = enMode.Update;
+        public clsPaymentStatus(clsPaymentStatusDTO dto, enMode cMode = enMode.AddNew)
+        {
+            this.PaymentStatusID = dto.PaymentStatusID;
+            this.PaymentStatusName = dto.PaymentStatusName;
+            this.Mode = cMode;
         }
 
         private bool _AddNewPaymentStatus()
         {
-            this.PaymentStatusID = clsPaymentStatusesDataAccess.AddNewPaymentStatus(this.PaymentStatusName);
-            return (this.PaymentStatusID != null);
+            this.PaymentStatusID = clsPaymentStatusesDataAccess.AddNewPaymentStatus(this.DTO);
+            return (this.PaymentStatusID.HasValue);
         }
 
         private bool _UpdatePaymentStatus()
         {
-            return clsPaymentStatusesDataAccess.UpdatePaymentStatus(this.PaymentStatusID, this.PaymentStatusName) ?? false;
+            return clsPaymentStatusesDataAccess.UpdatePaymentStatus(this.DTO);
         }
 
-        public static clsPaymentStatus FindByID(int? PaymentStatusID)
+        public static clsPaymentStatus Find(int? ID)
         {
-            if (PaymentStatusID == null) return null;
+            clsPaymentStatusDTO dto = clsPaymentStatusesDataAccess.GetPaymentStatusInfoByID(ID);
 
-            string PaymentStatusName = "";
-
-            bool? IsFound = clsPaymentStatusesDataAccess.GetPaymentStatusInfoByID(PaymentStatusID, ref PaymentStatusName);
-
-            if (IsFound == true)
-                return new clsPaymentStatus(PaymentStatusID, PaymentStatusName);
+            if (dto != null)
+                return new clsPaymentStatus(dto, enMode.Update);
             else
                 return null;
+        }
+
+        public static List<clsPaymentStatusDTO> GetAllPaymentStatuses()
+        {
+            return clsPaymentStatusesDataAccess.GetAllPaymentStatuses();
         }
 
         public bool Save()
@@ -72,23 +77,18 @@ namespace MediManage_Buisness
                 case enMode.Update:
                     return _UpdatePaymentStatus();
             }
+
             return false;
         }
 
-        public static DataTable GetAllPaymentStatuses()
+        public static bool DeletePaymentStatus(int? ID)
         {
-            return clsPaymentStatusesDataAccess.GetAllPaymentStatuses();
+            return clsPaymentStatusesDataAccess.DeletePaymentStatus(ID);
         }
 
-        public static bool DeletePaymentStatus(int? PaymentStatusID)
+        public static bool IsExist(int? ID)
         {
-            return clsPaymentStatusesDataAccess.DeletePaymentStatus(PaymentStatusID);
-        }
-
-        public static bool IsPaymentStatusExist(int? PaymentStatusID)
-        {
-            return clsPaymentStatusesDataAccess.IsPaymentStatusExist(PaymentStatusID) ?? false;
+            return clsPaymentStatusesDataAccess.IsPaymentStatusExist(ID);
         }
     }
 }
-

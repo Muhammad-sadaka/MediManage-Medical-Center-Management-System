@@ -1,57 +1,61 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
 using MediManage_DataAccess;
 
-
-namespace MediManage_Buisness
+namespace MediManage_Business
 {
+
     public class clsMaritalStatus
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? MaritalStatusID { set; get; }
-        public string MaritalStatusName { set; get; }
-
-        public clsMaritalStatus()
+        public clsMaritalStatusDTO DTO
         {
-            this.MaritalStatusID = null;
-            this.MaritalStatusName = "";
-
-            Mode = enMode.AddNew;
+            get
+            {
+                return new clsMaritalStatusDTO
+                (
+                    this.MaritalStatusID,
+                    this.MaritalStatusName
+                );
+            }
         }
 
-        private clsMaritalStatus(int? MaritalStatusID, string MaritalStatusName)
-        {
-            this.MaritalStatusID = MaritalStatusID;
-            this.MaritalStatusName = MaritalStatusName;
+        public int? MaritalStatusID { get; set; }
+        public string MaritalStatusName { get; set; }
 
-            Mode = enMode.Update;
+        public clsMaritalStatus(clsMaritalStatusDTO dto, enMode cMode = enMode.AddNew)
+        {
+            this.MaritalStatusID = dto.MaritalStatusID;
+            this.MaritalStatusName = dto.MaritalStatusName;
+            this.Mode = cMode;
         }
 
         private bool _AddNewMaritalStatus()
         {
-            this.MaritalStatusID = clsMaritalStatusesDataAccess.AddNewMaritalStatus(this.MaritalStatusName);
-            return (this.MaritalStatusID != null);
+            this.MaritalStatusID = clsMaritalStatusesDataAccess.AddNewMaritalStatus(this.DTO);
+            return (this.MaritalStatusID.HasValue);
         }
 
         private bool _UpdateMaritalStatus()
         {
-            return clsMaritalStatusesDataAccess.UpdateMaritalStatus(this.MaritalStatusID, this.MaritalStatusName) ?? false;
+            return clsMaritalStatusesDataAccess.UpdateMaritalStatus(this.DTO);
         }
 
-        public static clsMaritalStatus FindByID(int? MaritalStatusID)
+        public static clsMaritalStatus Find(int? ID)
         {
-            if (MaritalStatusID == null) return null;
+            clsMaritalStatusDTO dto = clsMaritalStatusesDataAccess.GetMaritalStatusInfoByID(ID);
 
-            string MaritalStatusName = "";
-
-            bool? IsFound = clsMaritalStatusesDataAccess.GetMaritalStatusInfoByID(MaritalStatusID, ref MaritalStatusName);
-
-            if (IsFound == true)
-                return new clsMaritalStatus(MaritalStatusID, MaritalStatusName);
+            if (dto != null)
+                return new clsMaritalStatus(dto, enMode.Update);
             else
                 return null;
+        }
+
+        public static List<clsMaritalStatusDTO> GetAllMaritalStatuses()
+        {
+            return clsMaritalStatusesDataAccess.GetAllMaritalStatuses();
         }
 
         public bool Save()
@@ -72,23 +76,18 @@ namespace MediManage_Buisness
                 case enMode.Update:
                     return _UpdateMaritalStatus();
             }
+
             return false;
         }
 
-        public static DataTable GetAllMaritalStatuses()
+        public static bool DeleteMaritalStatus(int? ID)
         {
-            return clsMaritalStatusesDataAccess.GetAllMaritalStatuses();
+            return clsMaritalStatusesDataAccess.DeleteMaritalStatus(ID);
         }
 
-        public static bool DeleteMaritalStatus(int? MaritalStatusID)
+        public static bool IsExist(int? ID)
         {
-            return clsMaritalStatusesDataAccess.DeleteMaritalStatus(MaritalStatusID);
-        }
-
-        public static bool IsMaritalStatusExist(int? MaritalStatusID)
-        {
-            return clsMaritalStatusesDataAccess.IsMaritalStatusExist(MaritalStatusID) ?? false;
+            return clsMaritalStatusesDataAccess.IsMaritalStatusExist(ID);
         }
     }
 }
-

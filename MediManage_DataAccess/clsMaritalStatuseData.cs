@@ -1,17 +1,29 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace MediManage_DataAccess
 {
+    // 1. Data Transfer Object (DTO)
+    public class clsMaritalStatusDTO
+    {
+        public int? MaritalStatusID { get; set; }
+        public string MaritalStatusName { get; set; }
+
+        public clsMaritalStatusDTO(int? maritalStatusID, string maritalStatusName)
+        {
+            this.MaritalStatusID = maritalStatusID;
+            this.MaritalStatusName = maritalStatusName;
+        }
+    }
+
+    // 2. Data Access Layer
     public class clsMaritalStatusesDataAccess
     {
-        public static bool? GetMaritalStatusInfoByID(int? MaritalStatusID, ref string MaritalStatusName)
+        public static clsMaritalStatusDTO GetMaritalStatusInfoByID(int? MaritalStatusID)
         {
-            bool? isFound = null;
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -26,13 +38,11 @@ namespace MediManage_DataAccess
                         {
                             if (reader.Read())
                             {
-                                isFound = true;
-
-                                MaritalStatusName = reader["MaritalStatusName"] == DBNull.Value ? null : (string)reader["MaritalStatusName"];
-                            }
-                            else
-                            {
-                                isFound = false;
+                                return new clsMaritalStatusDTO
+                                (
+                                    reader["MaritalStatusID"] == DBNull.Value ? null : (int?)reader["MaritalStatusID"],
+                                    reader["MaritalStatusName"] == DBNull.Value ? null : (string)reader["MaritalStatusName"]
+                                );
                             }
                         }
                     }
@@ -42,14 +52,14 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
-            return isFound;
+
+            return null;
         }
 
-        public static int? AddNewMaritalStatus(string MaritalStatusName)
+        public static int? AddNewMaritalStatus(clsMaritalStatusDTO dto)
         {
-            int? MaritalStatusID = null;
+            int? maritalStatusID = null;
 
             try
             {
@@ -59,7 +69,7 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@MaritalStatusName", (object)MaritalStatusName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@MaritalStatusName", (object)dto.MaritalStatusName ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewMaritalStatusID", SqlDbType.Int)
                         {
@@ -71,7 +81,7 @@ namespace MediManage_DataAccess
                         command.ExecuteNonQuery();
 
                         if (outputIdParam.Value != DBNull.Value)
-                            MaritalStatusID = (int)outputIdParam.Value;
+                            maritalStatusID = (int)outputIdParam.Value;
                     }
                 }
             }
@@ -81,12 +91,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return MaritalStatusID;
+            return maritalStatusID;
         }
 
-        public static bool? UpdateMaritalStatus(int? MaritalStatusID, string MaritalStatusName)
+        public static bool UpdateMaritalStatus(clsMaritalStatusDTO dto)
         {
-            int? rowsAffected = null;
+            int rowsAffected = 0;
 
             try
             {
@@ -96,8 +106,8 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@MaritalStatusID", (object)MaritalStatusID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@MaritalStatusName", (object)MaritalStatusName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@MaritalStatusID", (object)dto.MaritalStatusID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@MaritalStatusName", (object)dto.MaritalStatusName ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -114,20 +124,29 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static DataTable GetAllMaritalStatuses()
+        public static List<clsMaritalStatusDTO> GetAllMaritalStatuses()
         {
-            DataTable dt = new DataTable();
+            var maritalStatusesList = new List<clsMaritalStatusDTO>();
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
                 {
-                    connection.Open();
                     using (SqlCommand command = new SqlCommand("SP_GetAllMaritalStatuses", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            dt.Load(reader);
+                            while (reader.Read())
+                            {
+                                maritalStatusesList.Add(new clsMaritalStatusDTO
+                                (
+                                    reader["MaritalStatusID"] == DBNull.Value ? null : (int?)reader["MaritalStatusID"],
+                                    reader["MaritalStatusName"] == DBNull.Value ? null : (string)reader["MaritalStatusName"]
+                                ));
+                            }
                         }
                     }
                 }
@@ -138,12 +157,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return dt;
+            return maritalStatusesList;
         }
 
         public static bool DeleteMaritalStatus(int? MaritalStatusID)
         {
-            int? rowsAffected = 0;
+            int rowsAffected = 0;
 
             try
             {
@@ -164,12 +183,13 @@ namespace MediManage_DataAccess
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
-            return (rowsAffected > 0);
+
+            return rowsAffected > 0;
         }
 
-        public static bool? IsMaritalStatusExist(int? MaritalStatusID)
+        public static bool IsMaritalStatusExist(int? MaritalStatusID)
         {
-            bool? isFound = null;
+            bool isFound = false;
 
             try
             {
@@ -189,7 +209,7 @@ namespace MediManage_DataAccess
                         connection.Open();
                         command.ExecuteNonQuery();
 
-                        if (returnParameter.Value != null)
+                        if (returnParameter.Value != DBNull.Value)
                         {
                             isFound = (int)returnParameter.Value == 1;
                         }
@@ -200,12 +220,9 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
 
             return isFound;
         }
     }
 }
-
-

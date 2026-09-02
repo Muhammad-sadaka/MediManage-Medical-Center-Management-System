@@ -1,17 +1,29 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace MediManage_DataAccess
 {
+    // 1. Data Transfer Object (DTO)
+    public class clsAppointmentCaseDTO
+    {
+        public int? AppointmentCaseID { get; set; }
+        public string AppointmentCaseName { get; set; }
+
+        public clsAppointmentCaseDTO(int? appointmentCaseID, string appointmentCaseName)
+        {
+            this.AppointmentCaseID = appointmentCaseID;
+            this.AppointmentCaseName = appointmentCaseName;
+        }
+    }
+
+    // 2. Data Access Layer
     public class clsAppointmentCaseData
     {
-        public static bool? GetAppointmentCaseInfoByID(int? AppointmentCaseID, ref string AppointmentCaseName)
+        public static clsAppointmentCaseDTO GetAppointmentCaseInfoByID(int? AppointmentCaseID)
         {
-            bool? isFound = null;
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -26,13 +38,11 @@ namespace MediManage_DataAccess
                         {
                             if (reader.Read())
                             {
-                                isFound = true;
-
-                                AppointmentCaseName = reader["AppointmentCaseName"] == DBNull.Value ? null : (string)reader["AppointmentCaseName"];
-                            }
-                            else
-                            {
-                                isFound = false;
+                                return new clsAppointmentCaseDTO
+                                (
+                                    reader["AppointmentCaseID"] == DBNull.Value ? null : (int?)reader["AppointmentCaseID"],
+                                    reader["AppointmentCaseName"] == DBNull.Value ? null : (string)reader["AppointmentCaseName"]
+                                );
                             }
                         }
                     }
@@ -42,12 +52,12 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
-            return isFound;
+
+            return null;
         }
 
-        public static int? AddNewAppointmentCase(string AppointmentCaseName)
+        public static int? AddNewAppointmentCase(clsAppointmentCaseDTO appointmentCaseDTO)
         {
             int? AppointmentCaseID = null;
 
@@ -58,8 +68,7 @@ namespace MediManage_DataAccess
                     using (SqlCommand command = new SqlCommand("SP_AddNewAppointmentCase", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
-
-                        command.Parameters.AddWithValue("@AppointmentCaseName", (object)AppointmentCaseName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@AppointmentCaseName", (object)appointmentCaseDTO.AppointmentCaseName ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewAppointmentCaseID", SqlDbType.Int)
                         {
@@ -84,9 +93,9 @@ namespace MediManage_DataAccess
             return AppointmentCaseID;
         }
 
-        public static bool? UpdateAppointmentCase(int? AppointmentCaseID, string AppointmentCaseName)
+        public static bool UpdateAppointmentCase(clsAppointmentCaseDTO appointmentCaseDTO)
         {
-            int? rowsAffected = null;
+            int rowsAffected = 0;
 
             try
             {
@@ -95,9 +104,8 @@ namespace MediManage_DataAccess
                     using (SqlCommand command = new SqlCommand("SP_UpdateAppointmentCase", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
-
-                        command.Parameters.AddWithValue("@AppointmentCaseID", (object)AppointmentCaseID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@AppointmentCaseName", (object)AppointmentCaseName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@AppointmentCaseID", (object)appointmentCaseDTO.AppointmentCaseID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@AppointmentCaseName", (object)appointmentCaseDTO.AppointmentCaseName ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -114,20 +122,29 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static DataTable GetAllAppointmentCases()
+        public static List<clsAppointmentCaseDTO> GetAllAppointmentCases()
         {
-            DataTable dt = new DataTable();
+            var appointmentCasesList = new List<clsAppointmentCaseDTO>();
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
                 {
-                    connection.Open();
                     using (SqlCommand command = new SqlCommand("SP_GetAllAppointmentCases", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            dt.Load(reader);
+                            while (reader.Read())
+                            {
+                                appointmentCasesList.Add(new clsAppointmentCaseDTO
+                                (
+                                    reader["AppointmentCaseID"] == DBNull.Value ? null : (int?)reader["AppointmentCaseID"],
+                                    reader["AppointmentCaseName"] == DBNull.Value ? null : (string)reader["AppointmentCaseName"]
+                                ));
+                            }
                         }
                     }
                 }
@@ -138,12 +155,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return dt;
+            return appointmentCasesList;
         }
 
         public static bool DeleteAppointmentCase(int? AppointmentCaseID)
         {
-            int? rowsAffected = 0;
+            int rowsAffected = 0;
 
             try
             {
@@ -164,12 +181,13 @@ namespace MediManage_DataAccess
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
-            return (rowsAffected > 0);
+
+            return rowsAffected > 0;
         }
 
-        public static bool? IsAppointmentCaseExist(int? AppointmentCaseID)
+        public static bool IsAppointmentCaseExist(int? AppointmentCaseID)
         {
-            bool? isFound = null;
+            bool isFound = false;
 
             try
             {
@@ -189,7 +207,7 @@ namespace MediManage_DataAccess
                         connection.Open();
                         command.ExecuteNonQuery();
 
-                        if (returnParameter.Value != null)
+                        if (returnParameter.Value != DBNull.Value)
                         {
                             isFound = (int)returnParameter.Value == 1;
                         }
@@ -200,11 +218,9 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
 
             return isFound;
         }
     }
 }
-

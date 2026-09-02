@@ -1,17 +1,29 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace MediManage_DataAccess
 {
+    public class clsAnalysisTypeDTO
+    {
+        public int? AnalysisTypeID { get; set; }
+        public string AnalysisTypeName { get; set; }
+        public decimal? Price { get; set; }
+
+        public clsAnalysisTypeDTO(int? analysisTypeID, string analysisTypeName, decimal? price)
+        {
+            this.AnalysisTypeID = analysisTypeID;
+            this.AnalysisTypeName = analysisTypeName;
+            this.Price = price;
+        }
+    }
+
     public class clsAnalysisTypeData
     {
-        public static bool? GetAnalysisTypeInfoByID(int? AnalysisTypeID, ref string AnalysisTypeName, ref decimal? Price)
+        public static clsAnalysisTypeDTO GetAnalysisTypeInfoByID(int? AnalysisTypeID)
         {
-            bool? isFound = null;
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -26,14 +38,12 @@ namespace MediManage_DataAccess
                         {
                             if (reader.Read())
                             {
-                                isFound = true;
-
-                                AnalysisTypeName = reader["AnalysisTypeName"] == DBNull.Value ? null : (string)reader["AnalysisTypeName"];
-                                Price = reader["Price"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(reader["Price"]);
-                            }
-                            else
-                            {
-                                isFound = false;
+                                return new clsAnalysisTypeDTO
+                                (
+                                    reader["AnalysisTypeID"] == DBNull.Value ? null : (int?)reader["AnalysisTypeID"],
+                                    reader["AnalysisTypeName"] == DBNull.Value ? null : (string)reader["AnalysisTypeName"],
+                                    reader["Price"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(reader["Price"])
+                                );
                             }
                         }
                     }
@@ -43,12 +53,12 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
-            return isFound;
+
+            return null;
         }
 
-        public static int? AddNewAnalysisType(string AnalysisTypeName, decimal? Price)
+        public static int? AddNewAnalysisType(clsAnalysisTypeDTO typeDTO)
         {
             int? AnalysisTypeID = null;
 
@@ -60,8 +70,8 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@AnalysisTypeName", (object)AnalysisTypeName ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Price", (object)Price ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@AnalysisTypeName", (object)typeDTO.AnalysisTypeName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Price", (object)typeDTO.Price ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewAnalysisTypeID", SqlDbType.Int)
                         {
@@ -86,9 +96,9 @@ namespace MediManage_DataAccess
             return AnalysisTypeID;
         }
 
-        public static bool? UpdateAnalysisType(int? AnalysisTypeID, string AnalysisTypeName, decimal? Price)
+        public static bool UpdateAnalysisType(clsAnalysisTypeDTO typeDTO)
         {
-            int? rowsAffected = null;
+            int rowsAffected = 0;
 
             try
             {
@@ -98,9 +108,9 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@AnalysisTypeID", (object)AnalysisTypeID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@AnalysisTypeName", (object)AnalysisTypeName ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Price", (object)Price ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@AnalysisTypeID", (object)typeDTO.AnalysisTypeID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@AnalysisTypeName", (object)typeDTO.AnalysisTypeName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Price", (object)typeDTO.Price ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -117,20 +127,30 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static DataTable GetAllAnalysisTypes()
+        public static List<clsAnalysisTypeDTO> GetAllAnalysisTypes()
         {
-            DataTable dt = new DataTable();
+            var analysisTypesList = new List<clsAnalysisTypeDTO>();
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
                 {
-                    connection.Open();
                     using (SqlCommand command = new SqlCommand("SP_GetAllAnalysisTypes", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            dt.Load(reader);
+                            while (reader.Read())
+                            {
+                                analysisTypesList.Add(new clsAnalysisTypeDTO
+                                (
+                                    reader["AnalysisTypeID"] == DBNull.Value ? null : (int?)reader["AnalysisTypeID"],
+                                    reader["AnalysisTypeName"] == DBNull.Value ? null : (string)reader["AnalysisTypeName"],
+                                    reader["Price"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(reader["Price"])
+                                ));
+                            }
                         }
                     }
                 }
@@ -141,12 +161,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return dt;
+            return analysisTypesList;
         }
 
         public static bool DeleteAnalysisType(int? AnalysisTypeID)
         {
-            int? rowsAffected = 0;
+            int rowsAffected = 0;
 
             try
             {
@@ -167,12 +187,13 @@ namespace MediManage_DataAccess
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
-            return (rowsAffected > 0);
+
+            return rowsAffected > 0;
         }
 
-        public static bool? IsAnalysisTypeExist(int? AnalysisTypeID)
+        public static bool IsAnalysisTypeExist(int? AnalysisTypeID)
         {
-            bool? isFound = null;
+            bool isFound = false;
 
             try
             {
@@ -192,7 +213,7 @@ namespace MediManage_DataAccess
                         connection.Open();
                         command.ExecuteNonQuery();
 
-                        if (returnParameter.Value != null)
+                        if (returnParameter.Value != DBNull.Value)
                         {
                             isFound = (int)returnParameter.Value == 1;
                         }
@@ -203,12 +224,9 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
 
             return isFound;
         }
     }
 }
-
-

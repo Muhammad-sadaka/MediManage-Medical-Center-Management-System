@@ -1,17 +1,36 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace MediManage_DataAccess
 {
+
+    public class clsUserDTO
+    {
+        public int? UserID { get; set; }
+        public int? PersonID { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public byte? Permissions { get; set; }
+        public bool? IsActive { get; set; }
+
+        public clsUserDTO(int? userID, int? personID, string userName, string password, byte? permissions, bool? isActive)
+        {
+            this.UserID = userID;
+            this.PersonID = personID;
+            this.UserName = userName;
+            this.Password = password;
+            this.Permissions = permissions;
+            this.IsActive = isActive;
+        }
+    }
+    
     public class clsUsersDataAccess
     {
-        public static bool? GetUserInfoByID(int? UserID, ref int? PersonID, ref string UserName, ref string Password, ref byte? Permissions, ref bool? IsActive)
+        public static clsUserDTO GetUserInfoByID(int? UserID)
         {
-            bool? isFound = null;
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -26,17 +45,14 @@ namespace MediManage_DataAccess
                         {
                             if (reader.Read())
                             {
-                                isFound = true;
-
-                                PersonID = reader["PersonID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["PersonID"]);
-                                UserName = reader["UserName"] == DBNull.Value ? null : (string)reader["UserName"];
-                                Password = reader["Password"] == DBNull.Value ? null : (string)reader["Password"];
-                                Permissions = reader["Permissions"] == DBNull.Value ? (byte?)null : Convert.ToByte(reader["Permissions"]);
-                                IsActive = reader["IsActive"] == DBNull.Value ? (bool?)null : Convert.ToBoolean(reader["IsActive"]);
-                            }
-                            else
-                            {
-                                isFound = false;
+                                return new clsUserDTO(
+                                       reader["UserID"] == DBNull.Value ? null : (int?)reader["UserID"],
+                                       reader["PersonID"] == DBNull.Value ? null : (int?)reader["PersonID"],
+                                       reader["UserName"] == DBNull.Value ? null : (string)reader["UserName"],
+                                       reader["Password"] == DBNull.Value ? null : (string)reader["Password"],
+                                       reader["Permissions"] == DBNull.Value ? null : (byte?)reader["Permissions"],
+                                       reader["IsActive"] == DBNull.Value ? null : (bool?)reader["IsActive"]
+                                   );
                             }
                         }
                     }
@@ -46,12 +62,12 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
-            return isFound;
+
+            return null;
         }
 
-        public static int? AddNewUser(int? PersonID, string UserName, string Password, byte? Permissions, bool? IsActive)
+        public static int? AddNewUser(clsUserDTO userDTO)
         {
             int? UserID = null;
 
@@ -63,11 +79,11 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@PersonID", (object)PersonID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@UserName", (object)UserName ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Password", (object)Password ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Permissions", (object)Permissions ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@IsActive", (object)IsActive ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PersonID", (object)userDTO.PersonID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@UserName", (object)userDTO.UserName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Password", (object)userDTO.Password ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Permissions", (object)userDTO.Permissions ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@IsActive", (object)userDTO.IsActive ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewUserID", SqlDbType.Int)
                         {
@@ -92,9 +108,9 @@ namespace MediManage_DataAccess
             return UserID;
         }
 
-        public static bool? UpdateUser(int? UserID, int? PersonID, string UserName, string Password, byte? Permissions, bool? IsActive)
+        public static bool UpdateUser(clsUserDTO userDTO)
         {
-            int? rowsAffected = null;
+            int rowsAffected = 0;
 
             try
             {
@@ -104,12 +120,12 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@UserID", (object)UserID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@PersonID", (object)PersonID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@UserName", (object)UserName ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Password", (object)Password ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Permissions", (object)Permissions ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@IsActive", (object)IsActive ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@UserID", (object)userDTO.UserID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PersonID", (object)userDTO.PersonID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@UserName", (object)userDTO.UserName ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Password", (object)userDTO.Password ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Permissions", (object)userDTO.Permissions ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@IsActive", (object)userDTO.IsActive ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -126,20 +142,32 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static DataTable GetAllUsers()
+        public static List<clsUserDTO> GetAllUsers()
         {
-            DataTable dt = new DataTable();
+            List<clsUserDTO> list = new List<clsUserDTO>();
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
                 {
-                    connection.Open();
                     using (SqlCommand command = new SqlCommand("SP_GetAllUsers", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            dt.Load(reader);
+                            while (reader.Read())
+                            {
+                                list.Add(new clsUserDTO(
+                                    reader["UserID"] == DBNull.Value ? null : (int?)reader["UserID"],
+                                    reader["PersonID"] == DBNull.Value ? null : (int?)reader["PersonID"],
+                                    reader["UserName"] == DBNull.Value ? null : (string)reader["UserName"],
+                                    reader["Password"] == DBNull.Value ? null : (string)reader["Password"],
+                                    reader["Permissions"] == DBNull.Value ? null : (byte?)reader["Permissions"],
+                                    reader["IsActive"] == DBNull.Value ? null : (bool?)reader["IsActive"]
+                                ));
+                            }
                         }
                     }
                 }
@@ -150,12 +178,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return dt;
+            return list;
         }
 
         public static bool DeleteUser(int? UserID)
         {
-            int? rowsAffected = 0;
+            int rowsAffected = 0;
 
             try
             {
@@ -176,12 +204,13 @@ namespace MediManage_DataAccess
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
-            return (rowsAffected > 0);
+
+            return rowsAffected > 0;
         }
 
-        public static bool? IsUserExist(int? UserID)
+        public static bool IsUserExist(int? UserID)
         {
-            bool? isFound = null;
+            bool isFound = false;
 
             try
             {
@@ -212,16 +241,13 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
 
             return isFound;
         }
 
-        public static bool? FindByUsernameAndPassword(ref int? UserID, ref int? PersonID, string UserName,  string Password, ref byte? Permissions, ref bool? IsActive)
+        public static clsUserDTO FindByUsernameAndPassword(string UserName, string Password)
         {
-            bool? isFound = null;
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -237,16 +263,14 @@ namespace MediManage_DataAccess
                         {
                             if (reader.Read())
                             {
-                                isFound = true;
-
-                                UserID = reader["UserID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["UserID"]);
-                                PersonID = reader["PersonID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["PersonID"]);
-                                Permissions = reader["Permissions"] == DBNull.Value ? (byte?)null : Convert.ToByte(reader["Permissions"]);
-                                IsActive = reader["IsActive"] == DBNull.Value ? (bool?)null : Convert.ToBoolean(reader["IsActive"]);
-                            }
-                            else
-                            {
-                                isFound = false;
+                                return new clsUserDTO(
+                                    reader["UserID"] == DBNull.Value ? null : (int?)reader["UserID"],
+                                    reader["PersonID"] == DBNull.Value ? null : (int?)reader["PersonID"],
+                                    reader["UserName"] == DBNull.Value ? null : (string)reader["UserName"],
+                                    reader["Password"] == DBNull.Value ? null : (string)reader["Password"],
+                                    reader["Permissions"] == DBNull.Value ? null : (byte?)reader["Permissions"],
+                                    reader["IsActive"] == DBNull.Value ? null : (bool?)reader["IsActive"]
+                                );
                             }
                         }
                     }
@@ -256,12 +280,9 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
-            return isFound;
+
+            return null;
         }
     }
 }
-
-
-

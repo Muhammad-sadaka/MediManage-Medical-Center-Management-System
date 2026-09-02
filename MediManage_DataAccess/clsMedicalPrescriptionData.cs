@@ -1,17 +1,31 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace MediManage_DataAccess
 {
+    // 1. Data Transfer Object (DTO)
+    public class clsMedicalPrescriptionDTO
+    {
+        public int? MedicalPrescriptionID { get; set; }
+        public int? DetectionID { get; set; }
+        public string Notes { get; set; }
+
+        public clsMedicalPrescriptionDTO(int? medicalPrescriptionID, int? detectionID, string notes)
+        {
+            this.MedicalPrescriptionID = medicalPrescriptionID;
+            this.DetectionID = detectionID;
+            this.Notes = notes;
+        }
+    }
+
+    // 2. Data Access Layer
     public class clsMedicalPrescriptionsDataAccess
     {
-        public static bool? GetMedicalPrescriptionInfoByID(int? MedicalPrescriptionID, ref int? DetectionID, ref string Notes)
+        public static clsMedicalPrescriptionDTO GetMedicalPrescriptionInfoByID(int? MedicalPrescriptionID)
         {
-            bool? isFound = null;
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -26,14 +40,12 @@ namespace MediManage_DataAccess
                         {
                             if (reader.Read())
                             {
-                                isFound = true;
-
-                                DetectionID = reader["DetectionID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["DetectionID"]);
-                                Notes = reader["Notes"] == DBNull.Value ? null : (string)reader["Notes"];
-                            }
-                            else
-                            {
-                                isFound = false;
+                                return new clsMedicalPrescriptionDTO
+                                (
+                                    reader["MedicalPrescriptionID"] == DBNull.Value ? null : (int?)reader["MedicalPrescriptionID"],
+                                    reader["DetectionID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["DetectionID"]),
+                                    reader["Notes"] == DBNull.Value ? null : (string)reader["Notes"]
+                                );
                             }
                         }
                     }
@@ -43,14 +55,14 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
-            return isFound;
+
+            return null;
         }
 
-        public static int? AddNewMedicalPrescription(int? DetectionID, string Notes)
+        public static int? AddNewMedicalPrescription(clsMedicalPrescriptionDTO dto)
         {
-            int? MedicalPrescriptionID = null;
+            int? medicalPrescriptionID = null;
 
             try
             {
@@ -60,8 +72,8 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@DetectionID", (object)DetectionID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Notes", (object)Notes ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@DetectionID", (object)dto.DetectionID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Notes", (object)dto.Notes ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewMedicalPrescriptionID", SqlDbType.Int)
                         {
@@ -73,7 +85,7 @@ namespace MediManage_DataAccess
                         command.ExecuteNonQuery();
 
                         if (outputIdParam.Value != DBNull.Value)
-                            MedicalPrescriptionID = (int)outputIdParam.Value;
+                            medicalPrescriptionID = (int)outputIdParam.Value;
                     }
                 }
             }
@@ -83,12 +95,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return MedicalPrescriptionID;
+            return medicalPrescriptionID;
         }
 
-        public static bool? UpdateMedicalPrescription(int? MedicalPrescriptionID, int? DetectionID, string Notes)
+        public static bool UpdateMedicalPrescription(clsMedicalPrescriptionDTO dto)
         {
-            int? rowsAffected = null;
+            int rowsAffected = 0;
 
             try
             {
@@ -98,9 +110,9 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@MedicalPrescriptionID", (object)MedicalPrescriptionID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@DetectionID", (object)DetectionID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Notes", (object)Notes ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@MedicalPrescriptionID", (object)dto.MedicalPrescriptionID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@DetectionID", (object)dto.DetectionID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Notes", (object)dto.Notes ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -117,20 +129,30 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static DataTable GetAllMedicalPrescriptions()
+        public static List<clsMedicalPrescriptionDTO> GetAllMedicalPrescriptions()
         {
-            DataTable dt = new DataTable();
+            var prescriptionsList = new List<clsMedicalPrescriptionDTO>();
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
                 {
-                    connection.Open();
                     using (SqlCommand command = new SqlCommand("SP_GetAllMedicalPrescriptions", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            dt.Load(reader);
+                            while (reader.Read())
+                            {
+                                prescriptionsList.Add(new clsMedicalPrescriptionDTO
+                                (
+                                    reader["MedicalPrescriptionID"] == DBNull.Value ? null : (int?)reader["MedicalPrescriptionID"],
+                                    reader["DetectionID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["DetectionID"]),
+                                    reader["Notes"] == DBNull.Value ? null : (string)reader["Notes"]
+                                ));
+                            }
                         }
                     }
                 }
@@ -141,12 +163,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return dt;
+            return prescriptionsList;
         }
 
         public static bool DeleteMedicalPrescription(int? MedicalPrescriptionID)
         {
-            int? rowsAffected = 0;
+            int rowsAffected = 0;
 
             try
             {
@@ -167,12 +189,13 @@ namespace MediManage_DataAccess
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
-            return (rowsAffected > 0);
+
+            return rowsAffected > 0;
         }
 
-        public static bool? IsMedicalPrescriptionExist(int? MedicalPrescriptionID)
+        public static bool IsMedicalPrescriptionExist(int? MedicalPrescriptionID)
         {
-            bool? isFound = null;
+            bool isFound = false;
 
             try
             {
@@ -192,7 +215,7 @@ namespace MediManage_DataAccess
                         connection.Open();
                         command.ExecuteNonQuery();
 
-                        if (returnParameter.Value != null)
+                        if (returnParameter.Value != DBNull.Value)
                         {
                             isFound = (int)returnParameter.Value == 1;
                         }
@@ -203,20 +226,9 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
 
             return isFound;
         }
     }
 }
-
-
-
-
-
-
-
-
-
-

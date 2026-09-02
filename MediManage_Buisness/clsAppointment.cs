@@ -1,89 +1,91 @@
-﻿using System;
-using System.Data;
+﻿
+using System;
+using System.Collections.Generic;
 using MediManage_DataAccess;
 
-
-namespace MediManage_Buisness
+namespace MediManage_Business
 {
+
     public class clsAppointment
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? AppointmentID { set; get; }
-        public int? PatientID { set; get; }
-        public int? DoctorID { set; get; }
-        public int? CreatedByUserID { set; get; }
-        public DateTime? BookingDate { set; get; }
-        public DateTime? AppointmentDate { set; get; }
-        public int? AppointmentCaseID { set; get; }
-        public byte? Duration { set; get; }
-        public string Reason { set; get; }
-        public string Notes { set; get; }
-
-        public clsAppointment()
+        public clsAppointmentDTO AppointmentDTO
         {
-            this.AppointmentID = null;
-            this.PatientID = null;
-            this.DoctorID = null;
-            this.CreatedByUserID = null;
-            this.BookingDate = null;
-            this.AppointmentDate = null;
-            this.AppointmentCaseID = null;
-            this.Duration = null;
-            this.Reason = "";
-            this.Notes = null;
-
-            Mode = enMode.AddNew;
+            get
+            {
+                return new clsAppointmentDTO
+                (
+                    this.AppointmentID,
+                    this.PatientID,
+                    this.DoctorID,
+                    this.CreatedByUserID,
+                    this.BookingDate,
+                    this.AppointmentDate,
+                    this.AppointmentCaseID,
+                    this.Duration,
+                    this.Reason,
+                    this.Notes
+                );
+            }
         }
 
-        private clsAppointment(int? AppointmentID, int? PatientID, int? DoctorID, int? CreatedByUserID, DateTime? BookingDate, DateTime? AppointmentDate, int? AppointmentCaseID, byte? Duration, string Reason, string Notes)
-        {
-            this.AppointmentID = AppointmentID;
-            this.PatientID = PatientID;
-            this.DoctorID = DoctorID;
-            this.CreatedByUserID = CreatedByUserID;
-            this.BookingDate = BookingDate;
-            this.AppointmentDate = AppointmentDate;
-            this.AppointmentCaseID = AppointmentCaseID;
-            this.Duration = Duration;
-            this.Reason = Reason;
-            this.Notes = Notes;
+        public int? AppointmentID { get; set; }
+        public int? PatientID { get; set; }
+        public int? DoctorID { get; set; }
+        public int? CreatedByUserID { get; set; }
+        public DateTime? BookingDate { get; set; }
+        public DateTime? AppointmentDate { get; set; }
+        public int? AppointmentCaseID { get; set; }
+        public byte? Duration { get; set; }
+        public string Reason { get; set; }
+        public string Notes { get; set; }
 
-            Mode = enMode.Update;
+        public clsAppointment(clsAppointmentDTO dto, enMode cMode = enMode.AddNew)
+        {
+            this.AppointmentID = dto.AppointmentID;
+            this.PatientID = dto.PatientID;
+            this.DoctorID = dto.DoctorID;
+            this.CreatedByUserID = dto.CreatedByUserID;
+            this.BookingDate = dto.BookingDate;
+            this.AppointmentDate = dto.AppointmentDate;
+            this.AppointmentCaseID = dto.AppointmentCaseID;
+            this.Duration = dto.Duration;
+            this.Reason = dto.Reason;
+            this.Notes = dto.Notes;
+            this.Mode = cMode;
         }
 
         private bool _AddNewAppointment()
         {
-            this.AppointmentID = clsAppointmentsDataAccess.AddNewAppointment(this.PatientID, this.DoctorID, this.CreatedByUserID, this.BookingDate, this.AppointmentDate, this.AppointmentCaseID, this.Duration, this.Reason, this.Notes);
-            return (this.AppointmentID != null);
+            this.AppointmentID = clsAppointmentsDataAccess.AddNewAppointment(this.AppointmentDTO);
+            return (this.AppointmentID.HasValue);
         }
 
         private bool _UpdateAppointment()
         {
-            return clsAppointmentsDataAccess.UpdateAppointment(this.AppointmentID, this.PatientID, this.DoctorID, this.CreatedByUserID, this.BookingDate, this.AppointmentDate, this.AppointmentCaseID, this.Duration, this.Reason, this.Notes) ?? false;
+            return clsAppointmentsDataAccess.UpdateAppointment(this.AppointmentDTO);
         }
 
-        public static clsAppointment FindByID(int? AppointmentID)
+        public static clsAppointment Find(int? ID)
         {
-            if (AppointmentID == null) return null;
+            clsAppointmentDTO dto = clsAppointmentsDataAccess.GetAppointmentInfoByID(ID);
 
-            int? PatientID = null;
-            int? DoctorID = null;
-            int? CreatedByUserID = null;
-            DateTime? BookingDate = null;
-            DateTime? AppointmentDate = null;
-            int? AppointmentCaseID = null;
-            byte? Duration = null;
-            string Reason = "";
-            string Notes = null;
-
-            bool? IsFound = clsAppointmentsDataAccess.GetAppointmentInfoByID(AppointmentID, ref PatientID, ref DoctorID, ref CreatedByUserID, ref BookingDate, ref AppointmentDate, ref AppointmentCaseID, ref Duration, ref Reason, ref Notes);
-
-            if (IsFound == true)
-                return new clsAppointment(AppointmentID, PatientID, DoctorID, CreatedByUserID, BookingDate, AppointmentDate, AppointmentCaseID, Duration, Reason, Notes);
+            if (dto != null)
+                return new clsAppointment(dto, enMode.Update);
             else
                 return null;
+        }
+
+        public static List<clsAppointmentDTO> GetAllAppointments()
+        {
+            return clsAppointmentsDataAccess.GetAllAppointments();
+        }
+
+        public static List<clsTodayAppointmentDTO> GetTodayAppointments()
+        {
+            return clsAppointmentsDataAccess.GetTodayAppointments();
         }
 
         public bool Save()
@@ -104,28 +106,18 @@ namespace MediManage_Buisness
                 case enMode.Update:
                     return _UpdateAppointment();
             }
+
             return false;
         }
 
-        public static DataTable GetAllAppointments()
+        public static bool DeleteAppointment(int? ID)
         {
-            return clsAppointmentsDataAccess.GetAllAppointments();
+            return clsAppointmentsDataAccess.DeleteAppointment(ID);
         }
 
-        public static bool DeleteAppointment(int? AppointmentID)
+        public static bool IsExist(int? ID)
         {
-            return clsAppointmentsDataAccess.DeleteAppointment(AppointmentID);
-        }
-
-        public static bool IsAppointmentExist(int? AppointmentID)
-        {
-            return clsAppointmentsDataAccess.IsAppointmentExist(AppointmentID) ?? false;
-        }
-
-        public static DataTable GetTodayAppointments()
-        {
-            return clsAppointmentsDataAccess.GetTodayAppointments();
+            return clsAppointmentsDataAccess.IsAppointmentExist(ID);
         }
     }
 }
-

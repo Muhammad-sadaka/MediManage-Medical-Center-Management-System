@@ -1,73 +1,85 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
 using MediManage_DataAccess;
 
-
-namespace MediManage_Buisness
+namespace MediManage_Business
 {
+
+
     public class clsDoctor
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? DoctorID { set; get; }
-        public int? PersonID { set; get; }
-        public byte? YearsOfExperience { set; get; }
-        public string Qualification { set; get; }
-        public bool? IsActive { set; get; }
-        public int? SpecialtyID { set; get; }
+        public clsDoctorDTO DTO
+        {
+            get
+            {
+                return new clsDoctorDTO
+                (
+                    this.DoctorID,
+                    this.PersonID,
+                    this.YearsOfExperience,
+                    this.Qualification,
+                    this.IsActive,
+                    this.SpecialtyID
+                );
+            }
+        }
+
+        public int? DoctorID { get; set; }
+        public int? PersonID { get; set; }
+        public byte? YearsOfExperience { get; set; }
+        public string Qualification { get; set; }
+        public bool? IsActive { get; set; }
+        public int? SpecialtyID { get; set; }
 
         public clsDoctor()
         {
             this.DoctorID = null;
             this.PersonID = null;
             this.YearsOfExperience = null;
-            this.Qualification = "";
+            this.Qualification = null;
             this.IsActive = null;
             this.SpecialtyID = null;
-
-            Mode = enMode.AddNew;
+            this.Mode = enMode.AddNew;
         }
 
-        private clsDoctor(int? DoctorID, int? PersonID, byte? YearsOfExperience, string Qualification, bool? IsActive, int? SpecialtyID)
+        public clsDoctor(clsDoctorDTO dto, enMode cMode = enMode.AddNew)
         {
-            this.DoctorID = DoctorID;
-            this.PersonID = PersonID;
-            this.YearsOfExperience = YearsOfExperience;
-            this.Qualification = Qualification;
-            this.IsActive = IsActive;
-            this.SpecialtyID = SpecialtyID;
-
-            Mode = enMode.Update;
+            this.DoctorID = dto.DoctorID;
+            this.PersonID = dto.PersonID;
+            this.YearsOfExperience = dto.YearsOfExperience;
+            this.Qualification = dto.Qualification;
+            this.IsActive = dto.IsActive;
+            this.SpecialtyID = dto.SpecialtyID;
+            this.Mode = cMode;
         }
 
         private bool _AddNewDoctor()
         {
-            this.DoctorID = clsDoctorsDataAccess.AddNewDoctor(this.PersonID, this.YearsOfExperience, this.Qualification, this.IsActive, this.SpecialtyID);
-            return (this.DoctorID != null);
+            this.DoctorID = clsDoctorsDataAccess.AddNewDoctor(this.DTO);
+            return (this.DoctorID.HasValue);
         }
 
         private bool _UpdateDoctor()
         {
-            return clsDoctorsDataAccess.UpdateDoctor(this.DoctorID, this.PersonID, this.YearsOfExperience, this.Qualification, this.IsActive, this.SpecialtyID) ?? false;
+            return clsDoctorsDataAccess.UpdateDoctor(this.DTO);
         }
 
-        public static clsDoctor FindByID(int? DoctorID)
+        public static clsDoctor Find(int? ID)
         {
-            if (DoctorID == null) return null;
+            clsDoctorDTO dto = clsDoctorsDataAccess.GetDoctorInfoByID(ID);
 
-            int? PersonID = null;
-            byte? YearsOfExperience = null;
-            string Qualification = "";
-            bool? IsActive = null;
-            int? SpecialtyID = null;
-
-            bool? IsFound = clsDoctorsDataAccess.GetDoctorInfoByID(DoctorID, ref PersonID, ref YearsOfExperience, ref Qualification, ref IsActive, ref SpecialtyID);
-
-            if (IsFound == true)
-                return new clsDoctor(DoctorID, PersonID, YearsOfExperience, Qualification, IsActive, SpecialtyID);
+            if (dto != null)
+                return new clsDoctor(dto, enMode.Update);
             else
                 return null;
+        }
+
+        public static List<clsDoctorListDTO> GetAllDoctors()
+        {
+            return clsDoctorsDataAccess.GetAllDoctors();
         }
 
         public bool Save()
@@ -88,23 +100,18 @@ namespace MediManage_Buisness
                 case enMode.Update:
                     return _UpdateDoctor();
             }
+
             return false;
         }
 
-        public static DataTable GetAllDoctors()
+        public static bool DeleteDoctor(int? ID)
         {
-            return clsDoctorsDataAccess.GetAllDoctors();
+            return clsDoctorsDataAccess.DeleteDoctor(ID);
         }
 
-        public static bool DeleteDoctor(int? DoctorID)
+        public static bool IsExist(int? ID)
         {
-            return clsDoctorsDataAccess.DeleteDoctor(DoctorID);
-        }
-
-        public static bool IsDoctorExist(int? DoctorID)
-        {
-            return clsDoctorsDataAccess.IsDoctorExist(DoctorID) ?? false;
+            return clsDoctorsDataAccess.IsDoctorExist(ID);
         }
     }
 }
-

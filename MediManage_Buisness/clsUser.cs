@@ -1,77 +1,78 @@
-﻿using System;
-using System.Data;
+﻿using System.Collections.Generic;
 using MediManage_DataAccess;
 
-
-namespace MediManage_Buisness
+namespace MediManage_Business
 {
     public class clsUser
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? UserID { set; get; }
-        public int? PersonID { set; get; }
-        public string UserName { set; get; }
-        public string Password { set; get; }
-        public byte? Permissions { set; get; }
-        public bool? IsActive { set; get; }
-        public clsPerson Person { set; get; }
+        public int? UserID { get; set; }
+        public int? PersonID { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public byte? Permissions { get; set; }
+        public bool? IsActive { get; set; }
 
+        public clsUserDTO DTO => new clsUserDTO(this.UserID, this.PersonID, this.UserName, this.Password, this.Permissions, this.IsActive);
 
         public clsUser()
         {
             this.UserID = null;
             this.PersonID = null;
-            this.UserName = "";
-            this.Password = null; // Allows Null
+            this.UserName = string.Empty;
+            this.Password = string.Empty;
             this.Permissions = null;
             this.IsActive = null;
-            this.Person = null;
-
-            Mode = enMode.AddNew;
+            this.Mode = enMode.AddNew;
         }
 
-        private clsUser(int? UserID, int? PersonID, string UserName, string Password, byte? Permissions, bool? IsActive)
+        public clsUser(clsUserDTO dto, enMode mode = enMode.AddNew)
         {
-            this.UserID = UserID;
-            this.PersonID = PersonID;
-            this.UserName = UserName;
-            this.Password = Password;
-            this.Permissions = Permissions;
-            this.IsActive = IsActive;
-            this.Person = clsPerson.FindByID(PersonID);
-
-            Mode = enMode.Update;
+            this.UserID = dto.UserID;
+            this.PersonID = dto.PersonID;
+            this.UserName = dto.UserName;
+            this.Password = dto.Password;
+            this.Permissions = dto.Permissions;
+            this.IsActive = dto.IsActive;
+            this.Mode = mode;
         }
 
         private bool _AddNewUser()
         {
-            this.UserID = clsUsersDataAccess.AddNewUser(this.PersonID, this.UserName, this.Password, this.Permissions, this.IsActive);
+            this.UserID = clsUsersDataAccess.AddNewUser(this.DTO);
             return (this.UserID != null);
         }
 
         private bool _UpdateUser()
         {
-            return clsUsersDataAccess.UpdateUser(this.UserID, this.PersonID, this.UserName, this.Password, this.Permissions, this.IsActive) ?? false;
+            return clsUsersDataAccess.UpdateUser(this.DTO);
         }
 
-        public static clsUser FindByID(int? UserID)
+        public static clsUser Find(int? userID)
         {
-            if (UserID == null) return null;
+            clsUserDTO dto = clsUsersDataAccess.GetUserInfoByID(userID);
 
-            int? PersonID = null;
-            string UserName = "";
-            string Password = null;
-            byte? Permissions = null;
-            bool? IsActive = null;
+            if (dto != null)
+                return new clsUser(dto, enMode.Update);
 
-            bool? IsFound = clsUsersDataAccess.GetUserInfoByID(UserID, ref PersonID, ref UserName, ref Password, ref Permissions, ref IsActive);
+            return null;
+        }
 
-            if (IsFound == true)
-                return new clsUser(UserID, PersonID, UserName, Password, Permissions, IsActive);
-            else
-                return null;
+        public static clsUser FindByUsernameAndPassword(string userName, string password)
+        {
+            clsUserDTO dto = clsUsersDataAccess.FindByUsernameAndPassword(userName, password);
+
+            if (dto != null)
+                return new clsUser(dto, enMode.Update);
+
+            return null;
+        }
+
+        public static List<clsUserDTO> GetAllUsers()
+        {
+            return clsUsersDataAccess.GetAllUsers();
         }
 
         public bool Save()
@@ -84,46 +85,23 @@ namespace MediManage_Buisness
                         Mode = enMode.Update;
                         return true;
                     }
-                    else
-                    {
-                        return false;
-                    }
+                    return false;
 
                 case enMode.Update:
                     return _UpdateUser();
             }
+
             return false;
         }
 
-        public static DataTable GetAllUsers()
+        public static bool DeleteUser(int? userID)
         {
-            return clsUsersDataAccess.GetAllUsers();
+            return clsUsersDataAccess.DeleteUser(userID);
         }
 
-        public static bool DeleteUser(int? UserID)
+        public static bool IsUserExist(int? userID)
         {
-            return clsUsersDataAccess.DeleteUser(UserID);
-        }
-
-        public static bool IsUserExist(int? UserID)
-        {
-            return clsUsersDataAccess.IsUserExist(UserID) ?? false;
-        }
-
-        public static clsUser FindByUsernameAndPassword(string UserName,string Password)
-        {
-            int? UserID = null;
-            int? PersonID = null;
-            byte? Permissions = null;
-            bool? IsActive = null;
-
-            bool? IsFound = clsUsersDataAccess.FindByUsernameAndPassword(ref UserID, ref PersonID,  UserName,  Password, ref Permissions, ref IsActive);
-
-            if (IsFound == true)
-                return new clsUser(UserID, PersonID, UserName, Password, Permissions, IsActive);
-            else
-                return null;
+            return clsUsersDataAccess.IsUserExist(userID);
         }
     }
 }
-

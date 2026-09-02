@@ -1,77 +1,77 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
 using MediManage_DataAccess;
 
-
-namespace MediManage_Buisness
+namespace MediManage_Business
 {
+
+
     public class clsMedicine
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? MedicineID { set; get; }
-        public string MedicineName { set; get; }
-        public string Duration { set; get; }
-        public string Repetition { set; get; }
-        public string Dose { set; get; }
-        public int? MedicalPrescriptionID { set; get; }
-        public string Notes { set; get; }
-
-        public clsMedicine()
+        public clsMedicineDTO DTO
         {
-            this.MedicineID = null;
-            this.MedicineName = "";
-            this.Duration = "";
-            this.Repetition = "";
-            this.Dose = "";
-            this.MedicalPrescriptionID = null;
-            this.Notes = null;
-
-            Mode = enMode.AddNew;
+            get
+            {
+                return new clsMedicineDTO
+                (
+                    this.MedicineID,
+                    this.MedicineName,
+                    this.Duration,
+                    this.Repetition,
+                    this.Dose,
+                    this.MedicalPrescriptionID,
+                    this.Notes
+                );
+            }
         }
 
-        private clsMedicine(int? MedicineID, string MedicineName, string Duration, string Repetition, string Dose, int? MedicalPrescriptionID, string Notes)
-        {
-            this.MedicineID = MedicineID;
-            this.MedicineName = MedicineName;
-            this.Duration = Duration;
-            this.Repetition = Repetition;
-            this.Dose = Dose;
-            this.MedicalPrescriptionID = MedicalPrescriptionID;
-            this.Notes = Notes;
+        public int? MedicineID { get; set; }
+        public string MedicineName { get; set; }
+        public string Duration { get; set; }
+        public string Repetition { get; set; }
+        public string Dose { get; set; }
+        public int? MedicalPrescriptionID { get; set; }
+        public string Notes { get; set; }
 
-            Mode = enMode.Update;
+        public clsMedicine(clsMedicineDTO dto, enMode cMode = enMode.AddNew)
+        {
+            this.MedicineID = dto.MedicineID;
+            this.MedicineName = dto.MedicineName;
+            this.Duration = dto.Duration;
+            this.Repetition = dto.Repetition;
+            this.Dose = dto.Dose;
+            this.MedicalPrescriptionID = dto.MedicalPrescriptionID;
+            this.Notes = dto.Notes;
+            this.Mode = cMode;
         }
 
         private bool _AddNewMedicine()
         {
-            this.MedicineID = clsMedicinesDataAccess.AddNewMedicine(this.MedicineName, this.Duration, this.Repetition, this.Dose, this.MedicalPrescriptionID, this.Notes);
-            return (this.MedicineID != null);
+            this.MedicineID = clsMedicinesDataAccess.AddNewMedicine(this.DTO);
+            return (this.MedicineID.HasValue);
         }
 
         private bool _UpdateMedicine()
         {
-            return clsMedicinesDataAccess.UpdateMedicine(this.MedicineID, this.MedicineName, this.Duration, this.Repetition, this.Dose, this.MedicalPrescriptionID, this.Notes) ?? false;
+            return clsMedicinesDataAccess.UpdateMedicine(this.DTO);
         }
 
-        public static clsMedicine FindByID(int? MedicineID)
+        public static clsMedicine Find(int? ID)
         {
-            if (MedicineID == null) return null;
+            clsMedicineDTO dto = clsMedicinesDataAccess.GetMedicineInfoByID(ID);
 
-            string MedicineName = "";
-            string Duration = "";
-            string Repetition = "";
-            string Dose = "";
-            int? MedicalPrescriptionID = null;
-            string Notes = null;
-
-            bool? IsFound = clsMedicinesDataAccess.GetMedicineInfoByID(MedicineID, ref MedicineName, ref Duration, ref Repetition, ref Dose, ref MedicalPrescriptionID, ref Notes);
-
-            if (IsFound == true)
-                return new clsMedicine(MedicineID, MedicineName, Duration, Repetition, Dose, MedicalPrescriptionID, Notes);
+            if (dto != null)
+                return new clsMedicine(dto, enMode.Update);
             else
                 return null;
+        }
+
+        public static List<clsMedicineDTO> GetAllMedicines()
+        {
+            return clsMedicinesDataAccess.GetAllMedicines();
         }
 
         public bool Save()
@@ -92,23 +92,18 @@ namespace MediManage_Buisness
                 case enMode.Update:
                     return _UpdateMedicine();
             }
+
             return false;
         }
 
-        public static DataTable GetAllMedicines()
+        public static bool DeleteMedicine(int? ID)
         {
-            return clsMedicinesDataAccess.GetAllMedicines();
+            return clsMedicinesDataAccess.DeleteMedicine(ID);
         }
 
-        public static bool DeleteMedicine(int? MedicineID)
+        public static bool IsExist(int? ID)
         {
-            return clsMedicinesDataAccess.DeleteMedicine(MedicineID);
-        }
-
-        public static bool IsMedicineExist(int? MedicineID)
-        {
-            return clsMedicinesDataAccess.IsMedicineExist(MedicineID) ?? false;
+            return clsMedicinesDataAccess.IsMedicineExist(ID);
         }
     }
 }
-

@@ -80,7 +80,7 @@
             // 
             // nightPanel1
             // 
-            this.nightPanel1.BackgroundImage = global::MediManage.Properties.Resources._1779126696933;
+            this.nightPanel1.BackgroundImage = global::MediManage.Properties.Resources.Login;
             this.nightPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.nightPanel1.Controls.Add(this.crownLabel1);
             this.nightPanel1.Controls.Add(this.bigLabel3);

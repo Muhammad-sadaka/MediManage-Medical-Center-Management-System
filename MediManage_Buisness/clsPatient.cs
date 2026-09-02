@@ -1,73 +1,87 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
 using MediManage_DataAccess;
 
 
-namespace MediManage_Buisness
+namespace MediManage_Business
 {
+
     public class clsPatient
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? PatientID { set; get; }
-        public int? PersonID { set; get; }
-        public string Sensitivity { set; get; }
-        public string ChronicDiseases { set; get; }
-        public DateTime? JoinDate { set; get; }
-        public int? PatientCaseID { set; get; }
+        public clsPatientDTO DTO
+        {
+            get
+            {
+                return new clsPatientDTO
+                (
+                    this.PatientID,
+                    this.PersonID,
+                    this.Sensitivity,
+                    this.ChronicDiseases,
+                    this.JoinDate,
+                    this.PatientCaseID
+                );
+            }
+        }
+
+        public int? PatientID { get; set; }
+        public int? PersonID { get; set; }
+        public string Sensitivity { get; set; }
+        public string ChronicDiseases { get; set; }
+        public DateTime? JoinDate { get; set; }
+        public int? PatientCaseID { get; set; }
+
 
         public clsPatient()
         {
-            this.PatientID = null;
             this.PersonID = null;
-            this.Sensitivity = null;
-            this.ChronicDiseases = null;
+            this.PersonID = null;
+            this.Sensitivity = string.Empty;
+            this.ChronicDiseases = string.Empty;
             this.JoinDate = null;
             this.PatientCaseID = null;
-
-            Mode = enMode.AddNew;
+            this.Mode = enMode.AddNew;
         }
 
-        private clsPatient(int? PatientID, int? PersonID, string Sensitivity, string ChronicDiseases, DateTime? JoinDate, int? PatientCaseID)
-        {
-            this.PatientID = PatientID;
-            this.PersonID = PersonID;
-            this.Sensitivity = Sensitivity;
-            this.ChronicDiseases = ChronicDiseases;
-            this.JoinDate = JoinDate;
-            this.PatientCaseID = PatientCaseID;
 
-            Mode = enMode.Update;
+        public clsPatient(clsPatientDTO dto, enMode cMode = enMode.AddNew)
+        {
+            this.PatientID = dto.PatientID;
+            this.PersonID = dto.PersonID;
+            this.Sensitivity = dto.Sensitivity;
+            this.ChronicDiseases = dto.ChronicDiseases;
+            this.JoinDate = dto.JoinDate;
+            this.PatientCaseID = dto.PatientCaseID;
+            this.Mode = cMode;
         }
 
         private bool _AddNewPatient()
         {
-            this.PatientID = clsPatientsDataAccess.AddNewPatient(this.PersonID, this.Sensitivity, this.ChronicDiseases, this.JoinDate, this.PatientCaseID);
-            return (this.PatientID != null);
+            this.PatientID = clsPatientsDataAccess.AddNewPatient(this.DTO);
+            return (this.PatientID.HasValue);
         }
 
         private bool _UpdatePatient()
         {
-            return clsPatientsDataAccess.UpdatePatient(this.PatientID, this.PersonID, this.Sensitivity, this.ChronicDiseases, this.JoinDate, this.PatientCaseID) ?? false;
+            return clsPatientsDataAccess.UpdatePatient(this.DTO);
         }
 
-        public static clsPatient FindByID(int? PatientID)
+        public static clsPatient Find(int? ID)
         {
-            if (PatientID == null) return null;
+            clsPatientDTO dto = clsPatientsDataAccess.GetPatientInfoByPersonID(ID);
 
-            int? PersonID = null;
-            string Sensitivity = null;
-            string ChronicDiseases = null;
-            DateTime? JoinDate = null;
-            int? PatientCaseID = null;
-
-            bool? IsFound = clsPatientsDataAccess.GetPatientInfoByID(PatientID, ref PersonID, ref Sensitivity, ref ChronicDiseases, ref JoinDate, ref PatientCaseID);
-
-            if (IsFound == true)
-                return new clsPatient(PatientID, PersonID, Sensitivity, ChronicDiseases, JoinDate, PatientCaseID);
+            if (dto != null)
+                return new clsPatient(dto, enMode.Update);
             else
                 return null;
+        }
+
+        public static List<clsPatientsListDTO> GetAllPatients()
+        {
+            return clsPatientsDataAccess.GetAllPatients();
         }
 
         public bool Save()
@@ -88,22 +102,18 @@ namespace MediManage_Buisness
                 case enMode.Update:
                     return _UpdatePatient();
             }
+
             return false;
         }
 
-        public static DataTable GetAllPatients()
+        public static bool DeletePatient(int? ID)
         {
-            return clsPatientsDataAccess.GetAllPatients();
+            return clsPatientsDataAccess.DeletePatient(ID);
         }
 
-        public static bool DeletePatient(int? PatientID)
+        public static bool IsExist(int? ID)
         {
-            return clsPatientsDataAccess.DeletePatient(PatientID);
-        }
-
-        public static bool IsPatientExist(int? PatientID)
-        {
-            return clsPatientsDataAccess.IsPatientExist(PatientID) ?? false;
+            return clsPatientsDataAccess.IsPatientExist(ID);
         }
 
         public static int? GetTotalPatientsNumber()
@@ -112,4 +122,3 @@ namespace MediManage_Buisness
         }
     }
 }
-

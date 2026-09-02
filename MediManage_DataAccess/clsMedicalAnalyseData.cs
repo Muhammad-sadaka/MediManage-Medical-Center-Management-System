@@ -1,17 +1,39 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
 namespace MediManage_DataAccess
 {
+    // 1. Data Transfer Object (DTO)
+    public class clsMedicalAnalysisDTO
+    {
+        public int? MedicalAnalysisID { get; set; }
+        public string Result { get; set; }
+        public DateTime? OrderDate { get; set; }
+        public DateTime? ResultDate { get; set; }
+        public int? AnalysisStatusID { get; set; }
+        public int? AnalysisTypeID { get; set; }
+        public int? DetectionID { get; set; }
+
+        public clsMedicalAnalysisDTO(int? medicalAnalysisID, string result, DateTime? orderDate, DateTime? resultDate, int? analysisStatusID, int? analysisTypeID, int? detectionID)
+        {
+            this.MedicalAnalysisID = medicalAnalysisID;
+            this.Result = result;
+            this.OrderDate = orderDate;
+            this.ResultDate = resultDate;
+            this.AnalysisStatusID = analysisStatusID;
+            this.AnalysisTypeID = analysisTypeID;
+            this.DetectionID = detectionID;
+        }
+    }
+
+    // 2. Data Access Layer
     public class clsMedicalAnalysesDataAccess
     {
-        public static bool? GetMedicalAnalysisInfoByID(int? MedicalAnalysisID, ref string Result, ref DateTime? OrderDate, ref DateTime? ResultDate, ref int? AnalysisStatusID, ref int? AnalysisTypeID, ref int? DetectionID)
+        public static clsMedicalAnalysisDTO GetMedicalAnalysisInfoByID(int? MedicalAnalysisID)
         {
-            bool? isFound = null;
-
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
@@ -26,18 +48,16 @@ namespace MediManage_DataAccess
                         {
                             if (reader.Read())
                             {
-                                isFound = true;
-
-                                Result = reader["Result"] == DBNull.Value ? null : (string)reader["Result"];
-                                OrderDate = reader["OrderDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["OrderDate"]);
-                                ResultDate = reader["ResultDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ResultDate"]);
-                                AnalysisStatusID = reader["AnalysisStatusID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["AnalysisStatusID"]);
-                                AnalysisTypeID = reader["AnalysisTypeID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["AnalysisTypeID"]);
-                                DetectionID = reader["DetectionID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["DetectionID"]);
-                            }
-                            else
-                            {
-                                isFound = false;
+                                return new clsMedicalAnalysisDTO
+                                (
+                                    reader["MedicalAnalysisID"] == DBNull.Value ? null : (int?)reader["MedicalAnalysisID"],
+                                    reader["Result"] == DBNull.Value ? null : (string)reader["Result"],
+                                    reader["OrderDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["OrderDate"]),
+                                    reader["ResultDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ResultDate"]),
+                                    reader["AnalysisStatusID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["AnalysisStatusID"]),
+                                    reader["AnalysisTypeID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["AnalysisTypeID"]),
+                                    reader["DetectionID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["DetectionID"])
+                                );
                             }
                         }
                     }
@@ -47,14 +67,14 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
-            return isFound;
+
+            return null;
         }
 
-        public static int? AddNewMedicalAnalysis(string Result, DateTime? OrderDate, DateTime? ResultDate, int? AnalysisStatusID, int? AnalysisTypeID, int? DetectionID)
+        public static int? AddNewMedicalAnalysis(clsMedicalAnalysisDTO dto)
         {
-            int? MedicalAnalysisID = null;
+            int? medicalAnalysisID = null;
 
             try
             {
@@ -64,12 +84,12 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@Result", (object)Result ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@OrderDate", (object)OrderDate ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@ResultDate", (object)ResultDate ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@AnalysisStatusID", (object)AnalysisStatusID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@AnalysisTypeID", (object)AnalysisTypeID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@DetectionID", (object)DetectionID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Result", (object)dto.Result ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@OrderDate", (object)dto.OrderDate ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@ResultDate", (object)dto.ResultDate ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@AnalysisStatusID", (object)dto.AnalysisStatusID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@AnalysisTypeID", (object)dto.AnalysisTypeID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@DetectionID", (object)dto.DetectionID ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewMedicalAnalysisID", SqlDbType.Int)
                         {
@@ -81,7 +101,7 @@ namespace MediManage_DataAccess
                         command.ExecuteNonQuery();
 
                         if (outputIdParam.Value != DBNull.Value)
-                            MedicalAnalysisID = (int)outputIdParam.Value;
+                            medicalAnalysisID = (int)outputIdParam.Value;
                     }
                 }
             }
@@ -91,12 +111,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return MedicalAnalysisID;
+            return medicalAnalysisID;
         }
 
-        public static bool? UpdateMedicalAnalysis(int? MedicalAnalysisID, string Result, DateTime? OrderDate, DateTime? ResultDate, int? AnalysisStatusID, int? AnalysisTypeID, int? DetectionID)
+        public static bool UpdateMedicalAnalysis(clsMedicalAnalysisDTO dto)
         {
-            int? rowsAffected = null;
+            int rowsAffected = 0;
 
             try
             {
@@ -106,13 +126,13 @@ namespace MediManage_DataAccess
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
-                        command.Parameters.AddWithValue("@MedicalAnalysisID", (object)MedicalAnalysisID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Result", (object)Result ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@OrderDate", (object)OrderDate ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@ResultDate", (object)ResultDate ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@AnalysisStatusID", (object)AnalysisStatusID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@AnalysisTypeID", (object)AnalysisTypeID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@DetectionID", (object)DetectionID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@MedicalAnalysisID", (object)dto.MedicalAnalysisID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Result", (object)dto.Result ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@OrderDate", (object)dto.OrderDate ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@ResultDate", (object)dto.ResultDate ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@AnalysisStatusID", (object)dto.AnalysisStatusID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@AnalysisTypeID", (object)dto.AnalysisTypeID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@DetectionID", (object)dto.DetectionID ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -129,20 +149,34 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static DataTable GetAllMedicalAnalyses()
+        public static List<clsMedicalAnalysisDTO> GetAllMedicalAnalyses()
         {
-            DataTable dt = new DataTable();
+            var medicalAnalysesList = new List<clsMedicalAnalysisDTO>();
+
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
                 {
-                    connection.Open();
                     using (SqlCommand command = new SqlCommand("SP_GetAllMedicalAnalyses", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            dt.Load(reader);
+                            while (reader.Read())
+                            {
+                                medicalAnalysesList.Add(new clsMedicalAnalysisDTO
+                                (
+                                    reader["MedicalAnalysisID"] == DBNull.Value ? null : (int?)reader["MedicalAnalysisID"],
+                                    reader["Result"] == DBNull.Value ? null : (string)reader["Result"],
+                                    reader["OrderDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["OrderDate"]),
+                                    reader["ResultDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ResultDate"]),
+                                    reader["AnalysisStatusID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["AnalysisStatusID"]),
+                                    reader["AnalysisTypeID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["AnalysisTypeID"]),
+                                    reader["DetectionID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["DetectionID"])
+                                ));
+                            }
                         }
                     }
                 }
@@ -153,12 +187,12 @@ namespace MediManage_DataAccess
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
 
-            return dt;
+            return medicalAnalysesList;
         }
 
         public static bool DeleteMedicalAnalysis(int? MedicalAnalysisID)
         {
-            int? rowsAffected = 0;
+            int rowsAffected = 0;
 
             try
             {
@@ -179,12 +213,13 @@ namespace MediManage_DataAccess
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
             }
-            return (rowsAffected > 0);
+
+            return rowsAffected > 0;
         }
 
-        public static bool? IsMedicalAnalysisExist(int? MedicalAnalysisID)
+        public static bool IsMedicalAnalysisExist(int? MedicalAnalysisID)
         {
-            bool? isFound = null;
+            bool isFound = false;
 
             try
             {
@@ -204,7 +239,7 @@ namespace MediManage_DataAccess
                         connection.Open();
                         command.ExecuteNonQuery();
 
-                        if (returnParameter.Value != null)
+                        if (returnParameter.Value != DBNull.Value)
                         {
                             isFound = (int)returnParameter.Value == 1;
                         }
@@ -215,15 +250,9 @@ namespace MediManage_DataAccess
             {
                 clsDataAccessSettings.EventLogCreate();
                 EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-                isFound = false;
             }
 
             return isFound;
         }
     }
 }
-
-
-
-
-

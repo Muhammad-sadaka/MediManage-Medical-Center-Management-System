@@ -1,57 +1,56 @@
-﻿using System;
-using System.Data;
+﻿using System.Collections.Generic;
 using MediManage_DataAccess;
 
-
-namespace MediManage_Buisness
+namespace MediManage_Business
 {
     public class clsServiceType
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? ServiceTypeID { set; get; }
-        public string ServicTypeName { set; get; }
+        public int? ServiceTypeID { get; set; }
+        public string ServicTypeName { get; set; }
+
+        public clsServiceTypeDTO DTO => new clsServiceTypeDTO(this.ServiceTypeID, this.ServicTypeName);
 
         public clsServiceType()
         {
             this.ServiceTypeID = null;
-            this.ServicTypeName = "";
-
-            Mode = enMode.AddNew;
+            this.ServicTypeName = string.Empty;
+            this.Mode = enMode.AddNew;
         }
 
-        private clsServiceType(int? ServiceTypeID, string ServicTypeName)
+        public clsServiceType(clsServiceTypeDTO dto, enMode mode = enMode.AddNew)
         {
-            this.ServiceTypeID = ServiceTypeID;
-            this.ServicTypeName = ServicTypeName;
-
-            Mode = enMode.Update;
+            this.ServiceTypeID = dto.ServiceTypeID;
+            this.ServicTypeName = dto.ServicTypeName;
+            this.Mode = mode;
         }
 
         private bool _AddNewServiceType()
         {
-            this.ServiceTypeID = clsServiceTypesDataAccess.AddNewServiceType(this.ServicTypeName);
+            this.ServiceTypeID = clsServiceTypesDataAccess.AddNewServiceType(this.DTO);
             return (this.ServiceTypeID != null);
         }
 
         private bool _UpdateServiceType()
         {
-            return clsServiceTypesDataAccess.UpdateServiceType(this.ServiceTypeID, this.ServicTypeName) ?? false;
+            return clsServiceTypesDataAccess.UpdateServiceType(this.DTO);
         }
 
-        public static clsServiceType FindByID(int? ServiceTypeID)
+        public static clsServiceType Find(int? serviceTypeID)
         {
-            if (ServiceTypeID == null) return null;
+            clsServiceTypeDTO dto = clsServiceTypesDataAccess.GetServiceTypeInfoByID(serviceTypeID);
 
-            string ServicTypeName = "";
+            if (dto != null)
+                return new clsServiceType(dto, enMode.Update);
 
-            bool? IsFound = clsServiceTypesDataAccess.GetServiceTypeInfoByID(ServiceTypeID, ref ServicTypeName);
+            return null;
+        }
 
-            if (IsFound == true)
-                return new clsServiceType(ServiceTypeID, ServicTypeName);
-            else
-                return null;
+        public static List<clsServiceTypeDTO> GetAllServiceTypes()
+        {
+            return clsServiceTypesDataAccess.GetAllServiceTypes();
         }
 
         public bool Save()
@@ -64,31 +63,23 @@ namespace MediManage_Buisness
                         Mode = enMode.Update;
                         return true;
                     }
-                    else
-                    {
-                        return false;
-                    }
+                    return false;
 
                 case enMode.Update:
                     return _UpdateServiceType();
             }
+
             return false;
         }
 
-        public static DataTable GetAllServiceTypes()
+        public static bool DeleteServiceType(int? serviceTypeID)
         {
-            return clsServiceTypesDataAccess.GetAllServiceTypes();
+            return clsServiceTypesDataAccess.DeleteServiceType(serviceTypeID);
         }
 
-        public static bool DeleteServiceType(int? ServiceTypeID)
+        public static bool IsServiceTypeExist(int? serviceTypeID)
         {
-            return clsServiceTypesDataAccess.DeleteServiceType(ServiceTypeID);
-        }
-
-        public static bool IsServiceTypeExist(int? ServiceTypeID)
-        {
-            return clsServiceTypesDataAccess.IsServiceTypeExist(ServiceTypeID) ?? false;
+            return clsServiceTypesDataAccess.IsServiceTypeExist(serviceTypeID);
         }
     }
 }
-

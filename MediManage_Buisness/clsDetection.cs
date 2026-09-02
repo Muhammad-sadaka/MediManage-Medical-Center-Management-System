@@ -1,89 +1,85 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
 using MediManage_DataAccess;
 
-
-namespace MediManage_Buisness
+namespace MediManage_Business
 {
+
     public class clsDetection
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? DetectionID { set; get; }
-        public int? AppointmentID { set; get; }
-        public int? CreatedByUserID { set; get; }
-        public string Symproms { set; get; }
-        public string Diagnosis { set; get; }
-        public byte? Temperature { set; get; }
-        public byte? Wight { set; get; }
-        public byte? BloodPressure { set; get; }
-        public byte? HeartRate { set; get; }
-        public string Notes { set; get; }
-
-        public clsDetection()
+        public clsDetectionDTO DTO
         {
-            this.DetectionID = null;
-            this.AppointmentID = null;
-            this.CreatedByUserID = null;
-            this.Symproms = "";
-            this.Diagnosis = "";
-            this.Temperature = null;
-            this.Wight = null;
-            this.BloodPressure = null;
-            this.HeartRate = null;
-            this.Notes = "";
-
-            Mode = enMode.AddNew;
+            get
+            {
+                return new clsDetectionDTO
+                (
+                    this.DetectionID,
+                    this.AppointmentID,
+                    this.CreatedByUserID,
+                    this.Symproms,
+                    this.Diagnosis,
+                    this.Temperature,
+                    this.Wight,
+                    this.BloodPressure,
+                    this.HeartRate,
+                    this.Notes
+                );
+            }
         }
 
-        private clsDetection(int? DetectionID, int? AppointmentID, int? CreatedByUserID, string Symproms, string Diagnosis, byte? Temperature, byte? Wight, byte? BloodPressure, byte? HeartRate, string Notes)
-        {
-            this.DetectionID = DetectionID;
-            this.AppointmentID = AppointmentID;
-            this.CreatedByUserID = CreatedByUserID;
-            this.Symproms = Symproms;
-            this.Diagnosis = Diagnosis;
-            this.Temperature = Temperature;
-            this.Wight = Wight;
-            this.BloodPressure = BloodPressure;
-            this.HeartRate = HeartRate;
-            this.Notes = Notes;
+        public int? DetectionID { get; set; }
+        public int? AppointmentID { get; set; }
+        public int? CreatedByUserID { get; set; }
+        public string Symproms { get; set; }
+        public string Diagnosis { get; set; }
+        public byte? Temperature { get; set; }
+        public byte? Wight { get; set; }
+        public byte? BloodPressure { get; set; }
+        public byte? HeartRate { get; set; }
+        public string Notes { get; set; }
 
-            Mode = enMode.Update;
+        public clsDetection(clsDetectionDTO dto, enMode cMode = enMode.AddNew)
+        {
+            this.DetectionID = dto.DetectionID;
+            this.AppointmentID = dto.AppointmentID;
+            this.CreatedByUserID = dto.CreatedByUserID;
+            this.Symproms = dto.Symproms;
+            this.Diagnosis = dto.Diagnosis;
+            this.Temperature = dto.Temperature;
+            this.Wight = dto.Wight;
+            this.BloodPressure = dto.BloodPressure;
+            this.HeartRate = dto.HeartRate;
+            this.Notes = dto.Notes;
+            this.Mode = cMode;
         }
 
         private bool _AddNewDetection()
         {
-            this.DetectionID = clsDetectionsDataAccess.AddNewDetection(this.AppointmentID, this.CreatedByUserID, this.Symproms, this.Diagnosis, this.Temperature, this.Wight, this.BloodPressure, this.HeartRate, this.Notes);
-            return (this.DetectionID != null);
+            this.DetectionID = clsDetectionsDataAccess.AddNewDetection(this.DTO);
+            return (this.DetectionID.HasValue);
         }
 
         private bool _UpdateDetection()
         {
-            return clsDetectionsDataAccess.UpdateDetection(this.DetectionID, this.AppointmentID, this.CreatedByUserID, this.Symproms, this.Diagnosis, this.Temperature, this.Wight, this.BloodPressure, this.HeartRate, this.Notes) ?? false;
+            return clsDetectionsDataAccess.UpdateDetection(this.DTO);
         }
 
-        public static clsDetection FindByID(int? DetectionID)
+        public static clsDetection Find(int? ID)
         {
-            if (DetectionID == null) return null;
+            clsDetectionDTO dto = clsDetectionsDataAccess.GetDetectionInfoByID(ID);
 
-            int? AppointmentID = null;
-            int? CreatedByUserID = null;
-            string Symproms = "";
-            string Diagnosis = "";
-            byte? Temperature = null;
-            byte? Wight = null;
-            byte? BloodPressure = null;
-            byte? HeartRate = null;
-            string Notes = "";
-
-            bool? IsFound = clsDetectionsDataAccess.GetDetectionInfoByID(DetectionID, ref AppointmentID, ref CreatedByUserID, ref Symproms, ref Diagnosis, ref Temperature, ref Wight, ref BloodPressure, ref HeartRate, ref Notes);
-
-            if (IsFound == true)
-                return new clsDetection(DetectionID, AppointmentID, CreatedByUserID, Symproms, Diagnosis, Temperature, Wight, BloodPressure, HeartRate, Notes);
+            if (dto != null)
+                return new clsDetection(dto, enMode.Update);
             else
                 return null;
+        }
+
+        public static List<clsDetectionDTO> GetAllDetections()
+        {
+            return clsDetectionsDataAccess.GetAllDetections();
         }
 
         public bool Save()
@@ -104,23 +100,18 @@ namespace MediManage_Buisness
                 case enMode.Update:
                     return _UpdateDetection();
             }
+
             return false;
         }
 
-        public static DataTable GetAllDetections()
+        public static bool DeleteDetection(int? ID)
         {
-            return clsDetectionsDataAccess.GetAllDetections();
+            return clsDetectionsDataAccess.DeleteDetection(ID);
         }
 
-        public static bool DeleteDetection(int? DetectionID)
+        public static bool IsExist(int? ID)
         {
-            return clsDetectionsDataAccess.DeleteDetection(DetectionID);
-        }
-
-        public static bool IsDetectionExist(int? DetectionID)
-        {
-            return clsDetectionsDataAccess.IsDetectionExist(DetectionID) ?? false;
+            return clsDetectionsDataAccess.IsDetectionExist(ID);
         }
     }
 }
-

@@ -1,57 +1,62 @@
 ﻿using System;
-using System.Data;
+using System.Collections.Generic;
 using MediManage_DataAccess;
 
 
-namespace MediManage_Buisness
+namespace MediManage_Business
 {
+
     public class clsBloodType
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? BloodTypeID { set; get; }
-        public string BloodTypeSymbol { set; get; }
-
-        public clsBloodType()
+        public clsBloodTypeDTO BloodTypeDTO
         {
-            this.BloodTypeID = null;
-            this.BloodTypeSymbol = "";
-
-            Mode = enMode.AddNew;
+            get
+            {
+                return new clsBloodTypeDTO
+                (
+                    this.BloodTypeID,
+                    this.BloodTypeSymbol
+                );
+            }
         }
 
-        private clsBloodType(int? BloodTypeID, string BloodTypeSymbol)
-        {
-            this.BloodTypeID = BloodTypeID;
-            this.BloodTypeSymbol = BloodTypeSymbol;
+        public int? BloodTypeID { get; set; }
+        public string BloodTypeSymbol { get; set; }
 
-            Mode = enMode.Update;
+        public clsBloodType(clsBloodTypeDTO dto, enMode cMode = enMode.AddNew)
+        {
+            this.BloodTypeID = dto.BloodTypeID;
+            this.BloodTypeSymbol = dto.BloodTypeSymbol;
+            this.Mode = cMode;
         }
 
         private bool _AddNewBloodType()
         {
-            this.BloodTypeID = clsBloodTypesDataAccess.AddNewBloodType(this.BloodTypeSymbol);
-            return (this.BloodTypeID != null);
+            this.BloodTypeID = clsBloodTypesDataAccess.AddNewBloodType(this.BloodTypeDTO);
+            return (this.BloodTypeID.HasValue);
         }
 
         private bool _UpdateBloodType()
         {
-            return clsBloodTypesDataAccess.UpdateBloodType(this.BloodTypeID, this.BloodTypeSymbol) ?? false;
+            return clsBloodTypesDataAccess.UpdateBloodType(this.BloodTypeDTO);
         }
 
-        public static clsBloodType FindByID(int? BloodTypeID)
+        public static clsBloodType Find(int? ID)
         {
-            if (BloodTypeID == null) return null;
+            clsBloodTypeDTO dto = clsBloodTypesDataAccess.GetBloodTypeInfoByID(ID);
 
-            string BloodTypeSymbol = "";
-
-            bool? IsFound = clsBloodTypesDataAccess.GetBloodTypeInfoByID(BloodTypeID, ref BloodTypeSymbol);
-
-            if (IsFound == true)
-                return new clsBloodType(BloodTypeID, BloodTypeSymbol);
+            if (dto != null)
+                return new clsBloodType(dto, enMode.Update);
             else
                 return null;
+        }
+
+        public static List<clsBloodTypeDTO> GetAllBloodTypes()
+        {
+            return clsBloodTypesDataAccess.GetAllBloodTypes();
         }
 
         public bool Save()
@@ -72,23 +77,18 @@ namespace MediManage_Buisness
                 case enMode.Update:
                     return _UpdateBloodType();
             }
+
             return false;
         }
 
-        public static DataTable GetAllBloodTypes()
+        public static bool DeleteBloodType(int? ID)
         {
-            return clsBloodTypesDataAccess.GetAllBloodTypes();
+            return clsBloodTypesDataAccess.DeleteBloodType(ID);
         }
 
-        public static bool DeleteBloodType(int? BloodTypeID)
+        public static bool IsExist(int? ID)
         {
-            return clsBloodTypesDataAccess.DeleteBloodType(BloodTypeID);
-        }
-
-        public static bool IsBloodTypeExist(int? BloodTypeID)
-        {
-            return clsBloodTypesDataAccess.IsBloodTypeExist(BloodTypeID) ?? false;
+            return clsBloodTypesDataAccess.IsBloodTypeExist(ID);
         }
     }
 }
-

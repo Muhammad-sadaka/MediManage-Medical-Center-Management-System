@@ -1,57 +1,61 @@
-﻿using System;
-using System.Data;
-using MediManage_DataAccess;
-
-
-namespace MediManage_Buisness
+﻿namespace MediManage_Business
 {
+    using System;
+    using System.Collections.Generic;
+    using MediManage_DataAccess;
+
+    // 3. Business Layer
     public class clsPaymentMethod
     {
         public enum enMode { AddNew = 0, Update = 1 }
         public enMode Mode = enMode.AddNew;
 
-        public int? PaymentMethodID { set; get; }
-        public string PaymentMethodName { set; get; }
-
-        public clsPaymentMethod()
+        public clsPaymentMethodDTO DTO
         {
-            this.PaymentMethodID = null;
-            this.PaymentMethodName = "";
-
-            Mode = enMode.AddNew;
+            get
+            {
+                return new clsPaymentMethodDTO
+                (
+                    this.PaymentMethodID,
+                    this.PaymentMethodName
+                );
+            }
         }
 
-        private clsPaymentMethod(int? PaymentMethodID, string PaymentMethodName)
-        {
-            this.PaymentMethodID = PaymentMethodID;
-            this.PaymentMethodName = PaymentMethodName;
+        public int? PaymentMethodID { get; set; }
+        public string PaymentMethodName { get; set; }
 
-            Mode = enMode.Update;
+        public clsPaymentMethod(clsPaymentMethodDTO dto, enMode cMode = enMode.AddNew)
+        {
+            this.PaymentMethodID = dto.PaymentMethodID;
+            this.PaymentMethodName = dto.PaymentMethodName;
+            this.Mode = cMode;
         }
 
         private bool _AddNewPaymentMethod()
         {
-            this.PaymentMethodID = clsPaymentMethodsDataAccess.AddNewPaymentMethod(this.PaymentMethodName);
-            return (this.PaymentMethodID != null);
+            this.PaymentMethodID = clsPaymentMethodsDataAccess.AddNewPaymentMethod(this.DTO);
+            return (this.PaymentMethodID.HasValue);
         }
 
         private bool _UpdatePaymentMethod()
         {
-            return clsPaymentMethodsDataAccess.UpdatePaymentMethod(this.PaymentMethodID, this.PaymentMethodName) ?? false;
+            return clsPaymentMethodsDataAccess.UpdatePaymentMethod(this.DTO);
         }
 
-        public static clsPaymentMethod FindByID(int? PaymentMethodID)
+        public static clsPaymentMethod Find(int? ID)
         {
-            if (PaymentMethodID == null) return null;
+            clsPaymentMethodDTO dto = clsPaymentMethodsDataAccess.GetPaymentMethodInfoByID(ID);
 
-            string PaymentMethodName = "";
-
-            bool? IsFound = clsPaymentMethodsDataAccess.GetPaymentMethodInfoByID(PaymentMethodID, ref PaymentMethodName);
-
-            if (IsFound == true)
-                return new clsPaymentMethod(PaymentMethodID, PaymentMethodName);
+            if (dto != null)
+                return new clsPaymentMethod(dto, enMode.Update);
             else
                 return null;
+        }
+
+        public static List<clsPaymentMethodDTO> GetAllPaymentMethods()
+        {
+            return clsPaymentMethodsDataAccess.GetAllPaymentMethods();
         }
 
         public bool Save()
@@ -72,23 +76,18 @@ namespace MediManage_Buisness
                 case enMode.Update:
                     return _UpdatePaymentMethod();
             }
+
             return false;
         }
 
-        public static DataTable GetAllPaymentMethods()
+        public static bool DeletePaymentMethod(int? ID)
         {
-            return clsPaymentMethodsDataAccess.GetAllPaymentMethods();
+            return clsPaymentMethodsDataAccess.DeletePaymentMethod(ID);
         }
 
-        public static bool DeletePaymentMethod(int? PaymentMethodID)
+        public static bool IsExist(int? ID)
         {
-            return clsPaymentMethodsDataAccess.DeletePaymentMethod(PaymentMethodID);
-        }
-
-        public static bool IsPaymentMethodExist(int? PaymentMethodID)
-        {
-            return clsPaymentMethodsDataAccess.IsPaymentMethodExist(PaymentMethodID) ?? false;
+            return clsPaymentMethodsDataAccess.IsPaymentMethodExist(ID);
         }
     }
 }
-

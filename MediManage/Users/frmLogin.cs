@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using MediManage_Buisness;
+using MediManage_Business;
 
 namespace MediManage
 {
@@ -18,14 +18,15 @@ namespace MediManage
         public frmLogin()
         {
             InitializeComponent();
+
             Login_Load();
+
             //EventArgs e = new EventArgs();
             //airForm1.ParentForm.AcceptButton =
             //       btnLogin;
             //airForm1.ParentForm.CancelButton = airForm1.();
 
-            // It is temp code
-            clsGlobal.RememberUsernameAndPasswordInRegistry("", "");
+       
         }
 
         private void Login_Load()
@@ -56,32 +57,29 @@ namespace MediManage
 
             clsUser user = new clsUser();
 
-            if (!GetFromRegister)
-            {
-                user = clsUser.FindByUsernameAndPassword(tbUserName.TextButton.Trim(), clsGlobal.ComputeHash(tbPassword.TextButton.Trim()));
-            }
-            else
+            if (GetFromRegister)
                 user = clsUser.FindByUsernameAndPassword(tbUserName.TextButton.Trim(), tbPassword.TextButton.Trim());
-
-
-
-            // It is temp code
-            user = clsUser.FindByUsernameAndPassword(tbUserName.TextButton.Trim(), clsGlobal.ComputeHash(tbPassword.TextButton.Trim()));
-
-
+            else
+                user = clsUser.FindByUsernameAndPassword(tbUserName.TextButton.Trim(), clsGlobal.ComputeHash(tbPassword.TextButton.Trim()));
+         
             if (user != null)
             {
 
                 if (chkRememberMe.Checked)
                 {
-                    clsGlobal.RememberUsernameAndPasswordInRegistry(tbUserName.TextButton.Trim(), tbPassword.TextButton.Trim());
+                    if (!GetFromRegister)
+                    {
+                        clsGlobal.RememberUsernameAndPasswordInRegistry(tbUserName.TextButton.Trim(), tbPassword.TextButton.Trim());
+                        //GetFromRegister = true;
+                    }
                 }
                 else
                 {
                     clsGlobal.RememberUsernameAndPasswordInRegistry("", "");
+                    GetFromRegister = false;
                 }
+                
 
-                //incase the user is not active
                 if (!user.IsActive.Value)
                 {
 
@@ -118,8 +116,6 @@ namespace MediManage
                 tbPassword.Password = true;
             }
             tbPassword.ForeColor = Color.Black;
-
-            //GetFromRegister = true;
         }
 
         private void tbPassword_Leave(object sender, EventArgs e)
