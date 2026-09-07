@@ -1,5 +1,7 @@
 ﻿using MediManage_Business;
+using MediManage_DataAccess;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -30,7 +32,7 @@ namespace MediManage
             DGVDoctorsList.AutoGenerateColumns = false;
             DGVDoctorsList.Columns.Clear();
 
-            DGVDoctorsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PersonID", HeaderText = "Id", Name = "PersonID" });
+            DGVDoctorsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PersonID", HeaderText = "ID", Name = "PersonID" });
 
             DGVDoctorsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "FullName", HeaderText = "Full Name", Name = "FullName" });
 
@@ -59,6 +61,7 @@ namespace MediManage
 
         private void RefreshDoctorsList()
         {
+
             var DoctorsData = clsDoctor.GetAllDoctors().Select(d => new
             {
                 d.PersonID,
@@ -68,7 +71,7 @@ namespace MediManage
             }).ToList();
 
             DGVDoctorsList.DataSource = DoctorsData;
-            lblTotalRecords.Text = $"Total: {DoctorsData.Count} records";
+            lblTotalRecords.Text = $"Total: {DGVDoctorsList.RowCount} records";
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -100,35 +103,27 @@ namespace MediManage
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
+            var DoctorsData = clsDoctor.GetAllDoctors().Select(d => new
+            {
+                d.PersonID,
+                d.NationalNo,
+                d.FullName,
+                d.Speciality,
+                d.Phone
+            });
+
+
             if (!string.IsNullOrEmpty(tbNationalNo.Text))
             {
-                var DoctorsData = clsDoctor.GetAllDoctors().Select(d => new
-                {
-                    d.PersonID,
-                    d.NationalNo,
-                    d.FullName,
-                    d.Speciality,
-                    d.Phone
-                }).Where(d => d.NationalNo.StartsWith(tbNationalNo.Text.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();
-
-                var DoctorsData2 = clsDoctor.GetAllDoctors()
-                    .Where(d => d.NationalNo.StartsWith(tbNationalNo.Text.Trim(), StringComparison.OrdinalIgnoreCase))
-                    .Select(d => new
-                {
-                    d.PersonID,
-                    d.FullName,
-                    d.Speciality,
-                    d.Phone
-                }).ToList();
-
-
-                DGVDoctorsList.DataSource = DoctorsData2;
-                lblTotalRecords.Text = $"Total: {DoctorsData2.Count} records";
+                DoctorsData.Where(d => d.NationalNo.StartsWith(tbNationalNo.Text.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();         
             }
             else
             {
-                RefreshDoctorsList();
+                DoctorsData.ToList();
             }
+
+            DGVDoctorsList.DataSource = DoctorsData;
+            lblTotalRecords.Text = $"Total: {DGVDoctorsList.RowCount} records";
         }
 
         private void DGVDoctorsList_CellContentClick(object sender, DataGridViewCellEventArgs e)

@@ -55,7 +55,7 @@
             this.panel1.Controls.Add(this.btnClose);
             this.panel1.Location = new System.Drawing.Point(12, 12);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1381, 698);
+            this.panel1.Size = new System.Drawing.Size(1394, 698);
             this.panel1.TabIndex = 0;
             // 
             // DGVPeopleList
@@ -178,7 +178,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(1405, 722);
+            this.ClientSize = new System.Drawing.Size(1418, 722);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmPeopleList";

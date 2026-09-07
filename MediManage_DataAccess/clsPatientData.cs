@@ -85,6 +85,46 @@ namespace MediManage_DataAccess
             return null;
         }
 
+        public static clsPatientDTO GetPatientInfoByNationalNo(string NationalNo)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("SP_GetPatientByNationalNo", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@NationalNo", (object)NationalNo ?? DBNull.Value);
+
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new clsPatientDTO
+                                (
+                                    reader["PatientID"] == DBNull.Value ? null : (int?)reader["PatientID"],
+                                    reader["PersonID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["PersonID"]),
+                                    reader["Sensitivity"] == DBNull.Value ? null : (string)reader["Sensitivity"],
+                                    reader["ChronicDiseases"] == DBNull.Value ? null : (string)reader["ChronicDiseases"],
+                                    reader["JoinDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["JoinDate"]),
+                                    reader["PatientCaseID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["PatientCaseID"])
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsDataAccessSettings.EventLogCreate();
+                EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
+            }
+
+            return null;
+        }
+
+
         public static int? AddNewPatient(clsPatientDTO dto)
         {
             int? patientID = null;
@@ -225,7 +265,7 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static bool IsPatientExist(int? PatientID)
+        public static bool IsPatientExist(int? PersonID)
         {
             bool isFound = false;
 
@@ -236,7 +276,7 @@ namespace MediManage_DataAccess
                     using (SqlCommand command = new SqlCommand("SP_CheckPatientExists", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@PatientID", (object)PatientID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PersonID", (object)PersonID ?? DBNull.Value);
 
                         SqlParameter returnParameter = new SqlParameter("@ReturnVal", SqlDbType.Int)
                         {
@@ -262,6 +302,45 @@ namespace MediManage_DataAccess
 
             return isFound;
         }
+
+        public static bool IsPatientExist(string NationalNo)
+        {
+            bool isFound = false;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("SP_CheckPatientExistsByNationalNo", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@NationalNo", (object)NationalNo ?? DBNull.Value);
+
+                        SqlParameter returnParameter = new SqlParameter("@ReturnVal", SqlDbType.Int)
+                        {
+                            Direction = ParameterDirection.ReturnValue
+                        };
+                        command.Parameters.Add(returnParameter);
+
+                        connection.Open();
+                        command.ExecuteNonQuery();
+
+                        if (returnParameter.Value != DBNull.Value)
+                        {
+                            isFound = (int)returnParameter.Value == 1;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsDataAccessSettings.EventLogCreate();
+                EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
+            }
+
+            return isFound;
+        }
+
 
         public static int? GetTotalPatientsNumber()
         {

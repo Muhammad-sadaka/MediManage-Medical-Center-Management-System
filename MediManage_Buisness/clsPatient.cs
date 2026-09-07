@@ -33,6 +33,8 @@ namespace MediManage_Business
         public string ChronicDiseases { get; set; }
         public DateTime? JoinDate { get; set; }
         public int? PatientCaseID { get; set; }
+        public clsPerson PersonInfo { get; set; }
+        public clsPatientCase PatientCaseInfo { get; set; }
 
 
         public clsPatient()
@@ -43,6 +45,9 @@ namespace MediManage_Business
             this.ChronicDiseases = string.Empty;
             this.JoinDate = null;
             this.PatientCaseID = null;
+            this.PersonInfo = null;
+            this.PatientCaseInfo = null;
+
             this.Mode = enMode.AddNew;
         }
 
@@ -55,6 +60,9 @@ namespace MediManage_Business
             this.ChronicDiseases = dto.ChronicDiseases;
             this.JoinDate = dto.JoinDate;
             this.PatientCaseID = dto.PatientCaseID;
+            this.PersonInfo = clsPerson.Find(this.PersonID);
+            this.PatientCaseInfo = clsPatientCase.Find(this.PatientCaseID);
+
             this.Mode = cMode;
         }
 
@@ -72,6 +80,16 @@ namespace MediManage_Business
         public static clsPatient Find(int? ID)
         {
             clsPatientDTO dto = clsPatientsDataAccess.GetPatientInfoByPersonID(ID);
+
+            if (dto != null)
+                return new clsPatient(dto, enMode.Update);
+            else
+                return null;
+        }
+
+        public static clsPatient Find(string NationalNo)
+        {
+            clsPatientDTO dto = clsPatientsDataAccess.GetPatientInfoByNationalNo(NationalNo);
 
             if (dto != null)
                 return new clsPatient(dto, enMode.Update);
@@ -114,6 +132,11 @@ namespace MediManage_Business
         public static bool IsExist(int? ID)
         {
             return clsPatientsDataAccess.IsPatientExist(ID);
+        }
+
+        public static bool IsExist(string NationalNo)
+        {
+            return clsPatientsDataAccess.IsPatientExist(NationalNo);
         }
 
         public static int? GetTotalPatientsNumber()

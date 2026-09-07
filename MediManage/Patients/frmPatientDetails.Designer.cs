@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.lblTitle = new System.Windows.Forms.Label();
+            this.ctrlPatientInfo1 = new MediManage.ctrlPatientInfo();
             this.SuspendLayout();
             // 
             // lblTitle
@@ -41,11 +42,20 @@
             this.lblTitle.TabIndex = 170;
             this.lblTitle.Text = "Patient Details                       ";
             // 
+            // ctrlPatientInfo1
+            // 
+            this.ctrlPatientInfo1.BackColor = System.Drawing.Color.Silver;
+            this.ctrlPatientInfo1.Location = new System.Drawing.Point(12, 71);
+            this.ctrlPatientInfo1.Name = "ctrlPatientInfo1";
+            this.ctrlPatientInfo1.Size = new System.Drawing.Size(705, 187);
+            this.ctrlPatientInfo1.TabIndex = 171;
+            // 
             // frmPatientDetails
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(852, 450);
+            this.ClientSize = new System.Drawing.Size(733, 270);
+            this.Controls.Add(this.ctrlPatientInfo1);
             this.Controls.Add(this.lblTitle);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "frmPatientDetails";
@@ -59,5 +69,6 @@
         #endregion
 
         private System.Windows.Forms.Label lblTitle;
+        private ctrlPatientInfo ctrlPatientInfo1;
     }
 }

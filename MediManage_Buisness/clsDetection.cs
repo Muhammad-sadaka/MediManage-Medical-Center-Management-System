@@ -40,6 +40,7 @@ namespace MediManage_Business
         public byte? BloodPressure { get; set; }
         public byte? HeartRate { get; set; }
         public string Notes { get; set; }
+        public clsAppointment AppointmentInfo { get; set; }
 
         public clsDetection(clsDetectionDTO dto, enMode cMode = enMode.AddNew)
         {
@@ -53,6 +54,7 @@ namespace MediManage_Business
             this.BloodPressure = dto.BloodPressure;
             this.HeartRate = dto.HeartRate;
             this.Notes = dto.Notes;
+            this.AppointmentInfo = clsAppointment.Find(AppointmentID);
             this.Mode = cMode;
         }
 

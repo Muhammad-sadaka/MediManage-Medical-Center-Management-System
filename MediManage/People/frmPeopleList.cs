@@ -85,14 +85,14 @@ namespace MediManage
             // ملاحظة: إذا كان الـ DTO لا يحتوي على خاصية FullName جاهزة، يفضل دمج الأسماء في الـ LINQ أو الـ DTO أولاً
             DGVPeopleList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "FullName", HeaderText = "Full Name", Name = "FullName" });
 
-            DGVPeopleList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "NationalNo", HeaderText = "NationalNo", Name = "NationalNo" });
+            DGVPeopleList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "NationalNo", HeaderText = "National No", Name = "NationalNo" });
             DGVPeopleList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Phone", HeaderText = "Phone", Name = "Phone" });
 
             DataGridViewButtonColumn btnEdit = new DataGridViewButtonColumn();
             btnEdit.HeaderText = "Actions";
             btnEdit.Text = "Edit";
             btnEdit.Name = "btnEdit";
-            btnEdit.FlatStyle = FlatStyle.Flat;
+            btnEdit.FlatStyle = FlatStyle.Popup;
             btnEdit.UseColumnTextForButtonValue = true; 
             DGVPeopleList.Columns.Add(btnEdit);
             
@@ -101,7 +101,7 @@ namespace MediManage
             btnDelete.HeaderText = "";
             btnDelete.Text = "Delete";
             btnDelete.Name = "btnDelete";
-            btnDelete.FlatStyle = FlatStyle.Flat;        // You can remove it and it will set the default
+            btnDelete.FlatStyle = FlatStyle.Popup;        // You can remove it and it will set the default
             btnDelete.UseColumnTextForButtonValue = true; // To Show "Delete" inside the button
             DGVPeopleList.Columns.Add(btnDelete);
 

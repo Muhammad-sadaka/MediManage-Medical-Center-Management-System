@@ -29,13 +29,33 @@ namespace MediManage
             }
 
             Person = clsPerson.Find(PersonID);
+            LoadData();
 
+
+
+        }
+
+        public void LoadPersonInfoData(string NationalNo)
+        {
+            if (!clsPerson.IsExist(NationalNo))
+            {
+                MessageBox.Show("Person Did not Found");
+                return;
+            }
+
+            Person = clsPerson.Find(NationalNo);
+            LoadData();
+
+        }
+
+       
+        void LoadData()
+        {
             lblFullName.Text = Person.FirstName + " " + Person.SecondName + " " + Person.ThirdName + " " + Person.LastName;
             lblDateOfBirth.Text = Person.DateOfBirth.ToString();
             lblPhone.Text = Person.Phone;
 
             klblMoreInfo.Enabled = true;
-
         }
 
         private void klblMoreInfo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

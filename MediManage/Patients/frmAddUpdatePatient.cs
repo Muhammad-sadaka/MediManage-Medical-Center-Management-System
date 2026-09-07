@@ -65,7 +65,6 @@ namespace MediManage
 
             tbSensitivity.Text = "";
             tbChronicDiseases.Text = "";
-            cbPatientCase.SelectedIndex = 0;
 
         }
 

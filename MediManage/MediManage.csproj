@@ -53,6 +53,132 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Appointments\Controls\ctrlAppointmentInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Appointments\Controls\ctrlAppointmentInfo.Designer.cs">
+      <DependentUpon>ctrlAppointmentInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Appointments\Controls\ctrlAppointmentInfoSummary.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Appointments\Controls\ctrlAppointmentInfoSummary.Designer.cs">
+      <DependentUpon>ctrlAppointmentInfoSummary.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MedicalAnalyses\frmAddAnalysis.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MedicalAnalyses\frmAddAnalysis.Designer.cs">
+      <DependentUpon>frmAddAnalysis.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MedicalAnalyses\frmUpdateAnalysis.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MedicalAnalyses\frmUpdateAnalysis.Designer.cs">
+      <DependentUpon>frmUpdateAnalysis.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MedicalExaminations\Controls\ctrlExaminationInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MedicalExaminations\Controls\ctrlExaminationInfo.Designer.cs">
+      <DependentUpon>ctrlExaminationInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MedicalExaminations\Controls\ctrlExaminationInfoSummary.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="MedicalExaminations\Controls\ctrlExaminationInfoSummary.Designer.cs">
+      <DependentUpon>ctrlExaminationInfoSummary.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Appointments\frmAppointmentDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Appointments\frmAppointmentDetails.Designer.cs">
+      <DependentUpon>frmAppointmentDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Patients\Controls\ctrlPatientInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Patients\Controls\ctrlPatientInfo.Designer.cs">
+      <DependentUpon>ctrlPatientInfo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Patients\Controls\ctrlPatientInfoSummary.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Patients\Controls\ctrlPatientInfoSummary.Designer.cs">
+      <DependentUpon>ctrlPatientInfoSummary.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Invoices&amp;Payments\frmAddInvoice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Invoices&amp;Payments\frmAddInvoice.Designer.cs">
+      <DependentUpon>frmAddInvoice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Invoices&amp;Payments\frmInvoiceDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Invoices&amp;Payments\frmInvoiceDetails.Designer.cs">
+      <DependentUpon>frmInvoiceDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Invoices&amp;Payments\frmInvoicesList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Invoices&amp;Payments\frmInvoicesList.Designer.cs">
+      <DependentUpon>frmInvoicesList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MedicalAnalyses\frmAnalysesList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MedicalAnalyses\frmAnalysesList.Designer.cs">
+      <DependentUpon>frmAnalysesList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Medical Prescriptions\frmAddMedicine.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Medical Prescriptions\frmAddMedicine.Designer.cs">
+      <DependentUpon>frmAddMedicine.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Medical Prescriptions\frmAddPrescription.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Medical Prescriptions\frmAddPrescription.Designer.cs">
+      <DependentUpon>frmAddPrescription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Medical Prescriptions\frmPrescriptionsList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Medical Prescriptions\frmPrescriptionsList.Designer.cs">
+      <DependentUpon>frmPrescriptionsList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MedicalExaminations\frmAddExamination.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MedicalExaminations\frmAddExamination.Designer.cs">
+      <DependentUpon>frmAddExamination.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MedicalExaminations\frmExaminationsList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MedicalExaminations\frmExaminationsList.Designer.cs">
+      <DependentUpon>frmExaminationsList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MyCustomCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MyCustomCheckBox.Designer.cs">
+      <DependentUpon>MyCustomCheckBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Users\frmUsersList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Users\frmUsersList.Designer.cs">
+      <DependentUpon>frmUsersList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Users\frmAddUpdateUser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Users\frmAddUpdateUser.Designer.cs">
+      <DependentUpon>frmAddUpdateUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Patients\frmPatientDetails.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -159,6 +285,63 @@
     <EmbeddedResource Include="Appointments\frmAppointmentsList.resx">
       <DependentUpon>frmAppointmentsList.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Appointments\Controls\ctrlAppointmentInfo.resx">
+      <DependentUpon>ctrlAppointmentInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Appointments\Controls\ctrlAppointmentInfoSummary.resx">
+      <DependentUpon>ctrlAppointmentInfoSummary.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Invoices&amp;Payments\frmInvoiceDetails.resx">
+      <DependentUpon>frmInvoiceDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MedicalAnalyses\frmAddAnalysis.resx">
+      <DependentUpon>frmAddAnalysis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MedicalAnalyses\frmUpdateAnalysis.resx">
+      <DependentUpon>frmUpdateAnalysis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MedicalExaminations\Controls\ctrlExaminationInfo.resx">
+      <DependentUpon>ctrlExaminationInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MedicalExaminations\Controls\ctrlExaminationInfoSummary.resx">
+      <DependentUpon>ctrlExaminationInfoSummary.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Appointments\frmAppointmentDetails.resx">
+      <DependentUpon>frmAppointmentDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Invoices&amp;Payments\frmAddInvoice.resx">
+      <DependentUpon>frmAddInvoice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Invoices&amp;Payments\frmInvoicesList.resx">
+      <DependentUpon>frmInvoicesList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Medical Prescriptions\frmAddMedicine.resx">
+      <DependentUpon>frmAddMedicine.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Medical Prescriptions\frmAddPrescription.resx">
+      <DependentUpon>frmAddPrescription.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Medical Prescriptions\frmPrescriptionsList.resx">
+      <DependentUpon>frmPrescriptionsList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MedicalAnalyses\frmAnalysesList.resx">
+      <DependentUpon>frmAnalysesList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MedicalExaminations\frmAddExamination.resx">
+      <DependentUpon>frmAddExamination.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MedicalExaminations\frmExaminationsList.resx">
+      <DependentUpon>frmExaminationsList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MyCustomCheckBox.resx">
+      <DependentUpon>MyCustomCheckBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Patients\Controls\ctrlPatientInfo.resx">
+      <DependentUpon>ctrlPatientInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Patients\Controls\ctrlPatientInfoSummary.resx">
+      <DependentUpon>ctrlPatientInfoSummary.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Patients\frmPatientDetails.resx">
       <DependentUpon>frmPatientDetails.cs</DependentUpon>
     </EmbeddedResource>
@@ -192,6 +375,9 @@
     <EmbeddedResource Include="People\frmPeopleList.resx">
       <DependentUpon>frmPeopleList.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Users\frmAddUpdateUser.resx">
+      <DependentUpon>frmAddUpdateUser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Users\frmLogin.resx">
       <DependentUpon>frmLogin.cs</DependentUpon>
     </EmbeddedResource>
@@ -202,6 +388,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Users\frmUsersList.resx">
+      <DependentUpon>frmUsersList.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

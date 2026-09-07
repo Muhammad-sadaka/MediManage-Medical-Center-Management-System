@@ -34,15 +34,15 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.btnAddNew = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
-            this.DGVPeopleList = new System.Windows.Forms.DataGridView();
+            this.DGVAppointmentsList = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
             this.lblTotalRecords = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.cbMaritalStatus = new System.Windows.Forms.ComboBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbStatuses = new System.Windows.Forms.ComboBox();
+            this.cbDoctors = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.DGVPeopleList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVAppointmentsList)).BeginInit();
             this.SuspendLayout();
             // 
             // btnAddNew
@@ -75,14 +75,14 @@
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // DGVPeopleList
+            // DGVAppointmentsList
             // 
-            this.DGVPeopleList.AllowUserToAddRows = false;
-            this.DGVPeopleList.AllowUserToDeleteRows = false;
+            this.DGVAppointmentsList.AllowUserToAddRows = false;
+            this.DGVAppointmentsList.AllowUserToDeleteRows = false;
             dataGridViewCellStyle9.BackColor = System.Drawing.Color.White;
-            this.DGVPeopleList.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle9;
-            this.DGVPeopleList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.DGVPeopleList.BackgroundColor = System.Drawing.Color.White;
+            this.DGVAppointmentsList.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle9;
+            this.DGVAppointmentsList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.DGVAppointmentsList.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle10.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle10.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -90,8 +90,8 @@
             dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DGVPeopleList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
-            this.DGVPeopleList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVAppointmentsList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle10;
+            this.DGVAppointmentsList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle11.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -99,17 +99,19 @@
             dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DGVPeopleList.DefaultCellStyle = dataGridViewCellStyle11;
-            this.DGVPeopleList.GridColor = System.Drawing.SystemColors.ScrollBar;
-            this.DGVPeopleList.Location = new System.Drawing.Point(21, 169);
-            this.DGVPeopleList.Name = "DGVPeopleList";
-            this.DGVPeopleList.ReadOnly = true;
-            this.DGVPeopleList.RowHeadersWidth = 51;
+            this.DGVAppointmentsList.DefaultCellStyle = dataGridViewCellStyle11;
+            this.DGVAppointmentsList.GridColor = System.Drawing.SystemColors.ScrollBar;
+            this.DGVAppointmentsList.Location = new System.Drawing.Point(21, 169);
+            this.DGVAppointmentsList.Name = "DGVAppointmentsList";
+            this.DGVAppointmentsList.ReadOnly = true;
+            this.DGVAppointmentsList.RowHeadersWidth = 51;
             dataGridViewCellStyle12.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.DGVPeopleList.RowsDefaultCellStyle = dataGridViewCellStyle12;
-            this.DGVPeopleList.RowTemplate.Height = 26;
-            this.DGVPeopleList.Size = new System.Drawing.Size(1366, 495);
-            this.DGVPeopleList.TabIndex = 23;
+            this.DGVAppointmentsList.RowsDefaultCellStyle = dataGridViewCellStyle12;
+            this.DGVAppointmentsList.RowTemplate.Height = 26;
+            this.DGVAppointmentsList.Size = new System.Drawing.Size(1366, 495);
+            this.DGVAppointmentsList.TabIndex = 23;
+            this.DGVAppointmentsList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVAppointmentsList_CellContentClick);
+            this.DGVAppointmentsList.DoubleClick += new System.EventHandler(this.DGVAppointmentsList_DoubleClick);
             // 
             // label2
             // 
@@ -138,26 +140,34 @@
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(500, 35);
             this.dateTimePicker1.TabIndex = 168;
+            this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
             // 
-            // cbMaritalStatus
+            // cbStatuses
             // 
-            this.cbMaritalStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbMaritalStatus.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbMaritalStatus.FormattingEnabled = true;
-            this.cbMaritalStatus.Location = new System.Drawing.Point(686, 121);
-            this.cbMaritalStatus.Name = "cbMaritalStatus";
-            this.cbMaritalStatus.Size = new System.Drawing.Size(263, 36);
-            this.cbMaritalStatus.TabIndex = 169;
+            this.cbStatuses.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStatuses.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbStatuses.FormattingEnabled = true;
+            this.cbStatuses.Items.AddRange(new object[] {
+            "All"});
+            this.cbStatuses.Location = new System.Drawing.Point(686, 121);
+            this.cbStatuses.Name = "cbStatuses";
+            this.cbStatuses.Size = new System.Drawing.Size(263, 36);
+            this.cbStatuses.TabIndex = 169;
+            this.cbStatuses.SelectedIndexChanged += new System.EventHandler(this.cbStatuses_SelectedIndexChanged);
             // 
-            // comboBox1
+            // cbDoctors
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(1124, 121);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(263, 36);
-            this.comboBox1.TabIndex = 170;
+            this.cbDoctors.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDoctors.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbDoctors.FormattingEnabled = true;
+            this.cbDoctors.Items.AddRange(new object[] {
+            "All"});
+            this.cbDoctors.Location = new System.Drawing.Point(1124, 121);
+            this.cbDoctors.Name = "cbDoctors";
+            this.cbDoctors.Size = new System.Drawing.Size(263, 36);
+            this.cbDoctors.Sorted = true;
+            this.cbDoctors.TabIndex = 170;
+            this.cbDoctors.SelectedIndexChanged += new System.EventHandler(this.cbDoctors_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -186,19 +196,20 @@
             this.ClientSize = new System.Drawing.Size(1410, 727);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.cbMaritalStatus);
+            this.Controls.Add(this.cbDoctors);
+            this.Controls.Add(this.cbStatuses);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.lblTotalRecords);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.DGVPeopleList);
+            this.Controls.Add(this.DGVAppointmentsList);
             this.Controls.Add(this.btnAddNew);
             this.Controls.Add(this.btnClose);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmAppointmentsList";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "frmAppointmentsList";
-            ((System.ComponentModel.ISupportInitialize)(this.DGVPeopleList)).EndInit();
+            this.Load += new System.EventHandler(this.frmAppointmentsList_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.DGVAppointmentsList)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -208,12 +219,12 @@
 
         private System.Windows.Forms.Button btnAddNew;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.DataGridView DGVPeopleList;
+        private System.Windows.Forms.DataGridView DGVAppointmentsList;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblTotalRecords;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.ComboBox cbMaritalStatus;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbStatuses;
+        private System.Windows.Forms.ComboBox cbDoctors;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label3;
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
 
 namespace MediManage_DataAccess
 {
@@ -15,8 +16,9 @@ namespace MediManage_DataAccess
         public string Qualification { get; set; }
         public bool? IsActive { get; set; }
         public int? SpecialtyID { get; set; }
+        public string LicenseNo { get; set; }   
 
-        public clsDoctorDTO(int? doctorID, int? personID, byte? yearsOfExperience, string qualification, bool? isActive, int? specialtyID)
+        public clsDoctorDTO(int? doctorID, int? personID, byte? yearsOfExperience, string qualification, bool? isActive, int? specialtyID,string licenseNo)
         {
             this.DoctorID = doctorID;
             this.PersonID = personID;
@@ -24,6 +26,7 @@ namespace MediManage_DataAccess
             this.Qualification = qualification;
             this.IsActive = isActive;
             this.SpecialtyID = specialtyID;
+            this.LicenseNo = licenseNo;
         }
     }
 
@@ -49,7 +52,7 @@ namespace MediManage_DataAccess
     // 2. Data Access Layer
     public class clsDoctorsDataAccess
     {
-        public static clsDoctorDTO GetDoctorInfoByID(int? DoctorID)
+        public static clsDoctorDTO GetDoctorInfoByID(int? PersonID)
         {
             try
             {
@@ -58,7 +61,7 @@ namespace MediManage_DataAccess
                     using (SqlCommand command = new SqlCommand("SP_GetDoctorByID", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@DoctorID", (object)DoctorID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PersonID", (object)PersonID ?? DBNull.Value);
 
                         connection.Open();
                         using (SqlDataReader reader = command.ExecuteReader())
@@ -72,7 +75,48 @@ namespace MediManage_DataAccess
                                     reader["YearsOfExperience"] == DBNull.Value ? null : (byte?)reader["YearsOfExperience"],
                                     reader["Qualification"] == DBNull.Value ? null : (string)reader["Qualification"],
                                     reader["IsActive"] == DBNull.Value ? null : (bool?)reader["IsActive"],
-                                    reader["SpecialtyID"] == DBNull.Value ? null : (int?)reader["SpecialtyID"]
+                                    reader["SpecialtyID"] == DBNull.Value ? null : (int?)reader["SpecialtyID"],
+                                    reader["LicenseNo"] == DBNull.Value ? null : (string)reader["LicenseNo"]
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsDataAccessSettings.EventLogCreate();
+                EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
+            }
+
+            return null;
+        }
+
+        public static clsDoctorDTO GetDoctorInfoByNationalNo(string NationalNo)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("SP_GetDoctorByNationalNo", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@NationalNo", (object)NationalNo ?? DBNull.Value);
+
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new clsDoctorDTO
+                                (
+                                    reader["DoctorID"] == DBNull.Value ? null : (int?)reader["DoctorID"],
+                                    reader["PersonID"] == DBNull.Value ? null : (int?)reader["PersonID"],
+                                    reader["YearsOfExperience"] == DBNull.Value ? null : (byte?)reader["YearsOfExperience"],
+                                    reader["Qualification"] == DBNull.Value ? null : (string)reader["Qualification"],
+                                    reader["IsActive"] == DBNull.Value ? null : (bool?)reader["IsActive"],
+                                    reader["SpecialtyID"] == DBNull.Value ? null : (int?)reader["SpecialtyID"],
+                                    reader["LicenseNo"] == DBNull.Value ? null : (string)reader["LicenseNo"]
                                 );
                             }
                         }
@@ -105,6 +149,7 @@ namespace MediManage_DataAccess
                         command.Parameters.AddWithValue("@Qualification", (object)dto.Qualification ?? DBNull.Value);
                         command.Parameters.AddWithValue("@IsActive", (object)dto.IsActive ?? DBNull.Value);
                         command.Parameters.AddWithValue("@SpecialtyID", (object)dto.SpecialtyID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@LicenseNo", (object)dto.LicenseNo ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewDoctorID", SqlDbType.Int)
                         {
@@ -147,6 +192,7 @@ namespace MediManage_DataAccess
                         command.Parameters.AddWithValue("@Qualification", (object)dto.Qualification ?? DBNull.Value);
                         command.Parameters.AddWithValue("@IsActive", (object)dto.IsActive ?? DBNull.Value);
                         command.Parameters.AddWithValue("@SpecialtyID", (object)dto.SpecialtyID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@LicenseNo", (object)dto.LicenseNo ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -185,9 +231,44 @@ namespace MediManage_DataAccess
                                     reader["PersonID"] == DBNull.Value ? null : (int?)reader["PersonID"],
                                     reader["NationalNo"] == DBNull.Value ? null : (string)reader["NationalNo"],
                                     reader["FullName"] == DBNull.Value ? null : (string)reader["FullName"],
-                                    reader["Speciality"] == DBNull.Value ? null : (string)reader["Speciality"],
+                                    reader["SpecialtyName"] == DBNull.Value ? null : (string)reader["SpecialtyName"],
                                     reader["Phone"] == DBNull.Value ? null : (string)reader["Phone"]
 
+                                ));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsDataAccessSettings.EventLogCreate();
+                EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
+            }
+
+            return doctorsList;
+        }
+
+        public static List<string> GetAllDoctorsNames()
+        {
+            var doctorsList = new List<string>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("SP_GetAllDoctorsNames", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                doctorsList.Add(
+                                (
+                                    reader["FullName"] == DBNull.Value ? null : (string)reader["FullName"]
                                 ));
                             }
                         }
@@ -267,5 +348,44 @@ namespace MediManage_DataAccess
 
             return isFound;
         }
+
+        public static bool IsDoctorExist(string NationalNo)
+        {
+            bool isFound = false;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("SP_CheckDoctorExistsByNationalNo", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@NationalNo", (object)NationalNo ?? DBNull.Value);
+
+                        SqlParameter returnParameter = new SqlParameter("@ReturnVal", SqlDbType.Int)
+                        {
+                            Direction = ParameterDirection.ReturnValue
+                        };
+                        command.Parameters.Add(returnParameter);
+
+                        connection.Open();
+                        command.ExecuteNonQuery();
+
+                        if (returnParameter.Value != DBNull.Value)
+                        {
+                            isFound = (int)returnParameter.Value == 1;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsDataAccessSettings.EventLogCreate();
+                EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
+            }
+
+            return isFound;
+        }
+
     }
 }

@@ -52,6 +52,24 @@ namespace MediManage_DataAccess
         }
     }
 
+    public class clsAppointmentListDTO
+    {
+        public int? AppointmentID { get; set; }
+        public string PatientName { get; set; }
+        public string DoctorName { get; set; }
+        public DateTime? AppointmentDate { get; set; }
+        public string Status { get; set; }
+
+        public clsAppointmentListDTO(int? appointmentID, string patientName, string doctorName, DateTime? appointmentDate, string status)
+        {
+            AppointmentID = appointmentID;
+            PatientName = patientName;
+            DoctorName = doctorName;
+            AppointmentDate = appointmentDate;
+            Status = status;
+        }
+    }
+
     public class clsAppointmentsDataAccess
     {
         public static clsAppointmentDTO GetAppointmentInfoByID(int? AppointmentID)
@@ -180,9 +198,9 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static List<clsAppointmentDTO> GetAllAppointments()
+        public static List<clsAppointmentListDTO> GetAllAppointments()
         {
-            var appointmentsList = new List<clsAppointmentDTO>();
+            var appointmentsList = new List<clsAppointmentListDTO>();
 
             try
             {
@@ -191,24 +209,20 @@ namespace MediManage_DataAccess
                     using (SqlCommand command = new SqlCommand("SP_GetAllAppointments", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+
                         connection.Open();
 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                appointmentsList.Add(new clsAppointmentDTO
+                                appointmentsList.Add(new clsAppointmentListDTO
                                 (
                                     reader["AppointmentID"] == DBNull.Value ? null : (int?)reader["AppointmentID"],
-                                    reader["PatientID"] == DBNull.Value ? null : (int?)reader["PatientID"],
-                                    reader["DoctorID"] == DBNull.Value ? null : (int?)reader["DoctorID"],
-                                    reader["CreatedByUserID"] == DBNull.Value ? null : (int?)reader["CreatedByUserID"],
-                                    reader["BookingDate"] == DBNull.Value ? null : (DateTime?)reader["BookingDate"],
+                                    reader["Patient Name"] == DBNull.Value ? null : (string)reader["Patient Name"],
+                                    reader["Doctor Name"] == DBNull.Value ? null : (string)reader["Doctor Name"],
                                     reader["AppointmentDate"] == DBNull.Value ? null : (DateTime?)reader["AppointmentDate"],
-                                    reader["AppointmentCaseID"] == DBNull.Value ? null : (int?)reader["AppointmentCaseID"],
-                                    reader["Duration"] == DBNull.Value ? null : (byte?)reader["Duration"],
-                                    reader["Reason"] == DBNull.Value ? null : (string)reader["Reason"],
-                                    reader["Notes"] == DBNull.Value ? null : (string)reader["Notes"]
+                                    reader["Status"] == DBNull.Value ? null : (string)reader["Status"]
                                 ));
                             }
                         }

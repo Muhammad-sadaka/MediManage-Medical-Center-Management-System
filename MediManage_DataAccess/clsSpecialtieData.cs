@@ -61,6 +61,42 @@ namespace MediManage_DataAccess
             return null;
         }
 
+        public static clsSpecialtyDTO GetSpecialtyInfoByspecialtyName(string SpecialtyName)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("SP_GetSpecialtyBySpecialtyName", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@SpecialtyName", (object)SpecialtyName ?? DBNull.Value);
+
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new clsSpecialtyDTO(
+                                    reader["SpecialtyID"] == DBNull.Value ? null : (int?)reader["SpecialtyID"],
+                                    reader["SpecialtyName"] == DBNull.Value ? null : (string)reader["SpecialtyName"],
+                                    reader["Description"] == DBNull.Value ? null : (string)reader["Description"],
+                                    reader["Fees"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(reader["Fees"])
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsDataAccessSettings.EventLogCreate();
+                EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
+            }
+
+            return null;
+        }
+
         public static int? AddNewSpecialty(clsSpecialtyDTO specialtyDTO)
         {
             int? SpecialtyID = null;

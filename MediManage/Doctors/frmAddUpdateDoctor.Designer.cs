@@ -32,17 +32,17 @@
             this.btnClose = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.cbPatientCase = new System.Windows.Forms.ComboBox();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.chkIsActive = new MediManage.MyCustomCheckBox();
+            this.tbConsultationFees = new System.Windows.Forms.TextBox();
+            this.cbSpecialties = new System.Windows.Forms.ComboBox();
+            this.numericEcperienceYears = new System.Windows.Forms.NumericUpDown();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.tbChronicDiseases = new System.Windows.Forms.TextBox();
+            this.tbQualification = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.tbSensitivity = new System.Windows.Forms.TextBox();
+            this.tbLicenseNo = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.ctrlPersonInfoSummary1 = new MediManage.ctrlPersonInfoSummary();
@@ -51,8 +51,7 @@
             this.tbNationalNo = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
             this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericEcperienceYears)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.gbSearch.SuspendLayout();
             this.SuspendLayout();
@@ -97,17 +96,17 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.cbPatientCase);
-            this.groupBox3.Controls.Add(this.numericUpDown2);
-            this.groupBox3.Controls.Add(this.numericUpDown1);
-            this.groupBox3.Controls.Add(this.checkBox1);
+            this.groupBox3.Controls.Add(this.chkIsActive);
+            this.groupBox3.Controls.Add(this.tbConsultationFees);
+            this.groupBox3.Controls.Add(this.cbSpecialties);
+            this.groupBox3.Controls.Add(this.numericEcperienceYears);
             this.groupBox3.Controls.Add(this.label11);
             this.groupBox3.Controls.Add(this.label10);
             this.groupBox3.Controls.Add(this.label9);
             this.groupBox3.Controls.Add(this.label7);
-            this.groupBox3.Controls.Add(this.tbChronicDiseases);
+            this.groupBox3.Controls.Add(this.tbQualification);
             this.groupBox3.Controls.Add(this.label6);
-            this.groupBox3.Controls.Add(this.tbSensitivity);
+            this.groupBox3.Controls.Add(this.tbLicenseNo);
             this.groupBox3.Controls.Add(this.label5);
             this.groupBox3.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox3.Location = new System.Drawing.Point(12, 431);
@@ -117,40 +116,44 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "3 ";
             // 
-            // cbPatientCase
+            // chkIsActive
             // 
-            this.cbPatientCase.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPatientCase.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbPatientCase.FormattingEnabled = true;
-            this.cbPatientCase.Location = new System.Drawing.Point(311, 36);
-            this.cbPatientCase.Name = "cbPatientCase";
-            this.cbPatientCase.Size = new System.Drawing.Size(889, 36);
-            this.cbPatientCase.TabIndex = 176;
+            this.chkIsActive.AutoSize = true;
+            this.chkIsActive.BackColor = System.Drawing.Color.Transparent;
+            this.chkIsActive.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkIsActive.Location = new System.Drawing.Point(313, 324);
+            this.chkIsActive.Name = "chkIsActive";
+            this.chkIsActive.Size = new System.Drawing.Size(45, 38);
+            this.chkIsActive.TabIndex = 178;
+            this.chkIsActive.Text = " ";
+            this.chkIsActive.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkIsActive.UseVisualStyleBackColor = false;
             // 
-            // numericUpDown2
+            // tbConsultationFees
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(311, 150);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(889, 40);
-            this.numericUpDown2.TabIndex = 175;
+            this.tbConsultationFees.Location = new System.Drawing.Point(311, 268);
+            this.tbConsultationFees.Name = "tbConsultationFees";
+            this.tbConsultationFees.ReadOnly = true;
+            this.tbConsultationFees.Size = new System.Drawing.Size(887, 40);
+            this.tbConsultationFees.TabIndex = 177;
             // 
-            // numericUpDown1
+            // cbSpecialties
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(313, 266);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(887, 40);
-            this.numericUpDown1.TabIndex = 174;
+            this.cbSpecialties.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSpecialties.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbSpecialties.FormattingEnabled = true;
+            this.cbSpecialties.Location = new System.Drawing.Point(311, 36);
+            this.cbSpecialties.Name = "cbSpecialties";
+            this.cbSpecialties.Size = new System.Drawing.Size(889, 36);
+            this.cbSpecialties.TabIndex = 176;
+            this.cbSpecialties.SelectedIndexChanged += new System.EventHandler(this.cbSpecialties_SelectedIndexChanged);
             // 
-            // checkBox1
+            // numericEcperienceYears
             // 
-            this.checkBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.checkBox1.Font = new System.Drawing.Font("Tahoma", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox1.Location = new System.Drawing.Point(313, 326);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(38, 34);
-            this.checkBox1.TabIndex = 171;
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.checkBox1_Paint);
+            this.numericEcperienceYears.Location = new System.Drawing.Point(311, 150);
+            this.numericEcperienceYears.Name = "numericEcperienceYears";
+            this.numericEcperienceYears.Size = new System.Drawing.Size(889, 40);
+            this.numericEcperienceYears.TabIndex = 175;
             // 
             // label11
             // 
@@ -192,12 +195,12 @@
             this.label7.TabIndex = 149;
             this.label7.Text = "Is Active:";
             // 
-            // tbChronicDiseases
+            // tbQualification
             // 
-            this.tbChronicDiseases.Location = new System.Drawing.Point(313, 210);
-            this.tbChronicDiseases.Name = "tbChronicDiseases";
-            this.tbChronicDiseases.Size = new System.Drawing.Size(887, 40);
-            this.tbChronicDiseases.TabIndex = 148;
+            this.tbQualification.Location = new System.Drawing.Point(313, 210);
+            this.tbQualification.Name = "tbQualification";
+            this.tbQualification.Size = new System.Drawing.Size(887, 40);
+            this.tbQualification.TabIndex = 148;
             // 
             // label6
             // 
@@ -209,12 +212,12 @@
             this.label6.TabIndex = 147;
             this.label6.Text = "License No:";
             // 
-            // tbSensitivity
+            // tbLicenseNo
             // 
-            this.tbSensitivity.Location = new System.Drawing.Point(313, 91);
-            this.tbSensitivity.Name = "tbSensitivity";
-            this.tbSensitivity.Size = new System.Drawing.Size(887, 40);
-            this.tbSensitivity.TabIndex = 146;
+            this.tbLicenseNo.Location = new System.Drawing.Point(313, 91);
+            this.tbLicenseNo.Name = "tbLicenseNo";
+            this.tbLicenseNo.Size = new System.Drawing.Size(887, 40);
+            this.tbLicenseNo.TabIndex = 146;
             // 
             // label5
             // 
@@ -278,6 +281,8 @@
             this.tbNationalNo.Size = new System.Drawing.Size(823, 40);
             this.tbNationalNo.TabIndex = 22;
             this.tbNationalNo.Text = "National No";
+            this.tbNationalNo.Enter += new System.EventHandler(this.tbNationalNo_Enter);
+            this.tbNationalNo.Leave += new System.EventHandler(this.tbNationalNo_Leave);
             // 
             // btnSearch
             // 
@@ -311,8 +316,7 @@
             this.Load += new System.EventHandler(this.frmAddUpdateDoctor_Load);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericEcperienceYears)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.gbSearch.ResumeLayout(false);
             this.gbSearch.PerformLayout();
@@ -329,9 +333,9 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox tbChronicDiseases;
+        private System.Windows.Forms.TextBox tbQualification;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox tbSensitivity;
+        private System.Windows.Forms.TextBox tbLicenseNo;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.GroupBox gbSearch;
@@ -340,10 +344,10 @@
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.ComboBox cbPatientCase;
+        private System.Windows.Forms.NumericUpDown numericEcperienceYears;
+        private System.Windows.Forms.ComboBox cbSpecialties;
         private ctrlPersonInfoSummary ctrlPersonInfoSummary1;
+        private System.Windows.Forms.TextBox tbConsultationFees;
+        private MyCustomCheckBox chkIsActive;
     }
 }

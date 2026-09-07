@@ -28,9 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMainScreen));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.btnDoctorsList = new System.Windows.Forms.Button();
             this.btnAddNewDoctor = new System.Windows.Forms.Button();
@@ -60,19 +59,45 @@
             this.btnAddNewAppointment = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.btnExaminationsList = new System.Windows.Forms.Button();
+            this.btnAddNewExamination = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
             this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.btnPrescriptionList = new System.Windows.Forms.Button();
+            this.btnAddNewPrescription = new System.Windows.Forms.Button();
+            this.label7 = new System.Windows.Forms.Label();
             this.tabPage8 = new System.Windows.Forms.TabPage();
-            this.button1 = new ReaLTaiizor.Controls.Button();
-            this.cyberButton1 = new ReaLTaiizor.Controls.CyberButton();
-            this.dreamButton1 = new ReaLTaiizor.Controls.DreamButton();
-            this.hopeRoundButton1 = new ReaLTaiizor.Controls.HopeRoundButton();
-            this.materialButton1 = new ReaLTaiizor.Controls.MaterialButton();
-            this.moonButton1 = new ReaLTaiizor.Controls.MoonButton();
-            this.nightButton1 = new ReaLTaiizor.Controls.NightButton();
-            this.parrotButton1 = new ReaLTaiizor.Controls.ParrotButton();
+            this.btnAnalysesList = new System.Windows.Forms.Button();
+            this.btnAddNewAnalysis = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
             this.tabPage9 = new System.Windows.Forms.TabPage();
+            this.btnInvoicesList = new System.Windows.Forms.Button();
+            this.btnAddNewInvoice = new System.Windows.Forms.Button();
+            this.label9 = new System.Windows.Forms.Label();
             this.tabPage10 = new System.Windows.Forms.TabPage();
+            this.btnUsersList = new System.Windows.Forms.Button();
+            this.btnAddNewUser = new System.Windows.Forms.Button();
+            this.label5 = new System.Windows.Forms.Label();
             this.tabPage11 = new System.Windows.Forms.TabPage();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.tabPage12 = new System.Windows.Forms.TabPage();
             this.tabPage4.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -85,7 +110,16 @@
             this.foreverGroupBox1.SuspendLayout();
             this.tabPage3.SuspendLayout();
             this.tabPage5.SuspendLayout();
+            this.tabPage6.SuspendLayout();
+            this.tabPage7.SuspendLayout();
             this.tabPage8.SuspendLayout();
+            this.tabPage9.SuspendLayout();
+            this.tabPage10.SuspendLayout();
+            this.tabPage11.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabPage4
@@ -260,8 +294,8 @@
             // 
             this.DGVTodayAppointments.AllowUserToAddRows = false;
             this.DGVTodayAppointments.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle27.BackColor = System.Drawing.Color.White;
-            this.DGVTodayAppointments.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle27;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            this.DGVTodayAppointments.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.DGVTodayAppointments.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.DGVTodayAppointments.BackgroundColor = System.Drawing.Color.White;
             this.DGVTodayAppointments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -270,8 +304,8 @@
             this.DGVTodayAppointments.Name = "DGVTodayAppointments";
             this.DGVTodayAppointments.ReadOnly = true;
             this.DGVTodayAppointments.RowHeadersWidth = 51;
-            dataGridViewCellStyle28.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.DGVTodayAppointments.RowsDefaultCellStyle = dataGridViewCellStyle28;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.DGVTodayAppointments.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.DGVTodayAppointments.RowTemplate.Height = 26;
             this.DGVTodayAppointments.Size = new System.Drawing.Size(1073, 362);
             this.DGVTodayAppointments.TabIndex = 17;
@@ -292,9 +326,9 @@
             this.lblWelcome.AutoSize = true;
             this.lblWelcome.Location = new System.Drawing.Point(858, 37);
             this.lblWelcome.Name = "lblWelcome";
-            this.lblWelcome.Size = new System.Drawing.Size(228, 45);
+            this.lblWelcome.Size = new System.Drawing.Size(170, 45);
             this.lblWelcome.TabIndex = 3;
-            this.lblWelcome.Text = "Welcome, Dr. ";
+            this.lblWelcome.Text = "Welcome ";
             // 
             // foreverGroupBox3
             // 
@@ -481,6 +515,9 @@
             // 
             // tabPage6
             // 
+            this.tabPage6.Controls.Add(this.btnExaminationsList);
+            this.tabPage6.Controls.Add(this.btnAddNewExamination);
+            this.tabPage6.Controls.Add(this.label6);
             this.tabPage6.Location = new System.Drawing.Point(290, 0);
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.Padding = new System.Windows.Forms.Padding(3);
@@ -489,8 +526,45 @@
             this.tabPage6.Text = "Medical Examinations";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
+            // btnExaminationsList
+            // 
+            this.btnExaminationsList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExaminationsList.Location = new System.Drawing.Point(53, 146);
+            this.btnExaminationsList.Name = "btnExaminationsList";
+            this.btnExaminationsList.Size = new System.Drawing.Size(444, 82);
+            this.btnExaminationsList.TabIndex = 15;
+            this.btnExaminationsList.Text = "Examinations List";
+            this.btnExaminationsList.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnExaminationsList.UseVisualStyleBackColor = true;
+            this.btnExaminationsList.Click += new System.EventHandler(this.btnExaminationsList_Click);
+            // 
+            // btnAddNewExamination
+            // 
+            this.btnAddNewExamination.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddNewExamination.Location = new System.Drawing.Point(53, 252);
+            this.btnAddNewExamination.Name = "btnAddNewExamination";
+            this.btnAddNewExamination.Size = new System.Drawing.Size(444, 82);
+            this.btnAddNewExamination.TabIndex = 14;
+            this.btnAddNewExamination.Text = "Add New Examination";
+            this.btnAddNewExamination.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddNewExamination.UseVisualStyleBackColor = true;
+            this.btnAddNewExamination.Click += new System.EventHandler(this.btnAddNewExamination_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Arial", 25.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(44, 59);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(472, 51);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Medical Examinations";
+            // 
             // tabPage7
             // 
+            this.tabPage7.Controls.Add(this.btnPrescriptionList);
+            this.tabPage7.Controls.Add(this.btnAddNewPrescription);
+            this.tabPage7.Controls.Add(this.label7);
             this.tabPage7.Location = new System.Drawing.Point(290, 0);
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.Padding = new System.Windows.Forms.Padding(3);
@@ -499,16 +573,45 @@
             this.tabPage7.Text = "Medical Prescriptions";
             this.tabPage7.UseVisualStyleBackColor = true;
             // 
+            // btnPrescriptionList
+            // 
+            this.btnPrescriptionList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPrescriptionList.Location = new System.Drawing.Point(53, 145);
+            this.btnPrescriptionList.Name = "btnPrescriptionList";
+            this.btnPrescriptionList.Size = new System.Drawing.Size(444, 82);
+            this.btnPrescriptionList.TabIndex = 15;
+            this.btnPrescriptionList.Text = "Prescriptions List";
+            this.btnPrescriptionList.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnPrescriptionList.UseVisualStyleBackColor = true;
+            this.btnPrescriptionList.Click += new System.EventHandler(this.btnPrescriptionList_Click);
+            // 
+            // btnAddNewPrescription
+            // 
+            this.btnAddNewPrescription.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddNewPrescription.Location = new System.Drawing.Point(53, 251);
+            this.btnAddNewPrescription.Name = "btnAddNewPrescription";
+            this.btnAddNewPrescription.Size = new System.Drawing.Size(444, 82);
+            this.btnAddNewPrescription.TabIndex = 14;
+            this.btnAddNewPrescription.Text = "Add New Prescription";
+            this.btnAddNewPrescription.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddNewPrescription.UseVisualStyleBackColor = true;
+            this.btnAddNewPrescription.Click += new System.EventHandler(this.btnAddNewPrescription_Click);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Arial", 25.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(44, 58);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(468, 51);
+            this.label7.TabIndex = 13;
+            this.label7.Text = "Medical Prescriptions";
+            // 
             // tabPage8
             // 
-            this.tabPage8.Controls.Add(this.button1);
-            this.tabPage8.Controls.Add(this.cyberButton1);
-            this.tabPage8.Controls.Add(this.dreamButton1);
-            this.tabPage8.Controls.Add(this.hopeRoundButton1);
-            this.tabPage8.Controls.Add(this.materialButton1);
-            this.tabPage8.Controls.Add(this.moonButton1);
-            this.tabPage8.Controls.Add(this.nightButton1);
-            this.tabPage8.Controls.Add(this.parrotButton1);
+            this.tabPage8.Controls.Add(this.btnAnalysesList);
+            this.tabPage8.Controls.Add(this.btnAddNewAnalysis);
+            this.tabPage8.Controls.Add(this.label8);
             this.tabPage8.Location = new System.Drawing.Point(290, 0);
             this.tabPage8.Name = "tabPage8";
             this.tabPage8.Padding = new System.Windows.Forms.Padding(3);
@@ -517,185 +620,45 @@
             this.tabPage8.Text = "Medical Analyses";
             this.tabPage8.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // btnAnalysesList
             // 
-            this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(34)))), ((int)(((byte)(37)))));
-            this.button1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.button1.EnteredBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(165)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            this.button1.EnteredColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(34)))), ((int)(((byte)(37)))));
-            this.button1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F);
-            this.button1.Image = null;
-            this.button1.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button1.InactiveColor = System.Drawing.Color.FromArgb(((int)(((byte)(32)))), ((int)(((byte)(34)))), ((int)(((byte)(37)))));
-            this.button1.Location = new System.Drawing.Point(588, 158);
-            this.button1.Name = "button1";
-            this.button1.PressedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(165)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            this.button1.PressedColor = System.Drawing.Color.FromArgb(((int)(((byte)(165)))), ((int)(((byte)(37)))), ((int)(((byte)(37)))));
-            this.button1.Size = new System.Drawing.Size(120, 40);
-            this.button1.TabIndex = 7;
-            this.button1.Text = "button1";
-            this.button1.TextAlignment = System.Drawing.StringAlignment.Center;
+            this.btnAnalysesList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAnalysesList.Location = new System.Drawing.Point(52, 147);
+            this.btnAnalysesList.Name = "btnAnalysesList";
+            this.btnAnalysesList.Size = new System.Drawing.Size(444, 82);
+            this.btnAnalysesList.TabIndex = 15;
+            this.btnAnalysesList.Text = "Analyses List";
+            this.btnAnalysesList.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAnalysesList.UseVisualStyleBackColor = true;
+            this.btnAnalysesList.Click += new System.EventHandler(this.btnAnalysesList_Click);
             // 
-            // cyberButton1
+            // btnAddNewAnalysis
             // 
-            this.cyberButton1.Alpha = 20;
-            this.cyberButton1.BackColor = System.Drawing.Color.Transparent;
-            this.cyberButton1.Background = true;
-            this.cyberButton1.Background_WidthPen = 4F;
-            this.cyberButton1.BackgroundPen = true;
-            this.cyberButton1.ColorBackground = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(52)))), ((int)(((byte)(68)))));
-            this.cyberButton1.ColorBackground_1 = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(52)))), ((int)(((byte)(68)))));
-            this.cyberButton1.ColorBackground_2 = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(63)))), ((int)(((byte)(86)))));
-            this.cyberButton1.ColorBackground_Pen = System.Drawing.Color.Red;
-            this.cyberButton1.ColorLighting = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(200)))), ((int)(((byte)(238)))));
-            this.cyberButton1.ColorPen_1 = System.Drawing.Color.FromArgb(((int)(((byte)(37)))), ((int)(((byte)(52)))), ((int)(((byte)(68)))));
-            this.cyberButton1.ColorPen_2 = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(63)))), ((int)(((byte)(86)))));
-            this.cyberButton1.CyberButtonStyle = ReaLTaiizor.Enum.Cyber.StateStyle.Custom;
-            this.cyberButton1.Effect_1 = true;
-            this.cyberButton1.Effect_1_ColorBackground = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(200)))), ((int)(((byte)(238)))));
-            this.cyberButton1.Effect_1_Transparency = 25;
-            this.cyberButton1.Effect_2 = true;
-            this.cyberButton1.Effect_2_ColorBackground = System.Drawing.Color.White;
-            this.cyberButton1.Effect_2_Transparency = 20;
-            this.cyberButton1.Font = new System.Drawing.Font("Arial", 11F);
-            this.cyberButton1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(245)))), ((int)(((byte)(245)))));
-            this.cyberButton1.Lighting = false;
-            this.cyberButton1.LinearGradient_Background = false;
-            this.cyberButton1.LinearGradientPen = false;
-            this.cyberButton1.Location = new System.Drawing.Point(327, 131);
-            this.cyberButton1.Name = "cyberButton1";
-            this.cyberButton1.PenWidth = 15;
-            this.cyberButton1.Rounding = true;
-            this.cyberButton1.RoundingInt = 70;
-            this.cyberButton1.Size = new System.Drawing.Size(130, 50);
-            this.cyberButton1.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            this.cyberButton1.TabIndex = 6;
-            this.cyberButton1.Tag = "Cyber";
-            this.cyberButton1.TextButton = "CyberButton";
-            this.cyberButton1.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-            this.cyberButton1.Timer_Effect_1 = 5;
-            this.cyberButton1.Timer_RGB = 300;
+            this.btnAddNewAnalysis.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddNewAnalysis.Location = new System.Drawing.Point(52, 253);
+            this.btnAddNewAnalysis.Name = "btnAddNewAnalysis";
+            this.btnAddNewAnalysis.Size = new System.Drawing.Size(444, 82);
+            this.btnAddNewAnalysis.TabIndex = 14;
+            this.btnAddNewAnalysis.Text = "Add New Analysis";
+            this.btnAddNewAnalysis.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddNewAnalysis.UseVisualStyleBackColor = true;
+            this.btnAddNewAnalysis.Click += new System.EventHandler(this.btnAddNewAnalysis_Click);
             // 
-            // dreamButton1
+            // label8
             // 
-            this.dreamButton1.ColorA = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(31)))), ((int)(((byte)(31)))));
-            this.dreamButton1.ColorB = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(41)))), ((int)(((byte)(41)))));
-            this.dreamButton1.ColorC = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
-            this.dreamButton1.ColorD = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.dreamButton1.ColorE = System.Drawing.Color.FromArgb(((int)(((byte)(25)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.dreamButton1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.dreamButton1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(40)))), ((int)(((byte)(218)))), ((int)(((byte)(255)))));
-            this.dreamButton1.Location = new System.Drawing.Point(568, 444);
-            this.dreamButton1.Name = "dreamButton1";
-            this.dreamButton1.Size = new System.Drawing.Size(312, 70);
-            this.dreamButton1.TabIndex = 5;
-            this.dreamButton1.Text = "dreamButton1";
-            this.dreamButton1.UseVisualStyleBackColor = true;
-            // 
-            // hopeRoundButton1
-            // 
-            this.hopeRoundButton1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(220)))), ((int)(((byte)(223)))), ((int)(((byte)(230)))));
-            this.hopeRoundButton1.ButtonType = ReaLTaiizor.Util.HopeButtonType.Primary;
-            this.hopeRoundButton1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.hopeRoundButton1.DangerColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(108)))), ((int)(((byte)(108)))));
-            this.hopeRoundButton1.DefaultColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.hopeRoundButton1.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.hopeRoundButton1.ForeColor = System.Drawing.Color.Black;
-            this.hopeRoundButton1.HoverTextColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(49)))), ((int)(((byte)(51)))));
-            this.hopeRoundButton1.InfoColor = System.Drawing.Color.FromArgb(((int)(((byte)(144)))), ((int)(((byte)(147)))), ((int)(((byte)(153)))));
-            this.hopeRoundButton1.Location = new System.Drawing.Point(279, 443);
-            this.hopeRoundButton1.Name = "hopeRoundButton1";
-            this.hopeRoundButton1.PrimaryColor = System.Drawing.Color.Red;
-            this.hopeRoundButton1.Size = new System.Drawing.Size(224, 71);
-            this.hopeRoundButton1.SuccessColor = System.Drawing.Color.FromArgb(((int)(((byte)(103)))), ((int)(((byte)(194)))), ((int)(((byte)(58)))));
-            this.hopeRoundButton1.TabIndex = 4;
-            this.hopeRoundButton1.Text = "hopeRoundButton1";
-            this.hopeRoundButton1.TextColor = System.Drawing.Color.White;
-            this.hopeRoundButton1.WarningColor = System.Drawing.Color.FromArgb(((int)(((byte)(230)))), ((int)(((byte)(162)))), ((int)(((byte)(60)))));
-            // 
-            // materialButton1
-            // 
-            this.materialButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.materialButton1.Density = ReaLTaiizor.Controls.MaterialButton.MaterialButtonDensity.Default;
-            this.materialButton1.Depth = 0;
-            this.materialButton1.HighEmphasis = true;
-            this.materialButton1.Icon = null;
-            this.materialButton1.IconType = ReaLTaiizor.Controls.MaterialButton.MaterialIconType.Rebase;
-            this.materialButton1.Location = new System.Drawing.Point(568, 356);
-            this.materialButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.materialButton1.MouseState = ReaLTaiizor.Helper.MaterialDrawHelper.MaterialMouseState.HOVER;
-            this.materialButton1.Name = "materialButton1";
-            this.materialButton1.NoAccentTextColor = System.Drawing.Color.Empty;
-            this.materialButton1.Size = new System.Drawing.Size(193, 45);
-            this.materialButton1.TabIndex = 3;
-            this.materialButton1.Text = "materialButton1";
-            this.materialButton1.Type = ReaLTaiizor.Controls.MaterialButton.MaterialButtonType.Contained;
-            this.materialButton1.UseAccentColor = false;
-            this.materialButton1.UseVisualStyleBackColor = true;
-            // 
-            // moonButton1
-            // 
-            this.moonButton1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.moonButton1.Customization = "/////9PT0//w8PD/gICA/w==";
-            this.moonButton1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.moonButton1.Image = null;
-            this.moonButton1.Location = new System.Drawing.Point(588, 238);
-            this.moonButton1.Name = "moonButton1";
-            this.moonButton1.NoRounding = false;
-            this.moonButton1.Size = new System.Drawing.Size(156, 50);
-            this.moonButton1.TabIndex = 2;
-            this.moonButton1.Text = "moonButton1";
-            this.moonButton1.Transparent = false;
-            // 
-            // nightButton1
-            // 
-            this.nightButton1.BackColor = System.Drawing.Color.Transparent;
-            this.nightButton1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.nightButton1.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.nightButton1.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.nightButton1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton1.HoverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton1.HoverForeColor = System.Drawing.Color.White;
-            this.nightButton1.InterpolationType = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-            this.nightButton1.Location = new System.Drawing.Point(303, 354);
-            this.nightButton1.MinimumSize = new System.Drawing.Size(144, 47);
-            this.nightButton1.Name = "nightButton1";
-            this.nightButton1.NormalBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton1.PixelOffsetType = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
-            this.nightButton1.PressedBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(242)))), ((int)(((byte)(93)))), ((int)(((byte)(89)))));
-            this.nightButton1.PressedForeColor = System.Drawing.Color.White;
-            this.nightButton1.Radius = 20;
-            this.nightButton1.Size = new System.Drawing.Size(144, 47);
-            this.nightButton1.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            this.nightButton1.TabIndex = 1;
-            this.nightButton1.Text = "nightButton1";
-            // 
-            // parrotButton1
-            // 
-            this.parrotButton1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.parrotButton1.ButtonImage = ((System.Drawing.Image)(resources.GetObject("parrotButton1.ButtonImage")));
-            this.parrotButton1.ButtonStyle = ReaLTaiizor.Controls.ParrotButton.Style.MaterialRounded;
-            this.parrotButton1.ButtonText = "Button";
-            this.parrotButton1.ClickBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(195)))), ((int)(((byte)(195)))), ((int)(((byte)(195)))));
-            this.parrotButton1.ClickTextColor = System.Drawing.Color.DodgerBlue;
-            this.parrotButton1.CornerRadius = 5;
-            this.parrotButton1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.parrotButton1.Horizontal_Alignment = System.Drawing.StringAlignment.Center;
-            this.parrotButton1.HoverBackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(225)))), ((int)(((byte)(225)))), ((int)(((byte)(225)))));
-            this.parrotButton1.HoverTextColor = System.Drawing.Color.DodgerBlue;
-            this.parrotButton1.ImagePosition = ReaLTaiizor.Controls.ParrotButton.ImgPosition.Left;
-            this.parrotButton1.Location = new System.Drawing.Point(303, 238);
-            this.parrotButton1.Name = "parrotButton1";
-            this.parrotButton1.Size = new System.Drawing.Size(200, 50);
-            this.parrotButton1.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            this.parrotButton1.TabIndex = 0;
-            this.parrotButton1.TextColor = System.Drawing.Color.DodgerBlue;
-            this.parrotButton1.TextRenderingType = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-            this.parrotButton1.Vertical_Alignment = System.Drawing.StringAlignment.Center;
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Arial", 25.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(43, 60);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(464, 51);
+            this.label8.TabIndex = 13;
+            this.label8.Text = "Medical Analyses       ";
             // 
             // tabPage9
             // 
+            this.tabPage9.Controls.Add(this.btnInvoicesList);
+            this.tabPage9.Controls.Add(this.btnAddNewInvoice);
+            this.tabPage9.Controls.Add(this.label9);
             this.tabPage9.Location = new System.Drawing.Point(290, 0);
             this.tabPage9.Name = "tabPage9";
             this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
@@ -704,8 +667,45 @@
             this.tabPage9.Text = "Invoices & Payments";
             this.tabPage9.UseVisualStyleBackColor = true;
             // 
+            // btnInvoicesList
+            // 
+            this.btnInvoicesList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnInvoicesList.Location = new System.Drawing.Point(52, 145);
+            this.btnInvoicesList.Name = "btnInvoicesList";
+            this.btnInvoicesList.Size = new System.Drawing.Size(444, 82);
+            this.btnInvoicesList.TabIndex = 18;
+            this.btnInvoicesList.Text = "Invoices List";
+            this.btnInvoicesList.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnInvoicesList.UseVisualStyleBackColor = true;
+            this.btnInvoicesList.Click += new System.EventHandler(this.btnInvoicesList_Click);
+            // 
+            // btnAddNewInvoice
+            // 
+            this.btnAddNewInvoice.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddNewInvoice.Location = new System.Drawing.Point(52, 251);
+            this.btnAddNewInvoice.Name = "btnAddNewInvoice";
+            this.btnAddNewInvoice.Size = new System.Drawing.Size(444, 82);
+            this.btnAddNewInvoice.TabIndex = 17;
+            this.btnAddNewInvoice.Text = "Add New Invoice";
+            this.btnAddNewInvoice.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddNewInvoice.UseVisualStyleBackColor = true;
+            this.btnAddNewInvoice.Click += new System.EventHandler(this.btnAddNewInvoice_Click);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Arial", 25.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(43, 58);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(530, 51);
+            this.label9.TabIndex = 16;
+            this.label9.Text = "Invoices - Payments        ";
+            // 
             // tabPage10
             // 
+            this.tabPage10.Controls.Add(this.btnUsersList);
+            this.tabPage10.Controls.Add(this.btnAddNewUser);
+            this.tabPage10.Controls.Add(this.label5);
             this.tabPage10.Location = new System.Drawing.Point(290, 0);
             this.tabPage10.Name = "tabPage10";
             this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
@@ -714,8 +714,61 @@
             this.tabPage10.Text = "Users";
             this.tabPage10.UseVisualStyleBackColor = true;
             // 
+            // btnUsersList
+            // 
+            this.btnUsersList.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnUsersList.Location = new System.Drawing.Point(52, 146);
+            this.btnUsersList.Name = "btnUsersList";
+            this.btnUsersList.Size = new System.Drawing.Size(444, 82);
+            this.btnUsersList.TabIndex = 15;
+            this.btnUsersList.Text = "Users List";
+            this.btnUsersList.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnUsersList.UseVisualStyleBackColor = true;
+            this.btnUsersList.Click += new System.EventHandler(this.btnUsersList_Click);
+            // 
+            // btnAddNewUser
+            // 
+            this.btnAddNewUser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAddNewUser.Location = new System.Drawing.Point(52, 252);
+            this.btnAddNewUser.Name = "btnAddNewUser";
+            this.btnAddNewUser.Size = new System.Drawing.Size(444, 82);
+            this.btnAddNewUser.TabIndex = 14;
+            this.btnAddNewUser.Text = "Add New User";
+            this.btnAddNewUser.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddNewUser.UseVisualStyleBackColor = true;
+            this.btnAddNewUser.Click += new System.EventHandler(this.btnAddNewUser_Click);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Arial", 25.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(43, 59);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(454, 51);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Users                          ";
+            // 
             // tabPage11
             // 
+            this.tabPage11.Controls.Add(this.label24);
+            this.tabPage11.Controls.Add(this.label23);
+            this.tabPage11.Controls.Add(this.label22);
+            this.tabPage11.Controls.Add(this.label21);
+            this.tabPage11.Controls.Add(this.label20);
+            this.tabPage11.Controls.Add(this.pictureBox2);
+            this.tabPage11.Controls.Add(this.pictureBox4);
+            this.tabPage11.Controls.Add(this.pictureBox3);
+            this.tabPage11.Controls.Add(this.pictureBox1);
+            this.tabPage11.Controls.Add(this.label19);
+            this.tabPage11.Controls.Add(this.label18);
+            this.tabPage11.Controls.Add(this.label17);
+            this.tabPage11.Controls.Add(this.label16);
+            this.tabPage11.Controls.Add(this.label15);
+            this.tabPage11.Controls.Add(this.label14);
+            this.tabPage11.Controls.Add(this.label13);
+            this.tabPage11.Controls.Add(this.label12);
+            this.tabPage11.Controls.Add(this.label11);
+            this.tabPage11.Controls.Add(this.label10);
             this.tabPage11.Location = new System.Drawing.Point(290, 0);
             this.tabPage11.Name = "tabPage11";
             this.tabPage11.Padding = new System.Windows.Forms.Padding(3);
@@ -723,6 +776,189 @@
             this.tabPage11.TabIndex = 10;
             this.tabPage11.Text = "About";
             this.tabPage11.UseVisualStyleBackColor = true;
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label24.Location = new System.Drawing.Point(374, 626);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(637, 34);
+            this.label24.TabIndex = 165;
+            this.label24.Text = " billing, and streamline clinic operations efficiently.";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label23.Location = new System.Drawing.Point(494, 404);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(417, 34);
+            this.label23.TabIndex = 164;
+            this.label23.Text = "muhammadsadka95@gmail.com";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label22.Location = new System.Drawing.Point(452, 447);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(501, 34);
+            this.label22.TabIndex = 163;
+            this.label22.Text = "https://github.com/Muhammad-sadaka";
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label21.Location = new System.Drawing.Point(323, 491);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(729, 34);
+            this.label21.TabIndex = 162;
+            this.label21.Text = "https://linkedin.com/in/muhammad-al-sadaka-338956323";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label20.Location = new System.Drawing.Point(619, 360);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(165, 34);
+            this.label20.TabIndex = 161;
+            this.label20.Text = "0983873645";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Location = new System.Drawing.Point(109, 768);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(80, 65);
+            this.pictureBox2.TabIndex = 160;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.Location = new System.Drawing.Point(873, 768);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(80, 65);
+            this.pictureBox4.TabIndex = 159;
+            this.pictureBox4.TabStop = false;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Location = new System.Drawing.Point(575, 768);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(80, 65);
+            this.pictureBox3.TabIndex = 158;
+            this.pictureBox3.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(625, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(143, 130);
+            this.pictureBox1.TabIndex = 156;
+            this.pictureBox1.TabStop = false;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label19.Location = new System.Drawing.Point(959, 782);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(266, 34);
+            this.label19.TabIndex = 155;
+            this.label19.Text = "3-Layer Architecture";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.Location = new System.Drawing.Point(661, 782);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(154, 34);
+            this.label18.TabIndex = 154;
+            this.label18.Text = "SQL Server";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label17.Location = new System.Drawing.Point(195, 782);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(258, 34);
+            this.label17.TabIndex = 153;
+            this.label17.Text = "C# Windows Forms";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Font = new System.Drawing.Font("Microsoft YaHei", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label16.Location = new System.Drawing.Point(627, 723);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(158, 37);
+            this.label16.TabIndex = 152;
+            this.label16.Text = "Built With";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(179, 582);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(981, 34);
+            this.label15.TabIndex = 151;
+            this.label15.Text = "A comprehensive solution designed to manage patient records, appointments,";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Microsoft YaHei", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(618, 535);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(178, 37);
+            this.label14.TabIndex = 150;
+            this.label14.Text = "Description";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.ForeColor = System.Drawing.Color.Gray;
+            this.label13.Location = new System.Drawing.Point(620, 204);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(146, 28);
+            this.label13.TabIndex = 149;
+            this.label13.Text = "Version 1.0.0";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Microsoft YaHei", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(591, 264);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(224, 37);
+            this.label12.TabIndex = 148;
+            this.label12.Text = "Developer Info";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(553, 316);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(294, 34);
+            this.label11.TabIndex = 147;
+            this.label11.Text = "Muhammad Al-Sadaka";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Arial", 25.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(400, 142);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(579, 51);
+            this.label10.TabIndex = 20;
+            this.label10.Text = "Clinic Management System";
             // 
             // tabPage12
             // 
@@ -766,8 +1002,22 @@
             this.tabPage3.PerformLayout();
             this.tabPage5.ResumeLayout(false);
             this.tabPage5.PerformLayout();
+            this.tabPage6.ResumeLayout(false);
+            this.tabPage6.PerformLayout();
+            this.tabPage7.ResumeLayout(false);
+            this.tabPage7.PerformLayout();
             this.tabPage8.ResumeLayout(false);
             this.tabPage8.PerformLayout();
+            this.tabPage9.ResumeLayout(false);
+            this.tabPage9.PerformLayout();
+            this.tabPage10.ResumeLayout(false);
+            this.tabPage10.PerformLayout();
+            this.tabPage11.ResumeLayout(false);
+            this.tabPage11.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -785,14 +1035,6 @@
         private System.Windows.Forms.TabPage tabPage8;
         private System.Windows.Forms.TabPage tabPage9;
         private System.Windows.Forms.TabPage tabPage10;
-        private ReaLTaiizor.Controls.Button button1;
-        private ReaLTaiizor.Controls.CyberButton cyberButton1;
-        private ReaLTaiizor.Controls.DreamButton dreamButton1;
-        private ReaLTaiizor.Controls.HopeRoundButton hopeRoundButton1;
-        private ReaLTaiizor.Controls.MaterialButton materialButton1;
-        private ReaLTaiizor.Controls.MoonButton moonButton1;
-        private ReaLTaiizor.Controls.NightButton nightButton1;
-        private ReaLTaiizor.Controls.ParrotButton parrotButton1;
         private System.Windows.Forms.TabPage tabPage11;
         private ReaLTaiizor.Controls.ForeverGroupBox foreverGroupBox1;
         private System.Windows.Forms.Label lblTotalPatients;
@@ -817,5 +1059,39 @@
         private System.Windows.Forms.Button btnAddNewAppointment;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TabPage tabPage12;
+        private System.Windows.Forms.Button btnExaminationsList;
+        private System.Windows.Forms.Button btnAddNewExamination;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Button btnUsersList;
+        private System.Windows.Forms.Button btnAddNewUser;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button btnPrescriptionList;
+        private System.Windows.Forms.Button btnAddNewPrescription;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btnAnalysesList;
+        private System.Windows.Forms.Button btnAddNewAnalysis;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button btnInvoicesList;
+        private System.Windows.Forms.Button btnAddNewInvoice;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label24;
     }
 }

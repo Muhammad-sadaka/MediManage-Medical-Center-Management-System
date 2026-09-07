@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using MediManage_DataAccess;
 
 namespace MediManage_Business
@@ -22,7 +23,8 @@ namespace MediManage_Business
                     this.YearsOfExperience,
                     this.Qualification,
                     this.IsActive,
-                    this.SpecialtyID
+                    this.SpecialtyID,
+                    this.LicenseNo
                 );
             }
         }
@@ -33,6 +35,10 @@ namespace MediManage_Business
         public string Qualification { get; set; }
         public bool? IsActive { get; set; }
         public int? SpecialtyID { get; set; }
+        public string LicenseNo { get; set; }
+        public clsPerson PersonInfo { get; set; }
+        public clsSpecialty SpecialtyInfo { get; set;  }
+
 
         public clsDoctor()
         {
@@ -42,6 +48,8 @@ namespace MediManage_Business
             this.Qualification = null;
             this.IsActive = null;
             this.SpecialtyID = null;
+            this.PersonInfo = null;
+            this.SpecialtyInfo = null;
             this.Mode = enMode.AddNew;
         }
 
@@ -53,6 +61,9 @@ namespace MediManage_Business
             this.Qualification = dto.Qualification;
             this.IsActive = dto.IsActive;
             this.SpecialtyID = dto.SpecialtyID;
+            this.LicenseNo = dto.LicenseNo;
+            this.PersonInfo = clsPerson.Find(PersonID);
+            this.SpecialtyInfo = clsSpecialty.Find(SpecialtyID);
             this.Mode = cMode;
         }
 
@@ -75,6 +86,21 @@ namespace MediManage_Business
                 return new clsDoctor(dto, enMode.Update);
             else
                 return null;
+        }
+
+        public static clsDoctor Find(string NationalNo)
+        {
+            clsDoctorDTO dto = clsDoctorsDataAccess.GetDoctorInfoByNationalNo(NationalNo);
+
+            if (dto != null)
+                return new clsDoctor(dto, enMode.Update);
+            else
+                return null;
+        }
+
+        public static List<string> GetAllDoctorsNames()
+        {
+            return clsDoctorsDataAccess.GetAllDoctorsNames();
         }
 
         public static List<clsDoctorListDTO> GetAllDoctors()
@@ -106,12 +132,27 @@ namespace MediManage_Business
 
         public static bool DeleteDoctor(int? ID)
         {
-            return clsDoctorsDataAccess.DeleteDoctor(ID);
+            if(clsDoctorsDataAccess.DeleteDoctor(ID))
+            {
+                return true;
+            }
+            else
+            {
+                //this.IsActive.Value = false ;
+                //return _UpdateDoctor();
+                return false;
+            }
+             
         }
 
         public static bool IsExist(int? ID)
         {
             return clsDoctorsDataAccess.IsDoctorExist(ID);
+        }
+
+        public static bool IsExist(string NationalNo)
+        {
+            return clsDoctorsDataAccess.IsDoctorExist(NationalNo);
         }
     }
 }

@@ -30,15 +30,15 @@
         {
             this.btnSave = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblTitle = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.tbFees = new System.Windows.Forms.TextBox();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.tbSensitivity = new System.Windows.Forms.TextBox();
-            this.cbPatientCase = new System.Windows.Forms.ComboBox();
+            this.numericDuration = new System.Windows.Forms.NumericUpDown();
+            this.cbStatuses = new System.Windows.Forms.ComboBox();
+            this.tbNotes = new System.Windows.Forms.TextBox();
+            this.tbReason = new System.Windows.Forms.TextBox();
+            this.cbDoctors = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -47,11 +47,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.ctrlPatientInfoSummary1 = new MediManage.ctrlPatientInfoSummary();
             this.label8 = new System.Windows.Forms.Label();
             this.tbNationalNo = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericDuration)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,6 +68,7 @@
             this.btnSave.TabIndex = 5;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnClose
             // 
@@ -82,25 +84,25 @@
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
-            // label2
+            // lblTitle
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Arial", 25.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 21);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(672, 51);
-            this.label2.TabIndex = 19;
-            this.label2.Text = "Add New Appointment                ";
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("Arial", 25.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTitle.Location = new System.Drawing.Point(12, 21);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(672, 51);
+            this.lblTitle.TabIndex = 19;
+            this.lblTitle.Text = "Add New Appointment                ";
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.textBox2);
+            this.groupBox1.Controls.Add(this.tbFees);
             this.groupBox1.Controls.Add(this.dateTimePicker1);
-            this.groupBox1.Controls.Add(this.numericUpDown2);
-            this.groupBox1.Controls.Add(this.comboBox1);
-            this.groupBox1.Controls.Add(this.textBox1);
-            this.groupBox1.Controls.Add(this.tbSensitivity);
-            this.groupBox1.Controls.Add(this.cbPatientCase);
+            this.groupBox1.Controls.Add(this.numericDuration);
+            this.groupBox1.Controls.Add(this.cbStatuses);
+            this.groupBox1.Controls.Add(this.tbNotes);
+            this.groupBox1.Controls.Add(this.tbReason);
+            this.groupBox1.Controls.Add(this.cbDoctors);
             this.groupBox1.Controls.Add(this.label9);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label6);
@@ -109,19 +111,20 @@
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(12, 317);
+            this.groupBox1.Location = new System.Drawing.Point(12, 329);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(1222, 429);
             this.groupBox1.TabIndex = 20;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Section 2 - Appointment Details";
             // 
-            // textBox2
+            // tbFees
             // 
-            this.textBox2.Location = new System.Drawing.Point(268, 245);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(937, 40);
-            this.textBox2.TabIndex = 183;
+            this.tbFees.Location = new System.Drawing.Point(268, 245);
+            this.tbFees.Name = "tbFees";
+            this.tbFees.ReadOnly = true;
+            this.tbFees.Size = new System.Drawing.Size(937, 40);
+            this.tbFees.TabIndex = 183;
             // 
             // dateTimePicker1
             // 
@@ -132,47 +135,53 @@
             this.dateTimePicker1.Size = new System.Drawing.Size(937, 35);
             this.dateTimePicker1.TabIndex = 182;
             // 
-            // numericUpDown2
+            // numericDuration
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(268, 145);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(937, 40);
-            this.numericUpDown2.TabIndex = 181;
+            this.numericDuration.Location = new System.Drawing.Point(268, 145);
+            this.numericDuration.Name = "numericDuration";
+            this.numericDuration.Size = new System.Drawing.Size(937, 40);
+            this.numericDuration.TabIndex = 181;
+            this.numericDuration.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
             // 
-            // comboBox1
+            // cbStatuses
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(268, 295);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(937, 36);
-            this.comboBox1.TabIndex = 180;
+            this.cbStatuses.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbStatuses.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbStatuses.FormattingEnabled = true;
+            this.cbStatuses.Location = new System.Drawing.Point(268, 295);
+            this.cbStatuses.Name = "cbStatuses";
+            this.cbStatuses.Size = new System.Drawing.Size(937, 36);
+            this.cbStatuses.TabIndex = 180;
             // 
-            // textBox1
+            // tbNotes
             // 
-            this.textBox1.Location = new System.Drawing.Point(268, 341);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(937, 82);
-            this.textBox1.TabIndex = 179;
+            this.tbNotes.Location = new System.Drawing.Point(268, 341);
+            this.tbNotes.Multiline = true;
+            this.tbNotes.Name = "tbNotes";
+            this.tbNotes.Size = new System.Drawing.Size(937, 82);
+            this.tbNotes.TabIndex = 179;
             // 
-            // tbSensitivity
+            // tbReason
             // 
-            this.tbSensitivity.Location = new System.Drawing.Point(268, 195);
-            this.tbSensitivity.Name = "tbSensitivity";
-            this.tbSensitivity.Size = new System.Drawing.Size(937, 40);
-            this.tbSensitivity.TabIndex = 178;
+            this.tbReason.Location = new System.Drawing.Point(268, 195);
+            this.tbReason.Name = "tbReason";
+            this.tbReason.Size = new System.Drawing.Size(937, 40);
+            this.tbReason.TabIndex = 178;
             // 
-            // cbPatientCase
+            // cbDoctors
             // 
-            this.cbPatientCase.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbPatientCase.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbPatientCase.FormattingEnabled = true;
-            this.cbPatientCase.Location = new System.Drawing.Point(268, 54);
-            this.cbPatientCase.Name = "cbPatientCase";
-            this.cbPatientCase.Size = new System.Drawing.Size(937, 36);
-            this.cbPatientCase.TabIndex = 177;
+            this.cbDoctors.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDoctors.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbDoctors.FormattingEnabled = true;
+            this.cbDoctors.Location = new System.Drawing.Point(268, 54);
+            this.cbDoctors.Name = "cbDoctors";
+            this.cbDoctors.Size = new System.Drawing.Size(937, 36);
+            this.cbDoctors.TabIndex = 177;
+            this.cbDoctors.SelectedIndexChanged += new System.EventHandler(this.cbDoctors_SelectedIndexChanged);
             // 
             // label9
             // 
@@ -246,16 +255,26 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.ctrlPatientInfoSummary1);
             this.groupBox2.Controls.Add(this.label8);
             this.groupBox2.Controls.Add(this.tbNationalNo);
             this.groupBox2.Controls.Add(this.btnSearch);
             this.groupBox2.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(12, 97);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1224, 214);
+            this.groupBox2.Size = new System.Drawing.Size(1224, 226);
             this.groupBox2.TabIndex = 27;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Pection 1 - Patient Search";
+            // 
+            // ctrlPatientInfoSummary1
+            // 
+            this.ctrlPatientInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ctrlPatientInfoSummary1.Location = new System.Drawing.Point(16, 94);
+            this.ctrlPatientInfoSummary1.Margin = new System.Windows.Forms.Padding(6);
+            this.ctrlPatientInfoSummary1.Name = "ctrlPatientInfoSummary1";
+            this.ctrlPatientInfoSummary1.Size = new System.Drawing.Size(1189, 128);
+            this.ctrlPatientInfoSummary1.TabIndex = 145;
             // 
             // label8
             // 
@@ -276,6 +295,8 @@
             this.tbNationalNo.Size = new System.Drawing.Size(828, 40);
             this.tbNationalNo.TabIndex = 22;
             this.tbNationalNo.Text = "National No";
+            this.tbNationalNo.Enter += new System.EventHandler(this.tbNationalNo_Enter);
+            this.tbNationalNo.Leave += new System.EventHandler(this.tbNationalNo_Leave);
             // 
             // btnSearch
             // 
@@ -289,24 +310,26 @@
             this.btnSearch.TabIndex = 21;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = false;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // frmAddUpdateAppointment
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1246, 831);
+            this.ClientSize = new System.Drawing.Size(1246, 828);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.lblTitle);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnClose);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "frmAddUpdateAppointment";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmAddUpdateAppointment";
+            this.Load += new System.EventHandler(this.frmAddUpdateAppointment_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericDuration)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -318,7 +341,7 @@
 
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblTitle;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label label8;
@@ -331,12 +354,13 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ComboBox cbPatientCase;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.TextBox tbSensitivity;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.ComboBox cbDoctors;
+        private System.Windows.Forms.ComboBox cbStatuses;
+        private System.Windows.Forms.TextBox tbNotes;
+        private System.Windows.Forms.TextBox tbReason;
+        private System.Windows.Forms.NumericUpDown numericDuration;
+        private System.Windows.Forms.TextBox tbFees;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
+        private ctrlPatientInfoSummary ctrlPatientInfoSummary1;
     }
 }

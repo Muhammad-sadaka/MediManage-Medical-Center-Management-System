@@ -60,17 +60,17 @@
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.klblClicktoAddPhoto = new System.Windows.Forms.LinkLabel();
             this.klblChangeImage = new System.Windows.Forms.LinkLabel();
             this.klblRemove = new System.Windows.Forms.LinkLabel();
+            this.pbPersonImage = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.klblClicktoAddPhoto = new System.Windows.Forms.LinkLabel();
-            this.pbPersonImage = new System.Windows.Forms.PictureBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPersonImage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnClose
@@ -176,11 +176,11 @@
             // dateTimePicker1
             // 
             this.dateTimePicker1.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePicker1.Location = new System.Drawing.Point(704, 248);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(500, 35);
             this.dateTimePicker1.TabIndex = 167;
+            this.dateTimePicker1.Value = new System.DateTime(2026, 9, 4, 0, 0, 0, 0);
             // 
             // cbMaritalStatus
             // 
@@ -408,6 +408,21 @@
             this.panel2.Size = new System.Drawing.Size(402, 549);
             this.panel2.TabIndex = 143;
             // 
+            // klblClicktoAddPhoto
+            // 
+            this.klblClicktoAddPhoto.ActiveLinkColor = System.Drawing.Color.Yellow;
+            this.klblClicktoAddPhoto.AutoSize = true;
+            this.klblClicktoAddPhoto.BackColor = System.Drawing.Color.White;
+            this.klblClicktoAddPhoto.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.klblClicktoAddPhoto.LinkColor = System.Drawing.Color.DarkRed;
+            this.klblClicktoAddPhoto.Location = new System.Drawing.Point(89, 362);
+            this.klblClicktoAddPhoto.Name = "klblClicktoAddPhoto";
+            this.klblClicktoAddPhoto.Size = new System.Drawing.Size(239, 34);
+            this.klblClicktoAddPhoto.TabIndex = 22;
+            this.klblClicktoAddPhoto.TabStop = true;
+            this.klblClicktoAddPhoto.Text = "Click to Add Photo";
+            this.klblClicktoAddPhoto.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.klblClicktoAddPhoto_LinkClicked);
+            // 
             // klblChangeImage
             // 
             this.klblChangeImage.ActiveLinkColor = System.Drawing.Color.Yellow;
@@ -438,6 +453,18 @@
             this.klblRemove.Visible = false;
             this.klblRemove.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.klblRemove_LinkClicked);
             // 
+            // pbPersonImage
+            // 
+            this.pbPersonImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.pbPersonImage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pbPersonImage.Image = global::MediManage.Properties.Resources.Person32;
+            this.pbPersonImage.Location = new System.Drawing.Point(68, 135);
+            this.pbPersonImage.Name = "pbPersonImage";
+            this.pbPersonImage.Size = new System.Drawing.Size(273, 277);
+            this.pbPersonImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbPersonImage.TabIndex = 18;
+            this.pbPersonImage.TabStop = false;
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -455,33 +482,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // klblClicktoAddPhoto
-            // 
-            this.klblClicktoAddPhoto.ActiveLinkColor = System.Drawing.Color.Yellow;
-            this.klblClicktoAddPhoto.AutoSize = true;
-            this.klblClicktoAddPhoto.BackColor = System.Drawing.Color.White;
-            this.klblClicktoAddPhoto.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.klblClicktoAddPhoto.LinkColor = System.Drawing.Color.DarkRed;
-            this.klblClicktoAddPhoto.Location = new System.Drawing.Point(89, 362);
-            this.klblClicktoAddPhoto.Name = "klblClicktoAddPhoto";
-            this.klblClicktoAddPhoto.Size = new System.Drawing.Size(239, 34);
-            this.klblClicktoAddPhoto.TabIndex = 22;
-            this.klblClicktoAddPhoto.TabStop = true;
-            this.klblClicktoAddPhoto.Text = "Click to Add Photo";
-            this.klblClicktoAddPhoto.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.klblClicktoAddPhoto_LinkClicked);
-            // 
-            // pbPersonImage
-            // 
-            this.pbPersonImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.pbPersonImage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pbPersonImage.Image = global::MediManage.Properties.Resources.Person32;
-            this.pbPersonImage.Location = new System.Drawing.Point(68, 135);
-            this.pbPersonImage.Name = "pbPersonImage";
-            this.pbPersonImage.Size = new System.Drawing.Size(273, 277);
-            this.pbPersonImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbPersonImage.TabIndex = 18;
-            this.pbPersonImage.TabStop = false;
             // 
             // frmAddUpdatePerson
             // 
@@ -503,8 +503,8 @@
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPersonImage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

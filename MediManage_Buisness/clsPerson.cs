@@ -52,6 +52,11 @@ namespace MediManage_Business
         public int? BloodTypeID { get; set; }
         public int? MaritalStatusID { get; set; }
         public int? CountryId { get; set; }
+        public string FullName { get; }
+       public clsCountry CountryInfo { get; set; }
+       public clsBloodType BloodTypeInfo { get; set; }
+       public clsMaritalStatus MaritalStatusInfo { get; set; } 
+
 
         //is it right ??
         public clsPerson()
@@ -71,6 +76,11 @@ namespace MediManage_Business
             this.BloodTypeID = null;
             this.MaritalStatusID = null;
             this.CountryId = null;
+            this.FullName = null;
+            this.CountryInfo = null;
+            this.BloodTypeInfo = null;
+            this.MaritalStatusInfo = null;
+
             this.Mode = enMode.AddNew;
         }
 
@@ -92,6 +102,12 @@ namespace MediManage_Business
             this.BloodTypeID = dto.BloodTypeID;
             this.MaritalStatusID = dto.MaritalStatusID;
             this.CountryId = dto.CountryId;
+            this.FullName = this.FirstName + " " + this.SecondName + " " + this.LastName;
+            this.CountryInfo = clsCountry.Find(this.CountryId);
+            this.BloodTypeInfo = clsBloodType.Find(this.BloodTypeID);
+            this.MaritalStatusInfo = clsMaritalStatus.Find(this.MaritalStatusID);
+
+
             this.Mode = cMode;
         }
 

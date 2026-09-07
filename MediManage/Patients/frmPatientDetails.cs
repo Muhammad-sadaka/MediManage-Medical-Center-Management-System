@@ -15,7 +15,7 @@ namespace MediManage
         public frmPatientDetails(int PersonId)
         {
             InitializeComponent();
-            //ctrlPersonInfo1.LoadPersonInfoData(PersonID);
+            ctrlPatientInfo1.LoadPatientInfoData(PersonId);
         }
     }
 }

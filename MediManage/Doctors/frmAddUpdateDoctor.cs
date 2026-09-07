@@ -1,4 +1,5 @@
 ﻿using MediManage_Business;
+using MediManage_DataAccess;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,9 +17,9 @@ namespace MediManage
         public enum enMode { AddNew = 0, Update = 1 };
         enMode _Mode = enMode.AddNew;
 
-        clsPerson Person = new clsPerson();
         clsDoctor Doctor = new clsDoctor();
 
+        List<clsSpecialtyDTO> Specialties = clsSpecialty.GetAllSpecialties();
 
         public frmAddUpdateDoctor()
         {
@@ -42,10 +43,16 @@ namespace MediManage
 
         private void _ResestDefualtValues()
         {
-            cbPatientCase.DataSource = clsPatientCase.GetAllPatientCases();
-            cbPatientCase.DisplayMember = "PatientCaseName";
 
+            //foreach (string s in Specialties.Select(s => s.SpecialtyName))
+            //{
+            //    cbSpecialties.Items.Add(s);
+            //}
 
+            cbSpecialties.DataSource = Specialties;
+            cbSpecialties.DisplayMember = "SpecialtyName";
+
+            tbConsultationFees.Text = Specialties.Where(s => s.SpecialtyName == cbSpecialties.Text).Select(s => s.Fees).FirstOrDefault().ToString();
 
             if (_Mode == enMode.AddNew)
             {
@@ -56,18 +63,17 @@ namespace MediManage
                 lblTitle.Text = "Update Doctor                        ";
 
 
-            cbPatientCase.SelectedIndex = 0;
-
-            tbSensitivity.Text = "";
-            tbChronicDiseases.Text = "";
-            cbPatientCase.SelectedIndex = 0;
+            tbLicenseNo.Text = "";
+            tbQualification.Text = "";
+            numericEcperienceYears.Value = 0;
+            chkIsActive.Checked = true;
+            cbSpecialties.SelectedIndex = 0;
 
         }
 
         private void _LoadData()
         {
             Doctor = clsDoctor.Find(Doctor.PersonID);
-            Person = clsPerson.Find(Doctor.PersonID);
 
             if (Doctor == null)
             {
@@ -79,10 +85,12 @@ namespace MediManage
             gbSearch.Enabled = false;
             ctrlPersonInfoSummary1.LoadPersonInfoData(Doctor.PersonID.Value);
 
-            //tbSensitivity.Text = Patient.Sensitivity;
-            //tbChronicDiseases.Text = Patient.ChronicDiseases;
-            //cbPatientCase.SelectedIndex = Patient.PatientCaseID.Value - 1;
 
+            tbLicenseNo.Text = Doctor.LicenseNo;
+            tbQualification.Text = Doctor.Qualification;
+            numericEcperienceYears.Value = Doctor.YearsOfExperience.Value;
+            chkIsActive.Checked = Doctor.IsActive.Value;
+            cbSpecialties.SelectedIndex = Doctor.SpecialtyID.Value - 1;
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -94,44 +102,20 @@ namespace MediManage
         {
             if (clsPerson.IsExist(tbNationalNo.Text))
             {
-                Person = clsPerson.Find(tbNationalNo.Text);
-                ctrlPersonInfoSummary1.LoadPersonInfoData(Person.PersonID.Value);
+                ctrlPersonInfoSummary1.LoadPersonInfoData(tbNationalNo.Text);
+                Doctor.PersonID = clsPerson.Find(tbNationalNo.Text).PersonID;
+                if (clsDoctor.IsExist(tbNationalNo.Text))
+                {
+                    MessageBox.Show("This National No is already used for another doctor");
+                    _Mode = enMode.Update;
+                    _LoadData();
+                }
             }
             else
             {
                 MessageBox.Show("No Person Found With This National No");
             }
 
-        }
-
-        private void checkBox1_Paint(object sender, PaintEventArgs e)
-        {
-            // 1. مسح الرسمة الافتراضية الصغيرة للنظام
-            e.Graphics.Clear(this.checkBox1.BackColor);
-
-            // 2. تحديد حجم المربع الأبيض ليكون بحجم العنصر كاملاً (مثلاً 25x25)
-            // قمنا بخصم 1 بكسل للحفاظ على الحدود نظيفة
-            Rectangle rect = new Rectangle(0, 0, this.checkBox1.Width - 1, this.checkBox1.Height - 1);
-
-            // 3. رسم خلفية المربع باللون الأبيض
-            e.Graphics.FillRectangle(Brushes.White, rect);
-
-            // 4. رسم حدود المربع (Border) باللون الرمادي أو الأزرق
-            using (Pen pen = new Pen(Color.DarkGray, 2))
-            {
-                e.Graphics.DrawRectangle(pen, rect);
-            }
-
-            // 5. إذا قام المستخدم بالضغط عليه واختياره (Checked)، ارسم علامة الصح بالداخل
-            if (this.checkBox1.Checked)
-            {
-                using (Pen checkPen = new Pen(Color.DarkRed, 3)) // لون وحجم خط علامة الصح
-                {
-                    // رسم علامة الصح يدوياً لتناسب أي حجم تكبر إليه خانة الاختيار
-                    e.Graphics.DrawLine(checkPen, rect.Width * 0.25f, rect.Height * 0.5f, rect.Width * 0.45f, rect.Height * 0.75f);
-                    e.Graphics.DrawLine(checkPen, rect.Width * 0.45f, rect.Height * 0.75f, rect.Width * 0.85f, rect.Height * 0.25f);
-                }
-            }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
@@ -142,13 +126,14 @@ namespace MediManage
                 return;
             }
 
+            //Doctor.PersonID = clsPerson.Find(tbNationalNo.Text).PersonID;
+            Doctor.SpecialtyID = cbSpecialties.SelectedIndex + 1;
+            Doctor.LicenseNo = tbLicenseNo.Text.Trim();
+            Doctor.YearsOfExperience = Convert.ToByte(numericEcperienceYears.Value);
+            Doctor.Qualification = tbQualification.Text.Trim();
+            Doctor.IsActive = chkIsActive.Checked;
 
-            Doctor.PersonID = Person.PersonID;
-            //Patient.Sensitivity = tbSensitivity.Text.Trim();
-            //Patient.ChronicDiseases = tbChronicDiseases.Text.Trim();
-            //Patient.JoinDate = DateTime.Now;
 
-            //Patient.PatientCaseID = cbPatientCase.SelectedIndex + 1;
 
             if (Doctor.Save())
             {
@@ -162,6 +147,27 @@ namespace MediManage
             {
                 MessageBox.Show("Error: Data Is not Saved Successfully.");
             }
+        }
+
+        private void tbNationalNo_Enter(object sender, EventArgs e)
+        {
+            if (tbNationalNo.Text == "National No")
+                tbNationalNo.Clear();
+            tbNationalNo.ForeColor = Color.Black;
+        }
+
+        private void tbNationalNo_Leave(object sender, EventArgs e)
+        {
+            if (tbNationalNo.Text == "" || tbNationalNo.Text == null)
+            {
+                tbNationalNo.ForeColor = Color.Gray;
+                tbNationalNo.Text = "National No";
+            }
+        }
+
+        private void cbSpecialties_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            tbConsultationFees.Text = Specialties.Where(s => s.SpecialtyName == cbSpecialties.Text).Select(s => s.Fees).FirstOrDefault().ToString();
         }
     }
 }

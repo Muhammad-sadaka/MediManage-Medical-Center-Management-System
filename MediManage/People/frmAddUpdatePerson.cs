@@ -195,7 +195,7 @@ namespace MediManage
                else
                   rbFemale.Checked = true;
               tbPhone.Text =person.Phone;
-              tbEmail.Text=person.Address;
+              tbEmail.Text=person.Email;
               tbAddress.Text = person.Address;
               cbBloodType.SelectedIndex = person.BloodTypeID.Value -1;
               cbMaritalStatus.SelectedIndex = person.MaritalStatusID.Value - 1;

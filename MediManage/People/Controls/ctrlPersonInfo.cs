@@ -43,9 +43,11 @@ namespace MediManage
 
             lblPhone.Text = Person.Phone;
             lblEmail.Text = Person.Email;
-            lblCountry.Text = clsCountry.Find(Person.CountryId).CountryName.Trim();
-            lblBloodType.Text = clsBloodType.Find(Person.BloodTypeID).BloodTypeSymbol;
-            lblMaritalStatus.Text = clsMaritalStatus.Find(Person.MaritalStatusID).MaritalStatusName;
+
+            lblCountry.Text = Person.CountryInfo.CountryName.Trim();
+            lblBloodType.Text = Person.BloodTypeInfo.BloodTypeSymbol;
+            lblMaritalStatus.Text = Person.MaritalStatusInfo.MaritalStatusName;
+
             lblAddress.Text = Person.Address;
 
             _LoadPersonImage();

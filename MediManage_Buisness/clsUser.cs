@@ -12,10 +12,13 @@ namespace MediManage_Business
         public int? PersonID { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
-        public byte? Permissions { get; set; }
+        public int? Permissions { get; set; }
         public bool? IsActive { get; set; }
+        public int? CreatedByUser { get; set; }
+        public clsPerson PersonInfo { get; set; }
 
-        public clsUserDTO DTO => new clsUserDTO(this.UserID, this.PersonID, this.UserName, this.Password, this.Permissions, this.IsActive);
+
+        public clsUserDTO DTO => new clsUserDTO(this.UserID, this.PersonID, this.UserName, this.Password, this.Permissions, this.IsActive,this.CreatedByUser);
 
         public clsUser()
         {
@@ -25,6 +28,9 @@ namespace MediManage_Business
             this.Password = string.Empty;
             this.Permissions = null;
             this.IsActive = null;
+            this.CreatedByUser = null;
+            this.PersonInfo = null;
+
             this.Mode = enMode.AddNew;
         }
 
@@ -36,6 +42,9 @@ namespace MediManage_Business
             this.Password = dto.Password;
             this.Permissions = dto.Permissions;
             this.IsActive = dto.IsActive;
+            this.CreatedByUser = dto.CreatedByUser;
+            this.PersonInfo = clsPerson.Find(this.PersonID);
+
             this.Mode = mode;
         }
 
@@ -70,7 +79,7 @@ namespace MediManage_Business
             return null;
         }
 
-        public static List<clsUserDTO> GetAllUsers()
+        public static List<clsUsersListDTO> GetAllUsers()
         {
             return clsUsersDataAccess.GetAllUsers();
         }

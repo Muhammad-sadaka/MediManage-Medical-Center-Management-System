@@ -39,11 +39,11 @@ namespace MediManage
             DGVPatientsList.AutoGenerateColumns = false;
             DGVPatientsList.Columns.Clear();
 
-            DGVPatientsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PersonID", HeaderText = "Id", Name = "PersonID" });
+            DGVPatientsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PersonID", HeaderText = "ID", Name = "PersonID" });
 
             DGVPatientsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "FullName", HeaderText = "Full Name", Name = "FullName" });
 
-            DGVPatientsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "NationalNo", HeaderText = "NationalNo", Name = "NationalNo" });
+            DGVPatientsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "NationalNo", HeaderText = "National No", Name = "NationalNo" });
             DGVPatientsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Phone", HeaderText = "Phone", Name = "Phone" });
 
             DataGridViewButtonColumn btnEdit = new DataGridViewButtonColumn();

@@ -24,12 +24,12 @@ namespace MediManage
 
         void LoadHomePage()
         {
-            lblWelcome.Text = "Welcome, Dr. " + clsPerson.Find(clsGlobal.CurrentUser.PersonID).FirstName;
+            lblWelcome.Text = "Welcome " + clsGlobal.CurrentUser.PersonInfo.FirstName;
             lblTodayDate.Text = "Today's date: " + DateTime.Today.ToLongDateString();
             lblTotalPatients.Text = "Total Patients = " + clsPatient.GetTotalPatientsNumber();
-            lblTodayRevenue.Text = "Today Revenue = $";
-            lblTodayAppointments.Text = "Today Appointments = " + DGVTodayAppointments.Rows.Count.ToString();
+            lblTodayRevenue.Text = "Today Revenue = $"; //+
             DGVTodayAppointments.DataSource = clsAppointment.GetTodayAppointments();
+            lblTodayAppointments.Text = "Today Appointments = " + DGVTodayAppointments.RowCount.ToString();
 
             if (DGVTodayAppointments.Rows.Count > 0)
             {
@@ -185,6 +185,66 @@ namespace MediManage
         private void btnAddNewAppointment_MouseLeave(object sender, EventArgs e)
         {
             btnAddNewAppointment.ForeColor = Color.Black;
+        }
+
+        private void btnUsersList_Click(object sender, EventArgs e)
+        {
+            frmUsersList frm = new frmUsersList();
+            frm.ShowDialog();
+        }
+
+        private void btnAddNewUser_Click(object sender, EventArgs e)
+        {
+            frmAddUpdateUser frm = new frmAddUpdateUser();
+            frm.ShowDialog();
+        }
+
+        private void btnExaminationsList_Click(object sender, EventArgs e)
+        {
+            frmExaminationsList frm = new frmExaminationsList();
+            frm.ShowDialog();
+        }
+
+        private void btnAddNewExamination_Click(object sender, EventArgs e)
+        {
+            frmAddExamination frm = new frmAddExamination();
+            frm.ShowDialog();
+        }
+
+        private void btnPrescriptionList_Click(object sender, EventArgs e)
+        {
+            frmPrescriptionsList frm = new frmPrescriptionsList();
+            frm.ShowDialog();
+        }
+
+        private void btnAddNewPrescription_Click(object sender, EventArgs e)
+        {
+            frmAddPrescription frm = new frmAddPrescription();
+            frm.ShowDialog();
+        }
+
+        private void btnAnalysesList_Click(object sender, EventArgs e)
+        {
+            frmAnalysesList frm = new frmAnalysesList();
+            frm.ShowDialog();
+        }
+
+        private void btnAddNewAnalysis_Click(object sender, EventArgs e)
+        {
+            frmAddAnalysis frm = new frmAddAnalysis();
+            frm.ShowDialog();
+        }
+
+        private void btnInvoicesList_Click(object sender, EventArgs e)
+        {
+            frmInvoicesList frm = new frmInvoicesList();
+            frm.ShowDialog();
+        }
+
+        private void btnAddNewInvoice_Click(object sender, EventArgs e)
+        {
+            frmAddInvoice frm = new frmAddInvoice();
+            frm.ShowDialog();
         }
     }
 }

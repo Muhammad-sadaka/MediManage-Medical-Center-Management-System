@@ -41,6 +41,25 @@ namespace MediManage_Business
         public byte? Duration { get; set; }
         public string Reason { get; set; }
         public string Notes { get; set; }
+        public clsPatient PatientInfo { get; set; }
+        public clsDoctor DoctorInfo { get; set; }
+
+        public clsAppointment()
+        {
+            this.AppointmentID = null;
+            this.PatientID = null;
+            this.DoctorID = null;
+            this.CreatedByUserID = null;
+            this.BookingDate = null;
+            this.AppointmentDate =  null;
+            this.AppointmentCaseID =  null;
+            this.Duration =  null;
+            this.Reason =  null;
+            this.Notes = null;
+            this.PatientInfo =  null;
+            this.DoctorInfo =  null;
+            this.Mode = enMode.AddNew;
+        }
 
         public clsAppointment(clsAppointmentDTO dto, enMode cMode = enMode.AddNew)
         {
@@ -54,6 +73,8 @@ namespace MediManage_Business
             this.Duration = dto.Duration;
             this.Reason = dto.Reason;
             this.Notes = dto.Notes;
+            this.PatientInfo = clsPatient.Find(PatientID);
+            this.DoctorInfo = clsDoctor.Find(DoctorID);
             this.Mode = cMode;
         }
 
@@ -78,7 +99,7 @@ namespace MediManage_Business
                 return null;
         }
 
-        public static List<clsAppointmentDTO> GetAllAppointments()
+        public static List<clsAppointmentListDTO> GetAllAppointments()
         {
             return clsAppointmentsDataAccess.GetAllAppointments();
         }

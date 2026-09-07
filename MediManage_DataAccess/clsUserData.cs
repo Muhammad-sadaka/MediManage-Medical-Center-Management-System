@@ -13,10 +13,11 @@ namespace MediManage_DataAccess
         public int? PersonID { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
-        public byte? Permissions { get; set; }
+        public int? Permissions { get; set; }
         public bool? IsActive { get; set; }
+        public int? CreatedByUser { get; set; }
 
-        public clsUserDTO(int? userID, int? personID, string userName, string password, byte? permissions, bool? isActive)
+        public clsUserDTO(int? userID, int? personID, string userName, string password, int? permissions, bool? isActive,int? CreatedByUser)
         {
             this.UserID = userID;
             this.PersonID = personID;
@@ -24,9 +25,29 @@ namespace MediManage_DataAccess
             this.Password = password;
             this.Permissions = permissions;
             this.IsActive = isActive;
+            this.CreatedByUser = CreatedByUser;
         }
     }
-    
+
+    public class clsUsersListDTO
+    {
+        public int? PersonID { get; set; }
+        public string FullName { get; set; }
+        public string UserName { get; set; }
+        public string Phone { get; set; }
+        public bool? Status { get; set; }
+
+        public clsUsersListDTO( int? personID,string FullName, string userName, string Phone, bool? Status)
+        {
+            this.PersonID = personID;
+            this.FullName = FullName;
+            this.UserName = userName;
+            this.Phone = Phone;
+            this.Status = Status;
+        }
+    }
+
+
     public class clsUsersDataAccess
     {
         public static clsUserDTO GetUserInfoByID(int? UserID)
@@ -50,8 +71,9 @@ namespace MediManage_DataAccess
                                        reader["PersonID"] == DBNull.Value ? null : (int?)reader["PersonID"],
                                        reader["UserName"] == DBNull.Value ? null : (string)reader["UserName"],
                                        reader["Password"] == DBNull.Value ? null : (string)reader["Password"],
-                                       reader["Permissions"] == DBNull.Value ? null : (byte?)reader["Permissions"],
-                                       reader["IsActive"] == DBNull.Value ? null : (bool?)reader["IsActive"]
+                                       reader["Permissions"] == DBNull.Value ? null : (int?)reader["Permissions"],
+                                       reader["IsActive"] == DBNull.Value ? null : (bool?)reader["IsActive"],
+                                       reader["CreatedByUser"] == DBNull.Value ? null : (int?)reader["CreatedByUser"]
                                    );
                             }
                         }
@@ -84,7 +106,9 @@ namespace MediManage_DataAccess
                         command.Parameters.AddWithValue("@Password", (object)userDTO.Password ?? DBNull.Value);
                         command.Parameters.AddWithValue("@Permissions", (object)userDTO.Permissions ?? DBNull.Value);
                         command.Parameters.AddWithValue("@IsActive", (object)userDTO.IsActive ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@CreatedByUser", (object)userDTO.CreatedByUser ?? DBNull.Value);
 
+                        
                         SqlParameter outputIdParam = new SqlParameter("@NewUserID", SqlDbType.Int)
                         {
                             Direction = ParameterDirection.Output
@@ -126,6 +150,7 @@ namespace MediManage_DataAccess
                         command.Parameters.AddWithValue("@Password", (object)userDTO.Password ?? DBNull.Value);
                         command.Parameters.AddWithValue("@Permissions", (object)userDTO.Permissions ?? DBNull.Value);
                         command.Parameters.AddWithValue("@IsActive", (object)userDTO.IsActive ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@CreatedByUser", (object)userDTO.CreatedByUser ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -142,9 +167,9 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static List<clsUserDTO> GetAllUsers()
+        public static List<clsUsersListDTO> GetAllUsers()
         {
-            List<clsUserDTO> list = new List<clsUserDTO>();
+            List<clsUsersListDTO> list = new List<clsUsersListDTO>();
 
             try
             {
@@ -159,13 +184,12 @@ namespace MediManage_DataAccess
                         {
                             while (reader.Read())
                             {
-                                list.Add(new clsUserDTO(
-                                    reader["UserID"] == DBNull.Value ? null : (int?)reader["UserID"],
+                                list.Add(new clsUsersListDTO(
                                     reader["PersonID"] == DBNull.Value ? null : (int?)reader["PersonID"],
+                                    reader["FullName"] == DBNull.Value ? null : (string)reader["FullName"],
                                     reader["UserName"] == DBNull.Value ? null : (string)reader["UserName"],
-                                    reader["Password"] == DBNull.Value ? null : (string)reader["Password"],
-                                    reader["Permissions"] == DBNull.Value ? null : (byte?)reader["Permissions"],
-                                    reader["IsActive"] == DBNull.Value ? null : (bool?)reader["IsActive"]
+                                    reader["Phone"] == DBNull.Value ? null : (string)reader["Phone"],
+                                    reader["Status"] == DBNull.Value ? null : (bool?)reader["Status"]
                                 ));
                             }
                         }
@@ -268,9 +292,10 @@ namespace MediManage_DataAccess
                                     reader["PersonID"] == DBNull.Value ? null : (int?)reader["PersonID"],
                                     reader["UserName"] == DBNull.Value ? null : (string)reader["UserName"],
                                     reader["Password"] == DBNull.Value ? null : (string)reader["Password"],
-                                    reader["Permissions"] == DBNull.Value ? null : (byte?)reader["Permissions"],
-                                    reader["IsActive"] == DBNull.Value ? null : (bool?)reader["IsActive"]
-                                );
+                                    reader["Permissions"] == DBNull.Value ? null : (int?)reader["Permissions"],
+                                    reader["IsActive"] == DBNull.Value ? null : (bool?)reader["IsActive"],
+                                    reader["CreatedByUser"] == DBNull.Value ? null : (int?)reader["CreatedByUser"]     
+                                                     );
                             }
                         }
                     }

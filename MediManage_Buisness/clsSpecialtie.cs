@@ -54,6 +54,16 @@ namespace MediManage_Business
             return null;
         }
 
+        public static clsSpecialty Find(string specialtyName)
+        {
+            clsSpecialtyDTO dto = clsSpecialtiesDataAccess.GetSpecialtyInfoByspecialtyName(specialtyName);
+
+            if (dto != null)
+                return new clsSpecialty(dto, enMode.Update);
+
+            return null;
+        }
+
         public static List<clsSpecialtyDTO> GetAllSpecialties()
         {
             return clsSpecialtiesDataAccess.GetAllSpecialties();
