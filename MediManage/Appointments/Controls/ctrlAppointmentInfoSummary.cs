@@ -13,25 +13,25 @@ namespace MediManage
 {
     public partial class ctrlAppointmentInfoSummary : UserControl
     {
-        clsAppointment Appointment = null;
+        clsAppointment Appointment = new clsAppointment();
 
         public ctrlAppointmentInfoSummary()
         {
             InitializeComponent();
         }
 
-        public void LoadPersonInfoData(int AppointmentID)
+        public void LoadAppointmentInfoData(int AppointmentID)
         {
             if (!clsAppointment.IsExist(AppointmentID))
             {
-                MessageBox.Show("Person Did not Found");
+                MessageBox.Show("Appointment Did not Found");
                 return;
             }
 
             Appointment = clsAppointment.Find(AppointmentID);
 
-            lblPatientName.Text = Appointment.PatientInfo.PersonInfo.FirstName + " " + Appointment.PatientInfo.PersonInfo.LastName;
-            lblDoctorName.Text = Appointment.DoctorInfo.PersonInfo.FirstName + " " + Appointment.DoctorInfo.PersonInfo.LastName;
+            lblPatientName.Text = Appointment.PatientInfo.PersonInfo.FullName;
+            lblDoctorName.Text = Appointment.DoctorInfo.PersonInfo.FullName;
             lblDate.Text = Appointment.AppointmentDate.ToString();
 
 

@@ -79,6 +79,16 @@ namespace MediManage_Business
 
         public static clsPatient Find(int? ID)
         {
+            clsPatientDTO dto = clsPatientsDataAccess.GetPatientInfoByID(ID);
+
+            if (dto != null)
+                return new clsPatient(dto, enMode.Update);
+            else
+                return null;
+        }
+
+        public static clsPatient FindByPersonID(int? ID)
+        {
             clsPatientDTO dto = clsPatientsDataAccess.GetPatientInfoByPersonID(ID);
 
             if (dto != null)

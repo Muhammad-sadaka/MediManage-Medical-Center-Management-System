@@ -28,14 +28,14 @@ namespace MediManage_DataAccess
 
     public class clsPatientsListDTO
     {
-        public int? PersonID { get; set; }
+        public int? PatientID { get; set; }
         public string FullName { get; set; }
         public string NationalNo { get; set; }
         public string Phone { get; set; }
 
-        public clsPatientsListDTO(int? PersonID, string FullName, string NationalNo, string Phone)
+        public clsPatientsListDTO(int? PatientID, string FullName, string NationalNo, string Phone)
         {
-            this.PersonID = PersonID;
+            this.PatientID = PatientID;
             this.FullName = FullName;
             this.NationalNo = NationalNo;
             this.Phone = Phone;
@@ -46,6 +46,45 @@ namespace MediManage_DataAccess
     // 2. Data Access Layer
     public class clsPatientsDataAccess
     {
+        public static clsPatientDTO GetPatientInfoByID(int? PatientID)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("[SP_GetPatientByID]", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@PatientID", (object)PatientID ?? DBNull.Value);
+
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new clsPatientDTO
+                                (
+                                    reader["PatientID"] == DBNull.Value ? null : (int?)reader["PatientID"],
+                                    reader["PersonID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["PersonID"]),
+                                    reader["Sensitivity"] == DBNull.Value ? null : (string)reader["Sensitivity"],
+                                    reader["ChronicDiseases"] == DBNull.Value ? null : (string)reader["ChronicDiseases"],
+                                    reader["JoinDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["JoinDate"]),
+                                    reader["PatientCaseID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["PatientCaseID"])
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsDataAccessSettings.EventLogCreate();
+                EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
+            }
+
+            return null;
+        }
+
         public static clsPatientDTO GetPatientInfoByPersonID(int? PersonID)
         {
             try
@@ -219,7 +258,7 @@ namespace MediManage_DataAccess
                             {
                                 patientsList.Add(new clsPatientsListDTO
                                 (
-                                    reader["PersonID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["PersonID"]),
+                                    reader["PatientID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["PatientID"]),
                                     reader["FullName"] == DBNull.Value ? null : (string)reader["FullName"],
                                     reader["NationalNo"] == DBNull.Value ? null : (string)reader["NationalNo"],
                                     reader["Phone"] == DBNull.Value ? null : (string)reader["Phone"]
@@ -238,7 +277,7 @@ namespace MediManage_DataAccess
             return patientsList;
         }
 
-        public static bool DeletePatient(int? PersonID)
+        public static bool DeletePatient(int? PatientID)
         {
             int rowsAffected = 0;
 
@@ -249,7 +288,7 @@ namespace MediManage_DataAccess
                     using (SqlCommand command = new SqlCommand("SP_DeletePatient", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@PersonID", (object)PersonID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PatientID", (object)PatientID ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -265,7 +304,7 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static bool IsPatientExist(int? PersonID)
+        public static bool IsPatientExist(int? PatientID)
         {
             bool isFound = false;
 
@@ -276,7 +315,7 @@ namespace MediManage_DataAccess
                     using (SqlCommand command = new SqlCommand("SP_CheckPatientExists", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@PersonID", (object)PersonID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PatientID", (object)PatientID ?? DBNull.Value);
 
                         SqlParameter returnParameter = new SqlParameter("@ReturnVal", SqlDbType.Int)
                         {

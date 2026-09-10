@@ -31,17 +31,6 @@ namespace MediManage
             DGVTodayAppointments.DataSource = clsAppointment.GetTodayAppointments();
             lblTodayAppointments.Text = "Today Appointments = " + DGVTodayAppointments.RowCount.ToString();
 
-            if (DGVTodayAppointments.Rows.Count > 0)
-            {
-                DGVTodayAppointments.Columns[0].Width = 1240;
-
-                DGVTodayAppointments.Columns[1].Width = 240;
-
-                DGVTodayAppointments.Columns[2].Width = 240;
-
-                DGVTodayAppointments.Columns[3].Width = 240;
-            }
-
         }
 
         private void hopeTabPage1_Selecting(object sender, TabControlCancelEventArgs e)
@@ -246,5 +235,66 @@ namespace MediManage
             frmAddInvoice frm = new frmAddInvoice();
             frm.ShowDialog();
         }
+
+
+
+
+        //// still need to be tested and implemented
+        ///
+
+        //private void Button_MouseHover(object sender, EventArgs e)
+        //{
+        //    if (sender is Control btn)
+        //    {
+        //        btn.ForeColor = Color.Red;
+        //    }
+        //}
+
+        //private void Button_MouseLeave(object sender, EventArgs e)
+        //{
+        //    if (sender is Control btn)
+        //    {
+        //        btn.ForeColor = Color.Black;
+        //    }
+        //}
+
+
+        //private void Form1_Load(object sender, EventArgs e)
+        //{
+        //    foreach (Control ctrl in this.Controls)
+        //    {
+        //        if (ctrl is Button btn)
+        //        {
+        //            btn.MouseHover += Button_MouseHover;
+        //            btn.MouseLeave += Button_MouseLeave;
+        //        }
+        //    }
+        //}
+
+        //// دالة عامة لفتح أي Form باستخدام ShowDialog
+        //private void OpenForm<T>() where T : Form, new()
+        //{
+        //    using (T frm = new T())
+        //    {
+        //        frm.ShowDialog();
+        //    }
+        //}
+
+        //private void btnPeopleList_Click(object sender, EventArgs e) => OpenForm<frmPeopleList>();
+
+        //private void btnAddNewPerson_Click(object sender, EventArgs e) => OpenForm<frmAddUpdatePerson>();
+
+        //private void btnPatientsList_Click(object sender, EventArgs e) => OpenForm<frmPatientsList>();
+
+        //private void btnAddNewPatient_Click(object sender, EventArgs e) => OpenForm<frmAddUpdatePatient>();
+
+        //private void btnDoctorsList_Click(object sender, EventArgs e) => OpenForm<frmDoctorsList>();
+
+        //private void btnAddNewDoctor_Click(object sender, EventArgs e) => OpenForm<frmAddUpdateDoctor>();
+
+        //private void btnAppointmentsList_Click(object sender, EventArgs e) => OpenForm<frmAppointmentsList>();
+
+        //private void btnAddNewAppointment_Click(object sender, EventArgs e) => OpenForm<frmAddUpdateAppointment>();
+
     }
 }

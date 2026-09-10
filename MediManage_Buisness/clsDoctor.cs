@@ -88,6 +88,16 @@ namespace MediManage_Business
                 return null;
         }
 
+        public static clsDoctor FindByPersonID(int? ID)
+        {
+            clsDoctorDTO dto = clsDoctorsDataAccess.GetDoctorInfoByPersonID(ID);
+
+            if (dto != null)
+                return new clsDoctor(dto, enMode.Update);
+            else
+                return null;
+        }
+
         public static clsDoctor Find(string NationalNo)
         {
             clsDoctorDTO dto = clsDoctorsDataAccess.GetDoctorInfoByNationalNo(NationalNo);

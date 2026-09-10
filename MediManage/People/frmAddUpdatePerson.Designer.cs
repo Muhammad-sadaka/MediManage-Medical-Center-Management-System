@@ -82,7 +82,7 @@
             this.btnClose.Location = new System.Drawing.Point(1032, 686);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(190, 58);
-            this.btnClose.TabIndex = 0;
+            this.btnClose.TabIndex = 19;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -96,7 +96,7 @@
             this.btnSave.Location = new System.Drawing.Point(655, 685);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(371, 59);
-            this.btnSave.TabIndex = 1;
+            this.btnSave.TabIndex = 18;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -155,7 +155,7 @@
             this.rbFemale.Location = new System.Drawing.Point(849, 295);
             this.rbFemale.Name = "rbFemale";
             this.rbFemale.Size = new System.Drawing.Size(104, 32);
-            this.rbFemale.TabIndex = 169;
+            this.rbFemale.TabIndex = 8;
             this.rbFemale.Text = "Female";
             this.rbFemale.UseVisualStyleBackColor = true;
             // 
@@ -168,7 +168,7 @@
             this.rbMale.Location = new System.Drawing.Point(704, 295);
             this.rbMale.Name = "rbMale";
             this.rbMale.Size = new System.Drawing.Size(79, 32);
-            this.rbMale.TabIndex = 168;
+            this.rbMale.TabIndex = 7;
             this.rbMale.TabStop = true;
             this.rbMale.Text = "Male";
             this.rbMale.UseVisualStyleBackColor = true;
@@ -179,7 +179,7 @@
             this.dateTimePicker1.Location = new System.Drawing.Point(704, 248);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(500, 35);
-            this.dateTimePicker1.TabIndex = 167;
+            this.dateTimePicker1.TabIndex = 6;
             this.dateTimePicker1.Value = new System.DateTime(2026, 9, 4, 0, 0, 0, 0);
             // 
             // cbMaritalStatus
@@ -190,7 +190,7 @@
             this.cbMaritalStatus.Location = new System.Drawing.Point(704, 560);
             this.cbMaritalStatus.Name = "cbMaritalStatus";
             this.cbMaritalStatus.Size = new System.Drawing.Size(500, 32);
-            this.cbMaritalStatus.TabIndex = 166;
+            this.cbMaritalStatus.TabIndex = 14;
             // 
             // cbBloodType
             // 
@@ -200,7 +200,7 @@
             this.cbBloodType.Location = new System.Drawing.Point(704, 519);
             this.cbBloodType.Name = "cbBloodType";
             this.cbBloodType.Size = new System.Drawing.Size(500, 32);
-            this.cbBloodType.TabIndex = 165;
+            this.cbBloodType.TabIndex = 13;
             // 
             // cbCountries
             // 
@@ -210,7 +210,7 @@
             this.cbCountries.Location = new System.Drawing.Point(704, 475);
             this.cbCountries.Name = "cbCountries";
             this.cbCountries.Size = new System.Drawing.Size(500, 32);
-            this.cbCountries.TabIndex = 164;
+            this.cbCountries.TabIndex = 12;
             // 
             // tbAddress
             // 
@@ -218,7 +218,7 @@
             this.tbAddress.Location = new System.Drawing.Point(704, 429);
             this.tbAddress.Name = "tbAddress";
             this.tbAddress.Size = new System.Drawing.Size(500, 35);
-            this.tbAddress.TabIndex = 163;
+            this.tbAddress.TabIndex = 11;
             // 
             // tbEmail
             // 
@@ -226,7 +226,7 @@
             this.tbEmail.Location = new System.Drawing.Point(704, 384);
             this.tbEmail.Name = "tbEmail";
             this.tbEmail.Size = new System.Drawing.Size(500, 35);
-            this.tbEmail.TabIndex = 162;
+            this.tbEmail.TabIndex = 10;
             // 
             // tbPhone
             // 
@@ -234,7 +234,7 @@
             this.tbPhone.Location = new System.Drawing.Point(704, 337);
             this.tbPhone.Name = "tbPhone";
             this.tbPhone.Size = new System.Drawing.Size(500, 35);
-            this.tbPhone.TabIndex = 161;
+            this.tbPhone.TabIndex = 9;
             // 
             // tbNationalNo
             // 
@@ -242,7 +242,7 @@
             this.tbNationalNo.Location = new System.Drawing.Point(704, 207);
             this.tbNationalNo.Name = "tbNationalNo";
             this.tbNationalNo.Size = new System.Drawing.Size(500, 35);
-            this.tbNationalNo.TabIndex = 160;
+            this.tbNationalNo.TabIndex = 5;
             // 
             // tbLastName
             // 
@@ -250,7 +250,7 @@
             this.tbLastName.Location = new System.Drawing.Point(704, 159);
             this.tbLastName.Name = "tbLastName";
             this.tbLastName.Size = new System.Drawing.Size(500, 35);
-            this.tbLastName.TabIndex = 159;
+            this.tbLastName.TabIndex = 4;
             // 
             // tbThirdName
             // 
@@ -258,7 +258,7 @@
             this.tbThirdName.Location = new System.Drawing.Point(704, 114);
             this.tbThirdName.Name = "tbThirdName";
             this.tbThirdName.Size = new System.Drawing.Size(500, 35);
-            this.tbThirdName.TabIndex = 158;
+            this.tbThirdName.TabIndex = 3;
             // 
             // tbSecondName
             // 
@@ -266,7 +266,7 @@
             this.tbSecondName.Location = new System.Drawing.Point(704, 69);
             this.tbSecondName.Name = "tbSecondName";
             this.tbSecondName.Size = new System.Drawing.Size(500, 35);
-            this.tbSecondName.TabIndex = 157;
+            this.tbSecondName.TabIndex = 2;
             // 
             // tbFirstName
             // 
@@ -274,7 +274,7 @@
             this.tbFirstName.Location = new System.Drawing.Point(704, 22);
             this.tbFirstName.Name = "tbFirstName";
             this.tbFirstName.Size = new System.Drawing.Size(500, 35);
-            this.tbFirstName.TabIndex = 156;
+            this.tbFirstName.TabIndex = 1;
             // 
             // label15
             // 
@@ -418,7 +418,7 @@
             this.klblClicktoAddPhoto.Location = new System.Drawing.Point(89, 362);
             this.klblClicktoAddPhoto.Name = "klblClicktoAddPhoto";
             this.klblClicktoAddPhoto.Size = new System.Drawing.Size(239, 34);
-            this.klblClicktoAddPhoto.TabIndex = 22;
+            this.klblClicktoAddPhoto.TabIndex = 15;
             this.klblClicktoAddPhoto.TabStop = true;
             this.klblClicktoAddPhoto.Text = "Click to Add Photo";
             this.klblClicktoAddPhoto.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.klblClicktoAddPhoto_LinkClicked);
@@ -432,7 +432,7 @@
             this.klblChangeImage.Location = new System.Drawing.Point(101, 441);
             this.klblChangeImage.Name = "klblChangeImage";
             this.klblChangeImage.Size = new System.Drawing.Size(197, 34);
-            this.klblChangeImage.TabIndex = 21;
+            this.klblChangeImage.TabIndex = 16;
             this.klblChangeImage.TabStop = true;
             this.klblChangeImage.Text = "Change Image";
             this.klblChangeImage.Visible = false;
@@ -447,7 +447,7 @@
             this.klblRemove.Location = new System.Drawing.Point(101, 492);
             this.klblRemove.Name = "klblRemove";
             this.klblRemove.Size = new System.Drawing.Size(203, 34);
-            this.klblRemove.TabIndex = 20;
+            this.klblRemove.TabIndex = 17;
             this.klblRemove.TabStop = true;
             this.klblRemove.Text = "Remove Image";
             this.klblRemove.Visible = false;
@@ -489,7 +489,6 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(1248, 756);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.lblTitle);

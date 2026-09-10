@@ -1,6 +1,7 @@
-﻿using System;
+﻿using MediManage_DataAccess;
+using System;
 using System.Collections.Generic;
-using MediManage_DataAccess;
+using static MediManage_DataAccess.clsMedicineDTO;
 
 namespace MediManage_Business
 {
@@ -18,50 +19,36 @@ namespace MediManage_Business
                 return new clsMedicineDTO
                 (
                     this.MedicineID,
-                    this.MedicineName,
-                    this.Duration,
-                    this.Repetition,
-                    this.Dose,
-                    this.MedicalPrescriptionID,
-                    this.Notes
+                    this.MedicineName
                 );
             }
         }
 
         public int? MedicineID { get; set; }
         public string MedicineName { get; set; }
-        public string Duration { get; set; }
-        public string Repetition { get; set; }
-        public string Dose { get; set; }
-        public int? MedicalPrescriptionID { get; set; }
-        public string Notes { get; set; }
 
         public clsMedicine(clsMedicineDTO dto, enMode cMode = enMode.AddNew)
         {
             this.MedicineID = dto.MedicineID;
             this.MedicineName = dto.MedicineName;
-            this.Duration = dto.Duration;
-            this.Repetition = dto.Repetition;
-            this.Dose = dto.Dose;
-            this.MedicalPrescriptionID = dto.MedicalPrescriptionID;
-            this.Notes = dto.Notes;
+
             this.Mode = cMode;
         }
 
         private bool _AddNewMedicine()
         {
-            this.MedicineID = clsMedicinesDataAccess.AddNewMedicine(this.DTO);
+            this.MedicineID = clsMedicineDataAccess.AddNewMedicine(this.DTO);
             return (this.MedicineID.HasValue);
         }
 
         private bool _UpdateMedicine()
         {
-            return clsMedicinesDataAccess.UpdateMedicine(this.DTO);
+            return clsMedicineDataAccess.UpdateMedicine(this.DTO);
         }
 
         public static clsMedicine Find(int? ID)
         {
-            clsMedicineDTO dto = clsMedicinesDataAccess.GetMedicineInfoByID(ID);
+            clsMedicineDTO dto = clsMedicineDataAccess.GetMedicineInfoByID(ID);
 
             if (dto != null)
                 return new clsMedicine(dto, enMode.Update);
@@ -71,7 +58,7 @@ namespace MediManage_Business
 
         public static List<clsMedicineDTO> GetAllMedicines()
         {
-            return clsMedicinesDataAccess.GetAllMedicines();
+            return clsMedicineDataAccess.GetAllMedicines();
         }
 
         public bool Save()
@@ -98,12 +85,12 @@ namespace MediManage_Business
 
         public static bool DeleteMedicine(int? ID)
         {
-            return clsMedicinesDataAccess.DeleteMedicine(ID);
+            return clsMedicineDataAccess.DeleteMedicine(ID);
         }
 
         public static bool IsExist(int? ID)
         {
-            return clsMedicinesDataAccess.IsMedicineExist(ID);
+            return clsMedicineDataAccess.IsMedicineExist(ID);
         }
     }
 }

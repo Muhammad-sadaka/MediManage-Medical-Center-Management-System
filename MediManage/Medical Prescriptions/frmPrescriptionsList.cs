@@ -94,5 +94,10 @@ namespace MediManage
                 tbPatientName.Text = "Enter Patient Name to search...";
             }
         }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

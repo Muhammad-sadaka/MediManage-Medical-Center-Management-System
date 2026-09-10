@@ -27,11 +27,11 @@ namespace MediManage
             _Mode = enMode.AddNew;
         }
 
-        public frmAddUpdateDoctor(int PersonID)
+        public frmAddUpdateDoctor(int DoctorID)
         {
             InitializeComponent();
             _Mode = enMode.Update;
-            Doctor.PersonID = PersonID;
+            Doctor.DoctorID = DoctorID;
         }
 
         private void frmAddUpdateDoctor_Load(object sender, EventArgs e)
@@ -43,12 +43,6 @@ namespace MediManage
 
         private void _ResestDefualtValues()
         {
-
-            //foreach (string s in Specialties.Select(s => s.SpecialtyName))
-            //{
-            //    cbSpecialties.Items.Add(s);
-            //}
-
             cbSpecialties.DataSource = Specialties;
             cbSpecialties.DisplayMember = "SpecialtyName";
 
@@ -62,29 +56,26 @@ namespace MediManage
             else
                 lblTitle.Text = "Update Doctor                        ";
 
-
-            tbLicenseNo.Text = "";
-            tbQualification.Text = "";
+            tbLicenseNo.Clear();
+            tbQualification.Clear();
             numericEcperienceYears.Value = 0;
             chkIsActive.Checked = true;
             cbSpecialties.SelectedIndex = 0;
-
         }
 
         private void _LoadData()
         {
-            Doctor = clsDoctor.Find(Doctor.PersonID);
+            Doctor = clsDoctor.Find(Doctor.DoctorID);
 
             if (Doctor == null)
             {
-                MessageBox.Show("This form will be closed because No Doctor with ID = " + Doctor.PersonID);
+                MessageBox.Show("This form will be closed because No Doctor with ID = " + Doctor.DoctorID,"Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 this.Close();
                 return;
             }
 
             gbSearch.Enabled = false;
             ctrlPersonInfoSummary1.LoadPersonInfoData(Doctor.PersonID.Value);
-
 
             tbLicenseNo.Text = Doctor.LicenseNo;
             tbQualification.Text = Doctor.Qualification;
@@ -106,14 +97,14 @@ namespace MediManage
                 Doctor.PersonID = clsPerson.Find(tbNationalNo.Text).PersonID;
                 if (clsDoctor.IsExist(tbNationalNo.Text))
                 {
-                    MessageBox.Show("This National No is already used for another doctor");
+                    MessageBox.Show("This National No is already used for another doctor","",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
                     _Mode = enMode.Update;
                     _LoadData();
                 }
             }
             else
             {
-                MessageBox.Show("No Person Found With This National No");
+                MessageBox.Show("No Person Found With This National No", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
@@ -126,26 +117,22 @@ namespace MediManage
                 return;
             }
 
-            //Doctor.PersonID = clsPerson.Find(tbNationalNo.Text).PersonID;
             Doctor.SpecialtyID = cbSpecialties.SelectedIndex + 1;
             Doctor.LicenseNo = tbLicenseNo.Text.Trim();
             Doctor.YearsOfExperience = Convert.ToByte(numericEcperienceYears.Value);
             Doctor.Qualification = tbQualification.Text.Trim();
             Doctor.IsActive = chkIsActive.Checked;
-
-
+            Doctor.IsActive = customCheckBox1.Checked;
 
             if (Doctor.Save())
             {
                 _Mode = enMode.Update;
                 lblTitle.Text = "Update Doctor                        ";
-                MessageBox.Show("Data Saved Successfully.");
-
-                // PersonIDDataBack?.Invoke(this, _PersonID);
+                MessageBox.Show("Data Saved Successfully.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show("Error: Data Is not Saved Successfully.");
+                MessageBox.Show("Error: Data Is not Saved Successfully.", "Did Not Saved", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -158,7 +145,7 @@ namespace MediManage
 
         private void tbNationalNo_Leave(object sender, EventArgs e)
         {
-            if (tbNationalNo.Text == "" || tbNationalNo.Text == null)
+            if (string.IsNullOrEmpty(tbNationalNo.Text))
             {
                 tbNationalNo.ForeColor = Color.Gray;
                 tbNationalNo.Text = "National No";

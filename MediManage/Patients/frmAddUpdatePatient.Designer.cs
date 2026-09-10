@@ -36,7 +36,6 @@
             this.btnSearch = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.ctrlPersonInfoSummary1 = new MediManage.ctrlPersonInfoSummary();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.cbPatientCase = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -44,6 +43,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.tbSensitivity = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
+            this.ctrlPersonInfoSummary1 = new MediManage.ctrlPersonInfoSummary();
             this.gbSearch.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -58,7 +58,7 @@
             this.btnSave.Location = new System.Drawing.Point(435, 748);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(190, 58);
-            this.btnSave.TabIndex = 3;
+            this.btnSave.TabIndex = 6;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -72,7 +72,7 @@
             this.btnClose.Location = new System.Drawing.Point(631, 748);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(190, 58);
-            this.btnClose.TabIndex = 2;
+            this.btnClose.TabIndex = 7;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -86,7 +86,7 @@
             this.gbSearch.Location = new System.Drawing.Point(12, 96);
             this.gbSearch.Name = "gbSearch";
             this.gbSearch.Size = new System.Drawing.Size(1224, 100);
-            this.gbSearch.TabIndex = 4;
+            this.gbSearch.TabIndex = 1;
             this.gbSearch.TabStop = false;
             this.gbSearch.Text = "1 Search";
             // 
@@ -107,7 +107,7 @@
             this.tbNationalNo.Location = new System.Drawing.Point(209, 42);
             this.tbNationalNo.Name = "tbNationalNo";
             this.tbNationalNo.Size = new System.Drawing.Size(828, 40);
-            this.tbNationalNo.TabIndex = 22;
+            this.tbNationalNo.TabIndex = 1;
             this.tbNationalNo.Text = "National No";
             this.tbNationalNo.Enter += new System.EventHandler(this.tbNationalNo_Enter);
             this.tbNationalNo.Leave += new System.EventHandler(this.tbNationalNo_Leave);
@@ -115,13 +115,14 @@
             // btnSearch
             // 
             this.btnSearch.BackColor = System.Drawing.Color.Blue;
+            this.btnSearch.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearch.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearch.ForeColor = System.Drawing.Color.White;
             this.btnSearch.Location = new System.Drawing.Point(1043, 38);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(162, 47);
-            this.btnSearch.TabIndex = 21;
+            this.btnSearch.TabIndex = 2;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = false;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
@@ -143,18 +144,9 @@
             this.groupBox2.Location = new System.Drawing.Point(12, 202);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(1224, 236);
-            this.groupBox2.TabIndex = 19;
+            this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "2 Person Information";
-            // 
-            // ctrlPersonInfoSummary1
-            // 
-            this.ctrlPersonInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ctrlPersonInfoSummary1.Location = new System.Drawing.Point(10, 42);
-            this.ctrlPersonInfoSummary1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
-            this.ctrlPersonInfoSummary1.Name = "ctrlPersonInfoSummary1";
-            this.ctrlPersonInfoSummary1.Size = new System.Drawing.Size(1195, 172);
-            this.ctrlPersonInfoSummary1.TabIndex = 21;
             // 
             // groupBox3
             // 
@@ -168,7 +160,7 @@
             this.groupBox3.Location = new System.Drawing.Point(12, 444);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(1224, 284);
-            this.groupBox3.TabIndex = 20;
+            this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "3 ";
             // 
@@ -180,7 +172,7 @@
             this.cbPatientCase.Location = new System.Drawing.Point(219, 227);
             this.cbPatientCase.Name = "cbPatientCase";
             this.cbPatientCase.Size = new System.Drawing.Size(196, 36);
-            this.cbPatientCase.TabIndex = 167;
+            this.cbPatientCase.TabIndex = 5;
             // 
             // label7
             // 
@@ -197,7 +189,7 @@
             this.tbChronicDiseases.Location = new System.Drawing.Point(40, 169);
             this.tbChronicDiseases.Name = "tbChronicDiseases";
             this.tbChronicDiseases.Size = new System.Drawing.Size(1165, 40);
-            this.tbChronicDiseases.TabIndex = 148;
+            this.tbChronicDiseases.TabIndex = 4;
             // 
             // label6
             // 
@@ -214,7 +206,7 @@
             this.tbSensitivity.Location = new System.Drawing.Point(40, 73);
             this.tbSensitivity.Name = "tbSensitivity";
             this.tbSensitivity.Size = new System.Drawing.Size(1165, 40);
-            this.tbSensitivity.TabIndex = 146;
+            this.tbSensitivity.TabIndex = 3;
             // 
             // label5
             // 
@@ -225,6 +217,15 @@
             this.label5.Size = new System.Drawing.Size(149, 34);
             this.label5.TabIndex = 145;
             this.label5.Text = "Sensitivity:";
+            // 
+            // ctrlPersonInfoSummary1
+            // 
+            this.ctrlPersonInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ctrlPersonInfoSummary1.Location = new System.Drawing.Point(10, 42);
+            this.ctrlPersonInfoSummary1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.ctrlPersonInfoSummary1.Name = "ctrlPersonInfoSummary1";
+            this.ctrlPersonInfoSummary1.Size = new System.Drawing.Size(1195, 172);
+            this.ctrlPersonInfoSummary1.TabIndex = 21;
             // 
             // frmAddUpdatePatient
             // 

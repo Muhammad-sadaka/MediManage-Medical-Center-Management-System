@@ -46,6 +46,23 @@ namespace MediManage_DataAccess
         }
     }
 
+    public class clsPersonListDTO
+    {
+        public int? PersonID { get; set; }
+        public string FullName { get; set; }
+        public string NationalNo { get; set; }
+        public string Phone { get; set; }
+
+
+        public clsPersonListDTO(int? personID, string FullName, string nationalNo, string phone)
+        {
+            this.PersonID = personID;
+            this.FullName = FullName;
+            this.NationalNo = nationalNo;
+            this.Phone = phone;
+        }
+    }
+
     // 2. Data Access Layer
     public class clsPeopleDataAccess
     {
@@ -239,9 +256,9 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static List<clsPersonDTO> GetAllPeople()
+        public static List<clsPersonListDTO> GetAllPeople()
         {
-            var peopleList = new List<clsPersonDTO>();
+            var peopleList = new List<clsPersonListDTO>();
 
             try
             {
@@ -256,24 +273,13 @@ namespace MediManage_DataAccess
                         {
                             while (reader.Read())
                             {
-                                peopleList.Add(new clsPersonDTO
+                                peopleList.Add(new clsPersonListDTO
                                 (
                                     reader["PersonID"] == DBNull.Value ? null : (int?)reader["PersonID"],
-                                    reader["FirstName"] == DBNull.Value ? null : (string)reader["FirstName"],
-                                    reader["SecondName"] == DBNull.Value ? null : (string)reader["SecondName"],
-                                    reader["ThirdName"] == DBNull.Value ? null : (string)reader["ThirdName"],
-                                    reader["LastName"] == DBNull.Value ? null : (string)reader["LastName"],
+                                    reader["FullName"] == DBNull.Value ? null : (string)reader["FullName"],
                                     reader["NationalNo"] == DBNull.Value ? null : (string)reader["NationalNo"],
-                                    reader["Phone"] == DBNull.Value ? null : (string)reader["Phone"],
-                                    reader["DateOfBirth"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["DateOfBirth"]),
-                                    reader["Gender"] == DBNull.Value ? null : (string)reader["Gender"],
-                                    reader["Image"] == DBNull.Value ? null : (string)reader["Image"],
-                                    reader["Address"] == DBNull.Value ? null : (string)reader["Address"],
-                                    reader["Email"] == DBNull.Value ? null : (string)reader["Email"],
-                                    reader["BloodTypeID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["BloodTypeID"]),
-                                    reader["MaritalStatusID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["MaritalStatusID"]),
-                                    reader["CountryId"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["CountryId"])
-                                ));
+                                    reader["Phone"] == DBNull.Value ? null : (string)reader["Phone"])
+                                );
                             }
                         }
                     }

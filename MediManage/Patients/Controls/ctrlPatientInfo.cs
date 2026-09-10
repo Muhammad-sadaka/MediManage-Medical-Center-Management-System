@@ -20,15 +20,15 @@ namespace MediManage
             InitializeComponent();
         }
 
-        public void LoadPatientInfoData(int PersonId)
+        public void LoadPatientInfoData(int PatientID)
         {
-            if (!clsPatient.IsExist(PersonId))
+            if (!clsPatient.IsExist(PatientID))
             {
                 MessageBox.Show("Patient Did not Found");
                 return;
             }
 
-            Patient = clsPatient.Find(PersonId);
+            Patient = clsPatient.Find(PatientID);
 
             lblSensitivity.Text = Patient.Sensitivity;
             lblChronicDiseases.Text = Patient.ChronicDiseases;

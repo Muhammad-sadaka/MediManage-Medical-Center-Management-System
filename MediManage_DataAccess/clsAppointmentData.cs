@@ -38,12 +38,12 @@ namespace MediManage_DataAccess
 
     public class clsTodayAppointmentDTO
     {
-        public DateTime? Time { get; set; }
+        public TimeSpan? Time { get; set; }
         public string PatientName { get; set; }
         public string DoctorName { get; set; }
         public string Status { get; set; }
 
-        public clsTodayAppointmentDTO(DateTime? time, string patientName, string doctorName, string status)
+        public clsTodayAppointmentDTO(TimeSpan? time, string patientName, string doctorName, string status)
         {
             Time = time;
             PatientName = patientName;
@@ -322,7 +322,7 @@ namespace MediManage_DataAccess
                             {
                                 appointmentsList.Add(new clsTodayAppointmentDTO
                                 (
-                                    reader["Time"] == DBNull.Value ? null : (DateTime?)reader["Time"],
+                                    reader["Time"] == DBNull.Value ? null : (TimeSpan?)reader["Time"],
                                     reader["Patient Name"] == DBNull.Value ? null : (string)reader["Patient Name"],
                                     reader["Doctor Name"] == DBNull.Value ? null : (string)reader["Doctor Name"],
                                     reader["Status"] == DBNull.Value ? null : (string)reader["Status"]

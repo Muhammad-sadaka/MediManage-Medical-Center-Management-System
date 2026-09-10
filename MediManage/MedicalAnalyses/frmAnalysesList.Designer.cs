@@ -28,31 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.cbStatuses = new System.Windows.Forms.ComboBox();
-            this.DGVPeopleList = new System.Windows.Forms.DataGridView();
+            this.DGVAnalysesList = new System.Windows.Forms.DataGridView();
             this.lblTotalRecords = new System.Windows.Forms.Label();
-            this.tbNationalNo = new System.Windows.Forms.TextBox();
+            this.tbPatientName = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.btnAddNew = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DGVPeopleList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVAnalysesList)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
             this.panel1.Controls.Add(this.label1);
             this.panel1.Controls.Add(this.cbStatuses);
-            this.panel1.Controls.Add(this.DGVPeopleList);
+            this.panel1.Controls.Add(this.DGVAnalysesList);
             this.panel1.Controls.Add(this.lblTotalRecords);
-            this.panel1.Controls.Add(this.tbNationalNo);
+            this.panel1.Controls.Add(this.tbPatientName);
             this.panel1.Controls.Add(this.btnSearch);
             this.panel1.Controls.Add(this.label2);
             this.panel1.Controls.Add(this.btnAddNew);
@@ -77,46 +77,50 @@
             this.cbStatuses.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbStatuses.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbStatuses.FormattingEnabled = true;
+            this.cbStatuses.Items.AddRange(new object[] {
+            "All"});
             this.cbStatuses.Location = new System.Drawing.Point(1105, 136);
             this.cbStatuses.Name = "cbStatuses";
             this.cbStatuses.Size = new System.Drawing.Size(263, 36);
             this.cbStatuses.TabIndex = 172;
             // 
-            // DGVPeopleList
+            // DGVAnalysesList
             // 
-            this.DGVPeopleList.AllowUserToAddRows = false;
-            this.DGVPeopleList.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            this.DGVPeopleList.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.DGVPeopleList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.DGVPeopleList.BackgroundColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DGVPeopleList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.DGVPeopleList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DGVPeopleList.DefaultCellStyle = dataGridViewCellStyle3;
-            this.DGVPeopleList.GridColor = System.Drawing.SystemColors.ScrollBar;
-            this.DGVPeopleList.Location = new System.Drawing.Point(28, 187);
-            this.DGVPeopleList.Name = "DGVPeopleList";
-            this.DGVPeopleList.ReadOnly = true;
-            this.DGVPeopleList.RowHeadersWidth = 51;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.DGVPeopleList.RowsDefaultCellStyle = dataGridViewCellStyle4;
-            this.DGVPeopleList.RowTemplate.Height = 26;
-            this.DGVPeopleList.Size = new System.Drawing.Size(1340, 450);
-            this.DGVPeopleList.TabIndex = 22;
+            this.DGVAnalysesList.AllowUserToAddRows = false;
+            this.DGVAnalysesList.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.White;
+            this.DGVAnalysesList.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle5;
+            this.DGVAnalysesList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.DGVAnalysesList.BackgroundColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.DGVAnalysesList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            this.DGVAnalysesList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.DGVAnalysesList.DefaultCellStyle = dataGridViewCellStyle7;
+            this.DGVAnalysesList.GridColor = System.Drawing.SystemColors.ScrollBar;
+            this.DGVAnalysesList.Location = new System.Drawing.Point(28, 187);
+            this.DGVAnalysesList.Name = "DGVAnalysesList";
+            this.DGVAnalysesList.ReadOnly = true;
+            this.DGVAnalysesList.RowHeadersWidth = 51;
+            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.DGVAnalysesList.RowsDefaultCellStyle = dataGridViewCellStyle8;
+            this.DGVAnalysesList.RowTemplate.Height = 26;
+            this.DGVAnalysesList.Size = new System.Drawing.Size(1340, 450);
+            this.DGVAnalysesList.TabIndex = 22;
+            this.DGVAnalysesList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVAnalysesList_CellContentClick);
+            this.DGVAnalysesList.DoubleClick += new System.EventHandler(this.DGVAnalysesList_DoubleClick);
             // 
             // lblTotalRecords
             // 
@@ -128,15 +132,17 @@
             this.lblTotalRecords.TabIndex = 21;
             this.lblTotalRecords.Text = "Total: ";
             // 
-            // tbNationalNo
+            // tbPatientName
             // 
-            this.tbNationalNo.Font = new System.Drawing.Font("Tahoma", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbNationalNo.ForeColor = System.Drawing.Color.Silver;
-            this.tbNationalNo.Location = new System.Drawing.Point(28, 125);
-            this.tbNationalNo.Name = "tbNationalNo";
-            this.tbNationalNo.Size = new System.Drawing.Size(619, 47);
-            this.tbNationalNo.TabIndex = 20;
-            this.tbNationalNo.Text = "Enter Patient Name...";
+            this.tbPatientName.Font = new System.Drawing.Font("Tahoma", 19.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbPatientName.ForeColor = System.Drawing.Color.Silver;
+            this.tbPatientName.Location = new System.Drawing.Point(28, 125);
+            this.tbPatientName.Name = "tbPatientName";
+            this.tbPatientName.Size = new System.Drawing.Size(619, 47);
+            this.tbPatientName.TabIndex = 20;
+            this.tbPatientName.Text = "Enter Patient Name...";
+            this.tbPatientName.Enter += new System.EventHandler(this.tbNationalNo_Enter);
+            this.tbPatientName.Leave += new System.EventHandler(this.tbNationalNo_Leave);
             // 
             // btnSearch
             // 
@@ -150,6 +156,7 @@
             this.btnSearch.TabIndex = 1;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = false;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // label2
             // 
@@ -201,9 +208,10 @@
             this.Name = "frmAnalysesList";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmAnalysesList";
+            this.Load += new System.EventHandler(this.frmAnalysesList_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DGVPeopleList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVAnalysesList)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -211,9 +219,9 @@
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.DataGridView DGVPeopleList;
+        private System.Windows.Forms.DataGridView DGVAnalysesList;
         private System.Windows.Forms.Label lblTotalRecords;
-        private System.Windows.Forms.TextBox tbNationalNo;
+        private System.Windows.Forms.TextBox tbPatientName;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnAddNew;

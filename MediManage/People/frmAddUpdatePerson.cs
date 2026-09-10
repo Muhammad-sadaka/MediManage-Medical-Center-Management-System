@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -12,15 +13,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
 namespace MediManage
 {
     public partial class frmAddUpdatePerson : Form
     {
         public enum enMode { AddNew = 0, Update = 1 };
         enMode _Mode = enMode.AddNew;
-
-
 
         clsPerson person = new clsPerson();
 
@@ -53,16 +51,16 @@ namespace MediManage
         {
             if (person.Image != pbPersonImage.ImageLocation)
             {
-                if (person.Image != "")
+                if (!string.IsNullOrWhiteSpace(person.Image))
                 {
-
                     try
                     {
                         File.Delete(person.Image);
                     }
-                    catch (IOException)
+                    catch (IOException ex)
                     {
- 
+                        MediManage_DataAccess.clsDataAccessSettings.EventLogCreate();
+                        EventLog.WriteEntry(MediManage_DataAccess.clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
                     }
                 }
 
@@ -81,11 +79,9 @@ namespace MediManage
                         return false;
                     }
                 }
-
             }
             return true;
         }
-
 
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -109,20 +105,17 @@ namespace MediManage
             person.BloodTypeID = cbBloodType.SelectedIndex + 1;
             person.MaritalStatusID = cbMaritalStatus.SelectedIndex + 1;
             person.CountryId = cbCountries.SelectedIndex + 1;
-
-            //person.Image
+            person.Image = pbPersonImage.ImageLocation;
 
             if (person.Save())
             {
                 _Mode = enMode.Update;
                 lblTitle.Text = "Update Person                        ";
-                MessageBox.Show("Data Saved Successfully.");
-
-               // PersonIDDataBack?.Invoke(this, _PersonID);
+                MessageBox.Show("Data Saved Successfully.", "Saved",MessageBoxButtons.OK,MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show("Error: Data Is not Saved Successfully.");
+                MessageBox.Show("Error: Data Is not Saved Successfully.", "Did Not Saved", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -131,13 +124,12 @@ namespace MediManage
             dateTimePicker1.MaxDate = DateTime.Now;
             dateTimePicker1.MinDate = DateTime.Today.AddYears(-100);
             dateTimePicker1.CustomFormat = "yyyy-MM-dd   hh:mm tt";
-            //dateTimePicker1.Value = dateTimePicker1.MaxDate;
         }
 
         private void _ResestDefualtValues()
         {
             cbBloodType.DataSource = clsBloodType.GetAllBloodTypes();
-            cbBloodType.DisplayMember = "BloodTypeSymbol"; // الخاصية التي ستظهر للمستخدم
+            cbBloodType.DisplayMember = "BloodTypeSymbol";
 
             cbMaritalStatus.DataSource = clsMaritalStatus.GetAllMaritalStatuses();
             cbMaritalStatus.DisplayMember = "MaritalStatusName";
@@ -159,14 +151,14 @@ namespace MediManage
 
             cbCountries.SelectedIndex = cbCountries.FindString("Syria");
 
-            tbFirstName.Text = "";
-            tbSecondName.Text = "";
-            tbThirdName.Text = "";
-            tbLastName.Text = "";
-            tbNationalNo.Text = "";
-            tbPhone.Text = "";
-            tbEmail.Text = "";
-            tbAddress.Text = "";
+            tbFirstName.Clear();
+            tbSecondName.Clear();
+            tbThirdName.Clear();
+            tbLastName.Clear();
+            tbNationalNo.Clear();
+            tbPhone.Clear();
+            tbEmail.Clear();
+            tbAddress.Clear();
             cbBloodType.SelectedIndex = 0;
             cbMaritalStatus.SelectedIndex = 0;
 
@@ -184,32 +176,29 @@ namespace MediManage
                 return;
             }
 
-               tbFirstName.Text = person.FirstName;
-               tbSecondName.Text = person.SecondName;
-               tbThirdName.Text = person.ThirdName;
-               tbLastName.Text = person.LastName;
-               tbNationalNo.Text = person.NationalNo;
-               dateTimePicker1.Value = person.DateOfBirth.Value;
-               if (person.Gender == "0")
-                   rbMale.Checked = true;
-               else
-                  rbFemale.Checked = true;
-              tbPhone.Text =person.Phone;
-              tbEmail.Text=person.Email;
-              tbAddress.Text = person.Address;
-              cbBloodType.SelectedIndex = person.BloodTypeID.Value -1;
-              cbMaritalStatus.SelectedIndex = person.MaritalStatusID.Value - 1;
-              cbCountries.SelectedIndex = person.CountryId.Value - 1;
+             tbFirstName.Text = person.FirstName;
+             tbSecondName.Text = person.SecondName;
+             tbThirdName.Text = person.ThirdName;
+             tbLastName.Text = person.LastName;
+             tbNationalNo.Text = person.NationalNo;
+             dateTimePicker1.Value = person.DateOfBirth.Value;
+             if (person.Gender == "0")
+                 rbMale.Checked = true;
+             else
+                rbFemale.Checked = true;
+            tbPhone.Text =person.Phone;
+            tbEmail.Text=person.Email;
+            tbAddress.Text = person.Address;
+            cbBloodType.SelectedIndex = person.BloodTypeID.Value -1;
+            cbMaritalStatus.SelectedIndex = person.MaritalStatusID.Value - 1;
+            cbCountries.SelectedIndex = person.CountryId.Value - 1;
 
-            //person.Image
-
-            if (!string.IsNullOrEmpty(person.Image))
-            {
-                pbPersonImage.ImageLocation = person.Image;
-            }
+            if (!string.IsNullOrEmpty(person.Image))   pbPersonImage.ImageLocation = person.Image;
+            
 
             klblRemove.Visible = (pbPersonImage.ImageLocation != null);
             klblChangeImage.Visible = klblRemove.Visible;
+            klblClicktoAddPhoto.Visible = !klblChangeImage.Visible;
         }
 
         void SetImage()
@@ -246,8 +235,8 @@ namespace MediManage
             pbPersonImage.Image = Resources.Person32;
         }
 
-      
 
+        //// still in testing phase, not used yet
         //private void ValidateEmptyTextBox(object sender, CancelEventArgs e)
         //{
 
@@ -264,6 +253,86 @@ namespace MediManage
         //        errorProvider1.SetError(Temp, null);
         //    }
 
+        //}
+
+
+        //// still in testing phase, not used yet
+        ///
+        //private void ValidateEmptyTextBox(object sender, CancelEventArgs e)
+        //{
+        //    TextBox temp = (TextBox)sender;
+
+        //    if (string.IsNullOrWhiteSpace(temp.Text.Trim()))
+        //    {
+        //        e.Cancel = true;
+        //        temp.Focus();
+        //        errorProvider1.SetError(temp, $"{temp.Tag ?? "This field"} should have a value!");
+        //    }
+        //    else
+        //    {
+        //        e.Cancel = false;
+        //        errorProvider1.SetError(temp, "");
+        //    }
+        //}
+
+        //private void Form_Load(object sender, EventArgs e)
+        //{
+        //    tBFirstName.Validating += ValidateEmptyTextBox;
+        //    tBSecondName.Validating += ValidateEmptyTextBox;
+        //    tBLastName.Validating += ValidateEmptyTextBox;
+        //    tBAddress.Validating += ValidateEmptyTextBox;
+        //    tBPhone.Validating += ValidateEmptyTextBox;
+        //}
+
+        //private void tBEmail_Validating(object sender, CancelEventArgs e)
+        //{
+        //    if (string.IsNullOrWhiteSpace(tBEmail.Text.Trim()))
+        //    {
+        //        e.Cancel = false;
+        //        errorProvider1.SetError(tBEmail, "");
+        //        return;
+        //    }
+
+        //    if (!clsValidation.ValidateEmail(tBEmail.Text))
+        //    {
+        //        e.Cancel = true;
+        //        tBEmail.Focus();
+        //        errorProvider1.SetError(tBEmail, "This is a wrong email format, it should end with (@gmail.com).");
+        //    }
+        //    else
+        //    {
+        //        e.Cancel = false;
+        //        errorProvider1.SetError(tBEmail, "");
+        //    }
+        //}
+
+        //private void tBNationalNo_Validating_1(object sender, CancelEventArgs e)
+        //{
+        //    if (string.IsNullOrWhiteSpace(tBNationalNo.Text.Trim()))
+        //    {
+        //        e.Cancel = true;
+        //        tBNationalNo.Focus();
+        //        errorProvider1.SetError(tBNationalNo, "NationalNo should have a value");
+        //    }
+        //    else if (tBNationalNo.Text.Trim() != _Person.NationalNo && clsPeople.isPersonExist(tBNationalNo.Text.Trim()))
+        //    {
+        //        e.Cancel = true;
+        //        tBNationalNo.Focus();
+        //        errorProvider1.SetError(tBNationalNo, "This NationalNo already exists");
+        //    }
+        //    else
+        //    {
+        //        e.Cancel = false;
+        //        errorProvider1.SetError(tBNationalNo, "");
+        //    }
+        //}
+
+        //private void tBPhone_KeyPress(object sender, KeyPressEventArgs e)
+        //{
+        //    if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
+        //    {
+        //        e.Handled = true;
+        //    }
         //}
 
     }

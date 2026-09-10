@@ -32,19 +32,19 @@ namespace MediManage_DataAccess
 
     public class clsDoctorListDTO
     {
-        public int? PersonID { get; set; }
+        public int? DoctorID { get; set; }
         public string NationalNo { get; set; }
         public string FullName { get; set; }
-        public string Speciality { get; set;  }
+        public string Specialty { get; set;  }
         public string Phone { get; set; }
 
 
-        public clsDoctorListDTO(int? PersonID,string NationalNo, string FullName, string Speciality, string Phone)
+        public clsDoctorListDTO(int? DoctorID, string NationalNo, string FullName, string Specialty, string Phone)
         {
-            this.PersonID = PersonID;
+            this.DoctorID = DoctorID;
             this.NationalNo = NationalNo;
             this.FullName = FullName;
-            this.Speciality = Speciality;
+            this.Specialty = Specialty;
             this.Phone = Phone;
         }
     }
@@ -52,13 +52,53 @@ namespace MediManage_DataAccess
     // 2. Data Access Layer
     public class clsDoctorsDataAccess
     {
-        public static clsDoctorDTO GetDoctorInfoByID(int? PersonID)
+        public static clsDoctorDTO GetDoctorInfoByID(int? DoctorID)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
                 {
                     using (SqlCommand command = new SqlCommand("SP_GetDoctorByID", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@DoctorID", (object)DoctorID ?? DBNull.Value);
+
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new clsDoctorDTO
+                                (
+                                    reader["DoctorID"] == DBNull.Value ? null : (int?)reader["DoctorID"],
+                                    reader["PersonID"] == DBNull.Value ? null : (int?)reader["PersonID"],
+                                    reader["YearsOfExperience"] == DBNull.Value ? null : (byte?)reader["YearsOfExperience"],
+                                    reader["Qualification"] == DBNull.Value ? null : (string)reader["Qualification"],
+                                    reader["IsActive"] == DBNull.Value ? null : (bool?)reader["IsActive"],
+                                    reader["SpecialtyID"] == DBNull.Value ? null : (int?)reader["SpecialtyID"],
+                                    reader["LicenseNo"] == DBNull.Value ? null : (string)reader["LicenseNo"]
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsDataAccessSettings.EventLogCreate();
+                EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
+            }
+
+            return null;
+        }
+
+        public static clsDoctorDTO GetDoctorInfoByPersonID(int? PersonID)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("SP_GetDoctorByPersonID", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
                         command.Parameters.AddWithValue("@PersonID", (object)PersonID ?? DBNull.Value);
@@ -228,10 +268,10 @@ namespace MediManage_DataAccess
                             {
                                 doctorsList.Add(new clsDoctorListDTO
                                 (
-                                    reader["PersonID"] == DBNull.Value ? null : (int?)reader["PersonID"],
+                                    reader["DoctorID"] == DBNull.Value ? null : (int?)reader["DoctorID"],
                                     reader["NationalNo"] == DBNull.Value ? null : (string)reader["NationalNo"],
                                     reader["FullName"] == DBNull.Value ? null : (string)reader["FullName"],
-                                    reader["SpecialtyName"] == DBNull.Value ? null : (string)reader["SpecialtyName"],
+                                    reader["Specialty"] == DBNull.Value ? null : (string)reader["Specialty"],
                                     reader["Phone"] == DBNull.Value ? null : (string)reader["Phone"]
 
                                 ));

@@ -32,7 +32,6 @@
             this.btnClose = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.chkIsActive = new MediManage.MyCustomCheckBox();
             this.tbConsultationFees = new System.Windows.Forms.TextBox();
             this.cbSpecialties = new System.Windows.Forms.ComboBox();
             this.numericEcperienceYears = new System.Windows.Forms.NumericUpDown();
@@ -45,11 +44,13 @@
             this.tbLicenseNo = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.ctrlPersonInfoSummary1 = new MediManage.ctrlPersonInfoSummary();
             this.gbSearch = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
             this.tbNationalNo = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
+            this.customCheckBox1 = new MediManage.CustomCheckBox();
+            this.chkIsActive = new MediManage.MyCustomCheckBox();
+            this.ctrlPersonInfoSummary1 = new MediManage.ctrlPersonInfoSummary();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericEcperienceYears)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -65,7 +66,7 @@
             this.btnSave.Location = new System.Drawing.Point(427, 826);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(190, 58);
-            this.btnSave.TabIndex = 5;
+            this.btnSave.TabIndex = 9;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
@@ -79,7 +80,7 @@
             this.btnClose.Location = new System.Drawing.Point(623, 826);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(190, 58);
-            this.btnClose.TabIndex = 4;
+            this.btnClose.TabIndex = 10;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = false;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
@@ -96,6 +97,7 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.customCheckBox1);
             this.groupBox3.Controls.Add(this.chkIsActive);
             this.groupBox3.Controls.Add(this.tbConsultationFees);
             this.groupBox3.Controls.Add(this.cbSpecialties);
@@ -112,22 +114,9 @@
             this.groupBox3.Location = new System.Drawing.Point(12, 431);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(1209, 384);
-            this.groupBox3.TabIndex = 28;
+            this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "3 ";
-            // 
-            // chkIsActive
-            // 
-            this.chkIsActive.AutoSize = true;
-            this.chkIsActive.BackColor = System.Drawing.Color.Transparent;
-            this.chkIsActive.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkIsActive.Location = new System.Drawing.Point(313, 324);
-            this.chkIsActive.Name = "chkIsActive";
-            this.chkIsActive.Size = new System.Drawing.Size(45, 38);
-            this.chkIsActive.TabIndex = 178;
-            this.chkIsActive.Text = " ";
-            this.chkIsActive.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.chkIsActive.UseVisualStyleBackColor = false;
             // 
             // tbConsultationFees
             // 
@@ -145,7 +134,7 @@
             this.cbSpecialties.Location = new System.Drawing.Point(311, 36);
             this.cbSpecialties.Name = "cbSpecialties";
             this.cbSpecialties.Size = new System.Drawing.Size(889, 36);
-            this.cbSpecialties.TabIndex = 176;
+            this.cbSpecialties.TabIndex = 4;
             this.cbSpecialties.SelectedIndexChanged += new System.EventHandler(this.cbSpecialties_SelectedIndexChanged);
             // 
             // numericEcperienceYears
@@ -153,7 +142,7 @@
             this.numericEcperienceYears.Location = new System.Drawing.Point(311, 150);
             this.numericEcperienceYears.Name = "numericEcperienceYears";
             this.numericEcperienceYears.Size = new System.Drawing.Size(889, 40);
-            this.numericEcperienceYears.TabIndex = 175;
+            this.numericEcperienceYears.TabIndex = 6;
             // 
             // label11
             // 
@@ -200,7 +189,7 @@
             this.tbQualification.Location = new System.Drawing.Point(313, 210);
             this.tbQualification.Name = "tbQualification";
             this.tbQualification.Size = new System.Drawing.Size(887, 40);
-            this.tbQualification.TabIndex = 148;
+            this.tbQualification.TabIndex = 7;
             // 
             // label6
             // 
@@ -217,7 +206,7 @@
             this.tbLicenseNo.Location = new System.Drawing.Point(313, 91);
             this.tbLicenseNo.Name = "tbLicenseNo";
             this.tbLicenseNo.Size = new System.Drawing.Size(887, 40);
-            this.tbLicenseNo.TabIndex = 146;
+            this.tbLicenseNo.TabIndex = 5;
             // 
             // label5
             // 
@@ -236,18 +225,9 @@
             this.groupBox2.Location = new System.Drawing.Point(12, 189);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(1209, 236);
-            this.groupBox2.TabIndex = 27;
+            this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "2 Person Information";
-            // 
-            // ctrlPersonInfoSummary1
-            // 
-            this.ctrlPersonInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ctrlPersonInfoSummary1.Location = new System.Drawing.Point(10, 42);
-            this.ctrlPersonInfoSummary1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
-            this.ctrlPersonInfoSummary1.Name = "ctrlPersonInfoSummary1";
-            this.ctrlPersonInfoSummary1.Size = new System.Drawing.Size(1190, 185);
-            this.ctrlPersonInfoSummary1.TabIndex = 0;
             // 
             // gbSearch
             // 
@@ -258,7 +238,7 @@
             this.gbSearch.Location = new System.Drawing.Point(12, 83);
             this.gbSearch.Name = "gbSearch";
             this.gbSearch.Size = new System.Drawing.Size(1209, 100);
-            this.gbSearch.TabIndex = 26;
+            this.gbSearch.TabIndex = 1;
             this.gbSearch.TabStop = false;
             this.gbSearch.Text = "1 Search";
             // 
@@ -279,7 +259,7 @@
             this.tbNationalNo.Location = new System.Drawing.Point(209, 42);
             this.tbNationalNo.Name = "tbNationalNo";
             this.tbNationalNo.Size = new System.Drawing.Size(823, 40);
-            this.tbNationalNo.TabIndex = 22;
+            this.tbNationalNo.TabIndex = 1;
             this.tbNationalNo.Text = "National No";
             this.tbNationalNo.Enter += new System.EventHandler(this.tbNationalNo_Enter);
             this.tbNationalNo.Leave += new System.EventHandler(this.tbNationalNo_Leave);
@@ -293,10 +273,47 @@
             this.btnSearch.Location = new System.Drawing.Point(1038, 39);
             this.btnSearch.Name = "btnSearch";
             this.btnSearch.Size = new System.Drawing.Size(162, 47);
-            this.btnSearch.TabIndex = 21;
+            this.btnSearch.TabIndex = 2;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = false;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // customCheckBox1
+            // 
+            this.customCheckBox1.Checked = true;
+            this.customCheckBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.customCheckBox1.FlatAppearance.BorderSize = 0;
+            this.customCheckBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.customCheckBox1.Location = new System.Drawing.Point(313, 326);
+            this.customCheckBox1.Name = "customCheckBox1";
+            this.customCheckBox1.Size = new System.Drawing.Size(48, 38);
+            this.customCheckBox1.TabIndex = 178;
+            this.customCheckBox1.Text = "customCheckBox1";
+            this.customCheckBox1.UseVisualStyleBackColor = true;
+            // 
+            // chkIsActive
+            // 
+            this.chkIsActive.AutoSize = true;
+            this.chkIsActive.BackColor = System.Drawing.Color.Transparent;
+            this.chkIsActive.Checked = true;
+            this.chkIsActive.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkIsActive.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.chkIsActive.Location = new System.Drawing.Point(418, 327);
+            this.chkIsActive.Name = "chkIsActive";
+            this.chkIsActive.Size = new System.Drawing.Size(45, 38);
+            this.chkIsActive.TabIndex = 8;
+            this.chkIsActive.Text = " ";
+            this.chkIsActive.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.chkIsActive.UseVisualStyleBackColor = false;
+            // 
+            // ctrlPersonInfoSummary1
+            // 
+            this.ctrlPersonInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ctrlPersonInfoSummary1.Location = new System.Drawing.Point(10, 42);
+            this.ctrlPersonInfoSummary1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.ctrlPersonInfoSummary1.Name = "ctrlPersonInfoSummary1";
+            this.ctrlPersonInfoSummary1.Size = new System.Drawing.Size(1190, 185);
+            this.ctrlPersonInfoSummary1.TabIndex = 0;
             // 
             // frmAddUpdateDoctor
             // 
@@ -349,5 +366,6 @@
         private ctrlPersonInfoSummary ctrlPersonInfoSummary1;
         private System.Windows.Forms.TextBox tbConsultationFees;
         private MyCustomCheckBox chkIsActive;
+        private CustomCheckBox customCheckBox1;
     }
 }

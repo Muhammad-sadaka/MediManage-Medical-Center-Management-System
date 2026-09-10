@@ -23,7 +23,8 @@ namespace MediManage_Business
                     this.ResultDate,
                     this.AnalysisStatusID,
                     this.AnalysisTypeID,
-                    this.DetectionID
+                    this.DetectionID,
+                    this.Notes
                 );
             }
         }
@@ -35,6 +36,27 @@ namespace MediManage_Business
         public int? AnalysisStatusID { get; set; }
         public int? AnalysisTypeID { get; set; }
         public int? DetectionID { get; set; }
+        public string Notes { get; set; }
+        public clsAnalysisStatus AnalysisStatusInfo { get; set; }
+        public clsAnalysisType AnalysisTypeInfo {  get; set; }
+        public clsDetection DetectionInfo { get; set; }
+
+        public clsMedicalAnalysis()
+        {
+            this.MedicalAnalysisID =  null;
+            this.Result = null;
+            this.OrderDate =  null;
+            this.ResultDate = null;
+            this.AnalysisStatusID =  null;
+            this.AnalysisTypeID =  null;
+            this.DetectionID =  null;
+            this.Notes =    null;
+            this.AnalysisStatusInfo = null;
+            this.AnalysisTypeInfo = null;
+            this.DetectionInfo = null;
+
+            this.Mode = enMode.AddNew;
+        }
 
         public clsMedicalAnalysis(clsMedicalAnalysisDTO dto, enMode cMode = enMode.AddNew)
         {
@@ -45,6 +67,11 @@ namespace MediManage_Business
             this.AnalysisStatusID = dto.AnalysisStatusID;
             this.AnalysisTypeID = dto.AnalysisTypeID;
             this.DetectionID = dto.DetectionID;
+            this.Notes = dto.Notes;
+            this.AnalysisStatusInfo = clsAnalysisStatus.Find(AnalysisStatusID);
+            this.AnalysisTypeInfo = clsAnalysisType.Find(AnalysisTypeID);
+            this.DetectionInfo = clsDetection.Find(DetectionID);
+
             this.Mode = cMode;
         }
 
@@ -69,7 +96,7 @@ namespace MediManage_Business
                 return null;
         }
 
-        public static List<clsMedicalAnalysisDTO> GetAllMedicalAnalyses()
+        public static List<clsMedicalAnalysisListDTO> GetAllMedicalAnalyses()
         {
             return clsMedicalAnalysesDataAccess.GetAllMedicalAnalyses();
         }

@@ -26,16 +26,16 @@ namespace MediManage
 
         private void SetupDataGridViewColumns()
         {
-            DGVUsersList.AutoGenerateColumns = false;
-            DGVUsersList.Columns.Clear();
+            DGVExaminationsList.AutoGenerateColumns = false;
+            DGVExaminationsList.Columns.Clear();
 
-            DGVUsersList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PersonID", HeaderText = "ID", Name = "PersonID" });
+            DGVExaminationsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "DetectionID", HeaderText = "ID", Name = "DetectionID" });
 
-            DGVUsersList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "FullName", HeaderText = "Patient Name", Name = "FullName" });
+            DGVExaminationsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PatientName", HeaderText = "Patient Name", Name = "PatientName" });
 
-            DGVUsersList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Username", HeaderText = "Doctor Name", Name = "Username" });
+            DGVExaminationsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "DoctorName", HeaderText = "Doctor Name", Name = "DoctorName" });
 
-            DGVUsersList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Phone", HeaderText = "Date", Name = "Phone" });
+            DGVExaminationsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "DetectionDate", HeaderText = "Date", Name = "DetectionDate" });
 
             DataGridViewButtonColumn btnEdit = new DataGridViewButtonColumn();
             btnEdit.HeaderText = "Actions";
@@ -43,29 +43,28 @@ namespace MediManage
             btnEdit.Name = "btnEdit";
             btnEdit.FlatStyle = FlatStyle.Flat;
             btnEdit.UseColumnTextForButtonValue = true;
-            DGVUsersList.Columns.Add(btnEdit);
+            DGVExaminationsList.Columns.Add(btnEdit);
 
 
             DataGridViewCheckBoxColumn chkIsActive = new DataGridViewCheckBoxColumn();
             chkIsActive.HeaderText = "";
             chkIsActive.Name = "chkIsActive";
             chkIsActive.FlatStyle = FlatStyle.Flat;
-            DGVUsersList.Columns.Add(chkIsActive);
+            DGVExaminationsList.Columns.Add(chkIsActive);
         }
 
         private void RefreshExaminationsList()
         {
-            //var UserssData = clsUser.GetAllUsers().Select(u => new
-            //{
-            //    u.PersonID,
-            //    u.FullName,
-            //    u.UserName,
-            //    u.Phone,
-            //    u.Status
-            //}).ToList();
+            var ExaminationsData = clsDetection.GetAllDetections().Select(e => new
+            {
+                e.DetectionID,
+                e.PatientName,
+                e.DoctorName,
+                e.DetectionDate
+            }).ToList();
 
-            //DGVUsersList.DataSource = UserssData;
-            //lblTotalRecords.Text = $"Total: {UserssData.Count} records";
+            DGVExaminationsList.DataSource = ExaminationsData;
+            lblTotalRecords.Text = $"Total: {DGVExaminationsList.RowCount} records";
         }
 
         private void btnSearch_Click(object sender, EventArgs e)

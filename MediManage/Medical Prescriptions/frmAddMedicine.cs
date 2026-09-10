@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MediManage_Business;
+using MediManage_DataAccess;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,14 +14,55 @@ namespace MediManage
 {
     public partial class frmAddMedicine : Form
     {
+        public delegate void DataBackEventHandler(object sender, clsMedicineRecipeDTO medicineRecipe, clsMedicineRecipeListDTO medicineRecipeList);
+
+        // Declare an event using the delegate
+        public event DataBackEventHandler DataBack;
+
+
         public frmAddMedicine()
         {
             InitializeComponent();
+        }
+
+        private void frmAddMedicine_Load(object sender, EventArgs e)
+        {
+            cbMedicineName.DataSource = clsMedicine.GetAllMedicines();
+            cbMedicineName.DisplayMember = "MedicineName";
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
         }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            clsMedicineRecipeListDTO medicineRecipeList = new clsMedicineRecipeListDTO
+            (
+                cbMedicineName.Text.Trim(),
+                tbDosage.Text.Trim(),
+                tbFrequency.Text.Trim(),
+                tbDuration.Text.Trim()
+            );
+
+            clsMedicineRecipeDTO medicineRecipe = new clsMedicineRecipeDTO
+           (
+                null,
+               medicineRecipeList.Duration,
+               medicineRecipeList.Repetition,
+               medicineRecipeList.Dose,
+               null,
+               tbNotes.Text.Trim(),
+               cbMedicineName.SelectedIndex + 1
+           );
+
+            DataBack?.Invoke(this, medicineRecipe,medicineRecipeList);
+
+
+            this.Close();
+        }
+
+
     }
 }

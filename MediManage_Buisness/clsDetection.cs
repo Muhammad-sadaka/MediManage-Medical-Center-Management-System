@@ -25,7 +25,8 @@ namespace MediManage_Business
                     this.Wight,
                     this.BloodPressure,
                     this.HeartRate,
-                    this.Notes
+                    this.Notes,
+                    this.DetectionDate
                 );
             }
         }
@@ -40,7 +41,26 @@ namespace MediManage_Business
         public byte? BloodPressure { get; set; }
         public byte? HeartRate { get; set; }
         public string Notes { get; set; }
+        public DateTime? DetectionDate { get; set; }
         public clsAppointment AppointmentInfo { get; set; }
+
+        public clsDetection()
+        {
+            this.DetectionID = null;
+            this.AppointmentID = null;
+            this.CreatedByUserID = null;
+            this.Symproms = null;
+            this.Diagnosis = null;
+            this.Temperature = null;
+            this.Wight = null;
+            this.BloodPressure =null;
+            this.HeartRate = null;
+            this.Notes = null;
+            this.DetectionDate = null;
+            this.AppointmentInfo = null;
+            this.Mode = enMode.AddNew;
+        }
+
 
         public clsDetection(clsDetectionDTO dto, enMode cMode = enMode.AddNew)
         {
@@ -54,6 +74,7 @@ namespace MediManage_Business
             this.BloodPressure = dto.BloodPressure;
             this.HeartRate = dto.HeartRate;
             this.Notes = dto.Notes;
+            this.DetectionDate = dto.DetectionDate;
             this.AppointmentInfo = clsAppointment.Find(AppointmentID);
             this.Mode = cMode;
         }
@@ -79,7 +100,7 @@ namespace MediManage_Business
                 return null;
         }
 
-        public static List<clsDetectionDTO> GetAllDetections()
+        public static List<clsDetectionListDTO> GetAllDetections()
         {
             return clsDetectionsDataAccess.GetAllDetections();
         }

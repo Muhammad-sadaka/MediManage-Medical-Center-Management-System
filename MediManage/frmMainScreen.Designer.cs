@@ -315,7 +315,7 @@
             this.lblTodayDate.AutoSize = true;
             this.lblTodayDate.Font = new System.Drawing.Font("Arial Narrow", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTodayDate.ForeColor = System.Drawing.Color.Black;
-            this.lblTodayDate.Location = new System.Drawing.Point(907, 92);
+            this.lblTodayDate.Location = new System.Drawing.Point(891, 91);
             this.lblTodayDate.Name = "lblTodayDate";
             this.lblTodayDate.Size = new System.Drawing.Size(136, 27);
             this.lblTodayDate.TabIndex = 4;

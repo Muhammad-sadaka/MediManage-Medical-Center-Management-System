@@ -1,4 +1,5 @@
 ﻿using MediManage_Business;
+using MediManage_DataAccess;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +14,8 @@ namespace MediManage
 {
     public partial class frmPatientsList : Form
     {
+        List<clsPatientsListDTO> PatientsData;
+
         public frmPatientsList()
         {
             InitializeComponent();
@@ -39,7 +42,7 @@ namespace MediManage
             DGVPatientsList.AutoGenerateColumns = false;
             DGVPatientsList.Columns.Clear();
 
-            DGVPatientsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PersonID", HeaderText = "ID", Name = "PersonID" });
+            DGVPatientsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PatientID", HeaderText = "ID", Name = "PatientID" });
 
             DGVPatientsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "FullName", HeaderText = "Full Name", Name = "FullName" });
 
@@ -67,16 +70,19 @@ namespace MediManage
 
         private void RefreshPatientsList()
         {
-            var PatientsData = clsPatient.GetAllPatients().Select(p => new
+            var patientsData = clsPatient.GetAllPatients();
+
+            PatientsData = patientsData;
+
+            DGVPatientsList.DataSource = patientsData.Select(p => new
             {
-                p.PersonID,
-                p.FullName ,
+                p.PatientID,
+                p.FullName,
                 p.NationalNo,
                 p.Phone
             }).ToList();
 
-            DGVPatientsList.DataSource = PatientsData;
-            lblTotalRecords.Text = $"Total: {PatientsData.Count} records";
+            lblTotalRecords.Text = $"Total: {DGVPatientsList.RowCount} records";
         }
 
         private void tbNationalNo_Enter(object sender, EventArgs e)
@@ -99,33 +105,30 @@ namespace MediManage
         {
             if (e.RowIndex < 0) return;
 
-
-            int personId = Convert.ToInt32(DGVPatientsList.Rows[e.RowIndex].Cells["PersonID"].Value);
-
+            int PatientID = Convert.ToInt32(DGVPatientsList.Rows[e.RowIndex].Cells["PatientID"].Value);
 
             if (DGVPatientsList.Columns[e.ColumnIndex].Name == "btnEdit")
             {
-
-                frmAddUpdatePatient frm = new frmAddUpdatePatient(personId);
+                frmAddUpdatePatient frm = new frmAddUpdatePatient(PatientID);
                 frm.ShowDialog();
-
+                RefreshPatientsList();
             }
             else if (DGVPatientsList.Columns[e.ColumnIndex].Name == "btnDelete")
             {
                 DialogResult result = MessageBox.Show("Are you sure you want to delete this patient?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (result == DialogResult.Yes)
                 {
-                    if (clsPatient.DeletePatient(personId))
+                    if (clsPatient.DeletePatient(PatientID))
                     {
-                        MessageBox.Show("Deleted successfully.");
+                        MessageBox.Show("Deleted successfully.", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        RefreshPatientsList(); 
                     }
                     else
                     {
-                        MessageBox.Show("Delete failed. This patient might be linked to other records.");
+                        MessageBox.Show("Delete failed. This patient might be linked to other records.", "Not Deleted", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
-            RefreshPatientsList();
         }
 
         private void DGVPatientsList_DoubleClick(object sender, EventArgs e)
@@ -134,28 +137,33 @@ namespace MediManage
 
             frmPatientDetails frm = new frmPatientDetails((int)DGVPatientsList.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
-            RefreshPatientsList();
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(tbNationalNo.Text))
+            if (!string.IsNullOrEmpty(tbNationalNo.Text) && tbNationalNo.Text != "Enter National No...") 
             {
-                var peopleData = clsPatient.GetAllPatients().Select(p => new
+                DGVPatientsList.DataSource = PatientsData.Select(p => new
                 {
-                    p.PersonID,
-                    p.FullName, 
+                    p.PatientID,
+                    p.FullName,
                     p.NationalNo,
                     p.Phone
                 }).Where(p => p.NationalNo.StartsWith(tbNationalNo.Text.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();
-
-                DGVPatientsList.DataSource = peopleData;
-                lblTotalRecords.Text = $"Total: {peopleData.Count} records";
             }
             else
             {
-                RefreshPatientsList();
+                DGVPatientsList.DataSource = PatientsData.Select(p => new
+                {
+                    p.PatientID,
+                    p.FullName,
+                    p.NationalNo,
+                    p.Phone
+                }).ToList();
+
             }
+
+            lblTotalRecords.Text = $"Total: {DGVPatientsList.RowCount} records";
         }
     }
 }

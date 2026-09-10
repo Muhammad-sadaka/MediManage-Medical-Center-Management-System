@@ -14,6 +14,8 @@ namespace MediManage
 {
     public partial class frmPeopleList : Form
     {
+        List<clsPersonListDTO> PeopleData;
+
         public frmPeopleList()
         {
             InitializeComponent();
@@ -45,7 +47,7 @@ namespace MediManage
 
         private void tbNationalNo_Leave(object sender, EventArgs e)
         {
-            if (tbNationalNo.Text == "" || tbNationalNo.Text == null)
+            if (string.IsNullOrWhiteSpace(tbNationalNo.Text))
             {
                 tbNationalNo.ForeColor = Color.Gray;
                 tbNationalNo.Text = "National No";
@@ -54,23 +56,29 @@ namespace MediManage
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(tbNationalNo.Text))
+            if (!string.IsNullOrEmpty(tbNationalNo.Text) && tbNationalNo.Text != "National No")
             {
-                var peopleData = clsPerson.GetAllPeople().Select(p => new
+                DGVPeopleList.DataSource = PeopleData.Select(p => new
                 {
                     p.PersonID,
-                    FullName = $"{p.FirstName} {p.SecondName} {p.ThirdName} {p.LastName}".Replace("  ", " ").Trim(),
+                    p.FullName,
                     p.NationalNo,
                     p.Phone
                 }).Where(p => p.NationalNo.StartsWith(tbNationalNo.Text.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();
-
-                DGVPeopleList.DataSource = peopleData;
-                lblTotalRecords.Text = $"Total: {peopleData.Count} records";
             }
             else
             {
-                RefreshPeopleList();
+                DGVPeopleList.DataSource = PeopleData.Select(p => new
+                {
+                    p.PersonID,
+                    p.FullName,
+                    p.NationalNo,
+                    p.Phone
+                }).ToList();
+
             }
+
+            lblTotalRecords.Text = $"Total: {DGVPeopleList.RowCount} records";
         }
 
         private void SetupDataGridViewColumns()
@@ -80,7 +88,7 @@ namespace MediManage
             DGVPeopleList.Columns.Clear();
 
             // 2. إضافة الأعمدة العادية وربطها بخصائص الـ DTO (DataPropertyName)
-            DGVPeopleList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PersonID", HeaderText = "Id", Name = "PersonID" });
+            DGVPeopleList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PersonID", HeaderText = "ID", Name = "PersonID" });
 
             // ملاحظة: إذا كان الـ DTO لا يحتوي على خاصية FullName جاهزة، يفضل دمج الأسماء في الـ LINQ أو الـ DTO أولاً
             DGVPeopleList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "FullName", HeaderText = "Full Name", Name = "FullName" });
@@ -94,8 +102,7 @@ namespace MediManage
             btnEdit.Name = "btnEdit";
             btnEdit.FlatStyle = FlatStyle.Popup;
             btnEdit.UseColumnTextForButtonValue = true; 
-            DGVPeopleList.Columns.Add(btnEdit);
-            
+            DGVPeopleList.Columns.Add(btnEdit);     
 
             DataGridViewButtonColumn btnDelete = new DataGridViewButtonColumn();
             btnDelete.HeaderText = "";
@@ -104,39 +111,37 @@ namespace MediManage
             btnDelete.FlatStyle = FlatStyle.Popup;        // You can remove it and it will set the default
             btnDelete.UseColumnTextForButtonValue = true; // To Show "Delete" inside the button
             DGVPeopleList.Columns.Add(btnDelete);
-
         }
 
         private void RefreshPeopleList()
         {
-            var peopleData = clsPerson.GetAllPeople().Select(p => new
+            var peopleData = clsPerson.GetAllPeople();
+
+            PeopleData = peopleData;
+
+            DGVPeopleList.DataSource = peopleData.Select(p => new
             {
                 p.PersonID,
-                FullName = $"{p.FirstName} {p.SecondName} {p.ThirdName} {p.LastName}".Replace("  ", " ").Trim(),
+                p.FullName,
                 p.NationalNo,
                 p.Phone
             }).ToList();
 
-            DGVPeopleList.DataSource = peopleData;
-            lblTotalRecords.Text = $"Total: {peopleData.Count} records";
+            lblTotalRecords.Text = $"Total: {DGVPeopleList.RowCount} records";
         } 
 
         private void DGVPeopleList_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
-
            
             int personId = Convert.ToInt32(DGVPeopleList.Rows[e.RowIndex].Cells["PersonID"].Value);
 
-
             if (DGVPeopleList.Columns[e.ColumnIndex].Name == "btnEdit")
             {
-
                 frmAddUpdatePerson frm = new frmAddUpdatePerson(personId);
                 frm.ShowDialog();
-
+                RefreshPeopleList();
             }
-
             else if (DGVPeopleList.Columns[e.ColumnIndex].Name == "btnDelete")
             {
                 DialogResult result = MessageBox.Show("Are you sure you want to delete this person?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -144,15 +149,15 @@ namespace MediManage
                 {
                     if (clsPerson.DeletePerson(personId))
                     {
-                        MessageBox.Show("Deleted successfully.");
+                        MessageBox.Show("Deleted successfully.", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        RefreshPeopleList();
                     }
                     else
                     {
-                        MessageBox.Show("Delete failed. This person might be linked to other records.");
+                        MessageBox.Show("Delete failed. This person might be linked to other records.", "Not Deleted", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
-            }
-            RefreshPeopleList();
+            }      
         }
 
         private void DGVPeopleList_DoubleClick(object sender, EventArgs e)
@@ -160,7 +165,6 @@ namespace MediManage
             if (DGVPeopleList.RowCount < 1) return;
             frmPersonDetails frm = new frmPersonDetails((int)DGVPeopleList.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
-            RefreshPeopleList();
         }
     }
 }

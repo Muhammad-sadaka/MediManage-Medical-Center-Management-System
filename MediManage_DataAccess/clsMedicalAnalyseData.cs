@@ -16,8 +16,9 @@ namespace MediManage_DataAccess
         public int? AnalysisStatusID { get; set; }
         public int? AnalysisTypeID { get; set; }
         public int? DetectionID { get; set; }
+        public string Notes { get; set; }
 
-        public clsMedicalAnalysisDTO(int? medicalAnalysisID, string result, DateTime? orderDate, DateTime? resultDate, int? analysisStatusID, int? analysisTypeID, int? detectionID)
+        public clsMedicalAnalysisDTO(int? medicalAnalysisID, string result, DateTime? orderDate, DateTime? resultDate, int? analysisStatusID, int? analysisTypeID, int? detectionID,string Notes)
         {
             this.MedicalAnalysisID = medicalAnalysisID;
             this.Result = result;
@@ -26,6 +27,27 @@ namespace MediManage_DataAccess
             this.AnalysisStatusID = analysisStatusID;
             this.AnalysisTypeID = analysisTypeID;
             this.DetectionID = detectionID;
+            this.Notes = Notes;
+        }
+    }
+
+    public class clsMedicalAnalysisListDTO
+    {
+        public int? MedicalAnalysisID { get; set; }
+        public string PatientName { get; set; }
+        public string AnalysisType { get; set; }
+        public DateTime? OrderDate { get; set; }
+        public string Status { get; set; }
+
+        
+
+        public clsMedicalAnalysisListDTO(int? medicalAnalysisID, string patientName,  string analysisType , DateTime? orderDate, string analysisStatus)
+        {
+            this.MedicalAnalysisID = medicalAnalysisID;
+            this.PatientName = patientName;
+            this.AnalysisType = analysisType;
+            this.OrderDate = orderDate;
+            this.Status = analysisStatus;
         }
     }
 
@@ -56,7 +78,8 @@ namespace MediManage_DataAccess
                                     reader["ResultDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ResultDate"]),
                                     reader["AnalysisStatusID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["AnalysisStatusID"]),
                                     reader["AnalysisTypeID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["AnalysisTypeID"]),
-                                    reader["DetectionID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["DetectionID"])
+                                    reader["DetectionID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["DetectionID"]),
+                                    reader["Notes"] == DBNull.Value ? null : (string)reader["Notes"]
                                 );
                             }
                         }
@@ -90,6 +113,7 @@ namespace MediManage_DataAccess
                         command.Parameters.AddWithValue("@AnalysisStatusID", (object)dto.AnalysisStatusID ?? DBNull.Value);
                         command.Parameters.AddWithValue("@AnalysisTypeID", (object)dto.AnalysisTypeID ?? DBNull.Value);
                         command.Parameters.AddWithValue("@DetectionID", (object)dto.DetectionID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Notes", (object)dto.Notes ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewMedicalAnalysisID", SqlDbType.Int)
                         {
@@ -133,6 +157,7 @@ namespace MediManage_DataAccess
                         command.Parameters.AddWithValue("@AnalysisStatusID", (object)dto.AnalysisStatusID ?? DBNull.Value);
                         command.Parameters.AddWithValue("@AnalysisTypeID", (object)dto.AnalysisTypeID ?? DBNull.Value);
                         command.Parameters.AddWithValue("@DetectionID", (object)dto.DetectionID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Notes", (object)dto.Notes ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -149,9 +174,9 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static List<clsMedicalAnalysisDTO> GetAllMedicalAnalyses()
+        public static List<clsMedicalAnalysisListDTO> GetAllMedicalAnalyses()
         {
-            var medicalAnalysesList = new List<clsMedicalAnalysisDTO>();
+            var medicalAnalysesList = new List<clsMedicalAnalysisListDTO>();
 
             try
             {
@@ -166,15 +191,15 @@ namespace MediManage_DataAccess
                         {
                             while (reader.Read())
                             {
-                                medicalAnalysesList.Add(new clsMedicalAnalysisDTO
+                                medicalAnalysesList.Add(new clsMedicalAnalysisListDTO
                                 (
-                                    reader["MedicalAnalysisID"] == DBNull.Value ? null : (int?)reader["MedicalAnalysisID"],
-                                    reader["Result"] == DBNull.Value ? null : (string)reader["Result"],
+                                    reader["ID"] == DBNull.Value ? null : (int?)reader["ID"],
+                                    reader["PatientName"] == DBNull.Value ? null : (string)reader["PatientName"],
+                                    reader["AnalysisType"] == DBNull.Value ? null : (string)reader["AnalysisType"],
                                     reader["OrderDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["OrderDate"]),
-                                    reader["ResultDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["ResultDate"]),
-                                    reader["AnalysisStatusID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["AnalysisStatusID"]),
-                                    reader["AnalysisTypeID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["AnalysisTypeID"]),
-                                    reader["DetectionID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["DetectionID"])
+                                    reader["Status"] == DBNull.Value ? null : (string)reader["Status"]
+
+
                                 ));
                             }
                         }

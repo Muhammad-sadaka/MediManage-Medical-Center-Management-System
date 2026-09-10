@@ -63,8 +63,8 @@ namespace MediManage
 
             cbPatientCase.SelectedIndex = 0;
 
-            tbSensitivity.Text = "";
-            tbChronicDiseases.Text = "";
+            tbSensitivity.Clear();
+            tbChronicDiseases.Clear();
 
         }
 
@@ -109,13 +109,11 @@ namespace MediManage
             {
                 _Mode = enMode.Update;
                 lblTitle.Text = "Update Patient                        ";
-                MessageBox.Show("Data Saved Successfully.");
-
-                // PersonIDDataBack?.Invoke(this, _PersonID);
+                MessageBox.Show("Data Saved Successfully.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show("Error: Data Is not Saved Successfully.");
+                MessageBox.Show("Error: Data Is not Saved Successfully.", "Did Not Saved", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

@@ -40,7 +40,6 @@
             this.checkBox1.Size = new System.Drawing.Size(38, 34);
             this.checkBox1.TabIndex = 172;
             this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.checkBox1_Paint_1);
             // 
             // MyCustomCheckBox
             // 

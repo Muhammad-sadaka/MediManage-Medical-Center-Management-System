@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace MediManage_DataAccess
 {
-    static class clsDataAccessSettings
+    public static class clsDataAccessSettings
     {
         public static string sourceName = "MediManage";
         

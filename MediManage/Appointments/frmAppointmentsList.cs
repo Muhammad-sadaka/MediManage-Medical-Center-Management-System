@@ -34,7 +34,7 @@ namespace MediManage
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
-            var AppointmentsData = Appointments.Select(a => new
+            DGVAppointmentsList.DataSource = Appointments.Select(a => new
             {
                 a.AppointmentID,
                 a.PatientName,
@@ -43,8 +43,7 @@ namespace MediManage
                 a.Status
             }).Where(a => a.AppointmentDate.Value.Date == dateTimePicker1.Value.Date).ToList();
 
-            DGVAppointmentsList.DataSource = AppointmentsData;
-            lblTotalRecords.Text = $"Total: {AppointmentsData.Count} records";
+            lblTotalRecords.Text = $"Total: {DGVAppointmentsList.RowCount} records";
         }
 
         private void frmAppointmentsList_Load(object sender, EventArgs e)
@@ -55,7 +54,7 @@ namespace MediManage
 
             foreach (string s in clsAppointmentCase.GetAllAppointmentCases().Select(s => s.AppointmentCaseName))  cbStatuses.Items.Add(s);
             cbStatuses.SelectedIndex = 0;
-
+            
             SetupDataGridViewColumns();
             RefreshAppointmentsList();
         }
@@ -65,7 +64,7 @@ namespace MediManage
             DGVAppointmentsList.AutoGenerateColumns = false;
             DGVAppointmentsList.Columns.Clear();
 
-            DGVAppointmentsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "AppointmentDate", HeaderText = "ID", Name = "AppointmentDate" });
+            DGVAppointmentsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "AppointmentID", HeaderText = "ID", Name = "AppointmentID" });
 
             DGVAppointmentsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PatientName", HeaderText = "Patient Name", Name = "PatientName" });
 
@@ -83,7 +82,6 @@ namespace MediManage
             btnEdit.UseColumnTextForButtonValue = true;
             DGVAppointmentsList.Columns.Add(btnEdit);
 
-
             DataGridViewButtonColumn btnDelete = new DataGridViewButtonColumn();
             btnDelete.HeaderText = "";
             btnDelete.Text = "Delete";
@@ -91,22 +89,23 @@ namespace MediManage
             btnDelete.FlatStyle = FlatStyle.Flat;
             btnDelete.UseColumnTextForButtonValue = true;
             DGVAppointmentsList.Columns.Add(btnDelete);
-
         }
 
         private void RefreshAppointmentsList()
         {
-            
-            var AppointmentsData = Appointments.Select(a => new
+            var AppointmentsData = clsAppointment.GetAllAppointments();
+
+            Appointments = AppointmentsData;
+
+            DGVAppointmentsList.DataSource = AppointmentsData.Select(a => new
             {
                 a.AppointmentID,
                 a.PatientName,
                 a.DoctorName,
                 a.AppointmentDate,
                 a.Status
-            }).Where(a => a.AppointmentDate.Value.Date == dateTimePicker1.Value.Date).ToList();
+            }).ToList();
 
-            DGVAppointmentsList.DataSource = AppointmentsData;
             lblTotalRecords.Text = $"Total: {DGVAppointmentsList.RowCount} records";
         }
 
@@ -114,15 +113,13 @@ namespace MediManage
         {
             if (e.RowIndex < 0) return;
 
-
             int AppointmentId = Convert.ToInt32(DGVAppointmentsList.Rows[e.RowIndex].Cells["AppointmentId"].Value);
-
 
             if (DGVAppointmentsList.Columns[e.ColumnIndex].Name == "btnEdit")
             {
-
                 frmAddUpdateAppointment frm = new frmAddUpdateAppointment(AppointmentId);
                 frm.ShowDialog();
+                RefreshAppointmentsList();
 
             }
             else if (DGVAppointmentsList.Columns[e.ColumnIndex].Name == "btnDelete")
@@ -132,15 +129,15 @@ namespace MediManage
                 {
                     if (clsAppointment.DeleteAppointment(AppointmentId))
                     {
-                        MessageBox.Show("Deleted successfully.");
+                        MessageBox.Show("Deleted successfully.", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        RefreshAppointmentsList();
                     }
                     else
                     {
-                        MessageBox.Show("Delete failed. This Appointment might be linked to other records.");
+                        MessageBox.Show("Delete failed. This Appointment might be linked to other records.", "Not Deleted", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
-            RefreshAppointmentsList();
         }
 
         private void DGVAppointmentsList_DoubleClick(object sender, EventArgs e)
@@ -149,17 +146,42 @@ namespace MediManage
 
             frmPatientDetails frm = new frmPatientDetails((int)DGVAppointmentsList.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
-            RefreshAppointmentsList();
         }
 
         private void cbStatuses_SelectedIndexChanged(object sender, EventArgs e)
         {
-           
+            if (cbStatuses.SelectedIndex == 0)
+                dateTimePicker1_ValueChanged(null,null);
+            else
+            {
+                DGVAppointmentsList.DataSource = Appointments.Select(a => new
+                {
+                    a.AppointmentID,
+                    a.PatientName,
+                    a.DoctorName,
+                    a.AppointmentDate,
+                    a.Status
+                }).Where(a => a.Status == cbStatuses.SelectedItem.ToString()).ToList();
+                lblTotalRecords.Text = $"Total: {DGVAppointmentsList.RowCount} records";
+            }
         }
 
         private void cbDoctors_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if (cbDoctors.SelectedIndex == 0)
+                dateTimePicker1_ValueChanged(null, null);
+            else
+            {
+                DGVAppointmentsList.DataSource = Appointments.Select(a => new
+                {
+                    a.AppointmentID,
+                    a.PatientName,
+                    a.DoctorName,
+                    a.AppointmentDate,
+                    a.Status
+                }).Where(a => a.DoctorName == cbDoctors.SelectedItem.ToString()).ToList();
+                lblTotalRecords.Text = $"Total: {DGVAppointmentsList.RowCount} records";
+            }
         }
     }
 }

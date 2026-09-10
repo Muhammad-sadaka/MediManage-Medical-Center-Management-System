@@ -28,6 +28,15 @@ namespace MediManage_Business
         public int? DetectionID { get; set; }
         public string Notes { get; set; }
 
+
+        public clsMedicalPrescription()
+        {
+            this.MedicalPrescriptionID = null;
+            this.DetectionID = null;
+            this.Notes = null;
+            this.Mode = enMode.AddNew;
+        }
+
         public clsMedicalPrescription(clsMedicalPrescriptionDTO dto, enMode cMode = enMode.AddNew)
         {
             this.MedicalPrescriptionID = dto.MedicalPrescriptionID;

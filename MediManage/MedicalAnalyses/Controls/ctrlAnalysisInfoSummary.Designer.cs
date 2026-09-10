@@ -1,6 +1,6 @@
 ﻿namespace MediManage
 {
-    partial class ctrlExaminationInfoSummary
+    partial class ctrlAnalysisInfoSummary
     {
         /// <summary> 
         /// Required designer variable.
@@ -30,8 +30,8 @@
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.klblMoreInfo = new System.Windows.Forms.LinkLabel();
-            this.lblExaminationDate = new System.Windows.Forms.Label();
-            this.lblDoctorName = new System.Windows.Forms.Label();
+            this.lblOrderDate = new System.Windows.Forms.Label();
+            this.lblAnalysisType = new System.Windows.Forms.Label();
             this.lblPatientName = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -43,8 +43,8 @@
             // 
             this.panel1.BackColor = System.Drawing.Color.Silver;
             this.panel1.Controls.Add(this.klblMoreInfo);
-            this.panel1.Controls.Add(this.lblExaminationDate);
-            this.panel1.Controls.Add(this.lblDoctorName);
+            this.panel1.Controls.Add(this.lblOrderDate);
+            this.panel1.Controls.Add(this.lblAnalysisType);
             this.panel1.Controls.Add(this.lblPatientName);
             this.panel1.Controls.Add(this.label3);
             this.panel1.Controls.Add(this.label2);
@@ -67,31 +67,31 @@
             this.klblMoreInfo.Text = "More Info";
             this.klblMoreInfo.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.klblMoreInfo_LinkClicked);
             // 
-            // lblExaminationDate
+            // lblOrderDate
             // 
-            this.lblExaminationDate.AutoSize = true;
-            this.lblExaminationDate.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblExaminationDate.Location = new System.Drawing.Point(279, 122);
-            this.lblExaminationDate.Name = "lblExaminationDate";
-            this.lblExaminationDate.Size = new System.Drawing.Size(62, 34);
-            this.lblExaminationDate.TabIndex = 148;
-            this.lblExaminationDate.Text = "Null";
+            this.lblOrderDate.AutoSize = true;
+            this.lblOrderDate.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblOrderDate.Location = new System.Drawing.Point(244, 122);
+            this.lblOrderDate.Name = "lblOrderDate";
+            this.lblOrderDate.Size = new System.Drawing.Size(62, 34);
+            this.lblOrderDate.TabIndex = 148;
+            this.lblOrderDate.Text = "Null";
             // 
-            // lblDoctorName
+            // lblAnalysisType
             // 
-            this.lblDoctorName.AutoSize = true;
-            this.lblDoctorName.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDoctorName.Location = new System.Drawing.Point(279, 71);
-            this.lblDoctorName.Name = "lblDoctorName";
-            this.lblDoctorName.Size = new System.Drawing.Size(62, 34);
-            this.lblDoctorName.TabIndex = 147;
-            this.lblDoctorName.Text = "Null";
+            this.lblAnalysisType.AutoSize = true;
+            this.lblAnalysisType.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAnalysisType.Location = new System.Drawing.Point(244, 72);
+            this.lblAnalysisType.Name = "lblAnalysisType";
+            this.lblAnalysisType.Size = new System.Drawing.Size(62, 34);
+            this.lblAnalysisType.TabIndex = 147;
+            this.lblAnalysisType.Text = "Null";
             // 
             // lblPatientName
             // 
             this.lblPatientName.AutoSize = true;
             this.lblPatientName.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPatientName.Location = new System.Drawing.Point(279, 20);
+            this.lblPatientName.Location = new System.Drawing.Point(244, 20);
             this.lblPatientName.Name = "lblPatientName";
             this.lblPatientName.Size = new System.Drawing.Size(62, 34);
             this.lblPatientName.TabIndex = 146;
@@ -103,9 +103,9 @@
             this.label3.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(29, 122);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(244, 34);
+            this.label3.Size = new System.Drawing.Size(162, 34);
             this.label3.TabIndex = 145;
-            this.label3.Text = "Examination Date:";
+            this.label3.Text = "Order Date:";
             // 
             // label2
             // 
@@ -113,9 +113,9 @@
             this.label2.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(29, 71);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(188, 34);
+            this.label2.Size = new System.Drawing.Size(194, 34);
             this.label2.TabIndex = 144;
-            this.label2.Text = "Doctor Name:";
+            this.label2.Text = "Analysis Type:";
             // 
             // label4
             // 
@@ -127,13 +127,13 @@
             this.label4.TabIndex = 143;
             this.label4.Text = "Patient Name:";
             // 
-            // ctrlExaminationInfoSummary
+            // ctrlAnalysisInfoSummary
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel1);
-            this.Name = "ctrlExaminationInfoSummary";
-            this.Size = new System.Drawing.Size(1190, 184);
+            this.Name = "ctrlAnalysisInfoSummary";
+            this.Size = new System.Drawing.Size(1191, 185);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -144,8 +144,8 @@
 
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.LinkLabel klblMoreInfo;
-        private System.Windows.Forms.Label lblExaminationDate;
-        private System.Windows.Forms.Label lblDoctorName;
+        private System.Windows.Forms.Label lblOrderDate;
+        private System.Windows.Forms.Label lblAnalysisType;
         private System.Windows.Forms.Label lblPatientName;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;

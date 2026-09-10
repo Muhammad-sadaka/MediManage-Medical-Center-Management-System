@@ -55,6 +55,7 @@
     <Compile Include="clsMedicalAnalyse.cs" />
     <Compile Include="clsMedicalPrescription.cs" />
     <Compile Include="clsMedicine.cs" />
+    <Compile Include="clsMedicineRecipe.cs" />
     <Compile Include="clsPatient.cs" />
     <Compile Include="clsPatientCase.cs" />
     <Compile Include="clsPayment.cs" />

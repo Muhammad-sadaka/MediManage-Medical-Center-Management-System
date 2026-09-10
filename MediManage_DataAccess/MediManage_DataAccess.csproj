@@ -163,6 +163,7 @@
     <Compile Include="clsMedicalAnalyseData.cs" />
     <Compile Include="clsMedicalPrescriptionData.cs" />
     <Compile Include="clsMedicineData.cs" />
+    <Compile Include="clsMedicineRecipeData.cs" />
     <Compile Include="clsPatientCaseData.cs" />
     <Compile Include="clsPatientData.cs" />
     <Compile Include="clsPaymentData.cs" />

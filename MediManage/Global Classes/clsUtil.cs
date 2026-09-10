@@ -49,7 +49,7 @@ namespace MediManage
 
         public static bool CopyImageToProjectImagesFolder(ref string sourceFile)
         {
-            string DestinationFolder = @"F:\Programming Advices\My Projects\MediManage\MediManage_People_Images\";
+            string DestinationFolder = @"F:\Programming Advices\My Projects\MediManage-Medical-Center-Management-System\MediManage_People_Images\";
             if (!CreateFolderIfDoesNotExist(DestinationFolder))
             {
                 return false;

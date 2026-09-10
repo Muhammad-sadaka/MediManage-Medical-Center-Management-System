@@ -15,6 +15,8 @@ namespace MediManage
 {
     public partial class frmDoctorsList : Form
     {
+        List<clsDoctorListDTO> DoctorsData;
+
         public frmDoctorsList()
         {
             InitializeComponent();
@@ -28,15 +30,14 @@ namespace MediManage
 
         private void SetupDataGridViewColumns()
         {
-
             DGVDoctorsList.AutoGenerateColumns = false;
             DGVDoctorsList.Columns.Clear();
 
-            DGVDoctorsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PersonID", HeaderText = "ID", Name = "PersonID" });
+            DGVDoctorsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "DoctorID", HeaderText = "ID", Name = "DoctorID" });
 
             DGVDoctorsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "FullName", HeaderText = "Full Name", Name = "FullName" });
 
-            DGVDoctorsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Speciality", HeaderText = "Speciality", Name = "Speciality" });
+            DGVDoctorsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Specialty", HeaderText = "Speciality", Name = "Specialty" });
 
             DGVDoctorsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Phone", HeaderText = "Phone", Name = "Phone" });
 
@@ -48,7 +49,6 @@ namespace MediManage
             btnEdit.UseColumnTextForButtonValue = true;
             DGVDoctorsList.Columns.Add(btnEdit);
 
-
             DataGridViewButtonColumn btnDelete = new DataGridViewButtonColumn();
             btnDelete.HeaderText = "";
             btnDelete.Text = "Delete";
@@ -56,21 +56,22 @@ namespace MediManage
             btnDelete.FlatStyle = FlatStyle.Flat;        
             btnDelete.UseColumnTextForButtonValue = true;
             DGVDoctorsList.Columns.Add(btnDelete);
-
         }
 
         private void RefreshDoctorsList()
         {
+            var doctorsData = clsDoctor.GetAllDoctors();
 
-            var DoctorsData = clsDoctor.GetAllDoctors().Select(d => new
+            DoctorsData = doctorsData;
+
+            DGVDoctorsList.DataSource = doctorsData.Select(p => new
             {
-                d.PersonID,
-                d.FullName,
-                d.Speciality,
-                d.Phone
+                p.DoctorID,
+                p.FullName,
+                p.Specialty,
+                p.Phone
             }).ToList();
 
-            DGVDoctorsList.DataSource = DoctorsData;
             lblTotalRecords.Text = $"Total: {DGVDoctorsList.RowCount} records";
         }
 
@@ -83,6 +84,7 @@ namespace MediManage
         {
             frmAddUpdateDoctor frm = new frmAddUpdateDoctor();
             frm.ShowDialog();
+            RefreshDoctorsList();
         }
 
         private void tbNationalNo_Enter(object sender, EventArgs e)
@@ -103,26 +105,28 @@ namespace MediManage
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            var DoctorsData = clsDoctor.GetAllDoctors().Select(d => new
+            if (!string.IsNullOrEmpty(tbNationalNo.Text) && tbNationalNo.Text != "Enter National No...")
             {
-                d.PersonID,
-                d.NationalNo,
-                d.FullName,
-                d.Speciality,
-                d.Phone
-            });
-
-
-            if (!string.IsNullOrEmpty(tbNationalNo.Text))
-            {
-                DoctorsData.Where(d => d.NationalNo.StartsWith(tbNationalNo.Text.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();         
+                DGVDoctorsList.DataSource = DoctorsData.Select(p => new
+                {
+                    p.DoctorID,
+                    p.FullName,
+                    p.NationalNo,
+                    p.Specialty,
+                    p.Phone
+                }).Where(p => p.NationalNo.StartsWith(tbNationalNo.Text.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();
             }
             else
             {
-                DoctorsData.ToList();
+                DGVDoctorsList.DataSource = DoctorsData.Select(p => new
+                {
+                    p.DoctorID,
+                    p.FullName,
+                    p.Specialty,
+                    p.Phone
+                }).ToList();
             }
 
-            DGVDoctorsList.DataSource = DoctorsData;
             lblTotalRecords.Text = $"Total: {DGVDoctorsList.RowCount} records";
         }
 
@@ -130,16 +134,13 @@ namespace MediManage
         {
             if (e.RowIndex < 0) return;
 
-
-            int personId = Convert.ToInt32(DGVDoctorsList.Rows[e.RowIndex].Cells["PersonID"].Value);
-
+            int DoctorID = Convert.ToInt32(DGVDoctorsList.Rows[e.RowIndex].Cells["DoctorID"].Value);
 
             if (DGVDoctorsList.Columns[e.ColumnIndex].Name == "btnEdit")
             {
-
-                frmAddUpdateDoctor frm = new frmAddUpdateDoctor(personId);
+                frmAddUpdateDoctor frm = new frmAddUpdateDoctor(DoctorID);
                 frm.ShowDialog();
-
+                RefreshDoctorsList();
             }
 
             else if (DGVDoctorsList.Columns[e.ColumnIndex].Name == "btnDelete")
@@ -147,24 +148,23 @@ namespace MediManage
                 DialogResult result = MessageBox.Show("Are you sure you want to delete this Doctor?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (result == DialogResult.Yes)
                 {
-                    if (clsDoctor.DeleteDoctor(personId))
+                    if (clsDoctor.DeleteDoctor(DoctorID))
                     {
-                        MessageBox.Show("Deleted successfully.");
+                        MessageBox.Show("Deleted successfully.", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        RefreshDoctorsList();
                     }
                     else
                     {
-                        MessageBox.Show("Delete failed. This Doctor might be linked to other records.");
+                        MessageBox.Show("Delete failed. This Doctor might be linked to other records.", "Not Deleted", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
-            }
-            RefreshDoctorsList();
+            }  
         }
 
         private void DGVDoctorsList_DoubleClick(object sender, EventArgs e)
         {
-
             if (DGVDoctorsList.RowCount < 1) return;
-            frmPersonDetails frm = new frmPersonDetails((int)DGVDoctorsList.CurrentRow.Cells[0].Value);
+            frmDoctorDetails frm = new frmDoctorDetails((int)DGVDoctorsList.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
             RefreshDoctorsList();
         }

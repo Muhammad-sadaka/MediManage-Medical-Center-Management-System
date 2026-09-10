@@ -13,9 +13,9 @@ namespace MediManage_API.Controllers
         [HttpGet("All", Name = "GetAllMedicines")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IEnumerable<clsMedicineDTO>> GetAllMedicines()
+        public ActionResult<IEnumerable<clsMedicineRecipeDTO>> GetAllMedicines()
         {
-            List<clsMedicineDTO> list = clsMedicine.GetAllMedicines();
+            List<clsMedicineRecipeDTO> list = clsMedicine.GetAllMedicines();
             if (list == null || list.Count == 0)
             {
                 return NotFound("No Medicines Found!");
@@ -27,7 +27,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsMedicineDTO> GetMedicineById(int id)
+        public ActionResult<clsMedicineRecipeDTO> GetMedicineById(int id)
         {
             if (id < 1)
             {
@@ -47,7 +47,7 @@ namespace MediManage_API.Controllers
         [HttpPost(Name = "AddMedicine")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsMedicineDTO> AddMedicine(clsMedicineDTO newDTO)
+        public ActionResult<clsMedicineRecipeDTO> AddMedicine(clsMedicineRecipeDTO newDTO)
         {
             if (newDTO == null || string.IsNullOrEmpty(newDTO.MedicineName) || !newDTO.MedicalPrescriptionID.HasValue)
             {
@@ -71,7 +71,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsMedicineDTO> UpdateMedicine(int id, clsMedicineDTO updatedDTO)
+        public ActionResult<clsMedicineRecipeDTO> UpdateMedicine(int id, clsMedicineRecipeDTO updatedDTO)
         {
             if (id < 1 || updatedDTO == null || string.IsNullOrEmpty(updatedDTO.MedicineName) || !updatedDTO.MedicalPrescriptionID.HasValue)
             {

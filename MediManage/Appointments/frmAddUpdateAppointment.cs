@@ -62,7 +62,7 @@ namespace MediManage
             else
                 lblTitle.Text = "Update Appointment                        ";
 
-            tbFees.Text = clsSpecialty.Find(Doctors.Where(d => d.FullName == cbDoctors.Text).Select(d => d.Speciality).FirstOrDefault()).Fees.ToString();
+            tbFees.Text = clsSpecialty.Find(Doctors.Where(d => d.FullName == cbDoctors.Text).Select(d => d.Specialty).FirstOrDefault()).Fees.ToString();
 
             numericDuration.Value = 30;
             tbReason.Text = "";
@@ -89,7 +89,7 @@ namespace MediManage
             tbReason.Text = Appointment.Reason;
             tbNotes.Text = Appointment.Notes;
             cbDoctors.SelectedIndex = cbDoctors.FindString(Appointment.DoctorInfo.PersonInfo.FullName);
-            tbFees.Text = clsSpecialty.Find(Doctors.Where(d => d.FullName == cbDoctors.Text).Select(d => d.Speciality).FirstOrDefault()).Fees.ToString();
+            tbFees.Text = clsSpecialty.Find(Doctors.Where(d => d.FullName == cbDoctors.Text).Select(d => d.Specialty).FirstOrDefault()).Fees.ToString();
             cbStatuses.SelectedIndex = Appointment.AppointmentCaseID.Value - 1;
 
 
@@ -134,7 +134,7 @@ namespace MediManage
             
 
             Appointment.PatientID = clsPatient.Find(tbNationalNo.Text).PatientID;
-            Appointment.DoctorID =  clsDoctor.Find(Doctors.Where(d => d.FullName == cbDoctors.Text).Select(d => d.PersonID).FirstOrDefault()).DoctorID;
+            Appointment.DoctorID =  Doctors.Where(d => d.FullName == cbDoctors.Text).Select(d => d.DoctorID).FirstOrDefault();
             Appointment.CreatedByUserID = clsGlobal.CurrentUser.UserID;
             Appointment.BookingDate = DateTime.Now;
             Appointment.AppointmentDate = dateTimePicker1.Value;
@@ -160,7 +160,7 @@ namespace MediManage
 
         private void cbDoctors_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tbFees.Text = clsSpecialty.Find(Doctors.Where(d => d.FullName == cbDoctors.Text).Select(d => d.Speciality).FirstOrDefault()).Fees.ToString();
+            tbFees.Text = clsSpecialty.Find(Doctors.Where(d => d.FullName == cbDoctors.Text).Select(d => d.Specialty).FirstOrDefault()).Fees.ToString();
         }
     }
 }

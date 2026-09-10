@@ -142,7 +142,7 @@ namespace MediManage_Business
                 return null;
         }
 
-        public static List<clsPersonDTO> GetAllPeople()
+        public static List<clsPersonListDTO> GetAllPeople()
         {
             return clsPeopleDataAccess.GetAllPeople();
         }

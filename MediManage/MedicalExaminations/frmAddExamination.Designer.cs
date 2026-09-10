@@ -37,8 +37,8 @@
             this.tbWeight = new System.Windows.Forms.TextBox();
             this.tbHeartRate = new System.Windows.Forms.TextBox();
             this.tbBloodPressure = new System.Windows.Forms.TextBox();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.tbConfirmPassword = new System.Windows.Forms.TextBox();
+            this.numericTemperature = new System.Windows.Forms.NumericUpDown();
+            this.tbNotes = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -46,15 +46,15 @@
             this.tbSymptoms = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.gbSearch = new System.Windows.Forms.GroupBox();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.ctrlAppointmentInfoSummary1 = new MediManage.ctrlAppointmentInfoSummary();
+            this.numericAppointmentID = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.btnSearch = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
-            this.ctrlAppointmentInfoSummary1 = new MediManage.ctrlAppointmentInfoSummary();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericTemperature)).BeginInit();
             this.gbSearch.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericAppointmentID)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSave
@@ -69,6 +69,7 @@
             this.btnSave.TabIndex = 3;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnClose
             // 
@@ -92,8 +93,8 @@
             this.groupBox1.Controls.Add(this.tbWeight);
             this.groupBox1.Controls.Add(this.tbHeartRate);
             this.groupBox1.Controls.Add(this.tbBloodPressure);
-            this.groupBox1.Controls.Add(this.numericUpDown2);
-            this.groupBox1.Controls.Add(this.tbConfirmPassword);
+            this.groupBox1.Controls.Add(this.numericTemperature);
+            this.groupBox1.Controls.Add(this.tbNotes);
             this.groupBox1.Controls.Add(this.label7);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
@@ -159,32 +160,32 @@
             this.tbBloodPressure.Size = new System.Drawing.Size(872, 40);
             this.tbBloodPressure.TabIndex = 176;
             // 
-            // numericUpDown2
+            // numericTemperature
             // 
-            this.numericUpDown2.Increment = new decimal(new int[] {
+            this.numericTemperature.Increment = new decimal(new int[] {
             1,
             0,
             0,
             65536});
-            this.numericUpDown2.Location = new System.Drawing.Point(328, 224);
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(238, 40);
-            this.numericUpDown2.TabIndex = 175;
-            this.numericUpDown2.Value = new decimal(new int[] {
+            this.numericTemperature.Location = new System.Drawing.Point(328, 224);
+            this.numericTemperature.Name = "numericTemperature";
+            this.numericTemperature.Size = new System.Drawing.Size(238, 40);
+            this.numericTemperature.TabIndex = 175;
+            this.numericTemperature.Value = new decimal(new int[] {
             46,
             0,
             0,
             65536});
             // 
-            // tbConfirmPassword
+            // tbNotes
             // 
-            this.tbConfirmPassword.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbConfirmPassword.Location = new System.Drawing.Point(328, 371);
-            this.tbConfirmPassword.Multiline = true;
-            this.tbConfirmPassword.Name = "tbConfirmPassword";
-            this.tbConfirmPassword.PasswordChar = '*';
-            this.tbConfirmPassword.Size = new System.Drawing.Size(872, 56);
-            this.tbConfirmPassword.TabIndex = 170;
+            this.tbNotes.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbNotes.Location = new System.Drawing.Point(328, 371);
+            this.tbNotes.Multiline = true;
+            this.tbNotes.Name = "tbNotes";
+            this.tbNotes.PasswordChar = '*';
+            this.tbNotes.Size = new System.Drawing.Size(872, 56);
+            this.tbNotes.TabIndex = 170;
             // 
             // label7
             // 
@@ -248,7 +249,7 @@
             // gbSearch
             // 
             this.gbSearch.Controls.Add(this.ctrlAppointmentInfoSummary1);
-            this.gbSearch.Controls.Add(this.numericUpDown1);
+            this.gbSearch.Controls.Add(this.numericAppointmentID);
             this.gbSearch.Controls.Add(this.label4);
             this.gbSearch.Controls.Add(this.btnSearch);
             this.gbSearch.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -259,12 +260,21 @@
             this.gbSearch.TabStop = false;
             this.gbSearch.Text = "Appointment Search";
             // 
-            // numericUpDown1
+            // ctrlAppointmentInfoSummary1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(265, 42);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(437, 40);
-            this.numericUpDown1.TabIndex = 145;
+            this.ctrlAppointmentInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ctrlAppointmentInfoSummary1.Location = new System.Drawing.Point(10, 85);
+            this.ctrlAppointmentInfoSummary1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.ctrlAppointmentInfoSummary1.Name = "ctrlAppointmentInfoSummary1";
+            this.ctrlAppointmentInfoSummary1.Size = new System.Drawing.Size(1190, 185);
+            this.ctrlAppointmentInfoSummary1.TabIndex = 146;
+            // 
+            // numericAppointmentID
+            // 
+            this.numericAppointmentID.Location = new System.Drawing.Point(265, 42);
+            this.numericAppointmentID.Name = "numericAppointmentID";
+            this.numericAppointmentID.Size = new System.Drawing.Size(437, 40);
+            this.numericAppointmentID.TabIndex = 145;
             // 
             // label4
             // 
@@ -288,6 +298,7 @@
             this.btnSearch.TabIndex = 21;
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = false;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
             // 
             // lblTitle
             // 
@@ -298,15 +309,6 @@
             this.lblTitle.Size = new System.Drawing.Size(750, 51);
             this.lblTitle.TabIndex = 26;
             this.lblTitle.Text = "Add New Examination                       ";
-            // 
-            // ctrlAppointmentInfoSummary1
-            // 
-            this.ctrlAppointmentInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ctrlAppointmentInfoSummary1.Location = new System.Drawing.Point(10, 85);
-            this.ctrlAppointmentInfoSummary1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
-            this.ctrlAppointmentInfoSummary1.Name = "ctrlAppointmentInfoSummary1";
-            this.ctrlAppointmentInfoSummary1.Size = new System.Drawing.Size(1190, 185);
-            this.ctrlAppointmentInfoSummary1.TabIndex = 146;
             // 
             // frmAddExamination
             // 
@@ -324,10 +326,10 @@
             this.Text = "frmAddExamination";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericTemperature)).EndInit();
             this.gbSearch.ResumeLayout(false);
             this.gbSearch.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericAppointmentID)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -341,18 +343,18 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox tbConfirmPassword;
+        private System.Windows.Forms.TextBox tbNotes;
         private System.Windows.Forms.TextBox tbDiagosis;
         private System.Windows.Forms.TextBox tbSymptoms;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.GroupBox gbSearch;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnSearch;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown numericAppointmentID;
         private System.Windows.Forms.TextBox tbWeight;
         private System.Windows.Forms.TextBox tbHeartRate;
         private System.Windows.Forms.TextBox tbBloodPressure;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
+        private System.Windows.Forms.NumericUpDown numericTemperature;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label3;

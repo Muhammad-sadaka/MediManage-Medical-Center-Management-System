@@ -55,6 +55,7 @@
             this.btnSave.TabIndex = 25;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = false;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnClose
             // 
@@ -196,6 +197,7 @@
             this.Name = "frmAddMedicine";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmAddMedicine";
+            this.Load += new System.EventHandler(this.frmAddMedicine_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

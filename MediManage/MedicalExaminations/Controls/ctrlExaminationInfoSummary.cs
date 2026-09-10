@@ -13,7 +13,7 @@ namespace MediManage
 {
     public partial class ctrlExaminationInfoSummary : UserControl
     {
-        clsDetection Detection = null;
+        clsDetection Examination = new clsDetection();
 
         public ctrlExaminationInfoSummary()
         {
@@ -25,20 +25,20 @@ namespace MediManage
 
         }
 
-        public void LoadExaminationInfoData(int DetectionID)
+        public void LoadExaminationInfoData(int ExaminationID)
         {
-            if (!clsPerson.IsExist(DetectionID))
+            if (!clsDetection.IsExist(ExaminationID))
             {
-                MessageBox.Show("Person Did not Found");
+                MessageBox.Show("Examination Did not Found");
                 return;
             }
 
-            Detection = clsDetection.Find(DetectionID);
+            Examination = clsDetection.Find(ExaminationID);
 
-            lblPatientName.Text = Detection.AppointmentInfo.PatientInfo.PersonInfo.FullName;
-            lblDoctorName.Text = Detection.AppointmentInfo.DoctorInfo.PersonInfo.FullName;
-            //lblExaminationDate.Text = Detection.
-            //lblTotalMedicines.Text = 
+            lblPatientName.Text = Examination.AppointmentInfo.PatientInfo.PersonInfo.FullName;
+            lblDoctorName.Text = Examination.AppointmentInfo.DoctorInfo.PersonInfo.FullName;
+            lblExaminationDate.Text = Examination.DetectionDate.ToString();
+
 
             klblMoreInfo.Enabled = true;
 

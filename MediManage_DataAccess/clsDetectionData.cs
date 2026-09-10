@@ -19,10 +19,11 @@ namespace MediManage_DataAccess
         public byte? BloodPressure { get; set; }
         public byte? HeartRate { get; set; }
         public string Notes { get; set; }
+        public DateTime? DetectionDate { get; set; }
 
         public clsDetectionDTO(int? detectionID, int? appointmentID, int? createdByUserID,
             string symproms, string diagnosis, byte? temperature, byte? wight,
-            byte? bloodPressure, byte? heartRate, string notes)
+            byte? bloodPressure, byte? heartRate, string notes,DateTime? DetectionDate)
         {
             this.DetectionID = detectionID;
             this.AppointmentID = appointmentID;
@@ -34,6 +35,24 @@ namespace MediManage_DataAccess
             this.BloodPressure = bloodPressure;
             this.HeartRate = heartRate;
             this.Notes = notes;
+            this.DetectionDate = DetectionDate;
+        }
+    }
+
+    public class clsDetectionListDTO
+    {
+        public int? DetectionID { get; set; }
+        public string PatientName { get; set; }
+        public string DoctorName { get; set; }
+        public DateTime? DetectionDate { get; set; }
+
+
+        public clsDetectionListDTO(int? DetectionID, string PatientName, string DoctorName, DateTime? DetectionDate)
+        {
+            this.DetectionID = DetectionID;
+            this.PatientName = PatientName;
+            this.DoctorName = DoctorName;
+            this.DetectionDate = DetectionDate;
         }
     }
 
@@ -67,7 +86,8 @@ namespace MediManage_DataAccess
                                     reader["Wight"] == DBNull.Value ? null : (byte?)reader["Wight"],
                                     reader["BloodPressure"] == DBNull.Value ? null : (byte?)reader["BloodPressure"],
                                     reader["HeartRate"] == DBNull.Value ? null : (byte?)reader["HeartRate"],
-                                    reader["Notes"] == DBNull.Value ? null : (string)reader["Notes"]
+                                    reader["Notes"] == DBNull.Value ? null : (string)reader["Notes"],
+                                    reader["DetectionDate"] == DBNull.Value ? null : (DateTime?)reader["DetectionDate"]
                                 );
                             }
                         }
@@ -104,6 +124,7 @@ namespace MediManage_DataAccess
                         command.Parameters.AddWithValue("@BloodPressure", (object)dto.BloodPressure ?? DBNull.Value);
                         command.Parameters.AddWithValue("@HeartRate", (object)dto.HeartRate ?? DBNull.Value);
                         command.Parameters.AddWithValue("@Notes", (object)dto.Notes ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@DetectionDate", (object)dto.DetectionDate ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewDetectionID", SqlDbType.Int)
                         {
@@ -150,6 +171,8 @@ namespace MediManage_DataAccess
                         command.Parameters.AddWithValue("@BloodPressure", (object)dto.BloodPressure ?? DBNull.Value);
                         command.Parameters.AddWithValue("@HeartRate", (object)dto.HeartRate ?? DBNull.Value);
                         command.Parameters.AddWithValue("@Notes", (object)dto.Notes ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@DetectionDate", (object)dto.DetectionDate ?? DBNull.Value);
+
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -166,9 +189,9 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static List<clsDetectionDTO> GetAllDetections()
+        public static List<clsDetectionListDTO> GetAllDetections()
         {
-            var detectionsList = new List<clsDetectionDTO>();
+            var detectionsList = new List<clsDetectionListDTO>();
 
             try
             {
@@ -183,18 +206,12 @@ namespace MediManage_DataAccess
                         {
                             while (reader.Read())
                             {
-                                detectionsList.Add(new clsDetectionDTO
+                                detectionsList.Add(new clsDetectionListDTO
                                 (
                                     reader["DetectionID"] == DBNull.Value ? null : (int?)reader["DetectionID"],
-                                    reader["AppointmentID"] == DBNull.Value ? null : (int?)reader["AppointmentID"],
-                                    reader["CreatedByUserID"] == DBNull.Value ? null : (int?)reader["CreatedByUserID"],
-                                    reader["Symproms"] == DBNull.Value ? null : (string)reader["Symproms"],
-                                    reader["Diagnosis"] == DBNull.Value ? null : (string)reader["Diagnosis"],
-                                    reader["Temperature"] == DBNull.Value ? null : (byte?)reader["Temperature"],
-                                    reader["Wight"] == DBNull.Value ? null : (byte?)reader["Wight"],
-                                    reader["BloodPressure"] == DBNull.Value ? null : (byte?)reader["BloodPressure"],
-                                    reader["HeartRate"] == DBNull.Value ? null : (byte?)reader["HeartRate"],
-                                    reader["Notes"] == DBNull.Value ? null : (string)reader["Notes"]
+                                    reader["PatientName"] == DBNull.Value ? null : (string)reader["PatientName"],
+                                    reader["DoctorName"] == DBNull.Value ? null : (string)reader["DoctorName"],                   
+                                    reader["DetectionDate"] == DBNull.Value ? null : (DateTime?)reader["DetectionDate"]
                                 ));
                             }
                         }
