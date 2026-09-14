@@ -1,4 +1,5 @@
 ﻿using MediManage_Business;
+using MediManage_DataAccess;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +14,7 @@ namespace MediManage
 {
     public partial class frmAnalysesList : Form
     {
+        List<clsMedicalAnalysisListDTO> AnalysesData = clsMedicalAnalysis.GetAllMedicalAnalyses();
         public frmAnalysesList()
         {
             InitializeComponent();
@@ -27,6 +29,7 @@ namespace MediManage
         {
             frmAddAnalysis frm = new frmAddAnalysis();
             frm.ShowDialog();
+            RefreshAnalysesList();
         }
 
         private void frmAnalysesList_Load(object sender, EventArgs e)
@@ -38,10 +41,8 @@ namespace MediManage
             RefreshAnalysesList();
         }
 
-
         private void SetupDataGridViewColumns()
         {
-
             DGVAnalysesList.AutoGenerateColumns = false;
             DGVAnalysesList.Columns.Clear();
 
@@ -55,7 +56,6 @@ namespace MediManage
 
             DGVAnalysesList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Status", HeaderText = "Status", Name = "Status" });
 
-
             DataGridViewButtonColumn btnEdit = new DataGridViewButtonColumn();
             btnEdit.HeaderText = "Actions";
             btnEdit.Text = "Edit";
@@ -64,7 +64,6 @@ namespace MediManage
             btnEdit.UseColumnTextForButtonValue = true;
             DGVAnalysesList.Columns.Add(btnEdit);
 
-
             DataGridViewButtonColumn btnDelete = new DataGridViewButtonColumn();
             btnDelete.HeaderText = "";
             btnDelete.Text = "Delete";
@@ -72,13 +71,15 @@ namespace MediManage
             btnDelete.FlatStyle = FlatStyle.Flat;
             btnDelete.UseColumnTextForButtonValue = true;
             DGVAnalysesList.Columns.Add(btnDelete);
-
         }
 
         private void RefreshAnalysesList()
         {
+            var analysesData = clsMedicalAnalysis.GetAllMedicalAnalyses();
 
-            var AnalysesData = clsMedicalAnalysis.GetAllMedicalAnalyses().Select(a => new
+            AnalysesData = analysesData;
+
+            DGVAnalysesList.DataSource = analysesData.Select(a => new
             {
                 a.MedicalAnalysisID,
                 a.PatientName,
@@ -87,7 +88,6 @@ namespace MediManage
                 a.Status
             }).ToList();
 
-            DGVAnalysesList.DataSource = AnalysesData;
             lblTotalRecords.Text = $"Total: {DGVAnalysesList.RowCount} records";
         }
 
@@ -95,18 +95,14 @@ namespace MediManage
         {
             if (e.RowIndex < 0) return;
 
-
             int ID = Convert.ToInt32(DGVAnalysesList.Rows[e.RowIndex].Cells["MedicalAnalysisID"].Value);
-
 
             if (DGVAnalysesList.Columns[e.ColumnIndex].Name == "btnEdit")
             {
-
                 frmUpdateAnalysis frm = new frmUpdateAnalysis(ID);
                 frm.ShowDialog();
-
-            }
-            
+                RefreshAnalysesList();
+            }       
             else if (DGVAnalysesList.Columns[e.ColumnIndex].Name == "btnDelete")
             {
                 DialogResult result = MessageBox.Show("Are you sure you want to delete this Analysis?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -114,28 +110,26 @@ namespace MediManage
                 {
                     if (clsMedicalAnalysis.DeleteMedicalAnalysis(ID))
                     {
-                        MessageBox.Show("Deleted successfully.");
+                        MessageBox.Show("Deleted successfully.", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        RefreshAnalysesList();
                     }
                     else
                     {
-                        MessageBox.Show("Delete failed. This Analysis might be linked to other records.");
+                        MessageBox.Show("Delete failed. This Analysis might be linked to other records.", "Not Deleted", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
-            RefreshAnalysesList();
         }
 
         private void DGVAnalysesList_DoubleClick(object sender, EventArgs e)
         {
-            //if (DGVAnalysesList.RowCount < 1) return;
-            //frmAnalysisDetails frm = new frmAnalysisDetails((int)DGVAnalysesList.CurrentRow.Cells[0].Value);
-            //frm.ShowDialog();
-            //RefreshAnalysesList();
+            if (DGVAnalysesList.RowCount < 1) return;
+            frmAnalysisDetails frm = new frmAnalysisDetails((int)DGVAnalysesList.CurrentRow.Cells[0].Value);
+            frm.ShowDialog();
         }
 
         private void tbNationalNo_Enter(object sender, EventArgs e)
         {
-
             if (tbPatientName.Text == "Enter Patient Name...")
                 tbPatientName.Clear();
             tbPatientName.ForeColor = Color.Black;
@@ -152,7 +146,48 @@ namespace MediManage
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
+            if (!string.IsNullOrEmpty(tbPatientName.Text) && tbPatientName.Text != "Enter Patient Name...")
+            {
+                DGVAnalysesList.DataSource = AnalysesData.Select(a => new
+                {
+                    a.MedicalAnalysisID,
+                    a.PatientName,
+                    a.AnalysisType,
+                    a.OrderDate,
+                    a.Status
+                }).Where(a => a.PatientName.StartsWith(tbPatientName.Text.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+            else
+            {
+                DGVAnalysesList.DataSource = AnalysesData.Select(a => new
+                {
+                    a.MedicalAnalysisID,
+                    a.PatientName,
+                    a.AnalysisType,
+                    a.OrderDate,
+                    a.Status
+                }).ToList();
+            }
 
+            lblTotalRecords.Text = $"Total: {DGVAnalysesList.RowCount} records";
+        }
+
+        private void cbStatuses_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbStatuses.SelectedIndex == 0)
+                DGVAnalysesList.DataSource = AnalysesData.ToList();
+            else
+            {
+                DGVAnalysesList.DataSource = AnalysesData.Select(a => new
+                {
+                    a.MedicalAnalysisID,
+                    a.PatientName,
+                    a.AnalysisType,
+                    a.OrderDate,
+                    a.Status
+                }).Where(a => a.Status == cbStatuses.SelectedItem.ToString()).ToList();
+            }
+            lblTotalRecords.Text = $"Total: {DGVAnalysesList.RowCount} records";
         }
     }
 }

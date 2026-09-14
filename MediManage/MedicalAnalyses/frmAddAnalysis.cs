@@ -28,41 +28,45 @@ namespace MediManage
             cbAnalysisTypes.DataSource = AnalysisTypes;
             cbAnalysisTypes.DisplayMember = "AnalysisTypeName";
             tbPrice.Text = AnalysisTypes.Where(a => a.AnalysisTypeName == cbAnalysisTypes.Text).Select(a => a.Price).FirstOrDefault().ToString();
-
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            int ID = Convert.ToInt32(numericExaminationID.Value);
-            if (clsDetection.IsExist(ID))
+            MedicalAnalysis.DetectionID = Convert.ToInt32(numericExaminationID.Value);
+            if (clsDetection.IsExist(MedicalAnalysis.DetectionID))
             {
-                ctrlExaminationInfoSummary1.LoadExaminationInfoData(ID);
+                ctrlExaminationInfoSummary1.LoadExaminationInfoData(MedicalAnalysis.DetectionID);
             }
             else
             {
-                MessageBox.Show("No Examination Found With This ID");
+                MessageBox.Show("No Examination Found With This ID", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            MedicalAnalysis.DetectionID = Convert.ToInt32(numericExaminationID.Value);
+            if (MedicalAnalysis.DetectionID == null)
+            {
+                MessageBox.Show("Search about Examination First", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             MedicalAnalysis.Notes = tbNotes.Text.Trim();
             MedicalAnalysis.OrderDate = DateTime.Now;
             MedicalAnalysis.ResultDate = null;
             MedicalAnalysis.Result = null;
             MedicalAnalysis.AnalysisTypeID = cbAnalysisTypes.SelectedIndex + 1;
             MedicalAnalysis.AnalysisStatusID = 1;
-
+            MedicalAnalysis.Notes = tbNotes.Text;
 
             if (MedicalAnalysis.Save())
             {
-                MessageBox.Show("Data Saved Successfully.");
+                MessageBox.Show("Data Saved Successfully.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close();
             }
             else
             {
-                MessageBox.Show("Error: Data Is not Saved Successfully.");
+                MessageBox.Show("Error: Data Is not Saved Successfully.", "Did Not Saved", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

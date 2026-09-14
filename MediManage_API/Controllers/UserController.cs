@@ -172,7 +172,7 @@ namespace MediManage_API.Controllers
                 return BadRequest($"Invalid ID {id}");
             }
 
-            if (clsUser.IsUserExist(id))
+            if (clsUser.IsExist(id))
             {
                 return Ok(true);
             }

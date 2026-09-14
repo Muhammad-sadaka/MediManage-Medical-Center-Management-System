@@ -28,9 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.gbSearch = new System.Windows.Forms.GroupBox();
+            this.lblTotalRecords = new System.Windows.Forms.Label();
             this.ctrlExaminationInfoSummary1 = new MediManage.ctrlExaminationInfoSummary();
             this.numericExaminationID = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
@@ -44,7 +45,6 @@
             this.btnAddMedicine = new System.Windows.Forms.Button();
             this.DGVMedicinesRecipes = new System.Windows.Forms.DataGridView();
             this.btnSave = new System.Windows.Forms.Button();
-            this.lblTotalRecords = new System.Windows.Forms.Label();
             this.gbSearch.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericExaminationID)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -66,6 +66,17 @@
             this.gbSearch.TabIndex = 25;
             this.gbSearch.TabStop = false;
             this.gbSearch.Text = "Examination Search";
+            // 
+            // lblTotalRecords
+            // 
+            this.lblTotalRecords.AutoSize = true;
+            this.lblTotalRecords.BackColor = System.Drawing.Color.Silver;
+            this.lblTotalRecords.Font = new System.Drawing.Font("Segoe UI Semibold", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTotalRecords.Location = new System.Drawing.Point(683, 234);
+            this.lblTotalRecords.Name = "lblTotalRecords";
+            this.lblTotalRecords.Size = new System.Drawing.Size(77, 31);
+            this.lblTotalRecords.TabIndex = 147;
+            this.lblTotalRecords.Text = "Total: ";
             // 
             // ctrlExaminationInfoSummary1
             // 
@@ -191,8 +202,8 @@
             // 
             this.DGVMedicinesRecipes.AllowUserToAddRows = false;
             this.DGVMedicinesRecipes.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.White;
-            this.DGVMedicinesRecipes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            this.DGVMedicinesRecipes.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.DGVMedicinesRecipes.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.DGVMedicinesRecipes.BackgroundColor = System.Drawing.Color.White;
             this.DGVMedicinesRecipes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -201,11 +212,12 @@
             this.DGVMedicinesRecipes.Name = "DGVMedicinesRecipes";
             this.DGVMedicinesRecipes.ReadOnly = true;
             this.DGVMedicinesRecipes.RowHeadersWidth = 51;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.DGVMedicinesRecipes.RowsDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.DGVMedicinesRecipes.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.DGVMedicinesRecipes.RowTemplate.Height = 26;
             this.DGVMedicinesRecipes.Size = new System.Drawing.Size(1196, 143);
             this.DGVMedicinesRecipes.TabIndex = 23;
+            this.DGVMedicinesRecipes.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVMedicinesRecipes_CellContentClick);
             // 
             // btnSave
             // 
@@ -220,17 +232,6 @@
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = false;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
-            // 
-            // lblTotalRecords
-            // 
-            this.lblTotalRecords.AutoSize = true;
-            this.lblTotalRecords.BackColor = System.Drawing.Color.Silver;
-            this.lblTotalRecords.Font = new System.Drawing.Font("Segoe UI Semibold", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalRecords.Location = new System.Drawing.Point(683, 234);
-            this.lblTotalRecords.Name = "lblTotalRecords";
-            this.lblTotalRecords.Size = new System.Drawing.Size(77, 31);
-            this.lblTotalRecords.TabIndex = 147;
-            this.lblTotalRecords.Text = "Total: ";
             // 
             // frmAddPrescription
             // 

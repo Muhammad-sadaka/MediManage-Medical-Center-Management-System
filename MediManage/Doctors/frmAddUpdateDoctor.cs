@@ -50,7 +50,7 @@ namespace MediManage
 
             if (_Mode == enMode.AddNew)
             {
-                Doctor = new clsDoctor();
+                Doctor = new clsDoctor();     // i think it is not necessary
                 lblTitle.Text = "Add New Doctor                       ";
             }
             else
@@ -113,7 +113,7 @@ namespace MediManage
         {
             if (Doctor == null)
             {
-                MessageBox.Show("Search about Person First");
+                MessageBox.Show("Search about Person First", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -122,7 +122,6 @@ namespace MediManage
             Doctor.YearsOfExperience = Convert.ToByte(numericEcperienceYears.Value);
             Doctor.Qualification = tbQualification.Text.Trim();
             Doctor.IsActive = chkIsActive.Checked;
-            Doctor.IsActive = customCheckBox1.Checked;
 
             if (Doctor.Save())
             {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MediManage_Business;
+using MediManage_DataAccess;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,61 +14,66 @@ namespace MediManage
 {
     public partial class frmPrescriptionsList : Form
     {
+        List<clsMedicalPrescriptionsListDTO> PrescriptionsData;
+
         public frmPrescriptionsList()
         {
             InitializeComponent();
         }
 
-        private void frmExaminationsList_Load(object sender, EventArgs e)
+        private void frmPrescriptionsList_Load(object sender, EventArgs e)
         {
             SetupDataGridViewColumns();
-            RefreshExaminationsList();
+            RefreshPrescriptionsList();
         }
 
         private void SetupDataGridViewColumns()
         {
-            DGVUsersList.AutoGenerateColumns = false;
-            DGVUsersList.Columns.Clear();
+            DGVPrescriptionsList.AutoGenerateColumns = false;
+            DGVPrescriptionsList.Columns.Clear();
+            
+            DGVPrescriptionsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "MedicalPrescriptionID", HeaderText = "ID", Name = "MedicalPrescriptionID" });
 
-            DGVUsersList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PersonID", HeaderText = "ID", Name = "PersonID" });
+            DGVPrescriptionsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PatientName", HeaderText = "Patient Name", Name = "PatientName" });
 
-            DGVUsersList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "FullName", HeaderText = "Patient Name", Name = "FullName" });
+            DGVPrescriptionsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "DoctorName", HeaderText = "Doctor Name", Name = "DoctorName" });
 
-            DGVUsersList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Username", HeaderText = "Doctor Name", Name = "Username" });
+            DGVPrescriptionsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PrescriptionDate", HeaderText = "Date", Name = "PrescriptionDate" });
 
-            DGVUsersList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "Phone", HeaderText = "Date", Name = "Phone" });
-
-            DataGridViewButtonColumn btnEdit = new DataGridViewButtonColumn();
-            btnEdit.HeaderText = "Actions";
-            btnEdit.Text = "Edit";
-            btnEdit.Name = "btnEdit";
-            btnEdit.FlatStyle = FlatStyle.Flat;
-            btnEdit.UseColumnTextForButtonValue = true;
-            DGVUsersList.Columns.Add(btnEdit);
+            DataGridViewButtonColumn btnView = new DataGridViewButtonColumn();
+            btnView.HeaderText = "Actions";
+            btnView.Text = "View";
+            btnView.Name = "btnView";
+            btnView.FlatStyle = FlatStyle.Flat;
+            btnView.UseColumnTextForButtonValue = true;
+            DGVPrescriptionsList.Columns.Add(btnView);
 
 
-            DataGridViewCheckBoxColumn chkIsActive = new DataGridViewCheckBoxColumn();
-            chkIsActive.HeaderText = "";
-            chkIsActive.Name = "chkIsActive";
-            chkIsActive.FlatStyle = FlatStyle.Flat;
-            DGVUsersList.Columns.Add(chkIsActive);
+            DataGridViewButtonColumn btnDelete = new DataGridViewButtonColumn();
+            btnDelete.HeaderText = "";
+            btnDelete.Text = "Delete";
+            btnDelete.Name = "btnDelete";
+            btnDelete.FlatStyle = FlatStyle.Flat;
+            btnDelete.UseColumnTextForButtonValue = true;
+            DGVPrescriptionsList.Columns.Add(btnDelete);
         }
 
-        private void RefreshExaminationsList()
+        private void RefreshPrescriptionsList()
         {
-            //var UserssData = clsUser.GetAllUsers().Select(u => new
-            //{
-            //    u.PersonID,
-            //    u.FullName,
-            //    u.UserName,
-            //    u.Phone,
-            //    u.Status
-            //}).ToList();
+            var prescriptionsData = clsMedicalPrescription.GetAllMedicalPrescriptions();
 
-            //DGVUsersList.DataSource = UserssData;
-            //lblTotalRecords.Text = $"Total: {UserssData.Count} records";
+            PrescriptionsData = prescriptionsData;
+
+            DGVPrescriptionsList.DataSource = prescriptionsData.Select(p => new
+            {
+                p.MedicalPrescriptionID,
+                p.PatientName,
+                p.DoctorName,
+                p.PrescriptionDate
+            }).ToList();
+
+            lblTotalRecords.Text = $"Total: {DGVPrescriptionsList.RowCount} records";
         }
-
 
         private void btnClose_Click(object sender, EventArgs e)
         {
@@ -77,6 +84,7 @@ namespace MediManage
         {
             frmAddPrescription frm = new frmAddPrescription();
             frm.ShowDialog();
+            RefreshPrescriptionsList();
         }
 
         private void tbPatientName_Enter(object sender, EventArgs e)
@@ -97,7 +105,62 @@ namespace MediManage
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
+            if (!string.IsNullOrEmpty(tbPatientName.Text) && tbPatientName.Text != "Enter Patient Name to search...")
+            {
+                DGVPrescriptionsList.DataSource = PrescriptionsData.Select(p => new
+                {
+                    p.MedicalPrescriptionID,
+                    p.PatientName,
+                    p.DoctorName,
+                    p.PrescriptionDate
+                }).Where(E => E.PatientName.StartsWith(tbPatientName.Text.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+            else
+            {
+                DGVPrescriptionsList.DataSource = PrescriptionsData.Select(p => new
+                {
+                    p.MedicalPrescriptionID,
+                    p.PatientName,
+                    p.DoctorName,
+                    p.PrescriptionDate
+                }).ToList();
+            }
 
+            lblTotalRecords.Text = $"Total: {DGVPrescriptionsList.RowCount} records";
+        }
+
+        private void DGVPrescriptionsList_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            int PrescriptionID = Convert.ToInt32(DGVPrescriptionsList.Rows[e.RowIndex].Cells["MedicalPrescriptionID"].Value);
+
+            if (DGVPrescriptionsList.Columns[e.ColumnIndex].Name == "btnView")
+            {
+                frmPrescriptionDetails frm = new frmPrescriptionDetails(PrescriptionID);
+                frm.ShowDialog();
+            }
+
+            else if (DGVPrescriptionsList.Columns[e.ColumnIndex].Name == "btnDelete")
+            {
+                DialogResult result = MessageBox.Show("Are you sure you want to delete this Prescription?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
+                {
+                    if (clsMedicineRecipe.DeleteMedicine(PrescriptionID))
+                    {
+                        if (clsMedicalPrescription.DeleteMedicalPrescription(PrescriptionID))                    
+                            MessageBox.Show("Deleted successfully.", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        else
+                            MessageBox.Show("Delete failed. This Prescription might be linked to other records.", "Not Deleted", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        
+                        RefreshPrescriptionsList();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Delete failed. This Prescription might be linked to other records.", "Not Deleted", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
         }
     }
 }

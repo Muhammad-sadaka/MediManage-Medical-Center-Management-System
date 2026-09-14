@@ -35,6 +35,7 @@ namespace MediManage_Business
         public string Dose { get; set; }
         public int? MedicalPrescriptionID { get; set; }
         public string Notes { get; set; }
+        public clsMedicine MedicineInfo { get; set; }
 
         public clsMedicineRecipe()
         {
@@ -45,6 +46,7 @@ namespace MediManage_Business
             this.MedicalPrescriptionID = null;
             this.Notes = null;
             this.MedicineID = null;
+            this.MedicineInfo = null;
             this.Mode = enMode.AddNew;
 
         }
@@ -58,6 +60,7 @@ namespace MediManage_Business
             this.MedicalPrescriptionID = dto.MedicalPrescriptionID;
             this.Notes = dto.Notes;
             this.MedicineID = dto.MedicineID;
+            this.MedicineInfo = clsMedicine.Find(MedicineID);
             this.Mode = cMode;
 
         }
@@ -83,9 +86,9 @@ namespace MediManage_Business
                 return null;
         }
 
-        public static List<clsMedicineRecipeDTO> GetAllMedicinesRecipes()
+        public static List<clsMedicineRecipeListDTO> GetAllMedicinesRecipes(int? MedicalPrescriptionID)
         {
-            return clsMedicineRecipeDataAccess.GetAllMedicinesRecipes();
+            return clsMedicineRecipeDataAccess.GetAllMedicinesRecipes(MedicalPrescriptionID);
         }
 
         public bool Save()

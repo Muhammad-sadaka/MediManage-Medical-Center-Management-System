@@ -105,6 +105,7 @@
             this.DGVExaminationsList.RowTemplate.Height = 26;
             this.DGVExaminationsList.Size = new System.Drawing.Size(1340, 450);
             this.DGVExaminationsList.TabIndex = 22;
+            this.DGVExaminationsList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVExaminationsList_CellContentClick);
             // 
             // lblTotalRecords
             // 

@@ -14,6 +14,7 @@ namespace MediManage
     public partial class frmAddExamination : Form
     {
         clsDetection Examination = new clsDetection();
+        int? AppointmentID;
 
         public frmAddExamination()
         {
@@ -27,33 +28,27 @@ namespace MediManage
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            int ID = Convert.ToInt32(numericAppointmentID.Value);
-            if (clsAppointment.IsExist(ID))
+            AppointmentID = Convert.ToInt32(numericAppointmentID.Value);
+            if (clsAppointment.IsExist(AppointmentID))
             {
-                ctrlAppointmentInfoSummary1.LoadAppointmentInfoData(ID);
-
-           
+                ctrlAppointmentInfoSummary1.LoadAppointmentInfoData(AppointmentID.Value);
             }
             else
             {
-                MessageBox.Show("No Appointment Found With This ID");
+                AppointmentID = null;
+                MessageBox.Show("No Appointment Found With This ID", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            //if()
-            //{
-            //    MessageBox.Show("Search about Appointment First");
-            //    return;
-            //}
+            if (AppointmentID == null)
+            {
+                MessageBox.Show("Search about Appointment First", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-
-
-
-            
-            Examination.AppointmentID    = Convert.ToInt32(numericAppointmentID.Value);
             Examination.CreatedByUserID = clsGlobal.CurrentUser.UserID;
             Examination.Symproms = tbSymptoms.Text.Trim();
             Examination.Diagnosis = tbDiagosis.Text.Trim();
@@ -64,17 +59,15 @@ namespace MediManage
             Examination.Notes            = tbNotes.Text.Trim();
             Examination.DetectionDate = DateTime.Now;
 
-
-
             if (Examination.Save())
             {
-                MessageBox.Show("Data Saved Successfully.");
+                MessageBox.Show("Data Saved Successfully.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close();
             }
             else
             {
-                MessageBox.Show("Error: Data Is not Saved Successfully.");
-            }
+                MessageBox.Show("Error: Data Is not Saved Successfully.", "Did Not Saved", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }   
         }
     }
 }

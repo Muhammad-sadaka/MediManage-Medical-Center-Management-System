@@ -32,6 +32,7 @@
             this.btnClose = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.chkIsActive = new MediManage.CustomCheckBox();
             this.tbConsultationFees = new System.Windows.Forms.TextBox();
             this.cbSpecialties = new System.Windows.Forms.ComboBox();
             this.numericEcperienceYears = new System.Windows.Forms.NumericUpDown();
@@ -44,13 +45,11 @@
             this.tbLicenseNo = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.ctrlPersonInfoSummary1 = new MediManage.ctrlPersonInfoSummary();
             this.gbSearch = new System.Windows.Forms.GroupBox();
             this.label8 = new System.Windows.Forms.Label();
             this.tbNationalNo = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
-            this.customCheckBox1 = new MediManage.CustomCheckBox();
-            this.chkIsActive = new MediManage.MyCustomCheckBox();
-            this.ctrlPersonInfoSummary1 = new MediManage.ctrlPersonInfoSummary();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericEcperienceYears)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -97,7 +96,6 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.customCheckBox1);
             this.groupBox3.Controls.Add(this.chkIsActive);
             this.groupBox3.Controls.Add(this.tbConsultationFees);
             this.groupBox3.Controls.Add(this.cbSpecialties);
@@ -117,6 +115,19 @@
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "3 ";
+            // 
+            // chkIsActive
+            // 
+            this.chkIsActive.Checked = true;
+            this.chkIsActive.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkIsActive.FlatAppearance.BorderSize = 0;
+            this.chkIsActive.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkIsActive.Location = new System.Drawing.Point(313, 326);
+            this.chkIsActive.Name = "chkIsActive";
+            this.chkIsActive.Size = new System.Drawing.Size(48, 38);
+            this.chkIsActive.TabIndex = 178;
+            this.chkIsActive.Text = "customCheckBox1";
+            this.chkIsActive.UseVisualStyleBackColor = true;
             // 
             // tbConsultationFees
             // 
@@ -229,6 +240,15 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "2 Person Information";
             // 
+            // ctrlPersonInfoSummary1
+            // 
+            this.ctrlPersonInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ctrlPersonInfoSummary1.Location = new System.Drawing.Point(10, 42);
+            this.ctrlPersonInfoSummary1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.ctrlPersonInfoSummary1.Name = "ctrlPersonInfoSummary1";
+            this.ctrlPersonInfoSummary1.Size = new System.Drawing.Size(1190, 185);
+            this.ctrlPersonInfoSummary1.TabIndex = 0;
+            // 
             // gbSearch
             // 
             this.gbSearch.Controls.Add(this.label8);
@@ -277,43 +297,6 @@
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = false;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
-            // customCheckBox1
-            // 
-            this.customCheckBox1.Checked = true;
-            this.customCheckBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.customCheckBox1.FlatAppearance.BorderSize = 0;
-            this.customCheckBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.customCheckBox1.Location = new System.Drawing.Point(313, 326);
-            this.customCheckBox1.Name = "customCheckBox1";
-            this.customCheckBox1.Size = new System.Drawing.Size(48, 38);
-            this.customCheckBox1.TabIndex = 178;
-            this.customCheckBox1.Text = "customCheckBox1";
-            this.customCheckBox1.UseVisualStyleBackColor = true;
-            // 
-            // chkIsActive
-            // 
-            this.chkIsActive.AutoSize = true;
-            this.chkIsActive.BackColor = System.Drawing.Color.Transparent;
-            this.chkIsActive.Checked = true;
-            this.chkIsActive.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkIsActive.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkIsActive.Location = new System.Drawing.Point(418, 327);
-            this.chkIsActive.Name = "chkIsActive";
-            this.chkIsActive.Size = new System.Drawing.Size(45, 38);
-            this.chkIsActive.TabIndex = 8;
-            this.chkIsActive.Text = " ";
-            this.chkIsActive.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.chkIsActive.UseVisualStyleBackColor = false;
-            // 
-            // ctrlPersonInfoSummary1
-            // 
-            this.ctrlPersonInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ctrlPersonInfoSummary1.Location = new System.Drawing.Point(10, 42);
-            this.ctrlPersonInfoSummary1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
-            this.ctrlPersonInfoSummary1.Name = "ctrlPersonInfoSummary1";
-            this.ctrlPersonInfoSummary1.Size = new System.Drawing.Size(1190, 185);
-            this.ctrlPersonInfoSummary1.TabIndex = 0;
             // 
             // frmAddUpdateDoctor
             // 
@@ -365,7 +348,6 @@
         private System.Windows.Forms.ComboBox cbSpecialties;
         private ctrlPersonInfoSummary ctrlPersonInfoSummary1;
         private System.Windows.Forms.TextBox tbConsultationFees;
-        private MyCustomCheckBox chkIsActive;
-        private CustomCheckBox customCheckBox1;
+        private CustomCheckBox chkIsActive;
     }
 }

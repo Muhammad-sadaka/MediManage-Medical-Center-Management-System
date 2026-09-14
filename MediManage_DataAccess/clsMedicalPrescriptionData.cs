@@ -12,16 +12,33 @@ namespace MediManage_DataAccess
         public int? MedicalPrescriptionID { get; set; }
         public int? DetectionID { get; set; }
         public string Notes { get; set; }
+        public DateTime? PrescriptionDate { get; set; }
 
-        public clsMedicalPrescriptionDTO(int? medicalPrescriptionID, int? detectionID, string notes)
+        public clsMedicalPrescriptionDTO(int? medicalPrescriptionID, int? detectionID, string notes,DateTime? PrescriptionDate)
         {
             this.MedicalPrescriptionID = medicalPrescriptionID;
             this.DetectionID = detectionID;
             this.Notes = notes;
+            this.PrescriptionDate = PrescriptionDate;
         }
     }
 
-    // 2. Data Access Layer
+    public class clsMedicalPrescriptionsListDTO
+    {
+        public int? MedicalPrescriptionID { get; set; }
+        public string PatientName { get; set; }
+        public string DoctorName { get; set; }
+        public DateTime? PrescriptionDate { get; set; }
+
+        public clsMedicalPrescriptionsListDTO(int? medicalPrescriptionID, string PatientName, string DoctorName, DateTime? PrescriptionDate)
+        {
+            this.MedicalPrescriptionID = medicalPrescriptionID;
+            this.PatientName = PatientName;
+            this.DoctorName = DoctorName;
+            this.PrescriptionDate = PrescriptionDate;
+        }
+    }
+
     public class clsMedicalPrescriptionsDataAccess
     {
         public static clsMedicalPrescriptionDTO GetMedicalPrescriptionInfoByID(int? MedicalPrescriptionID)
@@ -44,7 +61,8 @@ namespace MediManage_DataAccess
                                 (
                                     reader["MedicalPrescriptionID"] == DBNull.Value ? null : (int?)reader["MedicalPrescriptionID"],
                                     reader["DetectionID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["DetectionID"]),
-                                    reader["Notes"] == DBNull.Value ? null : (string)reader["Notes"]
+                                    reader["Notes"] == DBNull.Value ? null : (string)reader["Notes"],
+                                    reader["PrescriptionDate"] == DBNull.Value ? null : (DateTime?)reader["PrescriptionDate"]
                                 );
                             }
                         }
@@ -74,6 +92,7 @@ namespace MediManage_DataAccess
 
                         command.Parameters.AddWithValue("@DetectionID", (object)dto.DetectionID ?? DBNull.Value);
                         command.Parameters.AddWithValue("@Notes", (object)dto.Notes ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PrescriptionDate", (object)dto.PrescriptionDate ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewMedicalPrescriptionID", SqlDbType.Int)
                         {
@@ -113,6 +132,7 @@ namespace MediManage_DataAccess
                         command.Parameters.AddWithValue("@MedicalPrescriptionID", (object)dto.MedicalPrescriptionID ?? DBNull.Value);
                         command.Parameters.AddWithValue("@DetectionID", (object)dto.DetectionID ?? DBNull.Value);
                         command.Parameters.AddWithValue("@Notes", (object)dto.Notes ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PrescriptionDate", (object)dto.PrescriptionDate ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -129,9 +149,9 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static List<clsMedicalPrescriptionDTO> GetAllMedicalPrescriptions()
+        public static List<clsMedicalPrescriptionsListDTO> GetAllMedicalPrescriptions()
         {
-            var prescriptionsList = new List<clsMedicalPrescriptionDTO>();
+            var prescriptionsList = new List<clsMedicalPrescriptionsListDTO>();
 
             try
             {
@@ -146,11 +166,12 @@ namespace MediManage_DataAccess
                         {
                             while (reader.Read())
                             {
-                                prescriptionsList.Add(new clsMedicalPrescriptionDTO
+                                prescriptionsList.Add(new clsMedicalPrescriptionsListDTO
                                 (
                                     reader["MedicalPrescriptionID"] == DBNull.Value ? null : (int?)reader["MedicalPrescriptionID"],
-                                    reader["DetectionID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["DetectionID"]),
-                                    reader["Notes"] == DBNull.Value ? null : (string)reader["Notes"]
+                                    reader["PatientName"] == DBNull.Value ? null : (string)reader["PatientName"],
+                                    reader["DoctorName"] == DBNull.Value ? null : (string)reader["DoctorName"],
+                                    reader["PrescriptionDate"] == DBNull.Value ? null : (DateTime?)reader["PrescriptionDate"]
                                 ));
                             }
                         }

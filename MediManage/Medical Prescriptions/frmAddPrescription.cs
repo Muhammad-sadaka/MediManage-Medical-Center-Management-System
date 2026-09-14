@@ -15,12 +15,11 @@ namespace MediManage
 {
     public partial class frmAddPrescription : Form
     {
-        List<clsMedicineRecipeListDTO> MedicinesRecipesList = new List<clsMedicineRecipeListDTO>();
-        List<clsMedicineRecipeDTO> MedicinesRecipes = new List<clsMedicineRecipeDTO>();
+        List<clsMedicineRecipeListDTO> MedicinesRecipesList = new List<clsMedicineRecipeListDTO>(); 
+        List<clsMedicineRecipeDTO> MedicinesRecipes = new List<clsMedicineRecipeDTO>(); 
 
         clsMedicalPrescription Prescription = new clsMedicalPrescription();
-        
-
+        frmAddMedicine frm = new frmAddMedicine();
 
         public frmAddPrescription()
         {
@@ -40,22 +39,20 @@ namespace MediManage
 
         private void btnAddMedicine_Click(object sender, EventArgs e)
         {
-            frmAddMedicine frm = new frmAddMedicine();
-            frm.DataBack += Form2_DataBack; // Subscribe to the event
+            frm = new frmAddMedicine();
+            frm.DataBack += Form2_DataBack;
             frm.ShowDialog();
             RefreshMedicinesRecipesList();
         }
 
         private void Form2_DataBack(object sender, clsMedicineRecipeDTO MedicineRecipe, clsMedicineRecipeListDTO MedicinesRecipeList)
         {
-            // Handle the data received from Form2
             this.MedicinesRecipesList.Add(MedicinesRecipeList);
             this.MedicinesRecipes.Add(MedicineRecipe);
         }
 
         private void SetupDataGridViewColumns()
         {
-
             DGVMedicinesRecipes.AutoGenerateColumns = false;
             DGVMedicinesRecipes.Columns.Clear();
 
@@ -74,7 +71,6 @@ namespace MediManage
             btnDelete.FlatStyle = FlatStyle.Flat;
             btnDelete.UseColumnTextForButtonValue = true;
             DGVMedicinesRecipes.Columns.Add(btnDelete);
-
         }
 
         private void RefreshMedicinesRecipesList()
@@ -89,62 +85,77 @@ namespace MediManage
             lblTotalRecords.Text = $"Total Medicines: {DGVMedicinesRecipes.RowCount} records";
         }
 
-
         private void btnSearch_Click(object sender, EventArgs e)
         {
-
-            int ID = Convert.ToInt32(numericExaminationID.Value);
-            if (clsDetection.IsExist(ID))
+            Prescription.DetectionID = Convert.ToInt32(numericExaminationID.Value);
+            if (clsDetection.IsExist(Prescription.DetectionID))
             {
-                ctrlExaminationInfoSummary1.LoadExaminationInfoData(ID);
+                ctrlExaminationInfoSummary1.LoadExaminationInfoData(Prescription.DetectionID.Value);
             }
             else
             {
-                MessageBox.Show("No Examination Found With This ID");
+                Prescription.DetectionID = null;
+                MessageBox.Show("No Examination Found With This ID", "Exclamation", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            //if()
-            //{
-            //    MessageBox.Show("Search about Appointment First");
-            //    return;
-            //}
+            if (!Prescription.DetectionID.HasValue)
+            {
+                MessageBox.Show("Search about Examination First", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
 
             if (MedicinesRecipes.Count < 1)
             {
-                MessageBox.Show("You should add at least one Medicine Recipe");
+                MessageBox.Show("You should add at least one Medicine Recipe", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            Prescription.DetectionID = Convert.ToInt32(numericExaminationID.Value);
+            Prescription.PrescriptionDate = DateTime.Now;
             Prescription.Notes = tbGeneralNotes.Text.Trim();
-
 
             if (Prescription.Save())
             {
-                MessageBox.Show("Data Saved Successfully.");
+                MessageBox.Show("Data Saved Successfully.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Close();
             }
             else
             {
-                MessageBox.Show("Error: Data Is not Saved Successfully.");
+                MessageBox.Show("Error: Data Is not Saved Successfully.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
+            
             foreach (clsMedicineRecipeDTO MedicineRecipe in MedicinesRecipes)
             {
                 MedicineRecipe.MedicalPrescriptionID = Prescription.MedicalPrescriptionID;
-            }
-
-            foreach (clsMedicineRecipeDTO MedicineRecipe in MedicinesRecipes)
-            {
-                clsMedicineRecipe medicineRecipe = new clsMedicineRecipe(MedicineRecipe);
+                clsMedicineRecipe medicineRecipe = new clsMedicineRecipe(MedicineRecipe);    //check if it is add or update
                 medicineRecipe.Save();
             }
         }
 
+        private void DGVMedicinesRecipes_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
 
+            string MedicineRecipeName = DGVMedicinesRecipes.Rows[e.RowIndex].Cells["MedicineName"].Value.ToString();
+
+            if (DGVMedicinesRecipes.Columns[e.ColumnIndex].Name == "btnDelete")
+            {
+                 if (MedicinesRecipesList.RemoveAll(m => m.MedicineName == MedicineRecipeName) > 0
+                         && MedicinesRecipes.RemoveAll(m => m.MedicineID == frm.Medicines.Where(k => k.MedicineName == MedicineRecipeName).Select(k => k.MedicineID).First()) > 0)
+                 {
+                     MessageBox.Show("Deleted successfully.", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                     RefreshMedicinesRecipesList();
+                 }
+                 else
+                 {
+                     MessageBox.Show("Delete failed for This Medicines Recipes .", "Not Deleted", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                 }
+                
+            }
+        }
     }
 }

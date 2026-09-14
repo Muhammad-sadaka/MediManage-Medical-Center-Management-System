@@ -21,7 +21,8 @@ namespace MediManage_Business
                     this.Bill_ID,
                     this.PaymentDate,
                     this.CreatedByUserID,
-                    this.Amount
+                    this.Amount,
+                    this.PaymentMethodID
                 );
             }
         }
@@ -31,6 +32,18 @@ namespace MediManage_Business
         public DateTime? PaymentDate { get; set; }
         public int? CreatedByUserID { get; set; }
         public decimal? Amount { get; set; }
+        public int? PaymentMethodID { get; set; }
+
+        public clsPayment()
+        {
+            this.PaymentID = null;
+            this.Bill_ID = null;
+            this.PaymentDate = null;
+            this.CreatedByUserID = null;
+            this.Amount = null;
+            this.PaymentMethodID = null;
+            this.Mode = enMode.AddNew;
+        }
 
         public clsPayment(clsPaymentDTO dto, enMode cMode = enMode.AddNew)
         {
@@ -39,6 +52,7 @@ namespace MediManage_Business
             this.PaymentDate = dto.PaymentDate;
             this.CreatedByUserID = dto.CreatedByUserID;
             this.Amount = dto.Amount;
+            this.PaymentMethodID = dto.PaymentMethodID;
             this.Mode = cMode;
         }
 
@@ -63,9 +77,9 @@ namespace MediManage_Business
                 return null;
         }
 
-        public static List<clsPaymentDTO> GetAllPayments()
+        public static List<clsPaymentListDTO> GetAllPayments(int? BillID)
         {
-            return clsPaymentsDataAccess.GetAllPayments();
+            return clsPaymentsDataAccess.GetAllPayments(BillID);
         }
 
         public bool Save()

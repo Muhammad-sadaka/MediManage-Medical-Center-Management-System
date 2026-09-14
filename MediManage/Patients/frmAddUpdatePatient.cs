@@ -75,7 +75,7 @@ namespace MediManage
 
             if (Patient == null)
             {
-                MessageBox.Show("This form will be closed because No Patient with ID = " + Patient.PatientID);
+                MessageBox.Show("This form will be closed because No Patient with ID = " + Patient.PatientID, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
                 return;
             }
@@ -93,7 +93,7 @@ namespace MediManage
         {
             if(Patient == null)
             {
-                MessageBox.Show("Search about Person First");
+                MessageBox.Show("Search about Person First", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 

@@ -15,6 +15,7 @@ namespace MediManage
         public frmAppointmentDetails(int AppointmentID)
         {
             InitializeComponent();
+            ctrlappointmentInfo1.LoadAppointmentInfoData(AppointmentID);
         }
     }
 }

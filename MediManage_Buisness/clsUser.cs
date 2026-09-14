@@ -108,9 +108,14 @@ namespace MediManage_Business
             return clsUsersDataAccess.DeleteUser(userID);
         }
 
-        public static bool IsUserExist(int? userID)
+        public static bool IsExist(int? ID)
         {
-            return clsUsersDataAccess.IsUserExist(userID);
+            return clsUsersDataAccess.IsUserExist(ID);
+        }
+
+        public static bool IsExist(string NationalNo)
+        {
+            return clsUsersDataAccess.IsUserExist(NationalNo);
         }
     }
 }

@@ -16,9 +16,9 @@ namespace MediManage
     {
         public delegate void DataBackEventHandler(object sender, clsMedicineRecipeDTO medicineRecipe, clsMedicineRecipeListDTO medicineRecipeList);
 
-        // Declare an event using the delegate
         public event DataBackEventHandler DataBack;
 
+        public List<clsMedicineDTO> Medicines { get; set; }
 
         public frmAddMedicine()
         {
@@ -27,7 +27,8 @@ namespace MediManage
 
         private void frmAddMedicine_Load(object sender, EventArgs e)
         {
-            cbMedicineName.DataSource = clsMedicine.GetAllMedicines();
+            Medicines = clsMedicine.GetAllMedicines();
+            cbMedicineName.DataSource = Medicines;
             cbMedicineName.DisplayMember = "MedicineName";
         }
 
@@ -43,7 +44,8 @@ namespace MediManage
                 cbMedicineName.Text.Trim(),
                 tbDosage.Text.Trim(),
                 tbFrequency.Text.Trim(),
-                tbDuration.Text.Trim()
+                tbDuration.Text.Trim(),
+                tbNotes.Text.Trim()
             );
 
             clsMedicineRecipeDTO medicineRecipe = new clsMedicineRecipeDTO

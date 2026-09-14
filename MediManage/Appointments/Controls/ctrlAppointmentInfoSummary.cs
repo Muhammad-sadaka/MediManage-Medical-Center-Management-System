@@ -15,12 +15,14 @@ namespace MediManage
     {
         clsAppointment Appointment = new clsAppointment();
 
+        public int? AppointmentID { get; set; }
+
         public ctrlAppointmentInfoSummary()
         {
             InitializeComponent();
         }
 
-        public void LoadAppointmentInfoData(int AppointmentID)
+        public void LoadAppointmentInfoData(int? AppointmentID)
         {
             if (!clsAppointment.IsExist(AppointmentID))
             {
@@ -30,6 +32,7 @@ namespace MediManage
 
             Appointment = clsAppointment.Find(AppointmentID);
 
+            AppointmentID = Appointment.AppointmentID.Value;
             lblPatientName.Text = Appointment.PatientInfo.PersonInfo.FullName;
             lblDoctorName.Text = Appointment.DoctorInfo.PersonInfo.FullName;
             lblDate.Text = Appointment.AppointmentDate.ToString();

@@ -13,23 +13,40 @@ namespace MediManage_DataAccess
         public int? Bill_ID { get; set; }
         public int? ServiceTypeID { get; set; }
         public string Description { get; set; }
-        public decimal? Price { get; set; }
         public int? Amount { get; set; }
-        public int? Total { get; set; }
+        public decimal? Total { get; set; }
 
-        public clsBillItemDTO(int? billItemID, int? bill_ID, int? serviceTypeID, string description, decimal? price, int? amount, int? total)
+        public clsBillItemDTO(int? billItemID, int? bill_ID, int? serviceTypeID, string description, int? amount, decimal? total)
         {
             this.BillItemID = billItemID;
             this.Bill_ID = bill_ID;
             this.ServiceTypeID = serviceTypeID;
             this.Description = description;
-            this.Price = price;
             this.Amount = amount;
             this.Total = total;
         }
     }
 
-    // 2. Data Access Layer
+    public class clsBillItemListDTO
+    {
+        public string ServicTypeName { get; set; }
+        public string Description { get; set; }
+        public decimal? Price { get; set; }
+        public int? Quantity { get; set; }
+        public decimal? Total { get; set; }
+        public int? ServiceTypeID { get; set; }
+
+        public clsBillItemListDTO(string servicTypeName,  string description, decimal? price, int? quantity, decimal? total, int? serviceTypeID)
+        {
+            this.ServicTypeName = servicTypeName;
+            this.Description = description;
+            this.Price = price;
+            this.Quantity = quantity;
+            this.Total = total;
+            this.ServiceTypeID = serviceTypeID;
+        }
+    }
+
     public class clsBillItemsDataAccess
     {
         public static clsBillItemDTO GetBillItemInfoByID(int? BillItemID)
@@ -54,9 +71,8 @@ namespace MediManage_DataAccess
                                     reader["Bill_ID"] == DBNull.Value ? null : (int?)reader["Bill_ID"],
                                     reader["ServiceTypeID"] == DBNull.Value ? null : (int?)reader["ServiceTypeID"],
                                     reader["Description"] == DBNull.Value ? null : (string)reader["Description"],
-                                    reader["Price"] == DBNull.Value ? null : (decimal?)reader["Price"],
                                     reader["Amount"] == DBNull.Value ? null : (int?)reader["Amount"],
-                                    reader["Total"] == DBNull.Value ? null : (int?)reader["Total"]
+                                    reader["Total"] == DBNull.Value ? null : (decimal?)reader["Total"]
                                 );
                             }
                         }
@@ -87,8 +103,7 @@ namespace MediManage_DataAccess
                         command.Parameters.AddWithValue("@Bill_ID", (object)billItemDTO.Bill_ID ?? DBNull.Value);
                         command.Parameters.AddWithValue("@ServiceTypeID", (object)billItemDTO.ServiceTypeID ?? DBNull.Value);
                         command.Parameters.AddWithValue("@Description", (object)billItemDTO.Description ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Price", (object)billItemDTO.Price ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Amount", (object)billItemDTO.Amount ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@Quantity", (object)billItemDTO.Amount ?? DBNull.Value);
                         command.Parameters.AddWithValue("@Total", (object)billItemDTO.Total ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewBillItemID", SqlDbType.Int)
@@ -130,7 +145,6 @@ namespace MediManage_DataAccess
                         command.Parameters.AddWithValue("@Bill_ID", (object)billItemDTO.Bill_ID ?? DBNull.Value);
                         command.Parameters.AddWithValue("@ServiceTypeID", (object)billItemDTO.ServiceTypeID ?? DBNull.Value);
                         command.Parameters.AddWithValue("@Description", (object)billItemDTO.Description ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Price", (object)billItemDTO.Price ?? DBNull.Value);
                         command.Parameters.AddWithValue("@Amount", (object)billItemDTO.Amount ?? DBNull.Value);
                         command.Parameters.AddWithValue("@Total", (object)billItemDTO.Total ?? DBNull.Value);
 
@@ -149,9 +163,9 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static List<clsBillItemDTO> GetAllBillItems()
+        public static List<clsBillItemListDTO> GetAllBillItems(int? BillID)
         {
-            var billItemsList = new List<clsBillItemDTO>();
+            var billItemsList = new List<clsBillItemListDTO>();
 
             try
             {
@@ -160,21 +174,21 @@ namespace MediManage_DataAccess
                     using (SqlCommand command = new SqlCommand("SP_GetAllBillItems", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@Bill_ID", (object)BillID ?? DBNull.Value);
                         connection.Open();
 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                billItemsList.Add(new clsBillItemDTO
+                                billItemsList.Add(new clsBillItemListDTO
                                 (
-                                    reader["BillItemID"] == DBNull.Value ? null : (int?)reader["BillItemID"],
-                                    reader["Bill_ID"] == DBNull.Value ? null : (int?)reader["Bill_ID"],
-                                    reader["ServiceTypeID"] == DBNull.Value ? null : (int?)reader["ServiceTypeID"],
+                                    reader["ServicTypeName"] == DBNull.Value ? null : (string)reader["ServicTypeName"],
                                     reader["Description"] == DBNull.Value ? null : (string)reader["Description"],
                                     reader["Price"] == DBNull.Value ? null : (decimal?)reader["Price"],
-                                    reader["Amount"] == DBNull.Value ? null : (int?)reader["Amount"],
-                                    reader["Total"] == DBNull.Value ? null : (int?)reader["Total"]
+                                    reader["Quantity"] == DBNull.Value ? null : (int?)reader["Quantity"],
+                                    reader["Total"] == DBNull.Value ? null : (decimal?)reader["Total"],
+                                    null
                                 ));
                             }
                         }

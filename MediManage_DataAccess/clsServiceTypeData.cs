@@ -12,11 +12,13 @@ namespace MediManage_DataAccess
     {
         public int? ServiceTypeID { get; set; }
         public string ServicTypeName { get; set; }
+        public decimal? Price { get; set; }
 
-        public clsServiceTypeDTO(int? serviceTypeID, string servicTypeName)
+        public clsServiceTypeDTO(int? serviceTypeID, string servicTypeName , decimal? price)
         {
             this.ServiceTypeID = serviceTypeID;
             this.ServicTypeName = servicTypeName;
+            this.Price = price;
         }
     }
     
@@ -40,7 +42,8 @@ namespace MediManage_DataAccess
                             {
                                 return new clsServiceTypeDTO(
                                     reader["ServiceTypeID"] == DBNull.Value ? null : (int?)reader["ServiceTypeID"],
-                                    reader["ServicTypeName"] == DBNull.Value ? null : (string)reader["ServicTypeName"]
+                                    reader["ServicTypeName"] == DBNull.Value ? null : (string)reader["ServicTypeName"],
+                                    reader["Price"] == DBNull.Value ? null : (decimal?)reader["Price"]
                                 );
                             }
                         }
@@ -141,7 +144,8 @@ namespace MediManage_DataAccess
                             {
                                 list.Add(new clsServiceTypeDTO(
                                     reader["ServiceTypeID"] == DBNull.Value ? null : (int?)reader["ServiceTypeID"],
-                                    reader["ServicTypeName"] == DBNull.Value ? null : (string)reader["ServicTypeName"]
+                                    reader["ServicTypeName"] == DBNull.Value ? null : (string)reader["ServicTypeName"],
+                                    reader["Price"] == DBNull.Value ? null : (decimal?)reader["Price"]
                                 ));
                             }
                         }

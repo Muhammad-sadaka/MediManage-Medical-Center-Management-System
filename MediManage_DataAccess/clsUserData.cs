@@ -31,15 +31,15 @@ namespace MediManage_DataAccess
 
     public class clsUsersListDTO
     {
-        public int? PersonID { get; set; }
+        public int? UserID { get; set; }
         public string FullName { get; set; }
         public string UserName { get; set; }
         public string Phone { get; set; }
         public bool? Status { get; set; }
 
-        public clsUsersListDTO( int? personID,string FullName, string userName, string Phone, bool? Status)
+        public clsUsersListDTO( int? UserID, string FullName, string userName, string Phone, bool? Status)
         {
-            this.PersonID = personID;
+            this.UserID = UserID;
             this.FullName = FullName;
             this.UserName = userName;
             this.Phone = Phone;
@@ -185,7 +185,7 @@ namespace MediManage_DataAccess
                             while (reader.Read())
                             {
                                 list.Add(new clsUsersListDTO(
-                                    reader["PersonID"] == DBNull.Value ? null : (int?)reader["PersonID"],
+                                    reader["UserID"] == DBNull.Value ? null : (int?)reader["UserID"],
                                     reader["FullName"] == DBNull.Value ? null : (string)reader["FullName"],
                                     reader["UserName"] == DBNull.Value ? null : (string)reader["UserName"],
                                     reader["Phone"] == DBNull.Value ? null : (string)reader["Phone"],
@@ -269,6 +269,45 @@ namespace MediManage_DataAccess
 
             return isFound;
         }
+
+        public static bool IsUserExist(string NationalNo)
+        {
+            bool isFound = false;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("SP_CheckUserExistsByNationalNo", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@NationalNo", (object)NationalNo ?? DBNull.Value);
+
+                        SqlParameter returnParameter = new SqlParameter("@ReturnVal", SqlDbType.Int)
+                        {
+                            Direction = ParameterDirection.ReturnValue
+                        };
+                        command.Parameters.Add(returnParameter);
+
+                        connection.Open();
+                        command.ExecuteNonQuery();
+
+                        if (returnParameter.Value != null)
+                        {
+                            isFound = (int)returnParameter.Value == 1;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsDataAccessSettings.EventLogCreate();
+                EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
+            }
+
+            return isFound;
+        }
+
 
         public static clsUserDTO FindByUsernameAndPassword(string UserName, string Password)
         {

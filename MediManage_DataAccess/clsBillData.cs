@@ -6,7 +6,24 @@ using System.Diagnostics;
 
 namespace MediManage_DataAccess
 {
-    // 1. Data Transfer Object (DTO)
+    public class clsBillListDTO
+    {
+        public int? Bill_ID { get; set; }
+        public string PatientName { get; set; }
+        public DateTime? BillDate { get; set; }
+        public decimal? TotalAmount { get; set; }
+        public string Status { get; set; }
+
+        public clsBillListDTO(int? bill_ID, string PatientName, DateTime? billDate, decimal? totalAmount,string Status)
+        {
+            this.Bill_ID = bill_ID;
+            this.PatientName = PatientName;
+            this.BillDate = billDate;
+            this.TotalAmount = totalAmount;
+            this.Status = Status;
+        }
+    }
+
     public class clsBillDTO
     {
         public int? Bill_ID { get; set; }
@@ -17,10 +34,9 @@ namespace MediManage_DataAccess
         public decimal? AmountOfRemaining { get; set; }
         public decimal? TotalAmount { get; set; }
         public int? PaymentStatusID { get; set; }
-        public int? PaymentMethodID { get; set; }
 
         public clsBillDTO(int? bill_ID, int? patientID, int? createdByUserID, DateTime? billDate,
-            decimal? amountOfPaid, decimal? amountOfRemaining, decimal? totalAmount, int? paymentStatusID, int? paymentMethodID)
+            decimal? amountOfPaid, decimal? amountOfRemaining, decimal? totalAmount, int? paymentStatusID)
         {
             this.Bill_ID = bill_ID;
             this.PatientID = patientID;
@@ -30,11 +46,9 @@ namespace MediManage_DataAccess
             this.AmountOfRemaining = amountOfRemaining;
             this.TotalAmount = totalAmount;
             this.PaymentStatusID = paymentStatusID;
-            this.PaymentMethodID = paymentMethodID;
         }
     }
 
-    // 2. Data Access Layer
     public class clsBillsDataAccess
     {
         public static clsBillDTO GetBillInfoByID(int? Bill_ID)
@@ -62,8 +76,7 @@ namespace MediManage_DataAccess
                                     reader["AmountOfPaid"] == DBNull.Value ? null : (decimal?)reader["AmountOfPaid"],
                                     reader["AmountOfRemaining"] == DBNull.Value ? null : (decimal?)reader["AmountOfRemaining"],
                                     reader["TotalAmount"] == DBNull.Value ? null : (decimal?)reader["TotalAmount"],
-                                    reader["PaymentStatusID"] == DBNull.Value ? null : (int?)reader["PaymentStatusID"],
-                                    reader["PaymentMethodID"] == DBNull.Value ? null : (int?)reader["PaymentMethodID"]
+                                    reader["PaymentStatusID"] == DBNull.Value ? null : (int?)reader["PaymentStatusID"]
                                 );
                             }
                         }
@@ -98,7 +111,6 @@ namespace MediManage_DataAccess
                         command.Parameters.AddWithValue("@AmountOfRemaining", (object)billDTO.AmountOfRemaining ?? DBNull.Value);
                         command.Parameters.AddWithValue("@TotalAmount", (object)billDTO.TotalAmount ?? DBNull.Value);
                         command.Parameters.AddWithValue("@PaymentStatusID", (object)billDTO.PaymentStatusID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@PaymentMethodID", (object)billDTO.PaymentMethodID ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewBillID", SqlDbType.Int)
                         {
@@ -143,7 +155,6 @@ namespace MediManage_DataAccess
                         command.Parameters.AddWithValue("@AmountOfRemaining", (object)billDTO.AmountOfRemaining ?? DBNull.Value);
                         command.Parameters.AddWithValue("@TotalAmount", (object)billDTO.TotalAmount ?? DBNull.Value);
                         command.Parameters.AddWithValue("@PaymentStatusID", (object)billDTO.PaymentStatusID ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@PaymentMethodID", (object)billDTO.PaymentMethodID ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -160,9 +171,9 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static List<clsBillDTO> GetAllBills()
+        public static List<clsBillListDTO> GetAllBills()
         {
-            var billsList = new List<clsBillDTO>();
+            var billsList = new List<clsBillListDTO>();
 
             try
             {
@@ -177,17 +188,13 @@ namespace MediManage_DataAccess
                         {
                             while (reader.Read())
                             {
-                                billsList.Add(new clsBillDTO
+                                billsList.Add(new clsBillListDTO
                                 (
                                     reader["Bill_ID"] == DBNull.Value ? null : (int?)reader["Bill_ID"],
-                                    reader["PatientID"] == DBNull.Value ? null : (int?)reader["PatientID"],
-                                    reader["CreatedByUserID"] == DBNull.Value ? null : (int?)reader["CreatedByUserID"],
+                                    reader["PatientName"] == DBNull.Value ? null : (string)reader["PatientName"],
                                     reader["BillDate"] == DBNull.Value ? null : (DateTime?)reader["BillDate"],
-                                    reader["AmountOfPaid"] == DBNull.Value ? null : (decimal?)reader["AmountOfPaid"],
-                                    reader["AmountOfRemaining"] == DBNull.Value ? null : (decimal?)reader["AmountOfRemaining"],
                                     reader["TotalAmount"] == DBNull.Value ? null : (decimal?)reader["TotalAmount"],
-                                    reader["PaymentStatusID"] == DBNull.Value ? null : (int?)reader["PaymentStatusID"],
-                                    reader["PaymentMethodID"] == DBNull.Value ? null : (int?)reader["PaymentMethodID"]
+                                    reader["Status"] == DBNull.Value ? null : (string)reader["Status"]
                                 ));
                             }
                         }

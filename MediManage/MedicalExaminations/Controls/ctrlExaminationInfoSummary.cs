@@ -22,10 +22,11 @@ namespace MediManage
 
         private void klblMoreInfo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-
+            frmExaminationDetails frm = new frmExaminationDetails(Examination.DetectionID);
+            frm.ShowDialog();
         }
 
-        public void LoadExaminationInfoData(int ExaminationID)
+        public void LoadExaminationInfoData(int? ExaminationID)
         {
             if (!clsDetection.IsExist(ExaminationID))
             {

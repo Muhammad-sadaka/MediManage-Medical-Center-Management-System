@@ -1,4 +1,5 @@
 ﻿using MediManage_Business;
+using MediManage_DataAccess;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,6 +14,8 @@ namespace MediManage
 {
     public partial class frmExaminationsList : Form
     {
+        List<clsDetectionListDTO> ExaminationsData;
+
         public frmExaminationsList()
         {
             InitializeComponent();
@@ -37,25 +40,31 @@ namespace MediManage
 
             DGVExaminationsList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "DetectionDate", HeaderText = "Date", Name = "DetectionDate" });
 
-            DataGridViewButtonColumn btnEdit = new DataGridViewButtonColumn();
-            btnEdit.HeaderText = "Actions";
-            btnEdit.Text = "Edit";
-            btnEdit.Name = "btnEdit";
-            btnEdit.FlatStyle = FlatStyle.Flat;
-            btnEdit.UseColumnTextForButtonValue = true;
-            DGVExaminationsList.Columns.Add(btnEdit);
+            DataGridViewButtonColumn btnView = new DataGridViewButtonColumn();
+            btnView.HeaderText = "Actions";
+            btnView.Text = "View";
+            btnView.Name = "btnView";
+            btnView.FlatStyle = FlatStyle.Flat;
+            btnView.UseColumnTextForButtonValue = true;
+            DGVExaminationsList.Columns.Add(btnView);
 
 
-            DataGridViewCheckBoxColumn chkIsActive = new DataGridViewCheckBoxColumn();
-            chkIsActive.HeaderText = "";
-            chkIsActive.Name = "chkIsActive";
-            chkIsActive.FlatStyle = FlatStyle.Flat;
-            DGVExaminationsList.Columns.Add(chkIsActive);
+            DataGridViewButtonColumn btnDelete = new DataGridViewButtonColumn();
+            btnDelete.HeaderText = "";
+            btnDelete.Text = "Delete";
+            btnDelete.Name = "btnDelete";
+            btnDelete.FlatStyle = FlatStyle.Flat;
+            btnDelete.UseColumnTextForButtonValue = true;
+            DGVExaminationsList.Columns.Add(btnDelete);
         }
 
         private void RefreshExaminationsList()
         {
-            var ExaminationsData = clsDetection.GetAllDetections().Select(e => new
+            var examinationsData = clsDetection.GetAllDetections();
+
+            ExaminationsData = examinationsData;
+
+            DGVExaminationsList.DataSource = examinationsData.Select(e => new
             {
                 e.DetectionID,
                 e.PatientName,
@@ -63,13 +72,33 @@ namespace MediManage
                 e.DetectionDate
             }).ToList();
 
-            DGVExaminationsList.DataSource = ExaminationsData;
             lblTotalRecords.Text = $"Total: {DGVExaminationsList.RowCount} records";
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
+            if (!string.IsNullOrEmpty(tbPatientName.Text) && tbPatientName.Text != "Enter Patient Name to search...")
+            {
+                DGVExaminationsList.DataSource = ExaminationsData.Select(E => new
+                {
+                    E.DetectionID,
+                    E.PatientName,
+                    E.DoctorName,
+                    E.DetectionDate
+                }).Where(E => E.PatientName.StartsWith(tbPatientName.Text.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+            else
+            {
+                DGVExaminationsList.DataSource = ExaminationsData.Select(E => new
+                {
+                    E.DetectionID,
+                    E.PatientName,
+                    E.DoctorName,
+                    E.DetectionDate
+                }).ToList();
+            }
 
+            lblTotalRecords.Text = $"Total: {DGVExaminationsList.RowCount} records";
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -81,6 +110,7 @@ namespace MediManage
         {
             frmAddExamination frm = new frmAddExamination();
             frm.ShowDialog();
+            RefreshExaminationsList();
         }
 
         private void tbPatientName_Enter(object sender, EventArgs e)
@@ -101,7 +131,45 @@ namespace MediManage
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
+            DGVExaminationsList.DataSource = ExaminationsData.Select(E => new
+            {
+                E.DetectionID,
+                E.PatientName,
+                E.DoctorName,
+                E.DetectionDate
+            }).Where(E => E.DetectionDate.Value.Date == dateTimePicker1.Value.Date).ToList();
 
+            lblTotalRecords.Text = $"Total: {DGVExaminationsList.RowCount} records";
+        }
+
+        private void DGVExaminationsList_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+
+            int ExaminationID = Convert.ToInt32(DGVExaminationsList.Rows[e.RowIndex].Cells["DetectionID"].Value);
+
+            if (DGVExaminationsList.Columns[e.ColumnIndex].Name == "btnView")
+            {
+                frmExaminationDetails frm = new frmExaminationDetails(ExaminationID);
+                frm.ShowDialog();
+            }
+
+            else if (DGVExaminationsList.Columns[e.ColumnIndex].Name == "btnDelete")
+            {
+                DialogResult result = MessageBox.Show("Are you sure you want to delete this Examination?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                if (result == DialogResult.Yes)
+                {
+                    if (clsDetection.DeleteDetection(ExaminationID))
+                    {
+                        MessageBox.Show("Deleted successfully.", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        RefreshExaminationsList();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Delete failed. This Examination might be linked to other records.", "Not Deleted", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
         }
     }
 }

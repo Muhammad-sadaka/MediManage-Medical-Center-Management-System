@@ -166,7 +166,6 @@ namespace MediManage
             if (DGVDoctorsList.RowCount < 1) return;
             frmDoctorDetails frm = new frmDoctorDetails((int)DGVDoctorsList.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
-            RefreshDoctorsList();
         }
     }
 }

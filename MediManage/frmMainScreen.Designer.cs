@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.btnDoctorsList = new System.Windows.Forms.Button();
             this.btnAddNewDoctor = new System.Windows.Forms.Button();
@@ -146,8 +146,6 @@
             this.btnDoctorsList.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnDoctorsList.UseVisualStyleBackColor = true;
             this.btnDoctorsList.Click += new System.EventHandler(this.btnDoctorsList_Click);
-            this.btnDoctorsList.MouseLeave += new System.EventHandler(this.btnDoctorsList_MouseLeave);
-            this.btnDoctorsList.MouseHover += new System.EventHandler(this.btnDoctorsList_MouseHover);
             // 
             // btnAddNewDoctor
             // 
@@ -160,8 +158,6 @@
             this.btnAddNewDoctor.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnAddNewDoctor.UseVisualStyleBackColor = true;
             this.btnAddNewDoctor.Click += new System.EventHandler(this.btnAddNewDoctor_Click);
-            this.btnAddNewDoctor.MouseLeave += new System.EventHandler(this.btnAddNewDoctor_MouseLeave);
-            this.btnAddNewDoctor.MouseHover += new System.EventHandler(this.btnAddNewDoctor_MouseHover);
             // 
             // label3
             // 
@@ -198,8 +194,6 @@
             this.btnPeopleList.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnPeopleList.UseVisualStyleBackColor = true;
             this.btnPeopleList.Click += new System.EventHandler(this.btnPeopleList_Click);
-            this.btnPeopleList.MouseLeave += new System.EventHandler(this.btnPeopleList_MouseLeave);
-            this.btnPeopleList.MouseHover += new System.EventHandler(this.btnPeopleList_MouseHover);
             // 
             // btnAddNewPerson
             // 
@@ -212,8 +206,6 @@
             this.btnAddNewPerson.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnAddNewPerson.UseVisualStyleBackColor = true;
             this.btnAddNewPerson.Click += new System.EventHandler(this.btnAddNewPerson_Click);
-            this.btnAddNewPerson.MouseLeave += new System.EventHandler(this.btnAddNewPerson_MouseLeave);
-            this.btnAddNewPerson.MouseHover += new System.EventHandler(this.btnAddNewPerson_MouseHover);
             // 
             // label1
             // 
@@ -294,8 +286,8 @@
             // 
             this.DGVTodayAppointments.AllowUserToAddRows = false;
             this.DGVTodayAppointments.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            this.DGVTodayAppointments.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            this.DGVTodayAppointments.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
             this.DGVTodayAppointments.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.DGVTodayAppointments.BackgroundColor = System.Drawing.Color.White;
             this.DGVTodayAppointments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -304,8 +296,8 @@
             this.DGVTodayAppointments.Name = "DGVTodayAppointments";
             this.DGVTodayAppointments.ReadOnly = true;
             this.DGVTodayAppointments.RowHeadersWidth = 51;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.DGVTodayAppointments.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.DGVTodayAppointments.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.DGVTodayAppointments.RowTemplate.Height = 26;
             this.DGVTodayAppointments.Size = new System.Drawing.Size(1073, 362);
             this.DGVTodayAppointments.TabIndex = 17;
@@ -435,8 +427,6 @@
             this.btnPatientsList.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnPatientsList.UseVisualStyleBackColor = true;
             this.btnPatientsList.Click += new System.EventHandler(this.btnPatientsList_Click);
-            this.btnPatientsList.MouseLeave += new System.EventHandler(this.btnPatientsList_MouseLeave);
-            this.btnPatientsList.MouseHover += new System.EventHandler(this.btnPatientsList_MouseHover);
             // 
             // btnAddNewPatient
             // 
@@ -449,8 +439,6 @@
             this.btnAddNewPatient.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnAddNewPatient.UseVisualStyleBackColor = true;
             this.btnAddNewPatient.Click += new System.EventHandler(this.btnAddNewPatient_Click);
-            this.btnAddNewPatient.MouseLeave += new System.EventHandler(this.btnAddNewPatient_MouseLeave);
-            this.btnAddNewPatient.MouseHover += new System.EventHandler(this.btnAddNewPatient_MouseHover);
             // 
             // label2
             // 
@@ -486,8 +474,6 @@
             this.btnAppointmentsList.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnAppointmentsList.UseVisualStyleBackColor = true;
             this.btnAppointmentsList.Click += new System.EventHandler(this.btnAppointmentsList_Click);
-            this.btnAppointmentsList.MouseLeave += new System.EventHandler(this.btnAppointmentsList_MouseLeave);
-            this.btnAppointmentsList.MouseHover += new System.EventHandler(this.btnAppointmentsList_MouseHover);
             // 
             // btnAddNewAppointment
             // 
@@ -500,8 +486,6 @@
             this.btnAddNewAppointment.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnAddNewAppointment.UseVisualStyleBackColor = true;
             this.btnAddNewAppointment.Click += new System.EventHandler(this.btnAddNewAppointment_Click);
-            this.btnAddNewAppointment.MouseLeave += new System.EventHandler(this.btnAddNewAppointment_MouseLeave);
-            this.btnAddNewAppointment.MouseHover += new System.EventHandler(this.btnAddNewAppointment_MouseHover);
             // 
             // label4
             // 

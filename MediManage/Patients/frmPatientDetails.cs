@@ -12,10 +12,10 @@ namespace MediManage
 {
     public partial class frmPatientDetails : Form
     {
-        public frmPatientDetails(int PersonId)
+        public frmPatientDetails(int PatientID)
         {
             InitializeComponent();
-            ctrlPatientInfo1.LoadPatientInfoData(PersonId);
+            ctrlPatientInfo1.LoadPatientInfoData(PatientID);
         }
     }
 }

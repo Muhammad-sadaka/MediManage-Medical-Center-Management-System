@@ -15,11 +15,13 @@ namespace MediManage
 {
     public partial class frmAddUpdateAppointment : Form
     {
+        public enum enMode { AddNew = 0, Update = 1 };
+        enMode _Mode = enMode.AddNew;
+
         List<clsDoctorListDTO> Doctors = clsDoctor.GetAllDoctors();
 
         clsAppointment Appointment = new clsAppointment();
-        public enum enMode { AddNew = 0, Update = 1 };
-        enMode _Mode = enMode.AddNew;
+        int? _PatientID;
 
         public frmAddUpdateAppointment()
         {
@@ -35,7 +37,6 @@ namespace MediManage
             Appointment.AppointmentID = AppoitmentId;
         }
 
-
         private void frmAddUpdateAppointment_Load(object sender, EventArgs e)
         {
             _ResestDefualtValues();
@@ -46,14 +47,13 @@ namespace MediManage
         private void _ResestDefualtValues()
         {
             dateTimePicker1.CustomFormat = "yyyy-MM-dd   hh:mm tt";
+            //dateTimePicker1.MinDate = DateTime.Now;
 
             cbDoctors.DataSource = Doctors.Select(d => d.FullName).ToList();
             cbDoctors.DisplayMember = "BloodTypeSymbol";
 
             cbStatuses.DataSource = clsAppointmentCase.GetAllAppointmentCases();
             cbStatuses.DisplayMember = "AppointmentCaseName";
-
-
 
             if (_Mode == enMode.AddNew)
             {
@@ -62,13 +62,12 @@ namespace MediManage
             else
                 lblTitle.Text = "Update Appointment                        ";
 
-            tbFees.Text = clsSpecialty.Find(Doctors.Where(d => d.FullName == cbDoctors.Text).Select(d => d.Specialty).FirstOrDefault()).Fees.ToString();
+            cbDoctors.SelectedIndex = 0;
+            tbFees.Text = Doctors.Where(d => d.FullName == cbDoctors.Text).Select(d => d.Fees).FirstOrDefault().ToString();
 
             numericDuration.Value = 30;
-            tbReason.Text = "";
-            tbNotes.Text = "";
-            
-
+            tbReason.Clear();
+            tbNotes.Clear();
 
         }
 
@@ -78,21 +77,22 @@ namespace MediManage
 
             if (Appointment == null)
             {
-                MessageBox.Show("This form will be closed because No Appointment with ID = " + Appointment.AppointmentID);
+                MessageBox.Show("This form will be closed because No Appointment with ID = " + Appointment.AppointmentID, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
                 return;
             }
 
-
+            ctrlPatientInfoSummary1.Enabled = false;
+            tbNationalNo.Text = Appointment.PatientInfo.PersonInfo.NationalNo;
+            ctrlPatientInfoSummary1.LoadPatientInfoData(tbNationalNo.Text);
+            _PatientID = ctrlPatientInfoSummary1.PatientID;
 
             dateTimePicker1.Value = Appointment.AppointmentDate.Value;
             tbReason.Text = Appointment.Reason;
             tbNotes.Text = Appointment.Notes;
-            cbDoctors.SelectedIndex = cbDoctors.FindString(Appointment.DoctorInfo.PersonInfo.FullName);
-            tbFees.Text = clsSpecialty.Find(Doctors.Where(d => d.FullName == cbDoctors.Text).Select(d => d.Specialty).FirstOrDefault()).Fees.ToString();
+            cbDoctors.SelectedIndex = cbDoctors.FindString(Appointment.DoctorInfo.PersonInfo.FullName.Trim());
+            tbFees.Text = Doctors.Where(d => d.FullName == cbDoctors.Text).Select(d => d.Fees).FirstOrDefault().ToString();
             cbStatuses.SelectedIndex = Appointment.AppointmentCaseID.Value - 1;
-
-
         }
 
 
@@ -106,10 +106,11 @@ namespace MediManage
             if (clsPatient.IsExist(tbNationalNo.Text))
             {
                 ctrlPatientInfoSummary1.LoadPatientInfoData(tbNationalNo.Text);
+                _PatientID = ctrlPatientInfoSummary1.PatientID;
             }
             else
             {
-                MessageBox.Show("No Patient Found With This National No");
+                MessageBox.Show("No Patient Found With This National No", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -122,7 +123,7 @@ namespace MediManage
 
         private void tbNationalNo_Leave(object sender, EventArgs e)
         {
-            if (tbNationalNo.Text == "" || tbNationalNo.Text == null)
+            if (string.IsNullOrEmpty(tbNationalNo.Text))
             {
                 tbNationalNo.ForeColor = Color.Gray;
                 tbNationalNo.Text = "National No";
@@ -131,9 +132,13 @@ namespace MediManage
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            
+            if (_PatientID == null)
+            {
+                MessageBox.Show("Search about Patient First", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
-            Appointment.PatientID = clsPatient.Find(tbNationalNo.Text).PatientID;
+            Appointment.PatientID = _PatientID;
             Appointment.DoctorID =  Doctors.Where(d => d.FullName == cbDoctors.Text).Select(d => d.DoctorID).FirstOrDefault();
             Appointment.CreatedByUserID = clsGlobal.CurrentUser.UserID;
             Appointment.BookingDate = DateTime.Now;
@@ -143,24 +148,21 @@ namespace MediManage
             Appointment.Reason = tbReason.Text;
             Appointment.Notes = tbNotes.Text;
 
-
             if (Appointment.Save())
             {
                 _Mode = enMode.Update;
                 lblTitle.Text = "Update Appointment                        ";
-                MessageBox.Show("Data Saved Successfully.");
-
-                // PersonIDDataBack?.Invoke(this, _PersonID);
+                MessageBox.Show("Data Saved Successfully.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show("Error: Data Is not Saved Successfully.");
+                MessageBox.Show("Error: Data Is not Saved Successfully.", "Did Not Saved", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void cbDoctors_SelectedIndexChanged(object sender, EventArgs e)
         {
-            tbFees.Text = clsSpecialty.Find(Doctors.Where(d => d.FullName == cbDoctors.Text).Select(d => d.Specialty).FirstOrDefault()).Fees.ToString();
+           tbFees.Text = Doctors.Where(d => d.FullName == cbDoctors.Text).Select(d => d.Fees).FirstOrDefault().ToString();
         }
     }
 }

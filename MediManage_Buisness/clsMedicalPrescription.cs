@@ -19,7 +19,8 @@ namespace MediManage_Business
                 (
                     this.MedicalPrescriptionID,
                     this.DetectionID,
-                    this.Notes
+                    this.Notes,
+                    this.PrescriptionDate
                 );
             }
         }
@@ -27,6 +28,9 @@ namespace MediManage_Business
         public int? MedicalPrescriptionID { get; set; }
         public int? DetectionID { get; set; }
         public string Notes { get; set; }
+        public DateTime? PrescriptionDate { get; set; }
+        public clsDetection DetectionInfo { get; set; }
+        public List<clsMedicineRecipeListDTO> Recipes { get; set; }
 
 
         public clsMedicalPrescription()
@@ -34,6 +38,9 @@ namespace MediManage_Business
             this.MedicalPrescriptionID = null;
             this.DetectionID = null;
             this.Notes = null;
+            this.PrescriptionDate = null;
+            this.DetectionInfo = null;
+            this.Recipes = null;
             this.Mode = enMode.AddNew;
         }
 
@@ -42,6 +49,9 @@ namespace MediManage_Business
             this.MedicalPrescriptionID = dto.MedicalPrescriptionID;
             this.DetectionID = dto.DetectionID;
             this.Notes = dto.Notes;
+            this.PrescriptionDate = dto.PrescriptionDate;
+            this.DetectionInfo = clsDetection.Find(DetectionID);
+            this.Recipes = clsMedicineRecipe.GetAllMedicinesRecipes(MedicalPrescriptionID);
             this.Mode = cMode;
         }
 
@@ -66,7 +76,7 @@ namespace MediManage_Business
                 return null;
         }
 
-        public static List<clsMedicalPrescriptionDTO> GetAllMedicalPrescriptions()
+        public static List<clsMedicalPrescriptionsListDTO> GetAllMedicalPrescriptions()
         {
             return clsMedicalPrescriptionsDataAccess.GetAllMedicalPrescriptions();
         }

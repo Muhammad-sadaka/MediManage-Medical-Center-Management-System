@@ -113,11 +113,11 @@ namespace MediManage
         {
             if (e.RowIndex < 0) return;
 
-            int AppointmentId = Convert.ToInt32(DGVAppointmentsList.Rows[e.RowIndex].Cells["AppointmentId"].Value);
+            int AppointmentID = Convert.ToInt32(DGVAppointmentsList.Rows[e.RowIndex].Cells["AppointmentID"].Value);
 
             if (DGVAppointmentsList.Columns[e.ColumnIndex].Name == "btnEdit")
             {
-                frmAddUpdateAppointment frm = new frmAddUpdateAppointment(AppointmentId);
+                frmAddUpdateAppointment frm = new frmAddUpdateAppointment(AppointmentID);
                 frm.ShowDialog();
                 RefreshAppointmentsList();
 
@@ -127,7 +127,7 @@ namespace MediManage
                 DialogResult result = MessageBox.Show("Are you sure you want to delete this Appointment?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (result == DialogResult.Yes)
                 {
-                    if (clsAppointment.DeleteAppointment(AppointmentId))
+                    if (clsAppointment.DeleteAppointment(AppointmentID))
                     {
                         MessageBox.Show("Deleted successfully.", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         RefreshAppointmentsList();
@@ -144,7 +144,7 @@ namespace MediManage
         {
             if (DGVAppointmentsList.RowCount < 1) return;
 
-            frmPatientDetails frm = new frmPatientDetails((int)DGVAppointmentsList.CurrentRow.Cells[0].Value);
+            frmAppointmentDetails frm = new frmAppointmentDetails((int)DGVAppointmentsList.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
         }
 

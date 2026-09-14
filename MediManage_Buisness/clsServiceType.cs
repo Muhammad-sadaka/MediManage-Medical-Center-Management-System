@@ -10,13 +10,15 @@ namespace MediManage_Business
 
         public int? ServiceTypeID { get; set; }
         public string ServicTypeName { get; set; }
+        public decimal? Price { get; set; }
 
-        public clsServiceTypeDTO DTO => new clsServiceTypeDTO(this.ServiceTypeID, this.ServicTypeName);
+        public clsServiceTypeDTO DTO => new clsServiceTypeDTO(this.ServiceTypeID, this.ServicTypeName,this.Price);
 
         public clsServiceType()
         {
             this.ServiceTypeID = null;
             this.ServicTypeName = string.Empty;
+            this.Price = null;
             this.Mode = enMode.AddNew;
         }
 

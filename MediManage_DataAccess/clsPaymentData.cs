@@ -6,6 +6,23 @@ using System.Diagnostics;
 
 namespace MediManage_DataAccess
 {
+    public class clsPaymentListDTO
+    {
+        public string PatientName { get; set; }
+        public DateTime? PaymentDate { get; set; }
+        public decimal? Amount { get; set; }
+        public string PaymentMethod { get; set; }
+
+        public clsPaymentListDTO(string patientName, DateTime? paymentDate, decimal? amount,string paymentMethod)
+        {
+            this.PatientName = patientName;
+            this.PaymentDate = paymentDate;
+            this.Amount = amount;
+            this.PaymentMethod = paymentMethod;
+        }
+    }
+
+
     public class clsPaymentDTO
     {
         public int? PaymentID { get; set; }
@@ -13,14 +30,16 @@ namespace MediManage_DataAccess
         public DateTime? PaymentDate { get; set; }
         public int? CreatedByUserID { get; set; }
         public decimal? Amount { get; set; }
+        public int? PaymentMethodID { get; set; }
 
-        public clsPaymentDTO(int? paymentID, int? bill_ID, DateTime? paymentDate, int? createdByUserID, decimal? amount)
+        public clsPaymentDTO(int? paymentID, int? bill_ID, DateTime? paymentDate, int? createdByUserID, decimal? amount,int? paymentMethodID)
         {
             this.PaymentID = paymentID;
             this.Bill_ID = bill_ID;
             this.PaymentDate = paymentDate;
             this.CreatedByUserID = createdByUserID;
             this.Amount = amount;
+            this.PaymentMethodID = paymentMethodID;
         }
     }
 
@@ -49,7 +68,8 @@ namespace MediManage_DataAccess
                                     reader["Bill_ID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["Bill_ID"]),
                                     reader["PaymentDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["PaymentDate"]),
                                     reader["CreatedByUserID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["CreatedByUserID"]),
-                                    reader["Amount"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(reader["Amount"])
+                                    reader["Amount"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(reader["Amount"]),
+                                    reader["paymentMethodID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["paymentMethodID"])
                                 );
                             }
                         }
@@ -81,6 +101,7 @@ namespace MediManage_DataAccess
                         command.Parameters.AddWithValue("@PaymentDate", (object)dto.PaymentDate ?? DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedByUserID", (object)dto.CreatedByUserID ?? DBNull.Value);
                         command.Parameters.AddWithValue("@Amount", (object)dto.Amount ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PaymentMethodID", (object)dto.PaymentMethodID ?? DBNull.Value);
 
                         SqlParameter outputIdParam = new SqlParameter("@NewPaymentID", SqlDbType.Int)
                         {
@@ -122,6 +143,7 @@ namespace MediManage_DataAccess
                         command.Parameters.AddWithValue("@PaymentDate", (object)dto.PaymentDate ?? DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedByUserID", (object)dto.CreatedByUserID ?? DBNull.Value);
                         command.Parameters.AddWithValue("@Amount", (object)dto.Amount ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@PaymentMethodID", (object)dto.PaymentMethodID ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -138,9 +160,9 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static List<clsPaymentDTO> GetAllPayments()
+        public static List<clsPaymentListDTO> GetAllPayments(int? BillID)
         {
-            var paymentsList = new List<clsPaymentDTO>();
+            var paymentsList = new List<clsPaymentListDTO>();
 
             try
             {
@@ -149,19 +171,19 @@ namespace MediManage_DataAccess
                     using (SqlCommand command = new SqlCommand("SP_GetAllPayments", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@Bill_ID", (object)BillID ?? DBNull.Value);
                         connection.Open();
 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                paymentsList.Add(new clsPaymentDTO
+                                paymentsList.Add(new clsPaymentListDTO
                                 (
-                                    reader["PaymentID"] == DBNull.Value ? null : (int?)reader["PaymentID"],
-                                    reader["Bill_ID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["Bill_ID"]),
-                                    reader["PaymentDate"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["PaymentDate"]),
-                                    reader["CreatedByUserID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["CreatedByUserID"]),
-                                    reader["Amount"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(reader["Amount"])
+                                    reader["Patient Name"] == DBNull.Value ? null : (string)reader["Patient Name"],
+                                    reader["Date"] == DBNull.Value ? (DateTime?)null : Convert.ToDateTime(reader["Date"]),
+                                    reader["Amount ($)"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(reader["Amount ($)"]),
+                                    reader["Payment Method"] == DBNull.Value ? null : (string)reader["Payment Method"]
                                 ));
                             }
                         }

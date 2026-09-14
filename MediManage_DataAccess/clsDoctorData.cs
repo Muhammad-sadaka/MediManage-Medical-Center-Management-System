@@ -37,15 +37,17 @@ namespace MediManage_DataAccess
         public string FullName { get; set; }
         public string Specialty { get; set;  }
         public string Phone { get; set; }
+        public decimal? Fees { get; set; }
 
 
-        public clsDoctorListDTO(int? DoctorID, string NationalNo, string FullName, string Specialty, string Phone)
+        public clsDoctorListDTO(int? DoctorID, string NationalNo, string FullName, string Specialty, string Phone, decimal? Fees)
         {
             this.DoctorID = DoctorID;
             this.NationalNo = NationalNo;
             this.FullName = FullName;
             this.Specialty = Specialty;
             this.Phone = Phone;
+            this.Fees = Fees;
         }
     }
 
@@ -272,7 +274,8 @@ namespace MediManage_DataAccess
                                     reader["NationalNo"] == DBNull.Value ? null : (string)reader["NationalNo"],
                                     reader["FullName"] == DBNull.Value ? null : (string)reader["FullName"],
                                     reader["Specialty"] == DBNull.Value ? null : (string)reader["Specialty"],
-                                    reader["Phone"] == DBNull.Value ? null : (string)reader["Phone"]
+                                    reader["Phone"] == DBNull.Value ? null : (string)reader["Phone"],       
+                                    reader["Fees"] == DBNull.Value ? (decimal?)null : Convert.ToDecimal(reader["Fees"])
 
                                 ));
                             }

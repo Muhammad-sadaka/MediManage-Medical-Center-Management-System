@@ -15,6 +15,8 @@ namespace MediManage
     {
         clsPatient Patient = new clsPatient();
 
+        public int PatientID { get; set; }
+
         public ctrlPatientInfoSummary()
         {
             InitializeComponent();
@@ -43,6 +45,7 @@ namespace MediManage
             }
 
             Patient = clsPatient.Find(NationalNo);
+            PatientID = Patient.PatientID.Value;
 
             _LoadData();
 
@@ -59,7 +62,7 @@ namespace MediManage
 
         private void klblMoreInfo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            frmPatientDetails frm = new frmPatientDetails(Patient.PersonID.Value);
+            frmPatientDetails frm = new frmPatientDetails(Patient.PatientID.Value);
             frm.ShowDialog();
         }
     }

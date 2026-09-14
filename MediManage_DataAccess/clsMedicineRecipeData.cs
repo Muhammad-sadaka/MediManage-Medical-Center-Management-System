@@ -34,13 +34,15 @@ namespace MediManage_DataAccess
         public string Duration { get; set; }
         public string Repetition { get; set; }
         public string Dose { get; set; }
+        public string Notes { get; set; }
 
-        public clsMedicineRecipeListDTO(string MedicineName, string dose,  string repetition, string duration)
+        public clsMedicineRecipeListDTO(string MedicineName, string dose,  string repetition, string duration,string notes)
         {
             this.MedicineName = MedicineName;
             this.Duration = duration;
             this.Repetition = repetition;
             this.Dose = dose;
+            this.Notes = notes;
         }
     }
 
@@ -163,9 +165,9 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
-        public static List<clsMedicineRecipeDTO> GetAllMedicinesRecipes()
+        public static List<clsMedicineRecipeListDTO> GetAllMedicinesRecipes(int? MedicalPrescriptionID)
         {
-            var medicinesList = new List<clsMedicineRecipeDTO>();
+            var medicinesList = new List<clsMedicineRecipeListDTO>();
 
             try
             {
@@ -174,21 +176,20 @@ namespace MediManage_DataAccess
                     using (SqlCommand command = new SqlCommand("SP_GetAllMedicinesRecipes", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@MedicalPrescriptionID", (object)MedicalPrescriptionID ?? DBNull.Value);
                         connection.Open();
 
                         using (SqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                medicinesList.Add(new clsMedicineRecipeDTO
+                                medicinesList.Add(new clsMedicineRecipeListDTO
                                 (
-                                    reader["MedicineRecipeID"] == DBNull.Value ? null : (int?)reader["MedicineRecipeID"],
+                                    reader["MedicineName"] == DBNull.Value ? null : (string)reader["MedicineName"],
                                     reader["Duration"] == DBNull.Value ? null : (string)reader["Duration"],
                                     reader["Repetition"] == DBNull.Value ? null : (string)reader["Repetition"],
                                     reader["Dose"] == DBNull.Value ? null : (string)reader["Dose"],
-                                    reader["MedicalPrescriptionID"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["MedicalPrescriptionID"]),
-                                    reader["Notes"] == DBNull.Value ? null : (string)reader["Notes"],
-                                    reader["MedicineID"] == DBNull.Value ? null : (int?)reader["MedicineID"]
+                                    reader["Notes"] == DBNull.Value ? null : (string)reader["Notes"]
                                 ));
                             }
                         }
@@ -204,7 +205,7 @@ namespace MediManage_DataAccess
             return medicinesList;
         }
 
-        public static bool DeleteMedicineRecipe(int? MedicineRecipeID)
+        public static bool DeleteMedicineRecipe(int? MedicalPrescriptionID)
         {
             int rowsAffected = 0;
 
@@ -215,7 +216,7 @@ namespace MediManage_DataAccess
                     using (SqlCommand command = new SqlCommand("SP_DeleteMedicineRecipe", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@MedicineRecipeID", (object)MedicineRecipeID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@MedicalPrescriptionID", (object)MedicalPrescriptionID ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();

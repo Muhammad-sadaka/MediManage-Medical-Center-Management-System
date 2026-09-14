@@ -1,4 +1,5 @@
 ﻿using MediManage_Business;
+using MediManage_DataAccess;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +15,8 @@ namespace MediManage
 {
     public partial class frmUsersList : Form
     {
+        List<clsUsersListDTO> UsersData;
+
         public frmUsersList()
         {
             InitializeComponent();
@@ -41,7 +44,7 @@ namespace MediManage
             DGVUsersList.AutoGenerateColumns = false;
             DGVUsersList.Columns.Clear();
 
-            DGVUsersList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "PersonID", HeaderText = "Id", Name = "PersonID" });
+            DGVUsersList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "UserID", HeaderText = "ID", Name = "UserID" });
 
             DGVUsersList.Columns.Add(new DataGridViewTextBoxColumn { DataPropertyName = "FullName", HeaderText = "Full Name", Name = "FullName" });
 
@@ -59,7 +62,6 @@ namespace MediManage
             btnEdit.UseColumnTextForButtonValue = true;
             DGVUsersList.Columns.Add(btnEdit);
 
-
             DataGridViewCheckBoxColumn chkIsActive = new DataGridViewCheckBoxColumn();
             chkIsActive.HeaderText = "";
             chkIsActive.Name = "chkIsActive";
@@ -69,81 +71,85 @@ namespace MediManage
 
         private void RefreshUsersList()
         {
-            var UserssData = clsUser.GetAllUsers().Select(u => new
+            var usersData = clsUser.GetAllUsers();
+
+            UsersData = usersData;
+
+            DGVUsersList.DataSource = usersData.Select(u => new
             {
-                u.PersonID,
+                u.UserID,
                 u.FullName,
                 u.UserName,
                 u.Phone,
                 u.Status
             }).ToList();
 
-            DGVUsersList.DataSource = UserssData;
-            lblTotalRecords.Text = $"Total: {UserssData.Count} records";
+            lblTotalRecords.Text = $"Total: {DGVUsersList.RowCount} records";
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(tbUsername.Text))
+            if (!string.IsNullOrEmpty(tbUsername.Text) && tbUsername.Text != "Enter Username to search...")
             {
-                var UsersData = clsUser.GetAllUsers().Select(u => new
+                DGVUsersList.DataSource = UsersData.Select(u => new
                 {
-                    u.PersonID,
+                    u.UserID,
                     u.FullName,
                     u.UserName,
                     u.Phone,
                     u.Status
-                }).Where(p => p.UserName.StartsWith(tbUsername.Text.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();
-
-                DGVUsersList.DataSource = UsersData;
-                lblTotalRecords.Text = $"Total: {UsersData.Count} records";
+                }).Where(u => u.UserName.StartsWith(tbUsername.Text.Trim(), StringComparison.OrdinalIgnoreCase)).ToList();
             }
             else
             {
-                RefreshUsersList();
+                DGVUsersList.DataSource = UsersData.Select(u => new
+                {
+                    u.UserID,
+                    u.FullName,
+                    u.UserName,
+                    u.Phone,
+                    u.Status
+                }).ToList();
             }
+
+            lblTotalRecords.Text = $"Total: {DGVUsersList.RowCount} records";
         }
 
         private void DGVUsersList_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
 
-
-            int personId = Convert.ToInt32(DGVUsersList.Rows[e.RowIndex].Cells["PersonID"].Value);
-
+            int UserID = Convert.ToInt32(DGVUsersList.Rows[e.RowIndex].Cells["UserID"].Value);
 
             if (DGVUsersList.Columns[e.ColumnIndex].Name == "btnEdit")
             {
-
-                frmAddUpdateUser frm = new frmAddUpdateUser(personId);
+                frmAddUpdateUser frm = new frmAddUpdateUser(UserID);
                 frm.ShowDialog();
-
+                RefreshUsersList();
             }
             else if (DGVUsersList.Columns[e.ColumnIndex].Name == "btnDelete")
             {
                 DialogResult result = MessageBox.Show("Are you sure you want to delete this User?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (result == DialogResult.Yes)
                 {
-                    if (clsPatient.DeletePatient(personId))
+                    if (clsUser.DeleteUser(UserID))
                     {
-                        MessageBox.Show("Deleted successfully.");
+                        MessageBox.Show("Deleted successfully.", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        RefreshUsersList();
                     }
                     else
                     {
-                        MessageBox.Show("Delete failed. This User might be linked to other records.");
+                        MessageBox.Show("Delete failed. This User might be linked to other records.", "Not Deleted", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
-            }
-            RefreshUsersList();
+            }   
         }
 
         private void DGVUsersList_DoubleClick(object sender, EventArgs e)
         {
             if (DGVUsersList.RowCount < 1) return;
-
-            //frmPatientDetails frm = new frmPatientDetails((int)DGVUsersList.CurrentRow.Cells[0].Value);
-            //frm.ShowDialog();
-            RefreshUsersList();
+            frmUserDetails frm = new frmUserDetails((int)DGVUsersList.CurrentRow.Cells[0].Value);
+            frm.ShowDialog();
         }
 
         private void tbNationalNo_Enter(object sender, EventArgs e)

@@ -20,7 +20,6 @@ namespace MediManage_Business
                     this.Bill_ID,
                     this.ServiceTypeID,
                     this.Description,
-                    this.Price,
                     this.Amount,
                     this.Total
                 );
@@ -33,7 +32,7 @@ namespace MediManage_Business
         public string Description { get; set; }
         public decimal? Price { get; set; }
         public int? Amount { get; set; }
-        public int? Total { get; set; }
+        public decimal? Total { get; set; }
 
         public clsBillItem(clsBillItemDTO dto, enMode cMode = enMode.AddNew)
         {
@@ -41,7 +40,6 @@ namespace MediManage_Business
             this.Bill_ID = dto.Bill_ID;
             this.ServiceTypeID = dto.ServiceTypeID;
             this.Description = dto.Description;
-            this.Price = dto.Price;
             this.Amount = dto.Amount;
             this.Total = dto.Total;
             this.Mode = cMode;
@@ -68,9 +66,9 @@ namespace MediManage_Business
                 return null;
         }
 
-        public static List<clsBillItemDTO> GetAllBillItems()
+        public static List<clsBillItemListDTO> GetAllBillItems(int? BillID)
         {
-            return clsBillItemsDataAccess.GetAllBillItems();
+            return clsBillItemsDataAccess.GetAllBillItems(BillID);
         }
 
         public bool Save()
@@ -103,6 +101,11 @@ namespace MediManage_Business
         public static bool IsExist(int? ID)
         {
             return clsBillItemsDataAccess.IsBillItemExist(ID);
+        }
+
+        public static decimal CalculateTotal(decimal? Price , int? Quantity)
+        {
+            return Price.Value * Quantity.Value;
         }
     }
 }

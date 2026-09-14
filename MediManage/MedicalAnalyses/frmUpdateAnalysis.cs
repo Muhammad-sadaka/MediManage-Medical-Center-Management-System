@@ -40,12 +40,12 @@ namespace MediManage
 
             if (Analysis.Save())
             {
-                MessageBox.Show("Data Saved Successfully.");
+                MessageBox.Show("Data Saved Successfully.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.Close();
             }
             else
             {
-                MessageBox.Show("Error: Data Is not Saved Successfully.");
+                MessageBox.Show("Error: Data Is not Saved Successfully.", "Did Not Saved", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

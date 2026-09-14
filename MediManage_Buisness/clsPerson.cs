@@ -102,7 +102,7 @@ namespace MediManage_Business
             this.BloodTypeID = dto.BloodTypeID;
             this.MaritalStatusID = dto.MaritalStatusID;
             this.CountryId = dto.CountryId;
-            this.FullName = this.FirstName + " " + this.SecondName + " " + this.LastName;
+            this.FullName = this.FirstName + " " + this.LastName;
             this.CountryInfo = clsCountry.Find(this.CountryId);
             this.BloodTypeInfo = clsBloodType.Find(this.BloodTypeID);
             this.MaritalStatusInfo = clsMaritalStatus.Find(this.MaritalStatusID);

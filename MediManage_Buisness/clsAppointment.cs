@@ -43,6 +43,7 @@ namespace MediManage_Business
         public string Notes { get; set; }
         public clsPatient PatientInfo { get; set; }
         public clsDoctor DoctorInfo { get; set; }
+        public clsAppointmentCase AppointmentCaseInfo {  get; set; }
 
         public clsAppointment()
         {
@@ -58,6 +59,7 @@ namespace MediManage_Business
             this.Notes = null;
             this.PatientInfo =  null;
             this.DoctorInfo =  null;
+            this.AppointmentCaseInfo = null;
             this.Mode = enMode.AddNew;
         }
 
@@ -75,6 +77,7 @@ namespace MediManage_Business
             this.Notes = dto.Notes;
             this.PatientInfo = clsPatient.Find(PatientID);
             this.DoctorInfo = clsDoctor.Find(DoctorID);
+            this.AppointmentCaseInfo = clsAppointmentCase.Find(AppointmentCaseID);
             this.Mode = cMode;
         }
 

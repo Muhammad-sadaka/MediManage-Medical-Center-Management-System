@@ -22,8 +22,7 @@ namespace MediManage_Business
                     this.AmountOfPaid,
                     this.AmountOfRemaining,
                     this.TotalAmount,
-                    this.PaymentStatusID,
-                    this.PaymentMethodID
+                    this.PaymentStatusID
                 );
             }
         }
@@ -36,7 +35,28 @@ namespace MediManage_Business
         public decimal? AmountOfRemaining { get; set; }
         public decimal? TotalAmount { get; set; }
         public int? PaymentStatusID { get; set; }
-        public int? PaymentMethodID { get; set; }
+        public clsUser UserInfo { get; set; }
+        public clsPaymentStatus PaymentStatusInfo { get; set; }
+        public clsPatient PatientInfo { get; set; }
+
+
+
+
+        public clsBill()
+        {
+            this.Bill_ID = null;
+            this.PatientID = null;
+            this.CreatedByUserID = null;
+            this.BillDate = null;
+            this.AmountOfPaid = null;
+            this.AmountOfRemaining = null;
+            this.TotalAmount = null;
+            this.PaymentStatusID = null;
+            this.UserInfo = null;
+            this.PaymentStatusInfo = null;
+            this.PatientInfo = null;
+            this.Mode = enMode.AddNew;
+        }
 
         public clsBill(clsBillDTO dto, enMode cMode = enMode.AddNew)
         {
@@ -48,7 +68,9 @@ namespace MediManage_Business
             this.AmountOfRemaining = dto.AmountOfRemaining;
             this.TotalAmount = dto.TotalAmount;
             this.PaymentStatusID = dto.PaymentStatusID;
-            this.PaymentMethodID = dto.PaymentMethodID;
+            this.UserInfo = clsUser.Find(CreatedByUserID);
+            this.PaymentStatusInfo = clsPaymentStatus.Find(PaymentStatusID);
+            this.PatientInfo = clsPatient.Find(PatientID);
             this.Mode = cMode;
         }
 
@@ -73,7 +95,7 @@ namespace MediManage_Business
                 return null;
         }
 
-        public static List<clsBillDTO> GetAllBills()
+        public static List<clsBillListDTO> GetAllBills()
         {
             return clsBillsDataAccess.GetAllBills();
         }

@@ -17,9 +17,7 @@ namespace MediManage
         public enum enMode { AddNew = 0, Update = 1 };
         enMode _Mode = enMode.AddNew;
 
-
         clsUser user = new clsUser();
-        clsPerson person = new clsPerson();
 
         public frmAddUpdateUser()
         {
@@ -27,11 +25,11 @@ namespace MediManage
             _Mode = enMode.AddNew;
         }
 
-        public frmAddUpdateUser(int PersonId)
+        public frmAddUpdateUser(int UserID)
         {
             InitializeComponent();
             _Mode = enMode.Update;
-            person.PersonID = PersonId;
+            user.UserID = UserID;
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -51,38 +49,35 @@ namespace MediManage
 
             if (_Mode == enMode.AddNew)
             {
-                person = new clsPerson();
                 lblTitle.Text = "Add New User                       ";
             }
             else
                 lblTitle.Text = "Update User                        ";
 
-            tbUsername.Text = "";
-            tbPassword.Text = "";
-            tbConfirmPassword.Text = "";
+            tbUsername.Clear();
+            tbPassword.Clear();
+            tbConfirmPassword.Clear();
             chkIsActive.Checked = false;
 
-            chkAnalyses.Checked = false;
-            chkAppointments.Checked = false;
-            chkDoctors.Checked = false;
-            chkExaminations.Checked = false;
-            chkInvoicesPayments.Checked = false;
-            chkPatients.Checked = false;
-            chkPeople.Checked = false;
-            chkPrescriptions.Checked = false;
-            chkUsers.Checked = false;
+            chkManageAnalyses.Checked = false;
+            chkManageAppointments.Checked = false;
+            chkManageDoctors.Checked = false;
+            chkManageExaminations.Checked = false;
+            chkManageInvoicesPayments.Checked = false;
+            chkManagePatients.Checked = false;
+            chkManagePeople.Checked = false;
+            chkManagePrescriptions.Checked = false;
+            chkManageUsers.Checked = false;
 
         }
 
         private void _LoadData()
         {
-            person = clsPerson.Find(user.PersonID);
-            user = clsUser.Find(user.PersonID);
+            user = clsUser.Find(user.UserID);
 
-
-            if (person == null)
+            if (user == null)
             {
-                MessageBox.Show("This form will be closed because No Person with ID = " + person.PersonID);
+                MessageBox.Show("This form will be closed because No User with ID = " + user.UserID);
                 this.Close();
                 return;
             }
@@ -91,53 +86,54 @@ namespace MediManage
             ctrlPersonInfoSummary1.LoadPersonInfoData(user.PersonID.Value);
 
             tbUsername.Text = user.UserName;
+            chkIsActive.Checked = user.IsActive.Value;
             LoadPermissions(user.Permissions.Value);
 
         }
 
         void LoadPermissions(int Permissions)
         {
-            if ((Permissions & 1) == 1)          
-                 chkAnalyses.Checked = true;
-            if ((Permissions & 2) ==2)
-                chkAppointments.Checked = true;
+            if ((Permissions & 1) == 1)
+                chkManageAnalyses.Checked = true;
+            if ((Permissions & 2) == 2)
+                chkManageAppointments.Checked = true;
             if ((Permissions & 4) == 4)
-                chkDoctors.Checked = true;
+                chkManageDoctors.Checked = true;
             if ((Permissions & 8) == 8)
-                chkExaminations.Checked = true;
+                chkManageExaminations.Checked = true;
             if ((Permissions & 16) == 16)
-                chkInvoicesPayments.Checked = true;
+                chkManageInvoicesPayments.Checked = true;
             if ((Permissions & 32) == 32)
-                chkPatients.Checked = true;
+                chkManagePatients.Checked = true;
             if ((Permissions & 64) == 64)
-                chkPeople.Checked = true;
+                chkManagePeople.Checked = true;
             if ((Permissions & 128) == 128)
-                chkPrescriptions.Checked = true;
+                chkManagePrescriptions.Checked = true;
             if ((Permissions & 256) == 256)
-                chkUsers.Checked = true;
+                chkManageUsers.Checked = true;
         }
 
         int PermissionsNumber()
         {
             int Permissions = 0;
 
-            if (chkAnalyses.Checked == true)
+            if (chkManageAnalyses.Checked == true)
                 Permissions = Permissions | 1;
-            if (chkAppointments.Checked == true)
+            if (chkManageAppointments.Checked == true)
                 Permissions = Permissions | 2;
-            if (chkDoctors.Checked == true)
+            if (chkManageDoctors.Checked == true)
                 Permissions = Permissions | 4;
-            if (chkExaminations.Checked == true)
+            if (chkManageExaminations.Checked == true)
                 Permissions = Permissions | 8;
-            if (chkInvoicesPayments.Checked == true)
+            if (chkManageInvoicesPayments.Checked == true)
                 Permissions = Permissions | 16;
-            if (chkPatients.Checked == true)
+            if (chkManageInvoicesPayments.Checked == true)
                 Permissions = Permissions | 32;
-            if (chkPeople.Checked == true)
+            if (chkManagePeople.Checked == true)
                 Permissions = Permissions | 64;
-            if (chkPrescriptions.Checked == true)
+            if (chkManagePrescriptions.Checked == true)
                 Permissions = Permissions | 128;
-            if (chkUsers.Checked == true)
+            if (chkManageUsers.Checked == true)
                 Permissions = Permissions | 256;
 
             return Permissions;
@@ -151,8 +147,6 @@ namespace MediManage
                 return;
             }
 
-            user.PersonID = person.PersonID;
-
             user.Permissions = PermissionsNumber();
             user.Password = clsGlobal.ComputeHash(tbConfirmPassword.Text);
             user.UserName = tbUsername.Text;
@@ -164,13 +158,11 @@ namespace MediManage
             {
                 _Mode = enMode.Update;
                 lblTitle.Text = "Update User                        ";
-                MessageBox.Show("Data Saved Successfully.");
-
-                // PersonIDDataBack?.Invoke(this, _PersonID);
+                MessageBox.Show("Data Saved Successfully.", "Saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show("Error: Data Is not Saved Successfully.");
+                MessageBox.Show("Error: Data Is not Saved Successfully.", "Did Not Saved", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -178,13 +170,20 @@ namespace MediManage
         {
             if (clsPerson.IsExist(tbNationalNo.Text))
             {
-                person = clsPerson.Find(tbNationalNo.Text);
-                ctrlPersonInfoSummary1.LoadPersonInfoData(person.PersonID.Value);
+                ctrlPersonInfoSummary1.LoadPersonInfoData(tbNationalNo.Text);
+                user.PersonID = clsPerson.Find(tbNationalNo.Text).PersonID;
+                if (clsUser.IsExist(tbNationalNo.Text))
+                {
+                    MessageBox.Show("This National No is already used for another User", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    _Mode = enMode.Update;
+                    _LoadData();
+                }
             }
             else
             {
-                MessageBox.Show("No Person Found With This National No");
+                MessageBox.Show("No Person Found With This National No", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
         }
 
         private void tbNationalNo_Enter(object sender, EventArgs e)
@@ -196,7 +195,7 @@ namespace MediManage
 
         private void tbNationalNo_Leave(object sender, EventArgs e)
         {
-            if (tbNationalNo.Text == "" || tbNationalNo.Text == null)
+            if (string.IsNullOrEmpty(tbNationalNo.Text))
             {
                 tbNationalNo.ForeColor = Color.Gray;
                 tbNationalNo.Text = "National No";

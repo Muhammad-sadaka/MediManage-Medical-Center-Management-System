@@ -36,6 +36,7 @@
             this.btnSearch = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.ctrlPersonInfoSummary1 = new MediManage.ctrlPersonInfoSummary();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.cbPatientCase = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -43,7 +44,6 @@
             this.label6 = new System.Windows.Forms.Label();
             this.tbSensitivity = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.ctrlPersonInfoSummary1 = new MediManage.ctrlPersonInfoSummary();
             this.gbSearch.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -148,6 +148,15 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "2 Person Information";
             // 
+            // ctrlPersonInfoSummary1
+            // 
+            this.ctrlPersonInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ctrlPersonInfoSummary1.Location = new System.Drawing.Point(10, 42);
+            this.ctrlPersonInfoSummary1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.ctrlPersonInfoSummary1.Name = "ctrlPersonInfoSummary1";
+            this.ctrlPersonInfoSummary1.Size = new System.Drawing.Size(1195, 172);
+            this.ctrlPersonInfoSummary1.TabIndex = 21;
+            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.cbPatientCase);
@@ -217,15 +226,6 @@
             this.label5.Size = new System.Drawing.Size(149, 34);
             this.label5.TabIndex = 145;
             this.label5.Text = "Sensitivity:";
-            // 
-            // ctrlPersonInfoSummary1
-            // 
-            this.ctrlPersonInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ctrlPersonInfoSummary1.Location = new System.Drawing.Point(10, 42);
-            this.ctrlPersonInfoSummary1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
-            this.ctrlPersonInfoSummary1.Name = "ctrlPersonInfoSummary1";
-            this.ctrlPersonInfoSummary1.Size = new System.Drawing.Size(1195, 172);
-            this.ctrlPersonInfoSummary1.TabIndex = 21;
             // 
             // frmAddUpdatePatient
             // 

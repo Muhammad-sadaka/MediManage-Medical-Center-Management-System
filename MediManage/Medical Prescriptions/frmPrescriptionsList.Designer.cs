@@ -33,7 +33,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.DGVUsersList = new System.Windows.Forms.DataGridView();
+            this.DGVPrescriptionsList = new System.Windows.Forms.DataGridView();
             this.lblTotalRecords = new System.Windows.Forms.Label();
             this.tbPatientName = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
@@ -41,12 +41,12 @@
             this.btnAddNew = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DGVUsersList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVPrescriptionsList)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.DGVUsersList);
+            this.panel1.Controls.Add(this.DGVPrescriptionsList);
             this.panel1.Controls.Add(this.lblTotalRecords);
             this.panel1.Controls.Add(this.tbPatientName);
             this.panel1.Controls.Add(this.btnSearch);
@@ -58,14 +58,14 @@
             this.panel1.Size = new System.Drawing.Size(1392, 698);
             this.panel1.TabIndex = 3;
             // 
-            // DGVUsersList
+            // DGVPrescriptionsList
             // 
-            this.DGVUsersList.AllowUserToAddRows = false;
-            this.DGVUsersList.AllowUserToDeleteRows = false;
+            this.DGVPrescriptionsList.AllowUserToAddRows = false;
+            this.DGVPrescriptionsList.AllowUserToDeleteRows = false;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            this.DGVUsersList.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.DGVUsersList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
-            this.DGVUsersList.BackgroundColor = System.Drawing.Color.White;
+            this.DGVPrescriptionsList.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            this.DGVPrescriptionsList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
+            this.DGVPrescriptionsList.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -73,8 +73,8 @@
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.DGVUsersList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.DGVUsersList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DGVPrescriptionsList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            this.DGVPrescriptionsList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle3.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -82,17 +82,18 @@
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.DGVUsersList.DefaultCellStyle = dataGridViewCellStyle3;
-            this.DGVUsersList.GridColor = System.Drawing.SystemColors.ScrollBar;
-            this.DGVUsersList.Location = new System.Drawing.Point(28, 187);
-            this.DGVUsersList.Name = "DGVUsersList";
-            this.DGVUsersList.ReadOnly = true;
-            this.DGVUsersList.RowHeadersWidth = 51;
+            this.DGVPrescriptionsList.DefaultCellStyle = dataGridViewCellStyle3;
+            this.DGVPrescriptionsList.GridColor = System.Drawing.SystemColors.ScrollBar;
+            this.DGVPrescriptionsList.Location = new System.Drawing.Point(28, 187);
+            this.DGVPrescriptionsList.Name = "DGVPrescriptionsList";
+            this.DGVPrescriptionsList.ReadOnly = true;
+            this.DGVPrescriptionsList.RowHeadersWidth = 51;
             dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.DGVUsersList.RowsDefaultCellStyle = dataGridViewCellStyle4;
-            this.DGVUsersList.RowTemplate.Height = 26;
-            this.DGVUsersList.Size = new System.Drawing.Size(1340, 450);
-            this.DGVUsersList.TabIndex = 22;
+            this.DGVPrescriptionsList.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            this.DGVPrescriptionsList.RowTemplate.Height = 26;
+            this.DGVPrescriptionsList.Size = new System.Drawing.Size(1340, 450);
+            this.DGVPrescriptionsList.TabIndex = 22;
+            this.DGVPrescriptionsList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.DGVPrescriptionsList_CellContentClick);
             // 
             // lblTotalRecords
             // 
@@ -112,7 +113,7 @@
             this.tbPatientName.Name = "tbPatientName";
             this.tbPatientName.Size = new System.Drawing.Size(1126, 47);
             this.tbPatientName.TabIndex = 20;
-            this.tbPatientName.Text = "Enter Patient Name...";
+            this.tbPatientName.Text = "Enter Patient Name to search...";
             this.tbPatientName.Enter += new System.EventHandler(this.tbPatientName_Enter);
             this.tbPatientName.Leave += new System.EventHandler(this.tbPatientName_Leave);
             // 
@@ -180,9 +181,10 @@
             this.Name = "frmPrescriptionsList";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmPrescriptionsList";
+            this.Load += new System.EventHandler(this.frmPrescriptionsList_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.DGVUsersList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DGVPrescriptionsList)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -190,7 +192,7 @@
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.DataGridView DGVUsersList;
+        private System.Windows.Forms.DataGridView DGVPrescriptionsList;
         private System.Windows.Forms.Label lblTotalRecords;
         private System.Windows.Forms.TextBox tbPatientName;
         private System.Windows.Forms.Button btnSearch;

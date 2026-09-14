@@ -36,7 +36,6 @@
             this.tbNationalNo = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.ctrlPersonInfoSummary1 = new MediManage.ctrlPersonInfoSummary();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -46,16 +45,26 @@
             this.tbUsername = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.chkIsActive = new MediManage.MyCustomCheckBox();
-            this.chkPeople = new MediManage.MyCustomCheckBox();
-            this.chkPatients = new MediManage.MyCustomCheckBox();
-            this.chkDoctors = new MediManage.MyCustomCheckBox();
-            this.chkPrescriptions = new MediManage.MyCustomCheckBox();
-            this.chkExaminations = new MediManage.MyCustomCheckBox();
-            this.chkAppointments = new MediManage.MyCustomCheckBox();
-            this.chkUsers = new MediManage.MyCustomCheckBox();
-            this.chkInvoicesPayments = new MediManage.MyCustomCheckBox();
-            this.chkAnalyses = new MediManage.MyCustomCheckBox();
+            this.chkManageUsers = new MediManage.CustomCheckBox();
+            this.chkManagePatients = new MediManage.CustomCheckBox();
+            this.chkManageInvoicesPayments = new MediManage.CustomCheckBox();
+            this.chkManageAppointments = new MediManage.CustomCheckBox();
+            this.chkManageAnalyses = new MediManage.CustomCheckBox();
+            this.chkManageExaminations = new MediManage.CustomCheckBox();
+            this.chkManagePrescriptions = new MediManage.CustomCheckBox();
+            this.chkManagePeople = new MediManage.CustomCheckBox();
+            this.chkManageDoctors = new MediManage.CustomCheckBox();
+            this.chkIsActive = new MediManage.CustomCheckBox();
+            this.ctrlPersonInfoSummary1 = new MediManage.ctrlPersonInfoSummary();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
             this.gbSearch.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -160,15 +169,6 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "2 Person Information";
             // 
-            // ctrlPersonInfoSummary1
-            // 
-            this.ctrlPersonInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ctrlPersonInfoSummary1.Location = new System.Drawing.Point(10, 42);
-            this.ctrlPersonInfoSummary1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
-            this.ctrlPersonInfoSummary1.Name = "ctrlPersonInfoSummary1";
-            this.ctrlPersonInfoSummary1.Size = new System.Drawing.Size(1195, 172);
-            this.ctrlPersonInfoSummary1.TabIndex = 21;
-            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.chkIsActive);
@@ -255,15 +255,24 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.chkUsers);
-            this.groupBox3.Controls.Add(this.chkInvoicesPayments);
-            this.groupBox3.Controls.Add(this.chkAnalyses);
-            this.groupBox3.Controls.Add(this.chkPrescriptions);
-            this.groupBox3.Controls.Add(this.chkExaminations);
-            this.groupBox3.Controls.Add(this.chkAppointments);
-            this.groupBox3.Controls.Add(this.chkDoctors);
-            this.groupBox3.Controls.Add(this.chkPatients);
-            this.groupBox3.Controls.Add(this.chkPeople);
+            this.groupBox3.Controls.Add(this.label11);
+            this.groupBox3.Controls.Add(this.label12);
+            this.groupBox3.Controls.Add(this.label13);
+            this.groupBox3.Controls.Add(this.label8);
+            this.groupBox3.Controls.Add(this.label9);
+            this.groupBox3.Controls.Add(this.label10);
+            this.groupBox3.Controls.Add(this.label6);
+            this.groupBox3.Controls.Add(this.label5);
+            this.groupBox3.Controls.Add(this.label3);
+            this.groupBox3.Controls.Add(this.chkManageUsers);
+            this.groupBox3.Controls.Add(this.chkManagePatients);
+            this.groupBox3.Controls.Add(this.chkManageInvoicesPayments);
+            this.groupBox3.Controls.Add(this.chkManageAppointments);
+            this.groupBox3.Controls.Add(this.chkManageAnalyses);
+            this.groupBox3.Controls.Add(this.chkManageExaminations);
+            this.groupBox3.Controls.Add(this.chkManagePrescriptions);
+            this.groupBox3.Controls.Add(this.chkManagePeople);
+            this.groupBox3.Controls.Add(this.chkManageDoctors);
             this.groupBox3.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox3.Location = new System.Drawing.Point(12, 683);
             this.groupBox3.Name = "groupBox3";
@@ -272,124 +281,234 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Permissions";
             // 
+            // chkManageUsers
+            // 
+            this.chkManageUsers.Checked = true;
+            this.chkManageUsers.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkManageUsers.FlatAppearance.BorderSize = 0;
+            this.chkManageUsers.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkManageUsers.Location = new System.Drawing.Point(768, 146);
+            this.chkManageUsers.Name = "chkManageUsers";
+            this.chkManageUsers.Size = new System.Drawing.Size(45, 36);
+            this.chkManageUsers.TabIndex = 210;
+            this.chkManageUsers.Text = "customCheckBox10";
+            this.chkManageUsers.UseVisualStyleBackColor = true;
+            // 
+            // chkManagePatients
+            // 
+            this.chkManagePatients.Checked = true;
+            this.chkManagePatients.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkManagePatients.FlatAppearance.BorderSize = 0;
+            this.chkManagePatients.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkManagePatients.Location = new System.Drawing.Point(40, 104);
+            this.chkManagePatients.Name = "chkManagePatients";
+            this.chkManagePatients.Size = new System.Drawing.Size(45, 36);
+            this.chkManagePatients.TabIndex = 211;
+            this.chkManagePatients.Text = "customCheckBox1";
+            this.chkManagePatients.UseVisualStyleBackColor = true;
+            // 
+            // chkManageInvoicesPayments
+            // 
+            this.chkManageInvoicesPayments.Checked = true;
+            this.chkManageInvoicesPayments.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkManageInvoicesPayments.FlatAppearance.BorderSize = 0;
+            this.chkManageInvoicesPayments.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkManageInvoicesPayments.Location = new System.Drawing.Point(768, 104);
+            this.chkManageInvoicesPayments.Name = "chkManageInvoicesPayments";
+            this.chkManageInvoicesPayments.Size = new System.Drawing.Size(45, 36);
+            this.chkManageInvoicesPayments.TabIndex = 209;
+            this.chkManageInvoicesPayments.Text = "customCheckBox9";
+            this.chkManageInvoicesPayments.UseVisualStyleBackColor = true;
+            // 
+            // chkManageAppointments
+            // 
+            this.chkManageAppointments.Checked = true;
+            this.chkManageAppointments.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkManageAppointments.FlatAppearance.BorderSize = 0;
+            this.chkManageAppointments.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkManageAppointments.Location = new System.Drawing.Point(367, 62);
+            this.chkManageAppointments.Name = "chkManageAppointments";
+            this.chkManageAppointments.Size = new System.Drawing.Size(45, 36);
+            this.chkManageAppointments.TabIndex = 205;
+            this.chkManageAppointments.Text = "customCheckBox5";
+            this.chkManageAppointments.UseVisualStyleBackColor = true;
+            // 
+            // chkManageAnalyses
+            // 
+            this.chkManageAnalyses.Checked = true;
+            this.chkManageAnalyses.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkManageAnalyses.FlatAppearance.BorderSize = 0;
+            this.chkManageAnalyses.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkManageAnalyses.Location = new System.Drawing.Point(768, 62);
+            this.chkManageAnalyses.Name = "chkManageAnalyses";
+            this.chkManageAnalyses.Size = new System.Drawing.Size(45, 36);
+            this.chkManageAnalyses.TabIndex = 208;
+            this.chkManageAnalyses.Text = "customCheckBox8";
+            this.chkManageAnalyses.UseVisualStyleBackColor = true;
+            // 
+            // chkManageExaminations
+            // 
+            this.chkManageExaminations.Checked = true;
+            this.chkManageExaminations.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkManageExaminations.FlatAppearance.BorderSize = 0;
+            this.chkManageExaminations.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkManageExaminations.Location = new System.Drawing.Point(367, 104);
+            this.chkManageExaminations.Name = "chkManageExaminations";
+            this.chkManageExaminations.Size = new System.Drawing.Size(45, 36);
+            this.chkManageExaminations.TabIndex = 206;
+            this.chkManageExaminations.Text = "customCheckBox6";
+            this.chkManageExaminations.UseVisualStyleBackColor = true;
+            // 
+            // chkManagePrescriptions
+            // 
+            this.chkManagePrescriptions.Checked = true;
+            this.chkManagePrescriptions.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkManagePrescriptions.FlatAppearance.BorderSize = 0;
+            this.chkManagePrescriptions.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkManagePrescriptions.Location = new System.Drawing.Point(367, 146);
+            this.chkManagePrescriptions.Name = "chkManagePrescriptions";
+            this.chkManagePrescriptions.Size = new System.Drawing.Size(45, 36);
+            this.chkManagePrescriptions.TabIndex = 207;
+            this.chkManagePrescriptions.Text = "customCheckBox7";
+            this.chkManagePrescriptions.UseVisualStyleBackColor = true;
+            // 
+            // chkManagePeople
+            // 
+            this.chkManagePeople.Checked = true;
+            this.chkManagePeople.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkManagePeople.FlatAppearance.BorderSize = 0;
+            this.chkManagePeople.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkManagePeople.Location = new System.Drawing.Point(40, 62);
+            this.chkManagePeople.Name = "chkManagePeople";
+            this.chkManagePeople.Size = new System.Drawing.Size(45, 36);
+            this.chkManagePeople.TabIndex = 202;
+            this.chkManagePeople.Text = "customCheckBox2";
+            this.chkManagePeople.UseVisualStyleBackColor = true;
+            // 
+            // chkManageDoctors
+            // 
+            this.chkManageDoctors.Checked = true;
+            this.chkManageDoctors.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkManageDoctors.FlatAppearance.BorderSize = 0;
+            this.chkManageDoctors.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkManageDoctors.Location = new System.Drawing.Point(40, 146);
+            this.chkManageDoctors.Name = "chkManageDoctors";
+            this.chkManageDoctors.Size = new System.Drawing.Size(45, 36);
+            this.chkManageDoctors.TabIndex = 204;
+            this.chkManageDoctors.Text = "customCheckBox4";
+            this.chkManageDoctors.UseVisualStyleBackColor = true;
+            // 
             // chkIsActive
             // 
-            this.chkIsActive.AutoSize = true;
-            this.chkIsActive.BackColor = System.Drawing.Color.Transparent;
+            this.chkIsActive.Checked = true;
+            this.chkIsActive.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkIsActive.FlatAppearance.BorderSize = 0;
+            this.chkIsActive.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.chkIsActive.Location = new System.Drawing.Point(367, 186);
             this.chkIsActive.Name = "chkIsActive";
-            this.chkIsActive.Size = new System.Drawing.Size(45, 38);
-            this.chkIsActive.TabIndex = 174;
-            this.chkIsActive.Text = " ";
-            this.chkIsActive.UseVisualStyleBackColor = false;
+            this.chkIsActive.Size = new System.Drawing.Size(45, 36);
+            this.chkIsActive.TabIndex = 201;
+            this.chkIsActive.Text = "customCheckBox1";
+            this.chkIsActive.UseVisualStyleBackColor = true;
             // 
-            // chkPeople
+            // ctrlPersonInfoSummary1
             // 
-            this.chkPeople.AutoSize = true;
-            this.chkPeople.BackColor = System.Drawing.Color.Transparent;
-            this.chkPeople.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkPeople.Location = new System.Drawing.Point(14, 60);
-            this.chkPeople.Name = "chkPeople";
-            this.chkPeople.Size = new System.Drawing.Size(252, 38);
-            this.chkPeople.TabIndex = 192;
-            this.chkPeople.Text = "   Manage People";
-            this.chkPeople.UseVisualStyleBackColor = false;
+            this.ctrlPersonInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ctrlPersonInfoSummary1.Location = new System.Drawing.Point(10, 42);
+            this.ctrlPersonInfoSummary1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.ctrlPersonInfoSummary1.Name = "ctrlPersonInfoSummary1";
+            this.ctrlPersonInfoSummary1.Size = new System.Drawing.Size(1195, 172);
+            this.ctrlPersonInfoSummary1.TabIndex = 21;
             // 
-            // chkPatients
+            // label3
             // 
-            this.chkPatients.AutoSize = true;
-            this.chkPatients.BackColor = System.Drawing.Color.Transparent;
-            this.chkPatients.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkPatients.Location = new System.Drawing.Point(14, 104);
-            this.chkPatients.Name = "chkPatients";
-            this.chkPatients.Size = new System.Drawing.Size(269, 38);
-            this.chkPatients.TabIndex = 193;
-            this.chkPatients.Text = "   Manage Patients";
-            this.chkPatients.UseVisualStyleBackColor = false;
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(91, 64);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(203, 34);
+            this.label3.TabIndex = 212;
+            this.label3.Text = "Manage People";
             // 
-            // chkDoctors
+            // label5
             // 
-            this.chkDoctors.AutoSize = true;
-            this.chkDoctors.BackColor = System.Drawing.Color.Transparent;
-            this.chkDoctors.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkDoctors.Location = new System.Drawing.Point(14, 144);
-            this.chkDoctors.Name = "chkDoctors";
-            this.chkDoctors.Size = new System.Drawing.Size(265, 38);
-            this.chkDoctors.TabIndex = 194;
-            this.chkDoctors.Text = "   Manage Doctors";
-            this.chkDoctors.UseVisualStyleBackColor = false;
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(91, 104);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(220, 34);
+            this.label5.TabIndex = 213;
+            this.label5.Text = "Manage Patients";
             // 
-            // chkPrescriptions
+            // label6
             // 
-            this.chkPrescriptions.AutoSize = true;
-            this.chkPrescriptions.BackColor = System.Drawing.Color.Transparent;
-            this.chkPrescriptions.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkPrescriptions.Location = new System.Drawing.Point(360, 144);
-            this.chkPrescriptions.Name = "chkPrescriptions";
-            this.chkPrescriptions.Size = new System.Drawing.Size(327, 38);
-            this.chkPrescriptions.TabIndex = 197;
-            this.chkPrescriptions.Text = "   Manage Prescriptions";
-            this.chkPrescriptions.UseVisualStyleBackColor = false;
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(91, 146);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(216, 34);
+            this.label6.TabIndex = 214;
+            this.label6.Text = "Manage Doctors";
             // 
-            // chkExaminations
+            // label8
             // 
-            this.chkExaminations.AutoSize = true;
-            this.chkExaminations.BackColor = System.Drawing.Color.Transparent;
-            this.chkExaminations.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkExaminations.Location = new System.Drawing.Point(360, 104);
-            this.chkExaminations.Name = "chkExaminations";
-            this.chkExaminations.Size = new System.Drawing.Size(336, 38);
-            this.chkExaminations.TabIndex = 196;
-            this.chkExaminations.Text = "   Manage Examinations";
-            this.chkExaminations.UseVisualStyleBackColor = false;
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(418, 146);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(263, 34);
+            this.label8.TabIndex = 217;
+            this.label8.Text = "Mange Prescriptions";
             // 
-            // chkAppointments
+            // label9
             // 
-            this.chkAppointments.AutoSize = true;
-            this.chkAppointments.BackColor = System.Drawing.Color.Transparent;
-            this.chkAppointments.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkAppointments.Location = new System.Drawing.Point(360, 60);
-            this.chkAppointments.Name = "chkAppointments";
-            this.chkAppointments.Size = new System.Drawing.Size(341, 38);
-            this.chkAppointments.TabIndex = 195;
-            this.chkAppointments.Text = "   Manage Appointments";
-            this.chkAppointments.UseVisualStyleBackColor = false;
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(418, 104);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(287, 34);
+            this.label9.TabIndex = 216;
+            this.label9.Text = "Manage Examinations";
             // 
-            // chkUsers
+            // label10
             // 
-            this.chkUsers.AutoSize = true;
-            this.chkUsers.BackColor = System.Drawing.Color.Transparent;
-            this.chkUsers.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkUsers.Location = new System.Drawing.Point(785, 142);
-            this.chkUsers.Name = "chkUsers";
-            this.chkUsers.Size = new System.Drawing.Size(240, 38);
-            this.chkUsers.TabIndex = 200;
-            this.chkUsers.Text = "   Manage Users";
-            this.chkUsers.UseVisualStyleBackColor = false;
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(418, 64);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(292, 34);
+            this.label10.TabIndex = 215;
+            this.label10.Text = "Manage Appointments";
             // 
-            // chkInvoicesPayments
+            // label11
             // 
-            this.chkInvoicesPayments.AutoSize = true;
-            this.chkInvoicesPayments.BackColor = System.Drawing.Color.Transparent;
-            this.chkInvoicesPayments.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkInvoicesPayments.Location = new System.Drawing.Point(785, 102);
-            this.chkInvoicesPayments.Name = "chkInvoicesPayments";
-            this.chkInvoicesPayments.Size = new System.Drawing.Size(422, 38);
-            this.chkInvoicesPayments.TabIndex = 199;
-            this.chkInvoicesPayments.Text = "   Manage Invoices - Payments";
-            this.chkInvoicesPayments.UseVisualStyleBackColor = false;
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(819, 146);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(191, 34);
+            this.label11.TabIndex = 220;
+            this.label11.Text = "Manage Users";
             // 
-            // chkAnalyses
+            // label12
             // 
-            this.chkAnalyses.AutoSize = true;
-            this.chkAnalyses.BackColor = System.Drawing.Color.Transparent;
-            this.chkAnalyses.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkAnalyses.Location = new System.Drawing.Point(785, 58);
-            this.chkAnalyses.Name = "chkAnalyses";
-            this.chkAnalyses.Size = new System.Drawing.Size(280, 38);
-            this.chkAnalyses.TabIndex = 198;
-            this.chkAnalyses.Text = "   Manage Analyses";
-            this.chkAnalyses.UseVisualStyleBackColor = false;
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(819, 104);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(373, 34);
+            this.label12.TabIndex = 219;
+            this.label12.Text = "Manage Invoices - Payments";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(819, 64);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(231, 34);
+            this.label13.TabIndex = 218;
+            this.label13.Text = "Manage Analyses";
             // 
             // frmAddUpdateUser
             // 
@@ -442,15 +561,24 @@
         private System.Windows.Forms.TextBox tbConfirmPassword;
         private System.Windows.Forms.TextBox tbPassword;
         private System.Windows.Forms.TextBox tbUsername;
-        private MyCustomCheckBox chkIsActive;
-        private MyCustomCheckBox chkUsers;
-        private MyCustomCheckBox chkInvoicesPayments;
-        private MyCustomCheckBox chkAnalyses;
-        private MyCustomCheckBox chkPrescriptions;
-        private MyCustomCheckBox chkExaminations;
-        private MyCustomCheckBox chkAppointments;
-        private MyCustomCheckBox chkDoctors;
-        private MyCustomCheckBox chkPatients;
-        private MyCustomCheckBox chkPeople;
+        private CustomCheckBox chkManageUsers;
+        private CustomCheckBox chkManageInvoicesPayments;
+        private CustomCheckBox chkManageAnalyses;
+        private CustomCheckBox chkManagePrescriptions;
+        private CustomCheckBox chkManageExaminations;
+        private CustomCheckBox chkManageAppointments;
+        private CustomCheckBox chkManageDoctors;
+        private CustomCheckBox chkManagePeople;
+        private CustomCheckBox chkIsActive;
+        private CustomCheckBox chkManagePatients;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label3;
     }
 }
