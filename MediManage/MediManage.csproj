@@ -316,12 +316,6 @@
     </Compile>
     <Compile Include="Global Classes\clsGlobal.cs" />
     <Compile Include="Global Classes\clsUtil.cs" />
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
     <Compile Include="Patients\frmAddUpdatePatient.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -345,7 +339,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="TempClass.cs" />
     <Compile Include="Users\frmLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -476,9 +469,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Doctors\frmDoctorsList.resx">
       <DependentUpon>frmDoctorsList.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Patients\frmAddUpdatePatient.resx">
       <DependentUpon>frmAddUpdatePatient.cs</DependentUpon>
