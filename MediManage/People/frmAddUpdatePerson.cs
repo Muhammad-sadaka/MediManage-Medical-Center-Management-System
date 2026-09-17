@@ -137,8 +137,6 @@ namespace MediManage
             cbCountries.DataSource = clsCountry.GetAllCountries();
             cbCountries.DisplayMember = "CountryName";
 
-
-
             if (_Mode == enMode.AddNew)
             {
                 person = new clsPerson();
@@ -171,7 +169,7 @@ namespace MediManage
 
             if (person == null)
             {
-                MessageBox.Show("This form will be closed because No Person with ID = " + person.PersonID);
+                MessageBox.Show("This form will be closed because No Person with ID = " + person.PersonID,"Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
                 this.Close();
                 return;
             }
