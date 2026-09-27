@@ -13,9 +13,9 @@ namespace MediManage_API.Controllers
         [HttpGet("All", Name = "GetAllBills")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IEnumerable<clsBillDTO>> GetAllBills()
+        public ActionResult<IEnumerable<clsBillListDTO>> GetAllBills()
         {
-            List<clsBillDTO> list = clsBill.GetAllBills();
+            List<clsBillListDTO> list = clsBill.GetAllBills();
             if (list == null || list.Count == 0)
             {
                 return NotFound("No Bills Found!");
@@ -92,7 +92,6 @@ namespace MediManage_API.Controllers
             bill.AmountOfRemaining = updatedDTO.AmountOfRemaining;
             bill.TotalAmount = updatedDTO.TotalAmount;
             bill.PaymentStatusID = updatedDTO.PaymentStatusID;
-            bill.PaymentMethodID = updatedDTO.PaymentMethodID;
 
             if (bill.Save())
             {

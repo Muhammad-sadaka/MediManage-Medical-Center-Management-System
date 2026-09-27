@@ -27,7 +27,7 @@ namespace MediManage
             lblWelcome.Text = "Welcome " + clsGlobal.CurrentUser.PersonInfo.FirstName;
             lblTodayDate.Text = "Today's date: " + DateTime.Today.ToLongDateString();
             lblTotalPatients.Text = "Total Patients = " + clsPatient.GetTotalPatientsNumber();
-            lblTodayRevenue.Text = "Today Revenue = $"; //+
+            lblTodayRevenue.Text = "Today Revenue = $" + clsPayment.GetTotalTodayPayments();
             DGVTodayAppointments.DataSource = clsAppointment.GetTodayAppointments();
             lblTodayAppointments.Text = "Today Appointments = " + DGVTodayAppointments.RowCount.ToString();
 

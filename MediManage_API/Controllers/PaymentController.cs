@@ -10,12 +10,12 @@ namespace MediManage_API.Controllers
     [ApiController]
     public class PaymentController : ControllerBase
     {
-        [HttpGet("All", Name = "GetAllPayments")]
+        [HttpGet("All/{BillID}", Name = "GetAllPayments")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IEnumerable<clsPaymentDTO>> GetAllPayments()
+        public ActionResult<IEnumerable<clsPaymentListDTO>> GetAllPayments(int? BillID)
         {
-            List<clsPaymentDTO> list = clsPayment.GetAllPayments();
+            List<clsPaymentListDTO> list = clsPayment.GetAllPayments(BillID);
             if (list == null || list.Count == 0)
             {
                 return NotFound("No Payments Found!");

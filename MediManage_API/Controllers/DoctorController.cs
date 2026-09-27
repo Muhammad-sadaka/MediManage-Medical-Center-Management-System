@@ -22,7 +22,20 @@ namespace MediManage_API.Controllers
             }
             return Ok(list);
         }
-
+        
+        [HttpGet("DoctorsNames", Name = "GetAllDoctorsNames")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<IEnumerable<string>> GetAllDoctorsNames()
+        {
+            List<string> list = clsDoctor.GetAllDoctorsNames();
+            if (list == null || list.Count == 0)
+            {
+                return NotFound("No Doctors Found!");
+            }
+            return Ok(list);
+        }
+        
         [HttpGet("{id}", Name = "GetDoctorById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -43,7 +56,49 @@ namespace MediManage_API.Controllers
 
             return Ok(doctor.DTO);
         }
+        
+        [HttpGet("{Personid}", Name = "GetDoctorByPersonID")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<clsDoctorDTO> FindByPersonID(int PersonID)
+        {
+            if (PersonID < 1)
+            {
+                return BadRequest($"Invalid Person ID {PersonID}");
+            }
 
+            clsDoctor doctor = clsDoctor.FindByPersonID(PersonID);
+
+            if (doctor == null)
+            {
+                return NotFound($"Doctor with Person ID {PersonID} not found.");
+            }
+
+            return Ok(doctor.DTO);
+        }
+
+        [HttpGet("{NationalNo}", Name = "GetDoctorByNationalNo")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<clsDoctorDTO> GetDoctorByNationalNo(string NationalNo)
+        {
+            if (string.IsNullOrEmpty(NationalNo))
+            {
+                return BadRequest($"Invalid National No {NationalNo}");
+            }
+
+            clsDoctor doctor = clsDoctor.Find(NationalNo);
+
+            if (doctor == null)
+            {
+                return NotFound($"Doctor with National No {NationalNo} not found.");
+            }
+
+            return Ok(doctor.DTO);
+        }
+        
         [HttpPost(Name = "AddDoctor")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -134,6 +189,27 @@ namespace MediManage_API.Controllers
             }
 
             if (clsDoctor.IsExist(id))
+            {
+                return Ok(true);
+            }
+            else
+            {
+                return NotFound(false);
+            }
+        }
+        
+        [HttpGet("Exists/{NationalNo}", Name = "IsDoctorExistByNationalNo")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<bool> IsDoctorExistByNationalNo(string NationalNo)
+        {
+            if (string.IsNullOrEmpty(NationalNo))
+            {
+                return BadRequest($"Invalid National No {NationalNo}");
+            }
+
+            if (clsDoctor.IsExist(NationalNo))
             {
                 return Ok(true);
             }

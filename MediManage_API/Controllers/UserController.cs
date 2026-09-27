@@ -181,5 +181,26 @@ namespace MediManage_API.Controllers
                 return NotFound(false);
             }
         }
+
+        [HttpGet("Exists/{NationalNo}", Name = "IsUserExistByNationalNo")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<bool> IsUserExistByNationalNo(string NationalNo)
+        {
+            if (string.IsNullOrEmpty(NationalNo))
+            {
+                return BadRequest($"Invalid National No {NationalNo}");
+            }
+
+            if (clsUser.IsExist(NationalNo))
+            {
+                return Ok(true);
+            }
+            else
+            {
+                return NotFound(false);
+            }
+        }
     }
 }

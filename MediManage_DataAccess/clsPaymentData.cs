@@ -263,5 +263,38 @@ namespace MediManage_DataAccess
 
             return isFound;
         }
+
+        public static int? GetTotalTodayPayments()
+        {
+            int? Total = null;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("[SP_GetTotalTodayPayments]", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        connection.Open();
+
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                Total = reader["Total"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["Total"]);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsDataAccessSettings.EventLogCreate();
+                EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
+            }
+
+            return Total;
+        }
+
     }
 }

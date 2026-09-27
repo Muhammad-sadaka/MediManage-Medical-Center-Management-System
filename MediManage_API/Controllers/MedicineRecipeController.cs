@@ -8,14 +8,14 @@ namespace MediManage_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MedicineController : ControllerBase
+    public class MedicineRecipeController : ControllerBase
     {
-        [HttpGet("All", Name = "GetAllMedicines")]
+        [HttpGet("All/{MedicalPrescriptionID}", Name = "GetAllMedicineRecipes")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IEnumerable<clsMedicineDTO>> GetAllMedicines()
+        public ActionResult<IEnumerable<clsMedicineRecipeListDTO>> GetAllMedicineRecipes(int? MedicalPrescriptionID)
         {
-            List<clsMedicineDTO> list = clsMedicine.GetAllMedicines();
+            List<clsMedicineRecipeListDTO> list = clsMedicineRecipe.GetAllMedicinesRecipes(MedicalPrescriptionID);
             if (list == null || list.Count == 0)
             {
                 return NotFound("No Medicines Found!");
@@ -23,18 +23,18 @@ namespace MediManage_API.Controllers
             return Ok(list);
         }
 
-        [HttpGet("{id}", Name = "GetMedicineById")]
+        [HttpGet("{id}", Name = "GetMedicineRecipeById")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsMedicineRecipeDTO> GetMedicineById(int id)
+        public ActionResult<clsMedicineRecipeDTO> GetMedicineRecipeById(int id)
         {
             if (id < 1)
             {
                 return BadRequest($"Invalid ID {id}");
             }
 
-            clsMedicine medicine = clsMedicine.Find(id);
+            clsMedicineRecipe medicine = clsMedicineRecipe.Find(id);
 
             if (medicine == null)
             {
@@ -44,17 +44,17 @@ namespace MediManage_API.Controllers
             return Ok(medicine.DTO);
         }
 
-        [HttpPost(Name = "AddMedicine")]
+        [HttpPost(Name = "AddMedicineRecipe")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsMedicineDTO> AddMedicine(clsMedicineDTO newDTO)
+        public ActionResult<clsMedicineRecipeDTO> AddMedicineRecipe(clsMedicineRecipeDTO newDTO)
         {
-            if (newDTO == null || string.IsNullOrEmpty(newDTO.MedicineName))
+            if (newDTO == null || !newDTO.MedicalPrescriptionID.HasValue)
             {
                 return BadRequest("Invalid medicine data.");
             }
 
-            clsMedicine medicine = new clsMedicine(newDTO, clsMedicine.enMode.AddNew);
+            clsMedicineRecipe medicine = new clsMedicineRecipe(newDTO, clsMedicineRecipe.enMode.AddNew);
 
             if (medicine.Save())
             {
@@ -67,25 +67,29 @@ namespace MediManage_API.Controllers
             }
         }
 
-        [HttpPut("{id}", Name = "UpdateMedicine")]
+        [HttpPut("{id}", Name = "UpdateMedicineRecipe")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsMedicineDTO> UpdateMedicine(int id, clsMedicineDTO updatedDTO)
+        public ActionResult<clsMedicineRecipeDTO> UpdateMedicineRecipe(int id, clsMedicineRecipeDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || string.IsNullOrEmpty(updatedDTO.MedicineName))
+            if (id < 1 || updatedDTO == null || !updatedDTO.MedicalPrescriptionID.HasValue)
             {
                 return BadRequest("Invalid medicine data.");
             }
 
-            clsMedicine medicine = clsMedicine.Find(id);
+            clsMedicineRecipe medicine = clsMedicineRecipe.Find(id);
 
             if (medicine == null)
             {
                 return NotFound($"Medicine with ID {id} not found.");
             }
 
-            medicine.MedicineName = updatedDTO.MedicineName;
+            medicine.Duration = updatedDTO.Duration;
+            medicine.Repetition = updatedDTO.Repetition;
+            medicine.Dose = updatedDTO.Dose;
+            medicine.MedicalPrescriptionID = updatedDTO.MedicalPrescriptionID;
+            medicine.Notes = updatedDTO.Notes;
 
             if (medicine.Save())
             {
@@ -97,18 +101,18 @@ namespace MediManage_API.Controllers
             }
         }
 
-        [HttpDelete("{id}", Name = "DeleteMedicine")]
+        [HttpDelete("{id}", Name = "DeleteMedicineRecipe")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult DeleteMedicine(int id)
+        public ActionResult DeleteMedicineRecipe(int id)
         {
             if (id < 1)
             {
                 return BadRequest($"Invalid ID {id}");
             }
 
-            if (clsMedicine.DeleteMedicine(id))
+            if (clsMedicineRecipe.DeleteMedicine(id))
             {
                 return Ok($"Medicine with ID {id} has been deleted.");
             }
@@ -118,18 +122,18 @@ namespace MediManage_API.Controllers
             }
         }
 
-        [HttpGet("Exists/{id}", Name = "IsMedicineExist")]
+        [HttpGet("Exists/{id}", Name = "IsMedicineRecipeExist")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bool> IsMedicineExist(int id)
+        public ActionResult<bool> IsMedicineRecipeExist(int id)
         {
             if (id < 1)
             {
                 return BadRequest($"Invalid ID {id}");
             }
 
-            if (clsMedicine.IsExist(id))
+            if (clsMedicineRecipe.IsExist(id))
             {
                 return Ok(true);
             }

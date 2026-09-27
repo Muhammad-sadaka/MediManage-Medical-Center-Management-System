@@ -13,9 +13,9 @@ namespace MediManage_API.Controllers
         [HttpGet("All", Name = "GetAllPeople")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IEnumerable<clsPersonDTO>> GetAllPeople()
+        public ActionResult<IEnumerable<clsPersonListDTO>> GetAllPeople()
         {
-            List<clsPersonDTO> list = clsPerson.GetAllPeople();
+            List<clsPersonListDTO> list = clsPerson.GetAllPeople();
             if (list == null || list.Count == 0)
             {
                 return NotFound("No People Found!");
