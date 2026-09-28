@@ -13,9 +13,9 @@ namespace MediManage_API.Controllers
         [HttpGet("All", Name = "GetAllDetections")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IEnumerable<clsDetectionDTO>> GetAllDetections()
+        public ActionResult<IEnumerable<clsDetectionListDTO>> GetAllDetections()
         {
-            List<clsDetectionDTO> list = clsDetection.GetAllDetections();
+            List<clsDetectionListDTO> list = clsDetection.GetAllDetections();
             if (list == null || list.Count == 0)
             {
                 return NotFound("No Detections Found!");

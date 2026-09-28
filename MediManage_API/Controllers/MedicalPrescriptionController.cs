@@ -13,9 +13,9 @@ namespace MediManage_API.Controllers
         [HttpGet("All", Name = "GetAllMedicalPrescriptions")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IEnumerable<clsMedicalPrescriptionDTO>> GetAllMedicalPrescriptions()
+        public ActionResult<IEnumerable<clsMedicalPrescriptionsListDTO>> GetAllMedicalPrescriptions()
         {
-            List<clsMedicalPrescriptionDTO> list = clsMedicalPrescription.GetAllMedicalPrescriptions();
+            List<clsMedicalPrescriptionsListDTO> list = clsMedicalPrescription.GetAllMedicalPrescriptions();
             if (list == null || list.Count == 0)
             {
                 return NotFound("No Medical Prescriptions Found!");

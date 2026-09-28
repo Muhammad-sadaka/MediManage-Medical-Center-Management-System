@@ -113,5 +113,9 @@ namespace MediManage_Business
         {
             return clsPaymentsDataAccess.IsPaymentExist(ID);
         }
+        public static int? GetTotalTodayPayments()
+        {
+            return clsPaymentsDataAccess.GetTotalTodayPayments();
+        }
     }
 }

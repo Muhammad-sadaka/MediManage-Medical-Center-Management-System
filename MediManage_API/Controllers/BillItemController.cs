@@ -10,12 +10,16 @@ namespace MediManage_API.Controllers
     [ApiController]
     public class BillItemController : ControllerBase
     {
-        [HttpGet("All", Name = "GetAllBillItems")]
+        [HttpGet("All/{id}", Name = "GetAllBillItemsByBillID")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IEnumerable<clsBillItemDTO>> GetAllBillItems()
+        public ActionResult<IEnumerable<clsBillItemListDTO>> GetAllBillItems(int id)
         {
-            List<clsBillItemDTO> list = clsBillItem.GetAllBillItems();
+            if (id < 1)
+            {
+                return BadRequest($"Invalid ID {id}");
+            }
+            List<clsBillItemListDTO> list = clsBillItem.GetAllBillItems(id);
             if (list == null || list.Count == 0)
             {
                 return NotFound("No Bill Items Found!");
@@ -49,7 +53,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<clsBillItemDTO> AddBillItem(clsBillItemDTO newDTO)
         {
-            if (newDTO == null || !newDTO.Bill_ID.HasValue || !newDTO.Price.HasValue)
+            if (newDTO == null || !newDTO.Bill_ID.HasValue)
             {
                 return BadRequest("Invalid bill item data.");
             }
@@ -73,7 +77,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<clsBillItemDTO> UpdateBillItem(int id, clsBillItemDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || !updatedDTO.Bill_ID.HasValue || !updatedDTO.Price.HasValue)
+            if (id < 1 || updatedDTO == null || !updatedDTO.Bill_ID.HasValue)
             {
                 return BadRequest("Invalid bill item data.");
             }
@@ -88,7 +92,6 @@ namespace MediManage_API.Controllers
             billItem.Bill_ID = updatedDTO.Bill_ID;
             billItem.ServiceTypeID = updatedDTO.ServiceTypeID;
             billItem.Description = updatedDTO.Description;
-            billItem.Price = updatedDTO.Price;
             billItem.Amount = updatedDTO.Amount;
             billItem.Total = updatedDTO.Total;
 
@@ -143,5 +146,20 @@ namespace MediManage_API.Controllers
                 return NotFound(false);
             }
         }
+        
+        [HttpGet("Total", Name = "CalculateTotal")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult <decimal> CalculateTotal(decimal Price, int Quantity)
+        {
+            if (Price < 1 || Quantity < 1)
+            {
+                return BadRequest($"Invalid Quantity or Price");
+            }
+             return Ok(clsBillItem.CalculateTotal(Price,Quantity));
+        }
+
+
     }
 }

@@ -43,6 +43,27 @@ namespace MediManage_API.Controllers
 
             return Ok(specialty.DTO);
         }
+        
+        [HttpGet("{specialtyName}", Name = "GetSpecialtyBySpecialtyName")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<clsSpecialtyDTO> GetSpecialtyBySpecialtyName(string specialtyName)
+        {
+            if (string.IsNullOrEmpty(specialtyName))
+            {
+                return BadRequest($"Invalid Specialty Name {specialtyName}");
+            }
+
+            clsSpecialty specialty = clsSpecialty.Find(specialtyName);
+
+            if (specialty == null)
+            {
+                return NotFound($"Specialty with Specialty Name {specialtyName} not found.");
+            }
+
+            return Ok(specialty.DTO);
+        }
 
         [HttpPost(Name = "AddSpecialty")]
         [ProducesResponseType(StatusCodes.Status201Created)]

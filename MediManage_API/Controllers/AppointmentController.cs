@@ -13,9 +13,9 @@ namespace MediManage_API.Controllers
         [HttpGet("All", Name = "GetAllAppointments")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IEnumerable<clsAppointmentDTO>> GetAllAppointments()
+        public ActionResult<IEnumerable<clsAppointmentListDTO>> GetAllAppointments()
         {
-            List<clsAppointmentDTO> list = clsAppointment.GetAllAppointments();
+            List<clsAppointmentListDTO> list = clsAppointment.GetAllAppointments();
             if (list == null || list.Count == 0)
             {
                 return NotFound("No Appointments Found!");

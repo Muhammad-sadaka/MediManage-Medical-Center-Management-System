@@ -13,9 +13,9 @@ namespace MediManage_API.Controllers
         [HttpGet("All", Name = "GetAllMedicalAnalyses")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IEnumerable<clsMedicalAnalysisDTO>> GetAllMedicalAnalyses()
+        public ActionResult<IEnumerable<clsMedicalAnalysisListDTO>> GetAllMedicalAnalyses()
         {
-            List<clsMedicalAnalysisDTO> list = clsMedicalAnalysis.GetAllMedicalAnalyses();
+            List<clsMedicalAnalysisListDTO> list = clsMedicalAnalysis.GetAllMedicalAnalyses();
             if (list == null || list.Count == 0)
             {
                 return NotFound("No Medical Analyses Found!");

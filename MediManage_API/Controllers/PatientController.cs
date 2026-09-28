@@ -43,7 +43,49 @@ namespace MediManage_API.Controllers
 
             return Ok(patient.DTO);
         }
+        
+        [HttpGet("{PersonID}", Name = "GetPatientByPersonID")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<clsPatientDTO> GetPatientByPersonID(int PersonID)
+        {
+            if (PersonID < 1)
+            {
+                return BadRequest($"Invalid PersonID {PersonID}");
+            }
 
+            clsPatient patient = clsPatient.FindByPersonID(PersonID);
+
+            if (patient == null)
+            {
+                return NotFound($"Patient with PersonID {PersonID} not found.");
+            }
+
+            return Ok(patient.DTO);
+        }
+
+        [HttpGet("{NationalNo}", Name = "GetPatientByNationalNo")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<clsPatientDTO> GetPatientByNationalNo(string NationalNo)
+        {
+            if (string.IsNullOrEmpty(NationalNo))
+            {
+                return BadRequest($"Invalid National No {NationalNo}");
+            }
+
+            clsPatient patient = clsPatient.Find(NationalNo);
+
+            if (patient == null)
+            {
+                return NotFound($"Patient with National No {NationalNo} not found.");
+            }
+
+            return Ok(patient.DTO);
+        }
+        
         [HttpPost(Name = "AddPatient")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -134,6 +176,27 @@ namespace MediManage_API.Controllers
             }
 
             if (clsPatient.IsExist(id))
+            {
+                return Ok(true);
+            }
+            else
+            {
+                return NotFound(false);
+            }
+        }
+
+        [HttpGet("Exists/{NationalNo}", Name = "IsPatientExistByNationalNo")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<bool> IsPatientExistByNationalNo(string NationalNo)
+        {
+            if (string.IsNullOrEmpty(NationalNo))
+            {
+                return BadRequest($"Invalid National No {NationalNo}");
+            }
+
+            if (clsPatient.IsExist(NationalNo))
             {
                 return Ok(true);
             }
