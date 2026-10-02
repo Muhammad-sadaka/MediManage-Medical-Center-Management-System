@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
 using MediManage_Business;
 using MediManage_DataAccess;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
@@ -10,6 +11,13 @@ namespace MediManage_API.Controllers
     [ApiController]
     public class PersonController : ControllerBase
     {
+        private readonly IValidator<clsPersonDTO> _validator;
+
+        public PersonController(IValidator<clsPersonDTO> validator)
+        {
+            _validator = validator;
+        }
+
         [HttpGet("All", Name = "GetAllPeople")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -29,7 +37,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<clsPersonDTO> GetPersonById(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -44,22 +52,22 @@ namespace MediManage_API.Controllers
             return Ok(person.DTO);
         }
 
-        [HttpGet("{NationalNo}", Name = "GetPersonByNationalNo")]
+        [HttpGet("by-national-no/{nationalNo}", Name = "GetPersonByNationalNo")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsPersonDTO> GetPersonByNationalNo(string NationalNo)
+        public ActionResult<clsPersonDTO> GetPersonByNationalNo(string nationalNo)
         {
-            if (string.IsNullOrEmpty(NationalNo))
+            if (string.IsNullOrWhiteSpace(nationalNo))
             {
-                return BadRequest($"Invalid NationalNo {NationalNo}");
+                return BadRequest("National No cannot be empty.");
             }
 
-            clsPerson person = clsPerson.Find(NationalNo);
+            clsPerson person = clsPerson.Find(nationalNo);
 
             if (person == null)
             {
-                return NotFound($"Person with NationalNo {NationalNo} not found.");
+                return NotFound($"Person with National No '{nationalNo}' not found.");
             }
 
             return Ok(person.DTO);
@@ -68,11 +76,12 @@ namespace MediManage_API.Controllers
         [HttpPost(Name = "AddPerson")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsPersonDTO> AddPerson(clsPersonDTO newDTO)
+        public ActionResult<clsPersonDTO> AddPerson([FromBody] clsPersonDTO newDTO)
         {
-            if (newDTO == null || string.IsNullOrEmpty(newDTO.FirstName) || string.IsNullOrEmpty(newDTO.LastName))
+            var validationResult = _validator.Validate(newDTO);
+            if (!validationResult.IsValid)
             {
-                return BadRequest("Invalid person data.");
+                return BadRequest(validationResult.Errors);
             }
 
             clsPerson person = new clsPerson(newDTO, clsPerson.enMode.AddNew);
@@ -82,21 +91,25 @@ namespace MediManage_API.Controllers
                 newDTO.PersonID = person.PersonID;
                 return CreatedAtRoute("GetPersonById", new { id = newDTO.PersonID }, newDTO);
             }
-            else
-            {
-                return BadRequest("Failed to create new Person.");
-            }
+
+            return BadRequest("Failed to create new Person.");
         }
 
         [HttpPut("{id}", Name = "UpdatePerson")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsPersonDTO> UpdatePerson(int id, clsPersonDTO updatedDTO)
+        public ActionResult<clsPersonDTO> UpdatePerson(int id, [FromBody] clsPersonDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || string.IsNullOrEmpty(updatedDTO.FirstName) || string.IsNullOrEmpty(updatedDTO.LastName))
+            if (id <= 0)
             {
-                return BadRequest("Invalid person data.");
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            var validationResult = _validator.Validate(updatedDTO);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
             }
 
             clsPerson person = clsPerson.Find(id);
@@ -125,10 +138,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(person.DTO);
             }
-            else
-            {
-                return BadRequest("Failed to update Person.");
-            }
+
+            return BadRequest("Failed to update Person.");
         }
 
         [HttpDelete("{id}", Name = "DeletePerson")]
@@ -137,19 +148,22 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeletePerson(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsPerson.IsExist(id))
+            {
+                return NotFound($"Person with ID {id} not found.");
             }
 
             if (clsPerson.DeletePerson(id))
             {
                 return Ok($"Person with ID {id} has been deleted.");
             }
-            else
-            {
-                return NotFound($"Person with ID {id} not found. No rows deleted!");
-            }
+
+            return BadRequest("Failed to delete Person.");
         }
 
         [HttpGet("Exists/{id}", Name = "IsPersonExist")]
@@ -158,7 +172,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> IsPersonExist(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -167,31 +181,27 @@ namespace MediManage_API.Controllers
             {
                 return Ok(true);
             }
-            else
-            {
-                return NotFound(false);
-            }
+
+            return NotFound(false);
         }
 
-        [HttpGet("Exists/{NationalNo}", Name = "IsPersonExistByNationalNo")]
+        [HttpGet("Exists/by-national-no/{nationalNo}", Name = "IsPersonExistByNationalNo")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<bool> IsPersonExistByNationalNo(string NationalNo)
+        public ActionResult<bool> IsPersonExistByNationalNo(string nationalNo)
         {
-            if (string.IsNullOrEmpty(NationalNo))
+            if (string.IsNullOrWhiteSpace(nationalNo))
             {
-                return BadRequest($"Invalid NationalNo {NationalNo}");
+                return BadRequest("National No cannot be empty.");
             }
 
-            if (clsPerson.IsExist(NationalNo))
+            if (clsPerson.IsExist(nationalNo))
             {
                 return Ok(true);
             }
-            else
-            {
-                return NotFound(false);
-            }
+
+            return NotFound(false);
         }
     }
 }

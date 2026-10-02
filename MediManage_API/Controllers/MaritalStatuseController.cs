@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
 using MediManage_Business;
 using MediManage_DataAccess;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
@@ -10,6 +11,13 @@ namespace MediManage_API.Controllers
     [ApiController]
     public class MaritalStatuseController : ControllerBase
     {
+        private readonly IValidator<clsMaritalStatusDTO> _validator;
+
+        public MaritalStatuseController(IValidator<clsMaritalStatusDTO> validator)
+        {
+            _validator = validator;
+        }
+
         [HttpGet("All", Name = "GetAllMaritalStatuses")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -29,7 +37,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<clsMaritalStatusDTO> GetMaritalStatusById(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -47,11 +55,12 @@ namespace MediManage_API.Controllers
         [HttpPost(Name = "AddMaritalStatus")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsMaritalStatusDTO> AddMaritalStatus(clsMaritalStatusDTO newDTO)
+        public ActionResult<clsMaritalStatusDTO> AddMaritalStatus([FromBody] clsMaritalStatusDTO newDTO)
         {
-            if (newDTO == null || string.IsNullOrEmpty(newDTO.MaritalStatusName))
+            var validationResult = _validator.Validate(newDTO);
+            if (!validationResult.IsValid)
             {
-                return BadRequest("Invalid marital status data.");
+                return BadRequest(validationResult.Errors);
             }
 
             clsMaritalStatus status = new clsMaritalStatus(newDTO, clsMaritalStatus.enMode.AddNew);
@@ -61,21 +70,25 @@ namespace MediManage_API.Controllers
                 newDTO.MaritalStatusID = status.MaritalStatusID;
                 return CreatedAtRoute("GetMaritalStatusById", new { id = newDTO.MaritalStatusID }, newDTO);
             }
-            else
-            {
-                return BadRequest("Failed to create new Marital Status.");
-            }
+
+            return BadRequest("Failed to create new Marital Status.");
         }
 
         [HttpPut("{id}", Name = "UpdateMaritalStatus")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsMaritalStatusDTO> UpdateMaritalStatus(int id, clsMaritalStatusDTO updatedDTO)
+        public ActionResult<clsMaritalStatusDTO> UpdateMaritalStatus(int id, [FromBody] clsMaritalStatusDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || string.IsNullOrEmpty(updatedDTO.MaritalStatusName))
+            if (id <= 0)
             {
-                return BadRequest("Invalid marital status data.");
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            var validationResult = _validator.Validate(updatedDTO);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
             }
 
             clsMaritalStatus status = clsMaritalStatus.Find(id);
@@ -91,10 +104,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(status.DTO);
             }
-            else
-            {
-                return BadRequest("Failed to update Marital Status.");
-            }
+
+            return BadRequest("Failed to update Marital Status.");
         }
 
         [HttpDelete("{id}", Name = "DeleteMaritalStatus")]
@@ -103,19 +114,22 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeleteMaritalStatus(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsMaritalStatus.IsExist(id))
+            {
+                return NotFound($"Marital Status with ID {id} not found.");
             }
 
             if (clsMaritalStatus.DeleteMaritalStatus(id))
             {
                 return Ok($"Marital Status with ID {id} has been deleted.");
             }
-            else
-            {
-                return NotFound($"Marital Status with ID {id} not found. No rows deleted!");
-            }
+
+            return BadRequest("Failed to delete Marital Status.");
         }
 
         [HttpGet("Exists/{id}", Name = "IsMaritalStatusExist")]
@@ -124,7 +138,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> IsMaritalStatusExist(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -133,10 +147,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(true);
             }
-            else
-            {
-                return NotFound(false);
-            }
+
+            return NotFound(false);
         }
     }
 }

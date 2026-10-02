@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
 using MediManage_Business;
 using MediManage_DataAccess;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
@@ -10,12 +11,19 @@ namespace MediManage_API.Controllers
     [ApiController]
     public class PaymentController : ControllerBase
     {
-        [HttpGet("All/{BillID}", Name = "GetAllPayments")]
+        private readonly IValidator<clsPaymentDTO> _validator;
+
+        public PaymentController(IValidator<clsPaymentDTO> validator)
+        {
+            _validator = validator;
+        }
+
+        [HttpGet("All/{billId?}", Name = "GetAllPayments")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<IEnumerable<clsPaymentListDTO>> GetAllPayments(int? BillID)
+        public ActionResult<IEnumerable<clsPaymentListDTO>> GetAllPayments(int? billId = null)
         {
-            List<clsPaymentListDTO> list = clsPayment.GetAllPayments(BillID);
+            List<clsPaymentListDTO> list = clsPayment.GetAllPayments(billId);
             if (list == null || list.Count == 0)
             {
                 return NotFound("No Payments Found!");
@@ -29,7 +37,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<clsPaymentDTO> GetPaymentById(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -47,11 +55,12 @@ namespace MediManage_API.Controllers
         [HttpPost(Name = "AddPayment")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsPaymentDTO> AddPayment(clsPaymentDTO newDTO)
+        public ActionResult<clsPaymentDTO> AddPayment([FromBody] clsPaymentDTO newDTO)
         {
-            if (newDTO == null || !newDTO.Bill_ID.HasValue || !newDTO.Amount.HasValue)
+            var validationResult = _validator.Validate(newDTO);
+            if (!validationResult.IsValid)
             {
-                return BadRequest("Invalid payment data.");
+                return BadRequest(validationResult.Errors);
             }
 
             clsPayment payment = new clsPayment(newDTO, clsPayment.enMode.AddNew);
@@ -61,21 +70,25 @@ namespace MediManage_API.Controllers
                 newDTO.PaymentID = payment.PaymentID;
                 return CreatedAtRoute("GetPaymentById", new { id = newDTO.PaymentID }, newDTO);
             }
-            else
-            {
-                return BadRequest("Failed to create new Payment.");
-            }
+
+            return BadRequest("Failed to create new Payment.");
         }
 
         [HttpPut("{id}", Name = "UpdatePayment")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsPaymentDTO> UpdatePayment(int id, clsPaymentDTO updatedDTO)
+        public ActionResult<clsPaymentDTO> UpdatePayment(int id, [FromBody] clsPaymentDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || !updatedDTO.Bill_ID.HasValue || !updatedDTO.Amount.HasValue)
+            if (id <= 0)
             {
-                return BadRequest("Invalid payment data.");
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            var validationResult = _validator.Validate(updatedDTO);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
             }
 
             clsPayment payment = clsPayment.Find(id);
@@ -89,15 +102,14 @@ namespace MediManage_API.Controllers
             payment.PaymentDate = updatedDTO.PaymentDate;
             payment.CreatedByUserID = updatedDTO.CreatedByUserID;
             payment.Amount = updatedDTO.Amount;
+            payment.PaymentMethodID = updatedDTO.PaymentMethodID;
 
             if (payment.Save())
             {
                 return Ok(payment.DTO);
             }
-            else
-            {
-                return BadRequest("Failed to update Payment.");
-            }
+
+            return BadRequest("Failed to update Payment.");
         }
 
         [HttpDelete("{id}", Name = "DeletePayment")]
@@ -106,19 +118,22 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeletePayment(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsPayment.IsExist(id))
+            {
+                return NotFound($"Payment with ID {id} not found.");
             }
 
             if (clsPayment.DeletePayment(id))
             {
                 return Ok($"Payment with ID {id} has been deleted.");
             }
-            else
-            {
-                return NotFound($"Payment with ID {id} not found. No rows deleted!");
-            }
+
+            return BadRequest("Failed to delete Payment.");
         }
 
         [HttpGet("Exists/{id}", Name = "IsPaymentExist")]
@@ -127,7 +142,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> IsPaymentExist(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -136,10 +151,22 @@ namespace MediManage_API.Controllers
             {
                 return Ok(true);
             }
-            else
+
+            return NotFound(false);
+        }
+
+        [HttpGet("TodayCount", Name = "GetTotalTodayPayments")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<int> GetTotalTodayPayments()
+        {
+            int? count = clsPayment.GetTotalTodayPayments();
+            if (!count.HasValue)
             {
-                return NotFound(false);
+                return NotFound("Could not retrieve today's payments count.");
             }
+
+            return Ok(count.Value);
         }
     }
 }

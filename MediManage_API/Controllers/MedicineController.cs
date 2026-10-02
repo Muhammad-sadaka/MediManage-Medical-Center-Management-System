@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
 using MediManage_Business;
 using MediManage_DataAccess;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
@@ -10,6 +11,13 @@ namespace MediManage_API.Controllers
     [ApiController]
     public class MedicineController : ControllerBase
     {
+        private readonly IValidator<clsMedicineDTO> _validator;
+
+        public MedicineController(IValidator<clsMedicineDTO> validator)
+        {
+            _validator = validator;
+        }
+
         [HttpGet("All", Name = "GetAllMedicines")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -27,9 +35,9 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsMedicineRecipeDTO> GetMedicineById(int id)
+        public ActionResult<clsMedicineDTO> GetMedicineById(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -47,11 +55,12 @@ namespace MediManage_API.Controllers
         [HttpPost(Name = "AddMedicine")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsMedicineDTO> AddMedicine(clsMedicineDTO newDTO)
+        public ActionResult<clsMedicineDTO> AddMedicine([FromBody] clsMedicineDTO newDTO)
         {
-            if (newDTO == null || string.IsNullOrEmpty(newDTO.MedicineName))
+            var validationResult = _validator.Validate(newDTO);
+            if (!validationResult.IsValid)
             {
-                return BadRequest("Invalid medicine data.");
+                return BadRequest(validationResult.Errors);
             }
 
             clsMedicine medicine = new clsMedicine(newDTO, clsMedicine.enMode.AddNew);
@@ -61,21 +70,25 @@ namespace MediManage_API.Controllers
                 newDTO.MedicineID = medicine.MedicineID;
                 return CreatedAtRoute("GetMedicineById", new { id = newDTO.MedicineID }, newDTO);
             }
-            else
-            {
-                return BadRequest("Failed to create new Medicine.");
-            }
+
+            return BadRequest("Failed to create new Medicine.");
         }
 
         [HttpPut("{id}", Name = "UpdateMedicine")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsMedicineDTO> UpdateMedicine(int id, clsMedicineDTO updatedDTO)
+        public ActionResult<clsMedicineDTO> UpdateMedicine(int id, [FromBody] clsMedicineDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || string.IsNullOrEmpty(updatedDTO.MedicineName))
+            if (id <= 0)
             {
-                return BadRequest("Invalid medicine data.");
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            var validationResult = _validator.Validate(updatedDTO);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
             }
 
             clsMedicine medicine = clsMedicine.Find(id);
@@ -91,10 +104,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(medicine.DTO);
             }
-            else
-            {
-                return BadRequest("Failed to update Medicine.");
-            }
+
+            return BadRequest("Failed to update Medicine.");
         }
 
         [HttpDelete("{id}", Name = "DeleteMedicine")]
@@ -103,19 +114,22 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeleteMedicine(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsMedicine.IsExist(id))
+            {
+                return NotFound($"Medicine with ID {id} not found.");
             }
 
             if (clsMedicine.DeleteMedicine(id))
             {
                 return Ok($"Medicine with ID {id} has been deleted.");
             }
-            else
-            {
-                return NotFound($"Medicine with ID {id} not found. No rows deleted!");
-            }
+
+            return BadRequest("Failed to delete Medicine.");
         }
 
         [HttpGet("Exists/{id}", Name = "IsMedicineExist")]
@@ -124,7 +138,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> IsMedicineExist(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -133,10 +147,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(true);
             }
-            else
-            {
-                return NotFound(false);
-            }
+
+            return NotFound(false);
         }
     }
 }

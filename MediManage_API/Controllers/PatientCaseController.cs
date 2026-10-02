@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
 using MediManage_Business;
 using MediManage_DataAccess;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
@@ -10,6 +11,13 @@ namespace MediManage_API.Controllers
     [ApiController]
     public class PatientCaseController : ControllerBase
     {
+        private readonly IValidator<clsPatientCaseDTO> _validator;
+
+        public PatientCaseController(IValidator<clsPatientCaseDTO> validator)
+        {
+            _validator = validator;
+        }
+
         [HttpGet("All", Name = "GetAllPatientCases")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -29,7 +37,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<clsPatientCaseDTO> GetPatientCaseById(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -47,11 +55,12 @@ namespace MediManage_API.Controllers
         [HttpPost(Name = "AddPatientCase")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsPatientCaseDTO> AddPatientCase(clsPatientCaseDTO newDTO)
+        public ActionResult<clsPatientCaseDTO> AddPatientCase([FromBody] clsPatientCaseDTO newDTO)
         {
-            if (newDTO == null || string.IsNullOrEmpty(newDTO.PatientCaseName))
+            var validationResult = _validator.Validate(newDTO);
+            if (!validationResult.IsValid)
             {
-                return BadRequest("Invalid patient case data.");
+                return BadRequest(validationResult.Errors);
             }
 
             clsPatientCase patientCase = new clsPatientCase(newDTO, clsPatientCase.enMode.AddNew);
@@ -61,21 +70,25 @@ namespace MediManage_API.Controllers
                 newDTO.PatientCaseID = patientCase.PatientCaseID;
                 return CreatedAtRoute("GetPatientCaseById", new { id = newDTO.PatientCaseID }, newDTO);
             }
-            else
-            {
-                return BadRequest("Failed to create new Patient Case.");
-            }
+
+            return BadRequest("Failed to create new Patient Case.");
         }
 
         [HttpPut("{id}", Name = "UpdatePatientCase")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsPatientCaseDTO> UpdatePatientCase(int id, clsPatientCaseDTO updatedDTO)
+        public ActionResult<clsPatientCaseDTO> UpdatePatientCase(int id, [FromBody] clsPatientCaseDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || string.IsNullOrEmpty(updatedDTO.PatientCaseName))
+            if (id <= 0)
             {
-                return BadRequest("Invalid patient case data.");
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            var validationResult = _validator.Validate(updatedDTO);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
             }
 
             clsPatientCase patientCase = clsPatientCase.Find(id);
@@ -91,10 +104,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(patientCase.DTO);
             }
-            else
-            {
-                return BadRequest("Failed to update Patient Case.");
-            }
+
+            return BadRequest("Failed to update Patient Case.");
         }
 
         [HttpDelete("{id}", Name = "DeletePatientCase")]
@@ -103,19 +114,22 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeletePatientCase(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsPatientCase.IsExist(id))
+            {
+                return NotFound($"Patient Case with ID {id} not found.");
             }
 
             if (clsPatientCase.DeletePatientCase(id))
             {
                 return Ok($"Patient Case with ID {id} has been deleted.");
             }
-            else
-            {
-                return NotFound($"Patient Case with ID {id} not found. No rows deleted!");
-            }
+
+            return BadRequest("Failed to delete Patient Case.");
         }
 
         [HttpGet("Exists/{id}", Name = "IsPatientCaseExist")]
@@ -124,7 +138,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> IsPatientCaseExist(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -133,10 +147,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(true);
             }
-            else
-            {
-                return NotFound(false);
-            }
+
+            return NotFound(false);
         }
     }
 }

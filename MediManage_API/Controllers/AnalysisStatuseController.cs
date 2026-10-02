@@ -1,4 +1,5 @@
-﻿using MediManage_Business;
+﻿using FluentValidation;
+using MediManage_Business;
 using MediManage_DataAccess;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,14 @@ namespace MediManage_API.Controllers
     [ApiController]
     public class AnalysisStatuseController : ControllerBase
     {
+        private readonly IValidator<clsAnalysisStatusDTO> _validator;
+
+        // حقن الـ Validator
+        public AnalysisStatuseController(IValidator<clsAnalysisStatusDTO> validator)
+        {
+            _validator = validator;
+        }
+
         [HttpGet("All", Name = "GetAllAnalysisStatuses")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -29,7 +38,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<clsAnalysisStatusDTO> GetAnalysisStatusById(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -47,11 +56,13 @@ namespace MediManage_API.Controllers
         [HttpPost(Name = "AddAnalysisStatus")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsAnalysisStatusDTO> AddAnalysisStatus(clsAnalysisStatusDTO newDTO)
+        public ActionResult<clsAnalysisStatusDTO> AddAnalysisStatus([FromBody] clsAnalysisStatusDTO newDTO)
         {
-            if (newDTO == null || string.IsNullOrEmpty(newDTO.AnalysisStatusName))
+            // تنفيذ الـ Validation
+            var validationResult = _validator.Validate(newDTO);
+            if (!validationResult.IsValid)
             {
-                return BadRequest("Invalid data.");
+                return BadRequest(validationResult.Errors);
             }
 
             clsAnalysisStatus status = new clsAnalysisStatus(newDTO, clsAnalysisStatus.enMode.AddNew);
@@ -61,21 +72,26 @@ namespace MediManage_API.Controllers
                 newDTO.AnalysisStatusID = status.AnalysisStatusID;
                 return CreatedAtRoute("GetAnalysisStatusById", new { id = newDTO.AnalysisStatusID }, newDTO);
             }
-            else
-            {
-                return BadRequest("Failed to create new Analysis Status.");
-            }
+
+            return BadRequest("Failed to create new Analysis Status.");
         }
 
         [HttpPut("{id}", Name = "UpdateAnalysisStatus")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsAnalysisStatusDTO> UpdateAnalysisStatus(int id, clsAnalysisStatusDTO updatedDTO)
+        public ActionResult<clsAnalysisStatusDTO> UpdateAnalysisStatus(int id, [FromBody] clsAnalysisStatusDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || string.IsNullOrEmpty(updatedDTO.AnalysisStatusName))
+            if (id <= 0)
             {
-                return BadRequest("Invalid data.");
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            // تنفيذ الـ Validation
+            var validationResult = _validator.Validate(updatedDTO);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
             }
 
             clsAnalysisStatus status = clsAnalysisStatus.Find(id);
@@ -91,10 +107,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(status.AnalysisStatusDTO);
             }
-            else
-            {
-                return BadRequest("Failed to update Analysis Status.");
-            }
+
+            return BadRequest("Failed to update Analysis Status.");
         }
 
         [HttpDelete("{id}", Name = "DeleteAnalysisStatus")]
@@ -103,19 +117,22 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeleteAnalysisStatus(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsAnalysisStatus.IsExist(id))
+            {
+                return NotFound($"Analysis Status with ID {id} not found.");
             }
 
             if (clsAnalysisStatus.DeleteAnalysisStatus(id))
             {
                 return Ok($"Analysis Status with ID {id} has been deleted.");
             }
-            else
-            {
-                return NotFound($"Analysis Status with ID {id} not found. No rows deleted!");
-            }
+
+            return BadRequest("Failed to delete Analysis Status.");
         }
 
         [HttpGet("Exists/{id}", Name = "IsAnalysisStatusExist")]
@@ -124,7 +141,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> IsAnalysisStatusExist(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -133,10 +150,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(true);
             }
-            else
-            {
-                return NotFound(false);
-            }
+
+            return NotFound(false);
         }
     }
 }

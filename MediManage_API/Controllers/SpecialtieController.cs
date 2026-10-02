@@ -1,15 +1,23 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
 using MediManage_Business;
 using MediManage_DataAccess;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SpecialtieController : ControllerBase
+    public class SpecialtyController : ControllerBase
     {
+        private readonly IValidator<clsSpecialtyDTO> _validator;
+
+        public SpecialtyController(IValidator<clsSpecialtyDTO> validator)
+        {
+            _validator = validator;
+        }
+
         [HttpGet("All", Name = "GetAllSpecialties")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -29,7 +37,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<clsSpecialtyDTO> GetSpecialtyById(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -43,23 +51,23 @@ namespace MediManage_API.Controllers
 
             return Ok(specialty.DTO);
         }
-        
-        [HttpGet("{specialtyName}", Name = "GetSpecialtyBySpecialtyName")]
+
+        [HttpGet("by-name/{specialtyName}", Name = "GetSpecialtyBySpecialtyName")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<clsSpecialtyDTO> GetSpecialtyBySpecialtyName(string specialtyName)
         {
-            if (string.IsNullOrEmpty(specialtyName))
+            if (string.IsNullOrWhiteSpace(specialtyName))
             {
-                return BadRequest($"Invalid Specialty Name {specialtyName}");
+                return BadRequest("Specialty Name cannot be empty.");
             }
 
             clsSpecialty specialty = clsSpecialty.Find(specialtyName);
 
             if (specialty == null)
             {
-                return NotFound($"Specialty with Specialty Name {specialtyName} not found.");
+                return NotFound($"Specialty with Specialty Name '{specialtyName}' not found.");
             }
 
             return Ok(specialty.DTO);
@@ -68,11 +76,12 @@ namespace MediManage_API.Controllers
         [HttpPost(Name = "AddSpecialty")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsSpecialtyDTO> AddSpecialty(clsSpecialtyDTO newDTO)
+        public ActionResult<clsSpecialtyDTO> AddSpecialty([FromBody] clsSpecialtyDTO newDTO)
         {
-            if (newDTO == null || string.IsNullOrEmpty(newDTO.SpecialtyName) || !newDTO.Fees.HasValue)
+            var validationResult = _validator.Validate(newDTO);
+            if (!validationResult.IsValid)
             {
-                return BadRequest("Invalid specialty data.");
+                return BadRequest(validationResult.Errors);
             }
 
             clsSpecialty specialty = new clsSpecialty(newDTO, clsSpecialty.enMode.AddNew);
@@ -82,21 +91,25 @@ namespace MediManage_API.Controllers
                 newDTO.SpecialtyID = specialty.SpecialtyID;
                 return CreatedAtRoute("GetSpecialtyById", new { id = newDTO.SpecialtyID }, newDTO);
             }
-            else
-            {
-                return BadRequest("Failed to create new Specialty.");
-            }
+
+            return BadRequest("Failed to create new Specialty.");
         }
 
         [HttpPut("{id}", Name = "UpdateSpecialty")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsSpecialtyDTO> UpdateSpecialty(int id, clsSpecialtyDTO updatedDTO)
+        public ActionResult<clsSpecialtyDTO> UpdateSpecialty(int id, [FromBody] clsSpecialtyDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || string.IsNullOrEmpty(updatedDTO.SpecialtyName) || !updatedDTO.Fees.HasValue)
+            if (id <= 0)
             {
-                return BadRequest("Invalid specialty data.");
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            var validationResult = _validator.Validate(updatedDTO);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
             }
 
             clsSpecialty specialty = clsSpecialty.Find(id);
@@ -114,10 +127,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(specialty.DTO);
             }
-            else
-            {
-                return BadRequest("Failed to update Specialty.");
-            }
+
+            return BadRequest("Failed to update Specialty.");
         }
 
         [HttpDelete("{id}", Name = "DeleteSpecialty")]
@@ -126,19 +137,22 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeleteSpecialty(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsSpecialty.IsSpecialtyExist(id))
+            {
+                return NotFound($"Specialty with ID {id} not found.");
             }
 
             if (clsSpecialty.DeleteSpecialty(id))
             {
                 return Ok($"Specialty with ID {id} has been deleted.");
             }
-            else
-            {
-                return NotFound($"Specialty with ID {id} not found. No rows deleted!");
-            }
+
+            return BadRequest("Failed to delete Specialty.");
         }
 
         [HttpGet("Exists/{id}", Name = "IsSpecialtyExist")]
@@ -147,7 +161,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> IsSpecialtyExist(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -156,10 +170,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(true);
             }
-            else
-            {
-                return NotFound(false);
-            }
+
+            return NotFound(false);
         }
     }
 }
