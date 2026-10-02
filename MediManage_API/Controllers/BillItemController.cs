@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
 using MediManage_Business;
 using MediManage_DataAccess;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
@@ -10,15 +11,24 @@ namespace MediManage_API.Controllers
     [ApiController]
     public class BillItemController : ControllerBase
     {
+        private readonly IValidator<clsBillItemDTO> _validator;
+
+        public BillItemController(IValidator<clsBillItemDTO> validator)
+        {
+            _validator = validator;
+        }
+
         [HttpGet("All/{id}", Name = "GetAllBillItemsByBillID")]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<IEnumerable<clsBillItemListDTO>> GetAllBillItems(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
-                return BadRequest($"Invalid ID {id}");
+                return BadRequest($"Invalid Bill ID {id}");
             }
+
             List<clsBillItemListDTO> list = clsBillItem.GetAllBillItems(id);
             if (list == null || list.Count == 0)
             {
@@ -33,7 +43,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<clsBillItemDTO> GetBillItemById(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -51,11 +61,12 @@ namespace MediManage_API.Controllers
         [HttpPost(Name = "AddBillItem")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsBillItemDTO> AddBillItem(clsBillItemDTO newDTO)
+        public ActionResult<clsBillItemDTO> AddBillItem([FromBody] clsBillItemDTO newDTO)
         {
-            if (newDTO == null || !newDTO.Bill_ID.HasValue)
+            var validationResult = _validator.Validate(newDTO);
+            if (!validationResult.IsValid)
             {
-                return BadRequest("Invalid bill item data.");
+                return BadRequest(validationResult.Errors);
             }
 
             clsBillItem billItem = new clsBillItem(newDTO, clsBillItem.enMode.AddNew);
@@ -65,21 +76,25 @@ namespace MediManage_API.Controllers
                 newDTO.BillItemID = billItem.BillItemID;
                 return CreatedAtRoute("GetBillItemById", new { id = newDTO.BillItemID }, newDTO);
             }
-            else
-            {
-                return BadRequest("Failed to create new Bill Item.");
-            }
+
+            return BadRequest("Failed to create new Bill Item.");
         }
 
         [HttpPut("{id}", Name = "UpdateBillItem")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsBillItemDTO> UpdateBillItem(int id, clsBillItemDTO updatedDTO)
+        public ActionResult<clsBillItemDTO> UpdateBillItem(int id, [FromBody] clsBillItemDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || !updatedDTO.Bill_ID.HasValue)
+            if (id <= 0)
             {
-                return BadRequest("Invalid bill item data.");
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            var validationResult = _validator.Validate(updatedDTO);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
             }
 
             clsBillItem billItem = clsBillItem.Find(id);
@@ -99,10 +114,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(billItem.BillItemDTO);
             }
-            else
-            {
-                return BadRequest("Failed to update Bill Item.");
-            }
+
+            return BadRequest("Failed to update Bill Item.");
         }
 
         [HttpDelete("{id}", Name = "DeleteBillItem")]
@@ -111,19 +124,22 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeleteBillItem(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsBillItem.IsExist(id))
+            {
+                return NotFound($"Bill Item with ID {id} not found.");
             }
 
             if (clsBillItem.DeleteBillItem(id))
             {
                 return Ok($"Bill Item with ID {id} has been deleted.");
             }
-            else
-            {
-                return NotFound($"Bill Item with ID {id} not found. No rows deleted!");
-            }
+
+            return BadRequest("Failed to delete Bill Item.");
         }
 
         [HttpGet("Exists/{id}", Name = "IsBillItemExist")]
@@ -132,7 +148,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> IsBillItemExist(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -141,25 +157,21 @@ namespace MediManage_API.Controllers
             {
                 return Ok(true);
             }
-            else
-            {
-                return NotFound(false);
-            }
+
+            return NotFound(false);
         }
-        
+
         [HttpGet("Total", Name = "CalculateTotal")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult <decimal> CalculateTotal(decimal Price, int Quantity)
+        public ActionResult<decimal> CalculateTotal(decimal price, int quantity)
         {
-            if (Price < 1 || Quantity < 1)
+            if (price < 0 || quantity <= 0)
             {
-                return BadRequest($"Invalid Quantity or Price");
+                return BadRequest("Invalid Quantity or Price.");
             }
-             return Ok(clsBillItem.CalculateTotal(Price,Quantity));
+
+            return Ok(clsBillItem.CalculateTotal(price, quantity));
         }
-
-
     }
 }

@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
 using MediManage_Business;
 using MediManage_DataAccess;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
@@ -10,6 +11,13 @@ namespace MediManage_API.Controllers
     [ApiController]
     public class AnalysisTypeController : ControllerBase
     {
+        private readonly IValidator<clsAnalysisTypeDTO> _validator;
+
+        public AnalysisTypeController(IValidator<clsAnalysisTypeDTO> validator)
+        {
+            _validator = validator;
+        }
+
         [HttpGet("All", Name = "GetAllAnalysisTypes")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -29,7 +37,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<clsAnalysisTypeDTO> GetAnalysisTypeById(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -47,11 +55,12 @@ namespace MediManage_API.Controllers
         [HttpPost(Name = "AddAnalysisType")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsAnalysisTypeDTO> AddAnalysisType(clsAnalysisTypeDTO newDTO)
+        public ActionResult<clsAnalysisTypeDTO> AddAnalysisType([FromBody] clsAnalysisTypeDTO newDTO)
         {
-            if (newDTO == null || string.IsNullOrEmpty(newDTO.AnalysisTypeName) || !newDTO.Price.HasValue || newDTO.Price < 0)
+            var validationResult = _validator.Validate(newDTO);
+            if (!validationResult.IsValid)
             {
-                return BadRequest("Invalid analysis type data.");
+                return BadRequest(validationResult.Errors);
             }
 
             clsAnalysisType type = new clsAnalysisType(newDTO, clsAnalysisType.enMode.AddNew);
@@ -61,21 +70,25 @@ namespace MediManage_API.Controllers
                 newDTO.AnalysisTypeID = type.AnalysisTypeID;
                 return CreatedAtRoute("GetAnalysisTypeById", new { id = newDTO.AnalysisTypeID }, newDTO);
             }
-            else
-            {
-                return BadRequest("Failed to create new Analysis Type.");
-            }
+
+            return BadRequest("Failed to create new Analysis Type.");
         }
 
         [HttpPut("{id}", Name = "UpdateAnalysisType")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsAnalysisTypeDTO> UpdateAnalysisType(int id, clsAnalysisTypeDTO updatedDTO)
+        public ActionResult<clsAnalysisTypeDTO> UpdateAnalysisType(int id, [FromBody] clsAnalysisTypeDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || string.IsNullOrEmpty(updatedDTO.AnalysisTypeName) || !updatedDTO.Price.HasValue || updatedDTO.Price < 0)
+            if (id <= 0)
             {
-                return BadRequest("Invalid analysis type data.");
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            var validationResult = _validator.Validate(updatedDTO);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
             }
 
             clsAnalysisType type = clsAnalysisType.Find(id);
@@ -92,10 +105,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(type.AnalysisTypeDTO);
             }
-            else
-            {
-                return BadRequest("Failed to update Analysis Type.");
-            }
+
+            return BadRequest("Failed to update Analysis Type.");
         }
 
         [HttpDelete("{id}", Name = "DeleteAnalysisType")]
@@ -104,19 +115,22 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeleteAnalysisType(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsAnalysisType.IsExist(id))
+            {
+                return NotFound($"Analysis Type with ID {id} not found.");
             }
 
             if (clsAnalysisType.DeleteAnalysisType(id))
             {
                 return Ok($"Analysis Type with ID {id} has been deleted.");
             }
-            else
-            {
-                return NotFound($"Analysis Type with ID {id} not found. No rows deleted!");
-            }
+
+            return BadRequest("Failed to delete Analysis Type.");
         }
 
         [HttpGet("Exists/{id}", Name = "IsAnalysisTypeExist")]
@@ -125,7 +139,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> IsAnalysisTypeExist(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -134,10 +148,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(true);
             }
-            else
-            {
-                return NotFound(false);
-            }
+
+            return NotFound(false);
         }
     }
 }

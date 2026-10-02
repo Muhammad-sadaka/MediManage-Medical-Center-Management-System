@@ -1,15 +1,23 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
 using MediManage_Business;
 using MediManage_DataAccess;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PaymentStatuseController : ControllerBase
+    public class PaymentStatusController : ControllerBase
     {
+        private readonly IValidator<clsPaymentStatusDTO> _validator;
+
+        public PaymentStatusController(IValidator<clsPaymentStatusDTO> validator)
+        {
+            _validator = validator;
+        }
+
         [HttpGet("All", Name = "GetAllPaymentStatuses")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -29,7 +37,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<clsPaymentStatusDTO> GetPaymentStatusById(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -47,11 +55,12 @@ namespace MediManage_API.Controllers
         [HttpPost(Name = "AddPaymentStatus")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsPaymentStatusDTO> AddPaymentStatus(clsPaymentStatusDTO newDTO)
+        public ActionResult<clsPaymentStatusDTO> AddPaymentStatus([FromBody] clsPaymentStatusDTO newDTO)
         {
-            if (newDTO == null || string.IsNullOrEmpty(newDTO.PaymentStatusName))
+            var validationResult = _validator.Validate(newDTO);
+            if (!validationResult.IsValid)
             {
-                return BadRequest("Invalid payment status data.");
+                return BadRequest(validationResult.Errors);
             }
 
             clsPaymentStatus paymentStatus = new clsPaymentStatus(newDTO, clsPaymentStatus.enMode.AddNew);
@@ -61,21 +70,25 @@ namespace MediManage_API.Controllers
                 newDTO.PaymentStatusID = paymentStatus.PaymentStatusID;
                 return CreatedAtRoute("GetPaymentStatusById", new { id = newDTO.PaymentStatusID }, newDTO);
             }
-            else
-            {
-                return BadRequest("Failed to create new Payment Status.");
-            }
+
+            return BadRequest("Failed to create new Payment Status.");
         }
 
         [HttpPut("{id}", Name = "UpdatePaymentStatus")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsPaymentStatusDTO> UpdatePaymentStatus(int id, clsPaymentStatusDTO updatedDTO)
+        public ActionResult<clsPaymentStatusDTO> UpdatePaymentStatus(int id, [FromBody] clsPaymentStatusDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || string.IsNullOrEmpty(updatedDTO.PaymentStatusName))
+            if (id <= 0)
             {
-                return BadRequest("Invalid payment status data.");
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            var validationResult = _validator.Validate(updatedDTO);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
             }
 
             clsPaymentStatus paymentStatus = clsPaymentStatus.Find(id);
@@ -91,10 +104,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(paymentStatus.DTO);
             }
-            else
-            {
-                return BadRequest("Failed to update Payment Status.");
-            }
+
+            return BadRequest("Failed to update Payment Status.");
         }
 
         [HttpDelete("{id}", Name = "DeletePaymentStatus")]
@@ -103,19 +114,22 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeletePaymentStatus(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsPaymentStatus.IsExist(id))
+            {
+                return NotFound($"Payment Status with ID {id} not found.");
             }
 
             if (clsPaymentStatus.DeletePaymentStatus(id))
             {
                 return Ok($"Payment Status with ID {id} has been deleted.");
             }
-            else
-            {
-                return NotFound($"Payment Status with ID {id} not found. No rows deleted!");
-            }
+
+            return BadRequest("Failed to delete Payment Status.");
         }
 
         [HttpGet("Exists/{id}", Name = "IsPaymentStatusExist")]
@@ -124,7 +138,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> IsPaymentStatusExist(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -133,10 +147,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(true);
             }
-            else
-            {
-                return NotFound(false);
-            }
+
+            return NotFound(false);
         }
     }
 }

@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
 using MediManage_Business;
 using MediManage_DataAccess;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
@@ -10,6 +11,13 @@ namespace MediManage_API.Controllers
     [ApiController]
     public class PaymentMethodController : ControllerBase
     {
+        private readonly IValidator<clsPaymentMethodDTO> _validator;
+
+        public PaymentMethodController(IValidator<clsPaymentMethodDTO> validator)
+        {
+            _validator = validator;
+        }
+
         [HttpGet("All", Name = "GetAllPaymentMethods")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -29,7 +37,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<clsPaymentMethodDTO> GetPaymentMethodById(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -47,11 +55,12 @@ namespace MediManage_API.Controllers
         [HttpPost(Name = "AddPaymentMethod")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsPaymentMethodDTO> AddPaymentMethod(clsPaymentMethodDTO newDTO)
+        public ActionResult<clsPaymentMethodDTO> AddPaymentMethod([FromBody] clsPaymentMethodDTO newDTO)
         {
-            if (newDTO == null || string.IsNullOrEmpty(newDTO.PaymentMethodName))
+            var validationResult = _validator.Validate(newDTO);
+            if (!validationResult.IsValid)
             {
-                return BadRequest("Invalid payment method data.");
+                return BadRequest(validationResult.Errors);
             }
 
             clsPaymentMethod paymentMethod = new clsPaymentMethod(newDTO, clsPaymentMethod.enMode.AddNew);
@@ -61,21 +70,25 @@ namespace MediManage_API.Controllers
                 newDTO.PaymentMethodID = paymentMethod.PaymentMethodID;
                 return CreatedAtRoute("GetPaymentMethodById", new { id = newDTO.PaymentMethodID }, newDTO);
             }
-            else
-            {
-                return BadRequest("Failed to create new Payment Method.");
-            }
+
+            return BadRequest("Failed to create new Payment Method.");
         }
 
         [HttpPut("{id}", Name = "UpdatePaymentMethod")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsPaymentMethodDTO> UpdatePaymentMethod(int id, clsPaymentMethodDTO updatedDTO)
+        public ActionResult<clsPaymentMethodDTO> UpdatePaymentMethod(int id, [FromBody] clsPaymentMethodDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || string.IsNullOrEmpty(updatedDTO.PaymentMethodName))
+            if (id <= 0)
             {
-                return BadRequest("Invalid payment method data.");
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            var validationResult = _validator.Validate(updatedDTO);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
             }
 
             clsPaymentMethod paymentMethod = clsPaymentMethod.Find(id);
@@ -91,10 +104,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(paymentMethod.DTO);
             }
-            else
-            {
-                return BadRequest("Failed to update Payment Method.");
-            }
+
+            return BadRequest("Failed to update Payment Method.");
         }
 
         [HttpDelete("{id}", Name = "DeletePaymentMethod")]
@@ -103,19 +114,22 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeletePaymentMethod(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsPaymentMethod.IsExist(id))
+            {
+                return NotFound($"Payment Method with ID {id} not found.");
             }
 
             if (clsPaymentMethod.DeletePaymentMethod(id))
             {
                 return Ok($"Payment Method with ID {id} has been deleted.");
             }
-            else
-            {
-                return NotFound($"Payment Method with ID {id} not found. No rows deleted!");
-            }
+
+            return BadRequest("Failed to delete Payment Method.");
         }
 
         [HttpGet("Exists/{id}", Name = "IsPaymentMethodExist")]
@@ -124,7 +138,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> IsPaymentMethodExist(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -133,10 +147,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(true);
             }
-            else
-            {
-                return NotFound(false);
-            }
+
+            return NotFound(false);
         }
     }
 }

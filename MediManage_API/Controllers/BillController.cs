@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
 using MediManage_Business;
 using MediManage_DataAccess;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
@@ -10,6 +11,13 @@ namespace MediManage_API.Controllers
     [ApiController]
     public class BillController : ControllerBase
     {
+        private readonly IValidator<clsBillDTO> _validator;
+
+        public BillController(IValidator<clsBillDTO> validator)
+        {
+            _validator = validator;
+        }
+
         [HttpGet("All", Name = "GetAllBills")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -29,7 +37,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<clsBillDTO> GetBillById(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -47,11 +55,12 @@ namespace MediManage_API.Controllers
         [HttpPost(Name = "AddBill")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsBillDTO> AddBill(clsBillDTO newDTO)
+        public ActionResult<clsBillDTO> AddBill([FromBody] clsBillDTO newDTO)
         {
-            if (newDTO == null || !newDTO.PatientID.HasValue || !newDTO.TotalAmount.HasValue)
+            var validationResult = _validator.Validate(newDTO);
+            if (!validationResult.IsValid)
             {
-                return BadRequest("Invalid bill data.");
+                return BadRequest(validationResult.Errors);
             }
 
             clsBill bill = new clsBill(newDTO, clsBill.enMode.AddNew);
@@ -61,21 +70,25 @@ namespace MediManage_API.Controllers
                 newDTO.Bill_ID = bill.Bill_ID;
                 return CreatedAtRoute("GetBillById", new { id = newDTO.Bill_ID }, newDTO);
             }
-            else
-            {
-                return BadRequest("Failed to create new Bill.");
-            }
+
+            return BadRequest("Failed to create new Bill.");
         }
 
         [HttpPut("{id}", Name = "UpdateBill")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsBillDTO> UpdateBill(int id, clsBillDTO updatedDTO)
+        public ActionResult<clsBillDTO> UpdateBill(int id, [FromBody] clsBillDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || !updatedDTO.PatientID.HasValue || !updatedDTO.TotalAmount.HasValue)
+            if (id <= 0)
             {
-                return BadRequest("Invalid bill data.");
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            var validationResult = _validator.Validate(updatedDTO);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
             }
 
             clsBill bill = clsBill.Find(id);
@@ -97,10 +110,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(bill.BillDTO);
             }
-            else
-            {
-                return BadRequest("Failed to update Bill.");
-            }
+
+            return BadRequest("Failed to update Bill.");
         }
 
         [HttpDelete("{id}", Name = "DeleteBill")]
@@ -109,19 +120,22 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeleteBill(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsBill.IsExist(id))
+            {
+                return NotFound($"Bill with ID {id} not found.");
             }
 
             if (clsBill.DeleteBill(id))
             {
                 return Ok($"Bill with ID {id} has been deleted.");
             }
-            else
-            {
-                return NotFound($"Bill with ID {id} not found. No rows deleted!");
-            }
+
+            return BadRequest("Failed to delete Bill.");
         }
 
         [HttpGet("Exists/{id}", Name = "IsBillExist")]
@@ -130,7 +144,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> IsBillExist(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -139,10 +153,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(true);
             }
-            else
-            {
-                return NotFound(false);
-            }
+
+            return NotFound(false);
         }
     }
 }

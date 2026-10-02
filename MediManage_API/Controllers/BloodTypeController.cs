@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
 using MediManage_Business;
 using MediManage_DataAccess;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
@@ -10,6 +11,13 @@ namespace MediManage_API.Controllers
     [ApiController]
     public class BloodTypeController : ControllerBase
     {
+        private readonly IValidator<clsBloodTypeDTO> _validator;
+
+        public BloodTypeController(IValidator<clsBloodTypeDTO> validator)
+        {
+            _validator = validator;
+        }
+
         [HttpGet("All", Name = "GetAllBloodTypes")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -29,7 +37,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<clsBloodTypeDTO> GetBloodTypeById(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -47,11 +55,12 @@ namespace MediManage_API.Controllers
         [HttpPost(Name = "AddBloodType")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsBloodTypeDTO> AddBloodType(clsBloodTypeDTO newDTO)
+        public ActionResult<clsBloodTypeDTO> AddBloodType([FromBody] clsBloodTypeDTO newDTO)
         {
-            if (newDTO == null || string.IsNullOrEmpty(newDTO.BloodTypeSymbol))
+            var validationResult = _validator.Validate(newDTO);
+            if (!validationResult.IsValid)
             {
-                return BadRequest("Invalid blood type data.");
+                return BadRequest(validationResult.Errors);
             }
 
             clsBloodType bloodType = new clsBloodType(newDTO, clsBloodType.enMode.AddNew);
@@ -61,21 +70,25 @@ namespace MediManage_API.Controllers
                 newDTO.BloodTypeID = bloodType.BloodTypeID;
                 return CreatedAtRoute("GetBloodTypeById", new { id = newDTO.BloodTypeID }, newDTO);
             }
-            else
-            {
-                return BadRequest("Failed to create new Blood Type.");
-            }
+
+            return BadRequest("Failed to create new Blood Type.");
         }
 
         [HttpPut("{id}", Name = "UpdateBloodType")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsBloodTypeDTO> UpdateBloodType(int id, clsBloodTypeDTO updatedDTO)
+        public ActionResult<clsBloodTypeDTO> UpdateBloodType(int id, [FromBody] clsBloodTypeDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || string.IsNullOrEmpty(updatedDTO.BloodTypeSymbol))
+            if (id <= 0)
             {
-                return BadRequest("Invalid blood type data.");
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            var validationResult = _validator.Validate(updatedDTO);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
             }
 
             clsBloodType bloodType = clsBloodType.Find(id);
@@ -91,10 +104,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(bloodType.BloodTypeDTO);
             }
-            else
-            {
-                return BadRequest("Failed to update Blood Type.");
-            }
+
+            return BadRequest("Failed to update Blood Type.");
         }
 
         [HttpDelete("{id}", Name = "DeleteBloodType")]
@@ -103,19 +114,22 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeleteBloodType(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsBloodType.IsExist(id))
+            {
+                return NotFound($"Blood Type with ID {id} not found.");
             }
 
             if (clsBloodType.DeleteBloodType(id))
             {
                 return Ok($"Blood Type with ID {id} has been deleted.");
             }
-            else
-            {
-                return NotFound($"Blood Type with ID {id} not found. No rows deleted!");
-            }
+
+            return BadRequest("Failed to delete Blood Type.");
         }
 
         [HttpGet("Exists/{id}", Name = "IsBloodTypeExist")]
@@ -124,7 +138,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> IsBloodTypeExist(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -133,10 +147,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(true);
             }
-            else
-            {
-                return NotFound(false);
-            }
+
+            return NotFound(false);
         }
     }
 }

@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
 using MediManage_Business;
 using MediManage_DataAccess;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
@@ -10,6 +11,13 @@ namespace MediManage_API.Controllers
     [ApiController]
     public class DetectionController : ControllerBase
     {
+        private readonly IValidator<clsDetectionDTO> _validator;
+
+        public DetectionController(IValidator<clsDetectionDTO> validator)
+        {
+            _validator = validator;
+        }
+
         [HttpGet("All", Name = "GetAllDetections")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -29,7 +37,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<clsDetectionDTO> GetDetectionById(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -47,11 +55,12 @@ namespace MediManage_API.Controllers
         [HttpPost(Name = "AddDetection")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsDetectionDTO> AddDetection(clsDetectionDTO newDTO)
+        public ActionResult<clsDetectionDTO> AddDetection([FromBody] clsDetectionDTO newDTO)
         {
-            if (newDTO == null || !newDTO.AppointmentID.HasValue)
+            var validationResult = _validator.Validate(newDTO);
+            if (!validationResult.IsValid)
             {
-                return BadRequest("Invalid detection data.");
+                return BadRequest(validationResult.Errors);
             }
 
             clsDetection detection = new clsDetection(newDTO, clsDetection.enMode.AddNew);
@@ -61,21 +70,25 @@ namespace MediManage_API.Controllers
                 newDTO.DetectionID = detection.DetectionID;
                 return CreatedAtRoute("GetDetectionById", new { id = newDTO.DetectionID }, newDTO);
             }
-            else
-            {
-                return BadRequest("Failed to create new Detection.");
-            }
+
+            return BadRequest("Failed to create new Detection.");
         }
 
         [HttpPut("{id}", Name = "UpdateDetection")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsDetectionDTO> UpdateDetection(int id, clsDetectionDTO updatedDTO)
+        public ActionResult<clsDetectionDTO> UpdateDetection(int id, [FromBody] clsDetectionDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || !updatedDTO.AppointmentID.HasValue)
+            if (id <= 0)
             {
-                return BadRequest("Invalid detection data.");
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            var validationResult = _validator.Validate(updatedDTO);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
             }
 
             clsDetection detection = clsDetection.Find(id);
@@ -99,31 +112,32 @@ namespace MediManage_API.Controllers
             {
                 return Ok(detection.DTO);
             }
-            else
-            {
-                return BadRequest("Failed to update Detection.");
-            }
+
+            return BadRequest("Failed to update Detection.");
         }
 
-        [HttpDelete("{id}", Name = "DeleteDetection")]
+        [HttpDelete("{id}", Name = "DeleteDeleteion")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeleteDetection(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsDetection.IsExist(id))
+            {
+                return NotFound($"Detection with ID {id} not found.");
             }
 
             if (clsDetection.DeleteDetection(id))
             {
                 return Ok($"Detection with ID {id} has been deleted.");
             }
-            else
-            {
-                return NotFound($"Detection with ID {id} not found. No rows deleted!");
-            }
+
+            return BadRequest("Failed to delete Detection.");
         }
 
         [HttpGet("Exists/{id}", Name = "IsDetectionExist")]
@@ -132,7 +146,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> IsDetectionExist(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -141,10 +155,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(true);
             }
-            else
-            {
-                return NotFound(false);
-            }
+
+            return NotFound(false);
         }
     }
 }

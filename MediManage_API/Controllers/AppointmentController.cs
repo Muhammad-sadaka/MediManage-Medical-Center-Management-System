@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
 using MediManage_Business;
 using MediManage_DataAccess;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
@@ -10,6 +11,13 @@ namespace MediManage_API.Controllers
     [ApiController]
     public class AppointmentController : ControllerBase
     {
+        private readonly IValidator<clsAppointmentDTO> _validator;
+
+        public AppointmentController(IValidator<clsAppointmentDTO> validator)
+        {
+            _validator = validator;
+        }
+
         [HttpGet("All", Name = "GetAllAppointments")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -42,7 +50,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<clsAppointmentDTO> GetAppointmentById(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -60,11 +68,12 @@ namespace MediManage_API.Controllers
         [HttpPost(Name = "AddAppointment")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsAppointmentDTO> AddAppointment(clsAppointmentDTO newDTO)
+        public ActionResult<clsAppointmentDTO> AddAppointment([FromBody] clsAppointmentDTO newDTO)
         {
-            if (newDTO == null || !newDTO.PatientID.HasValue || !newDTO.DoctorID.HasValue || !newDTO.AppointmentDate.HasValue)
+            var validationResult = _validator.Validate(newDTO);
+            if (!validationResult.IsValid)
             {
-                return BadRequest("Invalid appointment data.");
+                return BadRequest(validationResult.Errors);
             }
 
             clsAppointment appointment = new clsAppointment(newDTO, clsAppointment.enMode.AddNew);
@@ -74,21 +83,25 @@ namespace MediManage_API.Controllers
                 newDTO.AppointmentID = appointment.AppointmentID;
                 return CreatedAtRoute("GetAppointmentById", new { id = newDTO.AppointmentID }, newDTO);
             }
-            else
-            {
-                return BadRequest("Failed to create new Appointment.");
-            }
+
+            return BadRequest("Failed to create new Appointment.");
         }
 
         [HttpPut("{id}", Name = "UpdateAppointment")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsAppointmentDTO> UpdateAppointment(int id, clsAppointmentDTO updatedDTO)
+        public ActionResult<clsAppointmentDTO> UpdateAppointment(int id, [FromBody] clsAppointmentDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || !updatedDTO.PatientID.HasValue || !updatedDTO.DoctorID.HasValue || !updatedDTO.AppointmentDate.HasValue)
+            if (id <= 0)
             {
-                return BadRequest("Invalid appointment data.");
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            var validationResult = _validator.Validate(updatedDTO);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
             }
 
             clsAppointment appointment = clsAppointment.Find(id);
@@ -112,10 +125,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(appointment.AppointmentDTO);
             }
-            else
-            {
-                return BadRequest("Failed to update Appointment.");
-            }
+
+            return BadRequest("Failed to update Appointment.");
         }
 
         [HttpDelete("{id}", Name = "DeleteAppointment")]
@@ -124,19 +135,22 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeleteAppointment(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsAppointment.IsExist(id))
+            {
+                return NotFound($"Appointment with ID {id} not found.");
             }
 
             if (clsAppointment.DeleteAppointment(id))
             {
                 return Ok($"Appointment with ID {id} has been deleted.");
             }
-            else
-            {
-                return NotFound($"Appointment with ID {id} not found. No rows deleted!");
-            }
+
+            return BadRequest("Failed to delete Appointment.");
         }
 
         [HttpGet("Exists/{id}", Name = "IsAppointmentExist")]
@@ -145,7 +159,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> IsAppointmentExist(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -154,10 +168,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(true);
             }
-            else
-            {
-                return NotFound(false);
-            }
+
+            return NotFound(false);
         }
     }
 }

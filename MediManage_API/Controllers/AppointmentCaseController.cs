@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
 using MediManage_Business;
 using MediManage_DataAccess;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
@@ -10,6 +11,13 @@ namespace MediManage_API.Controllers
     [ApiController]
     public class AppointmentCaseController : ControllerBase
     {
+        private readonly IValidator<clsAppointmentCaseDTO> _validator;
+
+        public AppointmentCaseController(IValidator<clsAppointmentCaseDTO> validator)
+        {
+            _validator = validator;
+        }
+
         [HttpGet("All", Name = "GetAllAppointmentCases")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -29,7 +37,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<clsAppointmentCaseDTO> GetAppointmentCaseById(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -47,11 +55,12 @@ namespace MediManage_API.Controllers
         [HttpPost(Name = "AddAppointmentCase")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsAppointmentCaseDTO> AddAppointmentCase(clsAppointmentCaseDTO newDTO)
+        public ActionResult<clsAppointmentCaseDTO> AddAppointmentCase([FromBody] clsAppointmentCaseDTO newDTO)
         {
-            if (newDTO == null || string.IsNullOrEmpty(newDTO.AppointmentCaseName))
+            var validationResult = _validator.Validate(newDTO);
+            if (!validationResult.IsValid)
             {
-                return BadRequest("Invalid appointment case data.");
+                return BadRequest(validationResult.Errors);
             }
 
             clsAppointmentCase appointmentCase = new clsAppointmentCase(newDTO, clsAppointmentCase.enMode.AddNew);
@@ -61,21 +70,25 @@ namespace MediManage_API.Controllers
                 newDTO.AppointmentCaseID = appointmentCase.AppointmentCaseID;
                 return CreatedAtRoute("GetAppointmentCaseById", new { id = newDTO.AppointmentCaseID }, newDTO);
             }
-            else
-            {
-                return BadRequest("Failed to create new Appointment Case.");
-            }
+
+            return BadRequest("Failed to create new Appointment Case.");
         }
 
         [HttpPut("{id}", Name = "UpdateAppointmentCase")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsAppointmentCaseDTO> UpdateAppointmentCase(int id, clsAppointmentCaseDTO updatedDTO)
+        public ActionResult<clsAppointmentCaseDTO> UpdateAppointmentCase(int id, [FromBody] clsAppointmentCaseDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || string.IsNullOrEmpty(updatedDTO.AppointmentCaseName))
+            if (id <= 0)
             {
-                return BadRequest("Invalid appointment case data.");
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            var validationResult = _validator.Validate(updatedDTO);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
             }
 
             clsAppointmentCase appointmentCase = clsAppointmentCase.Find(id);
@@ -91,10 +104,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(appointmentCase.AppointmentCaseDTO);
             }
-            else
-            {
-                return BadRequest("Failed to update Appointment Case.");
-            }
+
+            return BadRequest("Failed to update Appointment Case.");
         }
 
         [HttpDelete("{id}", Name = "DeleteAppointmentCase")]
@@ -103,19 +114,22 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeleteAppointmentCase(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsAppointmentCase.IsExist(id))
+            {
+                return NotFound($"Appointment Case with ID {id} not found.");
             }
 
             if (clsAppointmentCase.DeleteAppointmentCase(id))
             {
                 return Ok($"Appointment Case with ID {id} has been deleted.");
             }
-            else
-            {
-                return NotFound($"Appointment Case with ID {id} not found. No rows deleted!");
-            }
+
+            return BadRequest("Failed to delete Appointment Case.");
         }
 
         [HttpGet("Exists/{id}", Name = "IsAppointmentCaseExist")]
@@ -124,7 +138,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> IsAppointmentCaseExist(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -133,10 +147,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(true);
             }
-            else
-            {
-                return NotFound(false);
-            }
+
+            return NotFound(false);
         }
     }
 }

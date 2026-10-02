@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
 using MediManage_Business;
 using MediManage_DataAccess;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
@@ -10,6 +11,13 @@ namespace MediManage_API.Controllers
     [ApiController]
     public class MedicalPrescriptionController : ControllerBase
     {
+        private readonly IValidator<clsMedicalPrescriptionDTO> _validator;
+
+        public MedicalPrescriptionController(IValidator<clsMedicalPrescriptionDTO> validator)
+        {
+            _validator = validator;
+        }
+
         [HttpGet("All", Name = "GetAllMedicalPrescriptions")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -29,7 +37,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<clsMedicalPrescriptionDTO> GetMedicalPrescriptionById(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -47,11 +55,12 @@ namespace MediManage_API.Controllers
         [HttpPost(Name = "AddMedicalPrescription")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsMedicalPrescriptionDTO> AddMedicalPrescription(clsMedicalPrescriptionDTO newDTO)
+        public ActionResult<clsMedicalPrescriptionDTO> AddMedicalPrescription([FromBody] clsMedicalPrescriptionDTO newDTO)
         {
-            if (newDTO == null || !newDTO.DetectionID.HasValue)
+            var validationResult = _validator.Validate(newDTO);
+            if (!validationResult.IsValid)
             {
-                return BadRequest("Invalid medical prescription data.");
+                return BadRequest(validationResult.Errors);
             }
 
             clsMedicalPrescription prescription = new clsMedicalPrescription(newDTO, clsMedicalPrescription.enMode.AddNew);
@@ -61,21 +70,25 @@ namespace MediManage_API.Controllers
                 newDTO.MedicalPrescriptionID = prescription.MedicalPrescriptionID;
                 return CreatedAtRoute("GetMedicalPrescriptionById", new { id = newDTO.MedicalPrescriptionID }, newDTO);
             }
-            else
-            {
-                return BadRequest("Failed to create new Medical Prescription.");
-            }
+
+            return BadRequest("Failed to create new Medical Prescription.");
         }
 
         [HttpPut("{id}", Name = "UpdateMedicalPrescription")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsMedicalPrescriptionDTO> UpdateMedicalPrescription(int id, clsMedicalPrescriptionDTO updatedDTO)
+        public ActionResult<clsMedicalPrescriptionDTO> UpdateMedicalPrescription(int id, [FromBody] clsMedicalPrescriptionDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || !updatedDTO.DetectionID.HasValue)
+            if (id <= 0)
             {
-                return BadRequest("Invalid medical prescription data.");
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            var validationResult = _validator.Validate(updatedDTO);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
             }
 
             clsMedicalPrescription prescription = clsMedicalPrescription.Find(id);
@@ -87,15 +100,14 @@ namespace MediManage_API.Controllers
 
             prescription.DetectionID = updatedDTO.DetectionID;
             prescription.Notes = updatedDTO.Notes;
+            prescription.PrescriptionDate = updatedDTO.PrescriptionDate;
 
             if (prescription.Save())
             {
                 return Ok(prescription.DTO);
             }
-            else
-            {
-                return BadRequest("Failed to update Medical Prescription.");
-            }
+
+            return BadRequest("Failed to update Medical Prescription.");
         }
 
         [HttpDelete("{id}", Name = "DeleteMedicalPrescription")]
@@ -104,19 +116,22 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeleteMedicalPrescription(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsMedicalPrescription.IsExist(id))
+            {
+                return NotFound($"Medical Prescription with ID {id} not found.");
             }
 
             if (clsMedicalPrescription.DeleteMedicalPrescription(id))
             {
                 return Ok($"Medical Prescription with ID {id} has been deleted.");
             }
-            else
-            {
-                return NotFound($"Medical Prescription with ID {id} not found. No rows deleted!");
-            }
+
+            return BadRequest("Failed to delete Medical Prescription.");
         }
 
         [HttpGet("Exists/{id}", Name = "IsMedicalPrescriptionExist")]
@@ -125,7 +140,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> IsMedicalPrescriptionExist(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -134,10 +149,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(true);
             }
-            else
-            {
-                return NotFound(false);
-            }
+
+            return NotFound(false);
         }
     }
 }

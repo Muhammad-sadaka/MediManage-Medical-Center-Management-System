@@ -1,7 +1,10 @@
-﻿using MediManage_Business;
+﻿using FluentValidation;
+using MediManage_API.Validators;
+using MediManage_Business;
 using MediManage_DataAccess;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
@@ -12,21 +15,23 @@ namespace MediManage_API.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        //temp for testing purpose only
-        public static string ComputeHash(string input)
+        private readonly IValidator<clsUserDTO> _userValidator;
+        private readonly IValidator<LoginRequestDTO> _loginValidator;
+
+        public UserController(IValidator<clsUserDTO> userValidator, IValidator<LoginRequestDTO> loginValidator)
         {
-            //SHA is Secutred Hash Algorithm.
-            // Create an instance of the SHA-256 algorithm
+            _userValidator = userValidator;
+            _loginValidator = loginValidator;
+        }
+
+        private static string ComputeHash(string input)
+        {
             using (SHA256 sha256 = SHA256.Create())
             {
-                // Compute the hash value from the UTF-8 encoded input string
                 byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(input));
-
-                // Convert the byte array to a lowercase hexadecimal string
                 return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
             }
         }
-
 
         [HttpGet("All", Name = "GetAllUsers")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -47,7 +52,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<clsUserDTO> GetUserById(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -65,19 +70,21 @@ namespace MediManage_API.Controllers
         [HttpPost("Login", Name = "Login")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsUserDTO> Login(string userName, string password)
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public ActionResult<clsUserDTO> Login([FromBody] LoginRequestDTO loginRequest)
         {
-            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
+            var validationResult = _loginValidator.Validate(loginRequest);
+            if (!validationResult.IsValid)
             {
-                return BadRequest("Username and password are required.");
+                return BadRequest(validationResult.Errors);
             }
-            
-            clsUser user = clsUser.FindByUsernameAndPassword(userName, ComputeHash(password));
+
+            string hashedPassword = ComputeHash(loginRequest.Password);
+            clsUser user = clsUser.FindByUsernameAndPassword(loginRequest.UserName, hashedPassword);
 
             if (user == null)
             {
-                return NotFound("Invalid username or password.");
+                return Unauthorized("Invalid username or password.");
             }
 
             return Ok(user.DTO);
@@ -86,12 +93,16 @@ namespace MediManage_API.Controllers
         [HttpPost(Name = "AddUser")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public ActionResult<clsUserDTO> AddUser(clsUserDTO newDTO)
+        public ActionResult<clsUserDTO> AddUser([FromBody] clsUserDTO newDTO)
         {
-            if (newDTO == null || !newDTO.PersonID.HasValue || string.IsNullOrEmpty(newDTO.UserName) || string.IsNullOrEmpty(newDTO.Password))
+            var validationResult = _userValidator.Validate(newDTO);
+            if (!validationResult.IsValid)
             {
-                return BadRequest("Invalid user data.");
+                return BadRequest(validationResult.Errors);
             }
+
+            // Hash the password before saving
+            newDTO.Password = ComputeHash(newDTO.Password);
 
             clsUser user = new clsUser(newDTO, clsUser.enMode.AddNew);
 
@@ -100,21 +111,25 @@ namespace MediManage_API.Controllers
                 newDTO.UserID = user.UserID;
                 return CreatedAtRoute("GetUserById", new { id = newDTO.UserID }, newDTO);
             }
-            else
-            {
-                return BadRequest("Failed to create new User.");
-            }
+
+            return BadRequest("Failed to create new User.");
         }
 
         [HttpPut("{id}", Name = "UpdateUser")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<clsUserDTO> UpdateUser(int id, clsUserDTO updatedDTO)
+        public ActionResult<clsUserDTO> UpdateUser(int id, [FromBody] clsUserDTO updatedDTO)
         {
-            if (id < 1 || updatedDTO == null || !updatedDTO.PersonID.HasValue || string.IsNullOrEmpty(updatedDTO.UserName) || string.IsNullOrEmpty(updatedDTO.Password))
+            if (id <= 0)
             {
-                return BadRequest("Invalid user data.");
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            var validationResult = _userValidator.Validate(updatedDTO);
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
             }
 
             clsUser user = clsUser.Find(id);
@@ -126,7 +141,7 @@ namespace MediManage_API.Controllers
 
             user.PersonID = updatedDTO.PersonID;
             user.UserName = updatedDTO.UserName;
-            user.Password = updatedDTO.Password;
+            user.Password = ComputeHash(updatedDTO.Password);
             user.Permissions = updatedDTO.Permissions;
             user.IsActive = updatedDTO.IsActive;
 
@@ -134,10 +149,8 @@ namespace MediManage_API.Controllers
             {
                 return Ok(user.DTO);
             }
-            else
-            {
-                return BadRequest("Failed to update User.");
-            }
+
+            return BadRequest("Failed to update User.");
         }
 
         [HttpDelete("{id}", Name = "DeleteUser")]
@@ -146,19 +159,22 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult DeleteUser(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsUser.IsExist(id))
+            {
+                return NotFound($"User with ID {id} not found.");
             }
 
             if (clsUser.DeleteUser(id))
             {
                 return Ok($"User with ID {id} has been deleted.");
             }
-            else
-            {
-                return NotFound($"User with ID {id} not found. No rows deleted!");
-            }
+
+            return BadRequest("Failed to delete User.");
         }
 
         [HttpGet("Exists/{id}", Name = "IsUserExist")]
@@ -167,7 +183,7 @@ namespace MediManage_API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> IsUserExist(int id)
         {
-            if (id < 1)
+            if (id <= 0)
             {
                 return BadRequest($"Invalid ID {id}");
             }
@@ -176,31 +192,27 @@ namespace MediManage_API.Controllers
             {
                 return Ok(true);
             }
-            else
-            {
-                return NotFound(false);
-            }
+
+            return NotFound(false);
         }
 
-        [HttpGet("Exists/{NationalNo}", Name = "IsUserExistByNationalNo")]
+        [HttpGet("Exists/by-national-no/{NationalNo}", Name = "IsUserExistByNationalNo")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public ActionResult<bool> IsUserExistByNationalNo(string NationalNo)
         {
-            if (string.IsNullOrEmpty(NationalNo))
+            if (string.IsNullOrWhiteSpace(NationalNo))
             {
-                return BadRequest($"Invalid National No {NationalNo}");
+                return BadRequest("National Number cannot be empty.");
             }
 
             if (clsUser.IsExist(NationalNo))
             {
                 return Ok(true);
             }
-            else
-            {
-                return NotFound(false);
-            }
+
+            return NotFound(false);
         }
     }
 }
