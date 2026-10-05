@@ -9,6 +9,8 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BCrypt.Net;
+
 
 namespace MediManage
 {
@@ -93,21 +95,21 @@ namespace MediManage
 
         void LoadPermissions(int Permissions)
         {
-            if ((Permissions & 1) == 1)
+            if ((Permissions & 64) == 64)
                 chkManageAnalyses.Checked = true;
-            if ((Permissions & 2) == 2)
+            if ((Permissions & 8) == 8)
                 chkManageAppointments.Checked = true;
             if ((Permissions & 4) == 4)
                 chkManageDoctors.Checked = true;
-            if ((Permissions & 8) == 8)
-                chkManageExaminations.Checked = true;
             if ((Permissions & 16) == 16)
-                chkManageInvoicesPayments.Checked = true;
-            if ((Permissions & 32) == 32)
-                chkManagePatients.Checked = true;
-            if ((Permissions & 64) == 64)
-                chkManagePeople.Checked = true;
+                chkManageExaminations.Checked = true;
             if ((Permissions & 128) == 128)
+                chkManageInvoicesPayments.Checked = true;
+            if ((Permissions & 2) == 2)
+                chkManagePatients.Checked = true;
+            if ((Permissions & 1) == 1)
+                chkManagePeople.Checked = true;
+            if ((Permissions & 32) == 32)
                 chkManagePrescriptions.Checked = true;
             if ((Permissions & 256) == 256)
                 chkManageUsers.Checked = true;
@@ -118,21 +120,21 @@ namespace MediManage
             int Permissions = 0;
 
             if (chkManageAnalyses.Checked == true)
-                Permissions = Permissions | 1;
+                Permissions = Permissions | 64;
             if (chkManageAppointments.Checked == true)
-                Permissions = Permissions | 2;
+                Permissions = Permissions | 8;
             if (chkManageDoctors.Checked == true)
                 Permissions = Permissions | 4;
             if (chkManageExaminations.Checked == true)
-                Permissions = Permissions | 8;
-            if (chkManageInvoicesPayments.Checked == true)
                 Permissions = Permissions | 16;
             if (chkManageInvoicesPayments.Checked == true)
-                Permissions = Permissions | 32;
-            if (chkManagePeople.Checked == true)
-                Permissions = Permissions | 64;
-            if (chkManagePrescriptions.Checked == true)
                 Permissions = Permissions | 128;
+            if (chkManagePatients.Checked == true)
+                Permissions = Permissions | 2;
+            if (chkManagePeople.Checked == true)
+                Permissions = Permissions | 1;
+            if (chkManagePrescriptions.Checked == true)
+                Permissions = Permissions | 32;
             if (chkManageUsers.Checked == true)
                 Permissions = Permissions | 256;
 
@@ -148,11 +150,10 @@ namespace MediManage
             }
 
             user.Permissions = PermissionsNumber();
-            user.Password = clsGlobal.ComputeHash(tbConfirmPassword.Text);
+            user.Password = BCrypt.Net.BCrypt.HashPassword(tbConfirmPassword.Text);
             user.UserName = tbUsername.Text;
             user.IsActive = chkIsActive.Checked;
             user.CreatedByUser = clsGlobal.CurrentUser.UserID;
-
 
             if (user.Save())
             {

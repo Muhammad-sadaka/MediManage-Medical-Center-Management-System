@@ -36,16 +36,80 @@ namespace MediManage
 
         private void hopeTabPage1_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            if (e.TabPageIndex == 11)
+            switch (e.TabPageIndex)
             {
-                e.Cancel = true;
-                clsGlobal.CurrentUser = null;
-                _frmLogin.Show();
-                this.Close();
-            }
-            else if (e.TabPageIndex == 0)
-            {
-                LoadHomePage();
+                case 0:
+                    LoadHomePage();
+                    break;
+                case 1:
+                    if ((clsGlobal.CurrentUser.Permissions & 1) != 1)
+                    {
+                        MessageBox.Show("You dont have permission to enter this section conact the admin", "UnAuthorized", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        e.Cancel = true;
+                    }
+                    break;
+                case 2:
+                    if ((clsGlobal.CurrentUser.Permissions & 2) != 2)
+                    {
+                        MessageBox.Show("You dont have permission to enter this section conact the admin", "UnAuthorized", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        e.Cancel = true;
+                    }
+                    break;
+                case 3:
+                    if ((clsGlobal.CurrentUser.Permissions & 4) != 4)
+                    {
+                        MessageBox.Show("You dont have permission to enter this section conact the admin", "UnAuthorized", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        e.Cancel = true;
+                    }
+                    break;
+                case 4:
+                    if ((clsGlobal.CurrentUser.Permissions & 8) != 8)
+                    {
+                        MessageBox.Show("You dont have permission to enter this section conact the admin", "UnAuthorized", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        e.Cancel = true;
+                    }
+                    break;
+                case 5:
+                    if ((clsGlobal.CurrentUser.Permissions & 16) != 16)
+                    {
+                        MessageBox.Show("You dont have permission to enter this section conact the admin", "UnAuthorized", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        e.Cancel = true;
+                    }
+                    break;
+                case 6:
+                    if ((clsGlobal.CurrentUser.Permissions & 32) != 32)
+                    {
+                        MessageBox.Show("You dont have permission to enter this section conact the admin", "UnAuthorized", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        e.Cancel = true;
+                    }
+                    break;
+                case 7:
+                    if ((clsGlobal.CurrentUser.Permissions & 64) != 64)
+                    {
+                        MessageBox.Show("You dont have permission to enter this section conact the admin", "UnAuthorized", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        e.Cancel = true;
+                    }
+                    break;
+                case 8:
+                    if ((clsGlobal.CurrentUser.Permissions & 128) != 128)
+                    {
+                        MessageBox.Show("You dont have permission to enter this section conact the admin", "UnAuthorized", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        e.Cancel = true;
+                    }
+                    break;
+                case 9:
+                    if ((clsGlobal.CurrentUser.Permissions & 256) != 256)
+                    {
+                        MessageBox.Show("You dont have permission to enter this section conact the admin", "UnAuthorized", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        e.Cancel = true;
+                    }
+                    break;
+                case 11:
+                    e.Cancel = true;
+                    clsGlobal.CurrentUser = null;
+                    _frmLogin.Show();
+                    this.Close();
+                    break;
             }
         }
 

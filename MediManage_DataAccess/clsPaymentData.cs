@@ -281,7 +281,7 @@ namespace MediManage_DataAccess
                         {
                             if (reader.Read())
                             {
-                                Total = reader["Total"] == DBNull.Value ? (int?)null : Convert.ToInt32(reader["Total"]);
+                                Total = reader["Total"] == DBNull.Value ? (int?)0 : Convert.ToInt32(reader["Total"]);
                             }
                         }
                     }

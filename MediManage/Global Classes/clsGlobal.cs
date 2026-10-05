@@ -1,31 +1,43 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Microsoft.Win32;
 using System.Security.Cryptography;
+using System.Text;
+using Microsoft.Win32;
+using System.Windows.Forms;
 using MediManage_Business;
-
-
 
 namespace MediManage
 {
-    public class clsGlobal
+    public static class clsGlobal
     {
         public static clsUser CurrentUser;
-        public static string ComputeHash(string input)
-        {
-            //SHA is Secutred Hash Algorithm.
-            // Create an instance of the SHA-256 algorithm
-            using (SHA256 sha256 = SHA256.Create())
-            {
-                // Compute the hash value from the UTF-8 encoded input string
-                byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(input));
 
-                // Convert the byte array to a lowercase hexadecimal string
-                return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+        private static string EncryptString(string plainText)
+        {
+            if (string.IsNullOrEmpty(plainText)) return "";
+            try
+            {
+                byte[] data = Encoding.UTF8.GetBytes(plainText);
+                byte[] encryptedData = ProtectedData.Protect(data, null, DataProtectionScope.CurrentUser);
+                return Convert.ToBase64String(encryptedData);
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
+        private static string DecryptString(string encryptedText)
+        {
+            if (string.IsNullOrEmpty(encryptedText)) return "";
+            try
+            {
+                byte[] encryptedData = Convert.FromBase64String(encryptedText);
+                byte[] data = ProtectedData.Unprotect(encryptedData, null, DataProtectionScope.CurrentUser);
+                return Encoding.UTF8.GetString(data);
+            }
+            catch
+            {
+                return "";
             }
         }
 
@@ -34,19 +46,22 @@ namespace MediManage
             string KeyPath = @"HKEY_CURRENT_USER\SOFTWARE\MediManage";
             string valueName = "MediManageLogin";
 
-            if (Password != "")
-                Password = ComputeHash(Password);
+            string encryptedPassword = EncryptString(Password);
 
-            string dataToSave = Username + "#//#" + Password;
+            string dataToSave = Username + "#//#" + encryptedPassword;
             try
             {
-                //Write the value to the Regitry
+                if (string.IsNullOrEmpty(Username) && string.IsNullOrEmpty(Password))
+                {
+                    dataToSave = "";
+                }
+
                 Registry.SetValue(KeyPath, valueName, dataToSave, RegistryValueKind.String);
                 return true;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occcurred {ex.Message}" , "Regitry Error" ,MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show($"An error occurred {ex.Message}", "Registry Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }
@@ -56,30 +71,27 @@ namespace MediManage
             string KeyPath = @"HKEY_CURRENT_USER\SOFTWARE\MediManage";
             string valueName = "MediManageLogin";
             try
-            {
-                //Read the value from the Registry 
+            { 
                 string value = Registry.GetValue(KeyPath, valueName, null) as string;
-                if (value != null)
+                if (!string.IsNullOrEmpty(value))
                 {
-                    Console.WriteLine(value); // Output each line of data to the console
                     string[] result = value.Split(new string[] { "#//#" }, StringSplitOptions.None);
-                    Username = result[0];
-                    Password = result[1];
-                    if (Username != "" && Password != "")
-                        return true;
-                    else
-                        return false;
+                    if (result.Length == 2)
+                    {
+                        Username = result[0];
+                        Password = DecryptString(result[1]);
+
+                        if (!string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password))
+                            return true;
+                    }
                 }
-                else
-                    return false;
+                return false;
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"An error occcurred {ex.Message}", "Regitry Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"An error occurred {ex.Message}", "Registry Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-
         }
-
     }
 }

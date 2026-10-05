@@ -68,6 +68,15 @@ namespace MediManage_Business
 
             return null;
         }
+        public static clsUser Find(string username)
+        {
+            clsUserDTO dto = clsUsersDataAccess.GetUserInfoByUserName(username);
+
+            if (dto != null)
+                return new clsUser(dto, enMode.Update);
+
+            return null;
+        }
 
         public static clsUser FindByUsernameAndPassword(string userName, string password)
         {
@@ -111,6 +120,11 @@ namespace MediManage_Business
         public static bool IsExist(int? ID)
         {
             return clsUsersDataAccess.IsUserExist(ID);
+        }
+
+        public static bool IsExistByUserName(string NationalNo)
+        {
+            return clsUsersDataAccess.IsUserExistByUserName(NationalNo);
         }
 
         public static bool IsExist(string NationalNo)

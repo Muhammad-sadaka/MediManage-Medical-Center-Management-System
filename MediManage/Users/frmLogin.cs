@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using MediManage_Business;
 
@@ -13,20 +8,11 @@ namespace MediManage
 {
     public partial class frmLogin : Form
     {
-
-        bool GetFromRegister = false;
         public frmLogin()
         {
             InitializeComponent();
 
             Login_Load();
-
-            //EventArgs e = new EventArgs();
-            //airForm1.ParentForm.AcceptButton =
-            //       btnLogin;
-            //airForm1.ParentForm.CancelButton = airForm1.();
-
-       
         }
 
         private void Login_Load()
@@ -38,66 +24,81 @@ namespace MediManage
                 tbUserName.TextButton = UserName;
                 tbPassword.TextButton = Password;
                 chkRememberMe.Checked = true;
+
                 tbUserName.ForeColor = Color.Black;
                 tbPassword.ForeColor = Color.Black;
                 tbPassword.Password = true;
-                GetFromRegister = true;
             }
             else
+            {
                 chkRememberMe.Checked = false;
+            }
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            // التقاط مفتاح Enter لتشغيل زر تسجيل الدخول
+            if (keyData == Keys.Enter)
+            {
+                btnLogin_Click(this, EventArgs.Empty);
+                return true;
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        void InvalidCredentials()
+        {
+            tbUserName.Focus();
+            MessageBox.Show("Invalid credentials", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
-        {      
+        {
             if (!this.ValidateChildren())
             {
-                MessageBox.Show("Some fileds are not valid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Some fields are not valid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            clsUser user = new clsUser();
+            string enteredUsername = tbUserName.TextButton.Trim();
+            string enteredPassword = tbPassword.TextButton.Trim();
 
-            if (GetFromRegister)
-                user = clsUser.FindByUsernameAndPassword(tbUserName.TextButton.Trim(), tbPassword.TextButton.Trim());
-            else
-                user = clsUser.FindByUsernameAndPassword(tbUserName.TextButton.Trim(), clsGlobal.ComputeHash(tbPassword.TextButton.Trim()));
-         
-            if (user != null)
+            if (clsUser.IsExistByUserName(enteredUsername))
             {
+                clsUser user = clsUser.Find(enteredUsername);
+
+                if (user == null || !BCrypt.Net.BCrypt.Verify(enteredPassword, user.Password))
+                {
+                    InvalidCredentials();
+                    return;
+                }
+
+                if (!user.IsActive.Value)
+                {
+                    tbUserName.Focus();
+                    MessageBox.Show("Your account is not Active, Contact Admin.", "In Active Account", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
 
                 if (chkRememberMe.Checked)
                 {
-                    if (!GetFromRegister)
-                    {
-                        clsGlobal.RememberUsernameAndPasswordInRegistry(tbUserName.TextButton.Trim(), tbPassword.TextButton.Trim());
-                        //GetFromRegister = true;
-                    }
+                    clsGlobal.RememberUsernameAndPasswordInRegistry(enteredUsername, enteredPassword);
                 }
                 else
                 {
                     clsGlobal.RememberUsernameAndPasswordInRegistry("", "");
-                    GetFromRegister = false;
-                }
-                
-
-                if (!user.IsActive.Value)
-                {
-
-                    tbUserName.Focus();
-                    MessageBox.Show("Your account is not Active, Contact Admin.", "In Active Account", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
                 }
 
                 clsGlobal.CurrentUser = user;
                 this.Hide();
                 Form frm = new frmMainScreen(this);
                 frm.ShowDialog();
-
             }
             else
             {
-                tbUserName.Focus();
-                MessageBox.Show("Invalid Username/Password.", "Wrong Credintials", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                InvalidCredentials();
+                return;
             }
         }
 
@@ -120,7 +121,7 @@ namespace MediManage
 
         private void tbPassword_Leave(object sender, EventArgs e)
         {
-            if (tbPassword.TextButton == "" || tbPassword.TextButton == null)
+            if (string.IsNullOrEmpty(tbPassword.TextButton))
             {
                 tbPassword.ForeColor = Color.Gray;
                 tbPassword.TextButton = "Password";
@@ -130,7 +131,7 @@ namespace MediManage
 
         private void tbUserName_Leave(object sender, EventArgs e)
         {
-            if (tbUserName.TextButton == "" || tbPassword.TextButton == null)
+            if (string.IsNullOrEmpty(tbUserName.TextButton))
             {
                 tbUserName.ForeColor = Color.Gray;
                 tbUserName.TextButton = "User name";
@@ -139,7 +140,7 @@ namespace MediManage
 
         private void tbUserName_Validating(object sender, CancelEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(tbUserName.TextButton))
+            if (string.IsNullOrWhiteSpace(tbUserName.TextButton) || tbUserName.TextButton == "User name")
             {
                 e.Cancel = true;
                 tbUserName.Focus();
@@ -149,13 +150,12 @@ namespace MediManage
 
         private void tbPassword_Validating(object sender, CancelEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(tbPassword.TextButton))
+            if (string.IsNullOrWhiteSpace(tbPassword.TextButton) || tbPassword.TextButton == "Password")
             {
                 e.Cancel = true;
                 tbPassword.Focus();
                 errorProvider1.SetError(tbPassword, "Password should have a value");
             }
         }
-
     }
 }

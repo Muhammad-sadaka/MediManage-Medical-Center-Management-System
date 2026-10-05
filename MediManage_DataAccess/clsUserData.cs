@@ -94,6 +94,45 @@ namespace MediManage_DataAccess
             return null;
         }
 
+        public static clsUserDTO GetUserInfoByUserName(string UserName)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("[SP_GetUserByUserName]", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@UserName", (object)UserName ?? DBNull.Value);
+
+                        connection.Open();
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new clsUserDTO(
+                                       reader["UserID"] == DBNull.Value ? null : (int?)reader["UserID"],
+                                       reader["PersonID"] == DBNull.Value ? null : (int?)reader["PersonID"],
+                                       reader["UserName"] == DBNull.Value ? null : (string)reader["UserName"],
+                                       reader["Password"] == DBNull.Value ? null : (string)reader["Password"],
+                                       reader["Permissions"] == DBNull.Value ? null : (int?)reader["Permissions"],
+                                       reader["IsActive"] == DBNull.Value ? null : (bool?)reader["IsActive"],
+                                       reader["CreatedByUser"] == DBNull.Value ? null : (int?)reader["CreatedByUser"]
+                                   );
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsDataAccessSettings.EventLogCreate();
+                EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
+            }
+
+            return null;
+        }
+
         public static int? AddNewUser(clsUserDTO userDTO)
         {
             int? UserID = null;
@@ -313,6 +352,43 @@ namespace MediManage_DataAccess
             return isFound;
         }
 
+        public static bool IsUserExistByUserName(string UserName)
+        {
+            bool isFound = false;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("[SP_CheckUserExistsByUserName]", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@UserName", (object)UserName ?? DBNull.Value);
+
+                        SqlParameter returnParameter = new SqlParameter("@ReturnVal", SqlDbType.Int)
+                        {
+                            Direction = ParameterDirection.ReturnValue
+                        };
+                        command.Parameters.Add(returnParameter);
+
+                        connection.Open();
+                        command.ExecuteNonQuery();
+
+                        if (returnParameter.Value != null)
+                        {
+                            isFound = (int)returnParameter.Value == 1;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsDataAccessSettings.EventLogCreate();
+                EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
+            }
+
+            return isFound;
+        }
 
         public static clsUserDTO FindByUsernameAndPassword(string UserName, string Password)
         {
