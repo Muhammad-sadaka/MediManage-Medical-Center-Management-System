@@ -1,4 +1,5 @@
-﻿using MediManage_Business;
+﻿using MediManage.Global_Classes;
+using MediManage_Business;
 using MediManage_DataAccess;
 using System;
 using System.Collections.Generic;
@@ -23,8 +24,15 @@ namespace MediManage
 
         private void frmPrescriptionsList_Load(object sender, EventArgs e)
         {
+            tbPatientName.Enter += clsUIActions.tbPatientName_Enter;
+            tbPatientName.Leave += clsUIActions.tbPatientName_Leave;
             SetupDataGridViewColumns();
             RefreshPrescriptionsList();
+        }
+
+        private void TbPatientName_Enter(object sender, EventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void SetupDataGridViewColumns()
@@ -85,22 +93,6 @@ namespace MediManage
             frmAddPrescription frm = new frmAddPrescription();
             frm.ShowDialog();
             RefreshPrescriptionsList();
-        }
-
-        private void tbPatientName_Enter(object sender, EventArgs e)
-        {
-            if (tbPatientName.Text == "Enter Patient Name to search...")
-                tbPatientName.Clear();
-            tbPatientName.ForeColor = Color.Black;
-        }
-
-        private void tbPatientName_Leave(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(tbPatientName.Text))
-            {
-                tbPatientName.ForeColor = Color.Gray;
-                tbPatientName.Text = "Enter Patient Name to search...";
-            }
         }
 
         private void btnSearch_Click(object sender, EventArgs e)

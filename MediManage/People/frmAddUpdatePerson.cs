@@ -1,5 +1,6 @@
 ﻿using MediManage.Properties;
 using MediManage_Business;
+using Microsoft.Owin.BuilderProperties;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,6 +13,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MediManage.Global_Classes;
 
 namespace MediManage
 {
@@ -37,6 +39,14 @@ namespace MediManage
 
         private void frmAddUpdatePerson_Load(object sender, EventArgs e)
         {
+            foreach (Control ctrl in this.panel1.Controls)
+            {
+                if (ctrl is TextBox && ctrl != tbThirdName && ctrl != tbEmail)
+                {
+                    ctrl.Validating += clsValidation.ValidateEmptyTextBox;
+                }
+            }
+
             _ResestDefualtValues();
             if (_Mode == enMode.Update)
                 _LoadData();
@@ -85,6 +95,11 @@ namespace MediManage
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (!this.ValidateChildren())
+            {
+                MessageBox.Show("Some fields are not valid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             if (!_HandlePersonImage())
                 return;
@@ -139,7 +154,6 @@ namespace MediManage
 
             if (_Mode == enMode.AddNew)
             {
-                person = new clsPerson();
                 lblTitle.Text = "Add New Person                       ";
             }
             else
@@ -149,14 +163,14 @@ namespace MediManage
 
             cbCountries.SelectedIndex = cbCountries.FindString("Syria");
 
-            tbFirstName.Clear();
-            tbSecondName.Clear();
-            tbThirdName.Clear();
-            tbLastName.Clear();
-            tbNationalNo.Clear();
-            tbPhone.Clear();
-            tbEmail.Clear();
-            tbAddress.Clear();
+            foreach (Control ctrl in this.panel1.Controls)
+            {
+                if (ctrl is TextBox textBox)
+                {
+                    textBox.Clear();
+                }
+            }
+
             cbBloodType.SelectedIndex = 0;
             cbMaritalStatus.SelectedIndex = 0;
 
@@ -193,7 +207,6 @@ namespace MediManage
 
             if (!string.IsNullOrEmpty(person.Image))   pbPersonImage.ImageLocation = person.Image;
             
-
             klblRemove.Visible = (pbPersonImage.ImageLocation != null);
             klblChangeImage.Visible = klblRemove.Visible;
             klblClicktoAddPhoto.Visible = !klblChangeImage.Visible;
@@ -233,105 +246,39 @@ namespace MediManage
             pbPersonImage.Image = Resources.Person32;
         }
 
+        private void tbPhone_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
 
-        //// still in testing phase, not used yet
-        //private void ValidateEmptyTextBox(object sender, CancelEventArgs e)
-        //{
+        private void tbEmail_Validating(object sender, CancelEventArgs e)
+        {
+            if (!clsValidation.ValidateEmail(tbEmail.Text) && !string.IsNullOrEmpty(tbEmail.Text))
+            {
+                e.Cancel = true;
+                errorProvider1.SetError(tbEmail, "This is a wrong email format, it should end with (@gmail.com).");
+            }
+            else
+            {
+                errorProvider1.SetError(tbEmail, null);
+            }
+        }
 
-        //    // First: set AutoValidate property of your Form to EnableAllowFocusChange in designer 
-        //    TextBox Temp = ((TextBox)sender);
-        //    if (string.IsNullOrEmpty(Temp.Text.Trim()))
-        //    {
-        //        e.Cancel = true;
-        //        errorProvider1.SetError(Temp, "This field is required!");
-        //    }
-        //    else
-        //    {
-        //        //e.Cancel = false;
-        //        errorProvider1.SetError(Temp, null);
-        //    }
-
-        //}
-
-
-        //// still in testing phase, not used yet
-        ///
-        //private void ValidateEmptyTextBox(object sender, CancelEventArgs e)
-        //{
-        //    TextBox temp = (TextBox)sender;
-
-        //    if (string.IsNullOrWhiteSpace(temp.Text.Trim()))
-        //    {
-        //        e.Cancel = true;
-        //        temp.Focus();
-        //        errorProvider1.SetError(temp, $"{temp.Tag ?? "This field"} should have a value!");
-        //    }
-        //    else
-        //    {
-        //        e.Cancel = false;
-        //        errorProvider1.SetError(temp, "");
-        //    }
-        //}
-
-        //private void Form_Load(object sender, EventArgs e)
-        //{
-        //    tBFirstName.Validating += ValidateEmptyTextBox;
-        //    tBSecondName.Validating += ValidateEmptyTextBox;
-        //    tBLastName.Validating += ValidateEmptyTextBox;
-        //    tBAddress.Validating += ValidateEmptyTextBox;
-        //    tBPhone.Validating += ValidateEmptyTextBox;
-        //}
-
-        //private void tBEmail_Validating(object sender, CancelEventArgs e)
-        //{
-        //    if (string.IsNullOrWhiteSpace(tBEmail.Text.Trim()))
-        //    {
-        //        e.Cancel = false;
-        //        errorProvider1.SetError(tBEmail, "");
-        //        return;
-        //    }
-
-        //    if (!clsValidation.ValidateEmail(tBEmail.Text))
-        //    {
-        //        e.Cancel = true;
-        //        tBEmail.Focus();
-        //        errorProvider1.SetError(tBEmail, "This is a wrong email format, it should end with (@gmail.com).");
-        //    }
-        //    else
-        //    {
-        //        e.Cancel = false;
-        //        errorProvider1.SetError(tBEmail, "");
-        //    }
-        //}
-
-        //private void tBNationalNo_Validating_1(object sender, CancelEventArgs e)
-        //{
-        //    if (string.IsNullOrWhiteSpace(tBNationalNo.Text.Trim()))
-        //    {
-        //        e.Cancel = true;
-        //        tBNationalNo.Focus();
-        //        errorProvider1.SetError(tBNationalNo, "NationalNo should have a value");
-        //    }
-        //    else if (tBNationalNo.Text.Trim() != _Person.NationalNo && clsPeople.isPersonExist(tBNationalNo.Text.Trim()))
-        //    {
-        //        e.Cancel = true;
-        //        tBNationalNo.Focus();
-        //        errorProvider1.SetError(tBNationalNo, "This NationalNo already exists");
-        //    }
-        //    else
-        //    {
-        //        e.Cancel = false;
-        //        errorProvider1.SetError(tBNationalNo, "");
-        //    }
-        //}
-
-        //private void tBPhone_KeyPress(object sender, KeyPressEventArgs e)
-        //{
-        //    if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
-        //    {
-        //        e.Handled = true;
-        //    }
-        //}
-
+        private void tbNationalNo_Validating(object sender, CancelEventArgs e)
+        {
+            if (tbNationalNo.Text.Trim() != person.NationalNo && clsPerson.IsExist(tbNationalNo.Text.Trim()))
+            {
+                e.Cancel = true;
+                tbNationalNo.Focus();
+                errorProvider1.SetError(tbNationalNo, "This National No already exists");
+            }
+            else
+            {
+                errorProvider1.SetError(tbNationalNo, null);
+            }
+        }
     }
 }

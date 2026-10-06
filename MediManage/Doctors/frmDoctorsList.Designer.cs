@@ -114,9 +114,7 @@
             this.tbNationalNo.Name = "tbNationalNo";
             this.tbNationalNo.Size = new System.Drawing.Size(1126, 47);
             this.tbNationalNo.TabIndex = 20;
-            this.tbNationalNo.Text = "Enter National No...";
-            this.tbNationalNo.Enter += new System.EventHandler(this.tbNationalNo_Enter);
-            this.tbNationalNo.Leave += new System.EventHandler(this.tbNationalNo_Leave);
+            this.tbNationalNo.Text = "National No";
             // 
             // btnSearch
             // 

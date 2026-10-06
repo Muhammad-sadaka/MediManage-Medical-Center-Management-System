@@ -1,4 +1,6 @@
-﻿using MediManage_Business;
+﻿using BCrypt.Net;
+using MediManage.Global_Classes;
+using MediManage_Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +11,6 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using BCrypt.Net;
 
 
 namespace MediManage
@@ -41,6 +42,9 @@ namespace MediManage
 
         private void frmAddUpdateUser_Load(object sender, EventArgs e)
         {
+            tbNationalNo.Enter += clsUIActions.tbNationalNo_Enter;
+            tbNationalNo.Leave += clsUIActions.tbNationalNo_Leave;
+
             _ResestDefualtValues();
             if (_Mode == enMode.Update)
                 _LoadData();
@@ -185,22 +189,6 @@ namespace MediManage
                 MessageBox.Show("No Person Found With This National No", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-        }
-
-        private void tbNationalNo_Enter(object sender, EventArgs e)
-        {
-            if (tbNationalNo.Text == "National No")
-                tbNationalNo.Clear();
-            tbNationalNo.ForeColor = Color.Black;
-        }
-
-        private void tbNationalNo_Leave(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(tbNationalNo.Text))
-            {
-                tbNationalNo.ForeColor = Color.Gray;
-                tbNationalNo.Text = "National No";
-            }
         }
     }
 }

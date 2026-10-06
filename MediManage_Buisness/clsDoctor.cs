@@ -142,17 +142,23 @@ namespace MediManage_Business
 
         public static bool DeleteDoctor(int? ID)
         {
-            if(clsDoctorsDataAccess.DeleteDoctor(ID))
+            if (clsAppointmentsDataAccess.IsThereAppointmentforDoctor(ID))
             {
-                return true;
+                //this.DTO.IsActive.Value = false ;            
+                //return clsDoctorsDataAccess.UpdateDoctor(this.DTO);
+                if (clsDoctorsDataAccess.UnActiveDoctor(ID))
+                {
+                    return true;
+                }
             }
-            else
+            else 
             {
-                //this.IsActive.Value = false ;
-                //return _UpdateDoctor();
-                return false;
+                if (clsDoctorsDataAccess.DeleteDoctor(ID))
+                {
+                    return true;
+                }
             }
-             
+            return false;
         }
 
         public static bool IsExist(int? ID)

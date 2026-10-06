@@ -1,4 +1,5 @@
-﻿using MediManage_Business;
+﻿using MediManage.Global_Classes;
+using MediManage_Business;
 using MediManage_DataAccess;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,8 @@ namespace MediManage
 
         private void frmUsersList_Load(object sender, EventArgs e)
         {
+            tbUsername.Enter += clsUIActions.tbUserName_Enter;
+            tbUsername.Leave += clsUIActions.tbUserName_Leave;
             SetupDataGridViewColumns();
             RefreshUsersList();
         }
@@ -150,22 +153,6 @@ namespace MediManage
             if (DGVUsersList.RowCount < 1) return;
             frmUserDetails frm = new frmUserDetails((int)DGVUsersList.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
-        }
-
-        private void tbNationalNo_Enter(object sender, EventArgs e)
-        {
-            if (tbUsername.Text == "Enter Username to search...")
-                tbUsername.Clear();
-            tbUsername.ForeColor = Color.Black;
-        }
-
-        private void tbNationalNo_Leave(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(tbUsername.Text))
-            {
-                tbUsername.ForeColor = Color.Gray;
-                tbUsername.Text = "Enter Username to search...";
-            }
         }
     }
 }

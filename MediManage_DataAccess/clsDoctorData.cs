@@ -354,6 +354,33 @@ namespace MediManage_DataAccess
             return rowsAffected > 0;
         }
 
+        public static bool UnActiveDoctor(int? DoctorID)
+        {
+            int rowsAffected = 0;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("[SP_UnActiveDoctor]", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@DoctorID", (object)DoctorID ?? DBNull.Value);
+
+                        connection.Open();
+                        rowsAffected = command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsDataAccessSettings.EventLogCreate();
+                EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
+            }
+
+            return rowsAffected > 0;
+        }
+
         public static bool IsDoctorExist(int? DoctorID)
         {
             bool isFound = false;

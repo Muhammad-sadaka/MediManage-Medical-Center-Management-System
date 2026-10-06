@@ -1,4 +1,5 @@
-﻿using MediManage_Business;
+﻿using MediManage.Global_Classes;
+using MediManage_Business;
 using MediManage_DataAccess;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,9 @@ namespace MediManage
         {
             foreach (var s in clsAnalysisStatus.GetAllAnalysisStatuses().Select(s => s.AnalysisStatusName).ToList()) cbStatuses.Items.Add(s);
             cbStatuses.SelectedIndex = 0;
+
+            tbPatientName.Enter += clsUIActions.tbPatientName_Enter;
+            tbPatientName.Leave += clsUIActions.tbPatientName_Leave;
 
             SetupDataGridViewColumns();
             RefreshAnalysesList();
@@ -126,22 +130,6 @@ namespace MediManage
             if (DGVAnalysesList.RowCount < 1) return;
             frmAnalysisDetails frm = new frmAnalysisDetails((int)DGVAnalysesList.CurrentRow.Cells[0].Value);
             frm.ShowDialog();
-        }
-
-        private void tbNationalNo_Enter(object sender, EventArgs e)
-        {
-            if (tbPatientName.Text == "Enter Patient Name...")
-                tbPatientName.Clear();
-            tbPatientName.ForeColor = Color.Black;
-        }
-
-        private void tbNationalNo_Leave(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(tbPatientName.Text))
-            {
-                tbPatientName.ForeColor = Color.Gray;
-                tbPatientName.Text = "Enter Patient Name...";
-            }
         }
 
         private void btnSearch_Click(object sender, EventArgs e)

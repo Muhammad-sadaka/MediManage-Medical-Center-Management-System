@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
@@ -50,10 +51,12 @@
             this.label8 = new System.Windows.Forms.Label();
             this.tbNationalNo = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericEcperienceYears)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.gbSearch.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnSave
@@ -281,8 +284,6 @@
             this.tbNationalNo.Size = new System.Drawing.Size(823, 40);
             this.tbNationalNo.TabIndex = 1;
             this.tbNationalNo.Text = "National No";
-            this.tbNationalNo.Enter += new System.EventHandler(this.tbNationalNo_Enter);
-            this.tbNationalNo.Leave += new System.EventHandler(this.tbNationalNo_Leave);
             // 
             // btnSearch
             // 
@@ -297,6 +298,10 @@
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = false;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
             // 
             // frmAddUpdateDoctor
             // 
@@ -320,6 +325,7 @@
             this.groupBox2.ResumeLayout(false);
             this.gbSearch.ResumeLayout(false);
             this.gbSearch.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -349,5 +355,6 @@
         private ctrlPersonInfoSummary ctrlPersonInfoSummary1;
         private System.Windows.Forms.TextBox tbConsultationFees;
         private CustomCheckBox chkIsActive;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }

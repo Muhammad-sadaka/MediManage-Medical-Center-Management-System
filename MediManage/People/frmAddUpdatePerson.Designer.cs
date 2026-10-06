@@ -32,45 +32,45 @@
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.rbFemale = new System.Windows.Forms.RadioButton();
-            this.rbMale = new System.Windows.Forms.RadioButton();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.cbMaritalStatus = new System.Windows.Forms.ComboBox();
-            this.cbBloodType = new System.Windows.Forms.ComboBox();
-            this.cbCountries = new System.Windows.Forms.ComboBox();
-            this.tbAddress = new System.Windows.Forms.TextBox();
-            this.tbEmail = new System.Windows.Forms.TextBox();
-            this.tbPhone = new System.Windows.Forms.TextBox();
-            this.tbNationalNo = new System.Windows.Forms.TextBox();
-            this.tbLastName = new System.Windows.Forms.TextBox();
-            this.tbThirdName = new System.Windows.Forms.TextBox();
-            this.tbSecondName = new System.Windows.Forms.TextBox();
-            this.tbFirstName = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.klblClicktoAddPhoto = new System.Windows.Forms.LinkLabel();
-            this.klblChangeImage = new System.Windows.Forms.LinkLabel();
-            this.klblRemove = new System.Windows.Forms.LinkLabel();
-            this.pbPersonImage = new System.Windows.Forms.PictureBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.panel1.SuspendLayout();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPersonImage)).BeginInit();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.pbPersonImage = new System.Windows.Forms.PictureBox();
+            this.klblRemove = new System.Windows.Forms.LinkLabel();
+            this.klblChangeImage = new System.Windows.Forms.LinkLabel();
+            this.klblClicktoAddPhoto = new System.Windows.Forms.LinkLabel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.tbFirstName = new System.Windows.Forms.TextBox();
+            this.tbSecondName = new System.Windows.Forms.TextBox();
+            this.tbThirdName = new System.Windows.Forms.TextBox();
+            this.tbLastName = new System.Windows.Forms.TextBox();
+            this.tbNationalNo = new System.Windows.Forms.TextBox();
+            this.tbPhone = new System.Windows.Forms.TextBox();
+            this.tbEmail = new System.Windows.Forms.TextBox();
+            this.tbAddress = new System.Windows.Forms.TextBox();
+            this.cbCountries = new System.Windows.Forms.ComboBox();
+            this.cbBloodType = new System.Windows.Forms.ComboBox();
+            this.cbMaritalStatus = new System.Windows.Forms.ComboBox();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.rbMale = new System.Windows.Forms.RadioButton();
+            this.rbFemale = new System.Windows.Forms.RadioButton();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPersonImage)).BeginInit();
+            this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnClose
@@ -111,6 +111,14 @@
             this.lblTitle.TabIndex = 17;
             this.lblTitle.Text = "Add New Person                       ";
             // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
+            // openFileDialog1
+            // 
+            this.openFileDialog1.FileName = "openFileDialog1";
+            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
@@ -147,296 +155,27 @@
             this.panel1.Size = new System.Drawing.Size(1245, 608);
             this.panel1.TabIndex = 18;
             // 
-            // rbFemale
+            // label1
             // 
-            this.rbFemale.AutoSize = true;
-            this.rbFemale.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbFemale.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbFemale.Location = new System.Drawing.Point(849, 295);
-            this.rbFemale.Name = "rbFemale";
-            this.rbFemale.Size = new System.Drawing.Size(104, 32);
-            this.rbFemale.TabIndex = 8;
-            this.rbFemale.Text = "Female";
-            this.rbFemale.UseVisualStyleBackColor = true;
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(486, 23);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(150, 34);
+            this.label1.TabIndex = 142;
+            this.label1.Text = "First Name";
             // 
-            // rbMale
+            // pbPersonImage
             // 
-            this.rbMale.AutoSize = true;
-            this.rbMale.Checked = true;
-            this.rbMale.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rbMale.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rbMale.Location = new System.Drawing.Point(704, 295);
-            this.rbMale.Name = "rbMale";
-            this.rbMale.Size = new System.Drawing.Size(79, 32);
-            this.rbMale.TabIndex = 7;
-            this.rbMale.TabStop = true;
-            this.rbMale.Text = "Male";
-            this.rbMale.UseVisualStyleBackColor = true;
-            // 
-            // dateTimePicker1
-            // 
-            this.dateTimePicker1.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePicker1.Location = new System.Drawing.Point(704, 248);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(500, 35);
-            this.dateTimePicker1.TabIndex = 6;
-            this.dateTimePicker1.Value = new System.DateTime(2026, 9, 4, 0, 0, 0, 0);
-            // 
-            // cbMaritalStatus
-            // 
-            this.cbMaritalStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbMaritalStatus.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbMaritalStatus.FormattingEnabled = true;
-            this.cbMaritalStatus.Location = new System.Drawing.Point(704, 560);
-            this.cbMaritalStatus.Name = "cbMaritalStatus";
-            this.cbMaritalStatus.Size = new System.Drawing.Size(500, 32);
-            this.cbMaritalStatus.TabIndex = 14;
-            // 
-            // cbBloodType
-            // 
-            this.cbBloodType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbBloodType.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbBloodType.FormattingEnabled = true;
-            this.cbBloodType.Location = new System.Drawing.Point(704, 519);
-            this.cbBloodType.Name = "cbBloodType";
-            this.cbBloodType.Size = new System.Drawing.Size(500, 32);
-            this.cbBloodType.TabIndex = 13;
-            // 
-            // cbCountries
-            // 
-            this.cbCountries.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbCountries.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbCountries.FormattingEnabled = true;
-            this.cbCountries.Location = new System.Drawing.Point(704, 475);
-            this.cbCountries.Name = "cbCountries";
-            this.cbCountries.Size = new System.Drawing.Size(500, 32);
-            this.cbCountries.TabIndex = 12;
-            // 
-            // tbAddress
-            // 
-            this.tbAddress.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbAddress.Location = new System.Drawing.Point(704, 429);
-            this.tbAddress.Name = "tbAddress";
-            this.tbAddress.Size = new System.Drawing.Size(500, 35);
-            this.tbAddress.TabIndex = 11;
-            // 
-            // tbEmail
-            // 
-            this.tbEmail.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbEmail.Location = new System.Drawing.Point(704, 384);
-            this.tbEmail.Name = "tbEmail";
-            this.tbEmail.Size = new System.Drawing.Size(500, 35);
-            this.tbEmail.TabIndex = 10;
-            // 
-            // tbPhone
-            // 
-            this.tbPhone.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbPhone.Location = new System.Drawing.Point(704, 337);
-            this.tbPhone.Name = "tbPhone";
-            this.tbPhone.Size = new System.Drawing.Size(500, 35);
-            this.tbPhone.TabIndex = 9;
-            // 
-            // tbNationalNo
-            // 
-            this.tbNationalNo.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbNationalNo.Location = new System.Drawing.Point(704, 207);
-            this.tbNationalNo.Name = "tbNationalNo";
-            this.tbNationalNo.Size = new System.Drawing.Size(500, 35);
-            this.tbNationalNo.TabIndex = 5;
-            // 
-            // tbLastName
-            // 
-            this.tbLastName.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbLastName.Location = new System.Drawing.Point(704, 159);
-            this.tbLastName.Name = "tbLastName";
-            this.tbLastName.Size = new System.Drawing.Size(500, 35);
-            this.tbLastName.TabIndex = 4;
-            // 
-            // tbThirdName
-            // 
-            this.tbThirdName.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbThirdName.Location = new System.Drawing.Point(704, 114);
-            this.tbThirdName.Name = "tbThirdName";
-            this.tbThirdName.Size = new System.Drawing.Size(500, 35);
-            this.tbThirdName.TabIndex = 3;
-            // 
-            // tbSecondName
-            // 
-            this.tbSecondName.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbSecondName.Location = new System.Drawing.Point(704, 69);
-            this.tbSecondName.Name = "tbSecondName";
-            this.tbSecondName.Size = new System.Drawing.Size(500, 35);
-            this.tbSecondName.TabIndex = 2;
-            // 
-            // tbFirstName
-            // 
-            this.tbFirstName.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbFirstName.Location = new System.Drawing.Point(704, 22);
-            this.tbFirstName.Name = "tbFirstName";
-            this.tbFirstName.Size = new System.Drawing.Size(500, 35);
-            this.tbFirstName.TabIndex = 1;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(486, 556);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(185, 34);
-            this.label15.TabIndex = 155;
-            this.label15.Text = "Marital Status";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(486, 515);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(152, 34);
-            this.label14.TabIndex = 154;
-            this.label14.Text = "Blood Type";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(486, 338);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(92, 34);
-            this.label13.TabIndex = 153;
-            this.label13.Text = "Phone";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(486, 158);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(148, 34);
-            this.label12.TabIndex = 152;
-            this.label12.Text = "Last Name";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(486, 293);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(105, 34);
-            this.label11.TabIndex = 151;
-            this.label11.Text = "Gender";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(486, 473);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(112, 34);
-            this.label10.TabIndex = 150;
-            this.label10.Text = "Country";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(486, 428);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(113, 34);
-            this.label9.TabIndex = 149;
-            this.label9.Text = "Address";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(486, 248);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(173, 34);
-            this.label8.TabIndex = 148;
-            this.label8.Text = "Date of Birth";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(486, 383);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(82, 34);
-            this.label7.TabIndex = 147;
-            this.label7.Text = "Email";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(486, 203);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(159, 34);
-            this.label6.TabIndex = 146;
-            this.label6.Text = "National No";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(486, 113);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(160, 34);
-            this.label5.TabIndex = 145;
-            this.label5.Text = "Third Name";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(486, 68);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(187, 34);
-            this.label4.TabIndex = 144;
-            this.label4.Text = "Second Name";
-            // 
-            // panel2
-            // 
-            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.panel2.Controls.Add(this.klblClicktoAddPhoto);
-            this.panel2.Controls.Add(this.klblChangeImage);
-            this.panel2.Controls.Add(this.klblRemove);
-            this.panel2.Controls.Add(this.pbPersonImage);
-            this.panel2.Location = new System.Drawing.Point(44, 23);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(402, 549);
-            this.panel2.TabIndex = 143;
-            // 
-            // klblClicktoAddPhoto
-            // 
-            this.klblClicktoAddPhoto.ActiveLinkColor = System.Drawing.Color.Yellow;
-            this.klblClicktoAddPhoto.AutoSize = true;
-            this.klblClicktoAddPhoto.BackColor = System.Drawing.Color.White;
-            this.klblClicktoAddPhoto.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.klblClicktoAddPhoto.LinkColor = System.Drawing.Color.DarkRed;
-            this.klblClicktoAddPhoto.Location = new System.Drawing.Point(89, 362);
-            this.klblClicktoAddPhoto.Name = "klblClicktoAddPhoto";
-            this.klblClicktoAddPhoto.Size = new System.Drawing.Size(239, 34);
-            this.klblClicktoAddPhoto.TabIndex = 15;
-            this.klblClicktoAddPhoto.TabStop = true;
-            this.klblClicktoAddPhoto.Text = "Click to Add Photo";
-            this.klblClicktoAddPhoto.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.klblClicktoAddPhoto_LinkClicked);
-            // 
-            // klblChangeImage
-            // 
-            this.klblChangeImage.ActiveLinkColor = System.Drawing.Color.Yellow;
-            this.klblChangeImage.AutoSize = true;
-            this.klblChangeImage.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.klblChangeImage.LinkColor = System.Drawing.Color.DarkRed;
-            this.klblChangeImage.Location = new System.Drawing.Point(101, 441);
-            this.klblChangeImage.Name = "klblChangeImage";
-            this.klblChangeImage.Size = new System.Drawing.Size(197, 34);
-            this.klblChangeImage.TabIndex = 16;
-            this.klblChangeImage.TabStop = true;
-            this.klblChangeImage.Text = "Change Image";
-            this.klblChangeImage.Visible = false;
-            this.klblChangeImage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.klblChangeImage_LinkClicked);
+            this.pbPersonImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.pbPersonImage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.pbPersonImage.Image = global::MediManage.Properties.Resources.Person32;
+            this.pbPersonImage.Location = new System.Drawing.Point(68, 135);
+            this.pbPersonImage.Name = "pbPersonImage";
+            this.pbPersonImage.Size = new System.Drawing.Size(273, 277);
+            this.pbPersonImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbPersonImage.TabIndex = 18;
+            this.pbPersonImage.TabStop = false;
             // 
             // klblRemove
             // 
@@ -453,35 +192,299 @@
             this.klblRemove.Visible = false;
             this.klblRemove.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.klblRemove_LinkClicked);
             // 
-            // pbPersonImage
+            // klblChangeImage
             // 
-            this.pbPersonImage.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.pbPersonImage.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.pbPersonImage.Image = global::MediManage.Properties.Resources.Person32;
-            this.pbPersonImage.Location = new System.Drawing.Point(68, 135);
-            this.pbPersonImage.Name = "pbPersonImage";
-            this.pbPersonImage.Size = new System.Drawing.Size(273, 277);
-            this.pbPersonImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbPersonImage.TabIndex = 18;
-            this.pbPersonImage.TabStop = false;
+            this.klblChangeImage.ActiveLinkColor = System.Drawing.Color.Yellow;
+            this.klblChangeImage.AutoSize = true;
+            this.klblChangeImage.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.klblChangeImage.LinkColor = System.Drawing.Color.DarkRed;
+            this.klblChangeImage.Location = new System.Drawing.Point(101, 441);
+            this.klblChangeImage.Name = "klblChangeImage";
+            this.klblChangeImage.Size = new System.Drawing.Size(197, 34);
+            this.klblChangeImage.TabIndex = 16;
+            this.klblChangeImage.TabStop = true;
+            this.klblChangeImage.Text = "Change Image";
+            this.klblChangeImage.Visible = false;
+            this.klblChangeImage.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.klblChangeImage_LinkClicked);
             // 
-            // label1
+            // klblClicktoAddPhoto
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(486, 23);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(150, 34);
-            this.label1.TabIndex = 142;
-            this.label1.Text = "First Name";
+            this.klblClicktoAddPhoto.ActiveLinkColor = System.Drawing.Color.Yellow;
+            this.klblClicktoAddPhoto.AutoSize = true;
+            this.klblClicktoAddPhoto.BackColor = System.Drawing.Color.White;
+            this.klblClicktoAddPhoto.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.klblClicktoAddPhoto.LinkColor = System.Drawing.Color.DarkRed;
+            this.klblClicktoAddPhoto.Location = new System.Drawing.Point(89, 362);
+            this.klblClicktoAddPhoto.Name = "klblClicktoAddPhoto";
+            this.klblClicktoAddPhoto.Size = new System.Drawing.Size(239, 34);
+            this.klblClicktoAddPhoto.TabIndex = 15;
+            this.klblClicktoAddPhoto.TabStop = true;
+            this.klblClicktoAddPhoto.Text = "Click to Add Photo";
+            this.klblClicktoAddPhoto.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.klblClicktoAddPhoto_LinkClicked);
             // 
-            // errorProvider1
+            // panel2
             // 
-            this.errorProvider1.ContainerControl = this;
+            this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.panel2.Controls.Add(this.klblClicktoAddPhoto);
+            this.panel2.Controls.Add(this.klblChangeImage);
+            this.panel2.Controls.Add(this.klblRemove);
+            this.panel2.Controls.Add(this.pbPersonImage);
+            this.panel2.Location = new System.Drawing.Point(44, 23);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(402, 549);
+            this.panel2.TabIndex = 143;
             // 
-            // openFileDialog1
+            // label4
             // 
-            this.openFileDialog1.FileName = "openFileDialog1";
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(486, 68);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(187, 34);
+            this.label4.TabIndex = 144;
+            this.label4.Text = "Second Name";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(486, 113);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(160, 34);
+            this.label5.TabIndex = 145;
+            this.label5.Text = "Third Name";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(486, 203);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(159, 34);
+            this.label6.TabIndex = 146;
+            this.label6.Text = "National No";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.Location = new System.Drawing.Point(486, 383);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(82, 34);
+            this.label7.TabIndex = 147;
+            this.label7.Text = "Email";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(486, 248);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(173, 34);
+            this.label8.TabIndex = 148;
+            this.label8.Text = "Date of Birth";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(486, 428);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(113, 34);
+            this.label9.TabIndex = 149;
+            this.label9.Text = "Address";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(486, 473);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(112, 34);
+            this.label10.TabIndex = 150;
+            this.label10.Text = "Country";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(486, 293);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(105, 34);
+            this.label11.TabIndex = 151;
+            this.label11.Text = "Gender";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(486, 158);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(148, 34);
+            this.label12.TabIndex = 152;
+            this.label12.Text = "Last Name";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(486, 338);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(92, 34);
+            this.label13.TabIndex = 153;
+            this.label13.Text = "Phone";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label14.Location = new System.Drawing.Point(486, 515);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(152, 34);
+            this.label14.TabIndex = 154;
+            this.label14.Text = "Blood Type";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.Location = new System.Drawing.Point(486, 556);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(185, 34);
+            this.label15.TabIndex = 155;
+            this.label15.Text = "Marital Status";
+            // 
+            // tbFirstName
+            // 
+            this.tbFirstName.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbFirstName.Location = new System.Drawing.Point(704, 22);
+            this.tbFirstName.Name = "tbFirstName";
+            this.tbFirstName.Size = new System.Drawing.Size(500, 35);
+            this.tbFirstName.TabIndex = 1;
+            // 
+            // tbSecondName
+            // 
+            this.tbSecondName.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbSecondName.Location = new System.Drawing.Point(704, 69);
+            this.tbSecondName.Name = "tbSecondName";
+            this.tbSecondName.Size = new System.Drawing.Size(500, 35);
+            this.tbSecondName.TabIndex = 2;
+            // 
+            // tbThirdName
+            // 
+            this.tbThirdName.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbThirdName.Location = new System.Drawing.Point(704, 114);
+            this.tbThirdName.Name = "tbThirdName";
+            this.tbThirdName.Size = new System.Drawing.Size(500, 35);
+            this.tbThirdName.TabIndex = 3;
+            // 
+            // tbLastName
+            // 
+            this.tbLastName.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbLastName.Location = new System.Drawing.Point(704, 159);
+            this.tbLastName.Name = "tbLastName";
+            this.tbLastName.Size = new System.Drawing.Size(500, 35);
+            this.tbLastName.TabIndex = 4;
+            // 
+            // tbNationalNo
+            // 
+            this.tbNationalNo.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbNationalNo.Location = new System.Drawing.Point(704, 207);
+            this.tbNationalNo.Name = "tbNationalNo";
+            this.tbNationalNo.Size = new System.Drawing.Size(500, 35);
+            this.tbNationalNo.TabIndex = 5;
+            this.tbNationalNo.Validating += new System.ComponentModel.CancelEventHandler(this.tbNationalNo_Validating);
+            // 
+            // tbPhone
+            // 
+            this.tbPhone.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbPhone.Location = new System.Drawing.Point(704, 337);
+            this.tbPhone.Name = "tbPhone";
+            this.tbPhone.Size = new System.Drawing.Size(500, 35);
+            this.tbPhone.TabIndex = 9;
+            this.tbPhone.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbPhone_KeyPress);
+            // 
+            // tbEmail
+            // 
+            this.tbEmail.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbEmail.Location = new System.Drawing.Point(704, 384);
+            this.tbEmail.Name = "tbEmail";
+            this.tbEmail.Size = new System.Drawing.Size(500, 35);
+            this.tbEmail.TabIndex = 10;
+            this.tbEmail.Validating += new System.ComponentModel.CancelEventHandler(this.tbEmail_Validating);
+            // 
+            // tbAddress
+            // 
+            this.tbAddress.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbAddress.Location = new System.Drawing.Point(704, 429);
+            this.tbAddress.Name = "tbAddress";
+            this.tbAddress.Size = new System.Drawing.Size(500, 35);
+            this.tbAddress.TabIndex = 11;
+            // 
+            // cbCountries
+            // 
+            this.cbCountries.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCountries.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbCountries.FormattingEnabled = true;
+            this.cbCountries.Location = new System.Drawing.Point(704, 475);
+            this.cbCountries.Name = "cbCountries";
+            this.cbCountries.Size = new System.Drawing.Size(500, 32);
+            this.cbCountries.TabIndex = 12;
+            // 
+            // cbBloodType
+            // 
+            this.cbBloodType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbBloodType.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbBloodType.FormattingEnabled = true;
+            this.cbBloodType.Location = new System.Drawing.Point(704, 519);
+            this.cbBloodType.Name = "cbBloodType";
+            this.cbBloodType.Size = new System.Drawing.Size(500, 32);
+            this.cbBloodType.TabIndex = 13;
+            // 
+            // cbMaritalStatus
+            // 
+            this.cbMaritalStatus.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbMaritalStatus.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbMaritalStatus.FormattingEnabled = true;
+            this.cbMaritalStatus.Location = new System.Drawing.Point(704, 560);
+            this.cbMaritalStatus.Name = "cbMaritalStatus";
+            this.cbMaritalStatus.Size = new System.Drawing.Size(500, 32);
+            this.cbMaritalStatus.TabIndex = 14;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dateTimePicker1.Location = new System.Drawing.Point(704, 248);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(500, 35);
+            this.dateTimePicker1.TabIndex = 6;
+            this.dateTimePicker1.Value = new System.DateTime(2026, 9, 4, 0, 0, 0, 0);
+            // 
+            // rbMale
+            // 
+            this.rbMale.AutoSize = true;
+            this.rbMale.Checked = true;
+            this.rbMale.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbMale.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbMale.Location = new System.Drawing.Point(704, 295);
+            this.rbMale.Name = "rbMale";
+            this.rbMale.Size = new System.Drawing.Size(79, 32);
+            this.rbMale.TabIndex = 7;
+            this.rbMale.TabStop = true;
+            this.rbMale.Text = "Male";
+            this.rbMale.UseVisualStyleBackColor = true;
+            // 
+            // rbFemale
+            // 
+            this.rbFemale.AutoSize = true;
+            this.rbFemale.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.rbFemale.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rbFemale.Location = new System.Drawing.Point(849, 295);
+            this.rbFemale.Name = "rbFemale";
+            this.rbFemale.Size = new System.Drawing.Size(104, 32);
+            this.rbFemale.TabIndex = 8;
+            this.rbFemale.Text = "Female";
+            this.rbFemale.UseVisualStyleBackColor = true;
             // 
             // frmAddUpdatePerson
             // 
@@ -498,12 +501,12 @@
             this.Name = "frmAddUpdatePerson";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Load += new System.EventHandler(this.frmAddUpdatePerson_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbPersonImage)).EndInit();
             this.panel2.ResumeLayout(false);
             this.panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pbPersonImage)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -514,6 +517,8 @@
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
+        private System.Windows.Forms.OpenFileDialog openFileDialog1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.RadioButton rbFemale;
         private System.Windows.Forms.RadioButton rbMale;
@@ -542,12 +547,10 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.LinkLabel klblClicktoAddPhoto;
         private System.Windows.Forms.LinkLabel klblChangeImage;
         private System.Windows.Forms.LinkLabel klblRemove;
         private System.Windows.Forms.PictureBox pbPersonImage;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ErrorProvider errorProvider1;
-        private System.Windows.Forms.OpenFileDialog openFileDialog1;
-        private System.Windows.Forms.LinkLabel klblClicktoAddPhoto;
     }
 }

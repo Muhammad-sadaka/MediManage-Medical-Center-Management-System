@@ -1,4 +1,5 @@
-﻿using MediManage_Business;
+﻿using MediManage.Global_Classes;
+using MediManage_Business;
 using MediManage_DataAccess;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,11 @@ namespace MediManage
 
         private void frmAddUpdateDoctor_Load(object sender, EventArgs e)
         {
+            tbNationalNo.Enter += clsUIActions.tbNationalNo_Enter;
+            tbNationalNo.Leave += clsUIActions.tbNationalNo_Leave;
+            tbQualification.Validating += clsValidation.ValidateEmptyTextBox;
+            tbLicenseNo.Validating += clsValidation.ValidateEmptyTextBox;
+
             _ResestDefualtValues();
             if (_Mode == enMode.Update)
                 _LoadData();
@@ -50,7 +56,6 @@ namespace MediManage
 
             if (_Mode == enMode.AddNew)
             {
-                Doctor = new clsDoctor();     // i think it is not necessary
                 lblTitle.Text = "Add New Doctor                       ";
             }
             else
@@ -91,16 +96,15 @@ namespace MediManage
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (clsPerson.IsExist(tbNationalNo.Text))
+            if (clsPerson.IsExist(tbNationalNo.Text.Trim()))
             {
-                ctrlPersonInfoSummary1.LoadPersonInfoData(tbNationalNo.Text);
-                Doctor.PersonID = clsPerson.Find(tbNationalNo.Text).PersonID;
-                if (clsDoctor.IsExist(tbNationalNo.Text))
+                if (clsDoctor.IsExist(tbNationalNo.Text.Trim()))
                 {
-                    MessageBox.Show("This National No is already used for another doctor","",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
-                    _Mode = enMode.Update;
-                    _LoadData();
+                    MessageBox.Show("This Person is already exist in the system","Error",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
+                    return;
                 }
+                Doctor.PersonID = clsPerson.Find(tbNationalNo.Text).PersonID;
+                ctrlPersonInfoSummary1.LoadPersonInfoData(Doctor.PersonID.Value);
             }
             else
             {
@@ -132,22 +136,6 @@ namespace MediManage
             else
             {
                 MessageBox.Show("Error: Data Is not Saved Successfully.", "Did Not Saved", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void tbNationalNo_Enter(object sender, EventArgs e)
-        {
-            if (tbNationalNo.Text == "National No")
-                tbNationalNo.Clear();
-            tbNationalNo.ForeColor = Color.Black;
-        }
-
-        private void tbNationalNo_Leave(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(tbNationalNo.Text))
-            {
-                tbNationalNo.ForeColor = Color.Gray;
-                tbNationalNo.Text = "National No";
             }
         }
 

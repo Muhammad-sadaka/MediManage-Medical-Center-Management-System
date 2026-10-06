@@ -1,4 +1,5 @@
-﻿using MediManage_Business;
+﻿using MediManage.Global_Classes;
+using MediManage_Business;
 using MediManage_DataAccess;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,8 @@ namespace MediManage
 
         private void frmExaminationsList_Load(object sender, EventArgs e)
         {
+            tbPatientName.Enter += clsUIActions.tbPatientName_Enter;
+            tbPatientName.Leave += clsUIActions.tbPatientName_Leave;
             SetupDataGridViewColumns();
             RefreshExaminationsList();
         }
@@ -111,22 +114,6 @@ namespace MediManage
             frmAddExamination frm = new frmAddExamination();
             frm.ShowDialog();
             RefreshExaminationsList();
-        }
-
-        private void tbPatientName_Enter(object sender, EventArgs e)
-        {
-            if (tbPatientName.Text == "Enter Patient Name to search...")
-                tbPatientName.Clear();
-            tbPatientName.ForeColor = Color.Black;
-        }
-
-        private void tbPatientName_Leave(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(tbPatientName.Text))
-            {
-                tbPatientName.ForeColor = Color.Gray;
-                tbPatientName.Text = "Enter Patient Name to search...";
-            }
         }
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)

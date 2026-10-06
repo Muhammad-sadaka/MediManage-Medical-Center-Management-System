@@ -1,4 +1,5 @@
-﻿using MediManage_Business;
+﻿using MediManage.Global_Classes;
+using MediManage_Business;
 using MediManage_DataAccess;
 using System;
 using System.Collections.Generic;
@@ -40,22 +41,6 @@ namespace MediManage
         private void Form2_DataBack(object sender, clsBillItemListDTO BillItemList)
         {
             this.BillItemList.Add(BillItemList);
-        }
-
-        private void tbNationalNo_Enter(object sender, EventArgs e)
-        {
-            if (tbNationalNo.Text == "National No")
-                tbNationalNo.Clear();
-            tbNationalNo.ForeColor = Color.Black;
-        }
-
-        private void tbNationalNo_Leave(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(tbNationalNo.Text))
-            {
-                tbNationalNo.ForeColor = Color.Gray;
-                tbNationalNo.Text = "National No";
-            }
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -116,6 +101,12 @@ namespace MediManage
                 ));
                 billItem.Save();
             }
+        }
+
+        private void frmAddInvoice_Load(object sender, EventArgs e)
+        {
+            tbNationalNo.Enter += clsUIActions.tbNationalNo_Enter;
+            tbNationalNo.Leave += clsUIActions.tbNationalNo_Leave;
         }
     }
 }

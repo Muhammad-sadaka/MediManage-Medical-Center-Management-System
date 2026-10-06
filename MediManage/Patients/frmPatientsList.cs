@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MediManage.Global_Classes;
 
 namespace MediManage
 {
@@ -36,6 +37,8 @@ namespace MediManage
         {
             SetupDataGridViewColumns();
             RefreshPatientsList();
+            tbNationalNo.Enter += clsUIActions.tbNationalNo_Enter;
+            tbNationalNo.Leave += clsUIActions.tbNationalNo_Leave;
         }
         private void SetupDataGridViewColumns()
         {
@@ -83,22 +86,6 @@ namespace MediManage
             }).ToList();
 
             lblTotalRecords.Text = $"Total: {DGVPatientsList.RowCount} records";
-        }
-
-        private void tbNationalNo_Enter(object sender, EventArgs e)
-        {
-            if (tbNationalNo.Text == "Enter National No...")
-                tbNationalNo.Clear();
-            tbNationalNo.ForeColor = Color.Black;
-        }
-
-        private void tbNationalNo_Leave(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(tbNationalNo.Text))
-            {
-                tbNationalNo.ForeColor = Color.Gray;
-                tbNationalNo.Text = "Enter National No...";
-            }
         }
 
         private void DGVPatientsList_CellContentClick(object sender, DataGridViewCellEventArgs e)

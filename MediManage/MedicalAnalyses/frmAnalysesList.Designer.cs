@@ -141,9 +141,7 @@
             this.tbPatientName.Name = "tbPatientName";
             this.tbPatientName.Size = new System.Drawing.Size(619, 47);
             this.tbPatientName.TabIndex = 20;
-            this.tbPatientName.Text = "Enter Patient Name...";
-            this.tbPatientName.Enter += new System.EventHandler(this.tbNationalNo_Enter);
-            this.tbPatientName.Leave += new System.EventHandler(this.tbNationalNo_Leave);
+            this.tbPatientName.Text = "Enter Patient Name";
             // 
             // btnSearch
             // 

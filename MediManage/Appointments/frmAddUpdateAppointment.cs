@@ -1,4 +1,5 @@
-﻿using MediManage_Business;
+﻿using MediManage.Global_Classes;
+using MediManage_Business;
 using MediManage_DataAccess;
 using System;
 using System.Collections.Generic;
@@ -39,6 +40,9 @@ namespace MediManage
 
         private void frmAddUpdateAppointment_Load(object sender, EventArgs e)
         {
+            tbNationalNo.Enter += clsUIActions.tbNationalNo_Enter;
+            tbNationalNo.Leave += clsUIActions.tbNationalNo_Leave;
+
             _ResestDefualtValues();
             if (_Mode == enMode.Update)
                 _LoadData();
@@ -62,6 +66,7 @@ namespace MediManage
             else
                 lblTitle.Text = "Update Appointment                        ";
 
+            cbTimes.SelectedIndex = 0;
             cbDoctors.SelectedIndex = 0;
             tbFees.Text = Doctors.Where(d => d.FullName == cbDoctors.Text).Select(d => d.Fees).FirstOrDefault().ToString();
 
@@ -86,8 +91,8 @@ namespace MediManage
             tbNationalNo.Text = Appointment.PatientInfo.PersonInfo.NationalNo;
             ctrlPatientInfoSummary1.LoadPatientInfoData(tbNationalNo.Text);
             _PatientID = ctrlPatientInfoSummary1.PatientID;
-
-            dateTimePicker1.Value = Appointment.AppointmentDate.Value;
+            dateTimePicker1.Value = Appointment.AppointmentDate.Value.Date;
+            cbTimes.SelectedIndex = cbTimes.FindStringExact(Appointment.AppointmentDate.Value.ToString(@"HH\:mm"));
             tbReason.Text = Appointment.Reason;
             tbNotes.Text = Appointment.Notes;
             cbDoctors.SelectedIndex = cbDoctors.FindString(Appointment.DoctorInfo.PersonInfo.FullName.Trim());
@@ -114,22 +119,6 @@ namespace MediManage
             }
         }
 
-        private void tbNationalNo_Enter(object sender, EventArgs e)
-        {
-            if (tbNationalNo.Text == "National No")
-                tbNationalNo.Clear();
-            tbNationalNo.ForeColor = Color.Black;
-        }
-
-        private void tbNationalNo_Leave(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(tbNationalNo.Text))
-            {
-                tbNationalNo.ForeColor = Color.Gray;
-                tbNationalNo.Text = "National No";
-            }
-        }
-
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (_PatientID == null)
@@ -141,8 +130,8 @@ namespace MediManage
             Appointment.PatientID = _PatientID;
             Appointment.DoctorID =  Doctors.Where(d => d.FullName == cbDoctors.Text).Select(d => d.DoctorID).FirstOrDefault();
             Appointment.CreatedByUserID = clsGlobal.CurrentUser.UserID;
-            Appointment.BookingDate = DateTime.Now;
-            Appointment.AppointmentDate = dateTimePicker1.Value;
+            Appointment.BookingDate = DateTime.Now;    
+            Appointment.AppointmentDate = dateTimePicker1.Value.Date.Add(TimeSpan.Parse(cbTimes.SelectedItem.ToString()));
             Appointment.AppointmentCaseID = cbStatuses.SelectedIndex + 1;
             Appointment.Duration = Convert.ToByte(numericDuration.Value);
             Appointment.Reason = tbReason.Text;
@@ -156,7 +145,7 @@ namespace MediManage
             }
             else
             {
-                MessageBox.Show("Error: Data Is not Saved Successfully.", "Did Not Saved", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Error: Data Is not Saved There is time Conflict.", "Did Not Saved", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

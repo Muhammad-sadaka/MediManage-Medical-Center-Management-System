@@ -51,6 +51,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.tbNationalNo = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
+            this.cbTimes = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericDuration)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -96,6 +97,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.cbTimes);
             this.groupBox1.Controls.Add(this.tbFees);
             this.groupBox1.Controls.Add(this.dateTimePicker1);
             this.groupBox1.Controls.Add(this.numericDuration);
@@ -129,10 +131,9 @@
             // dateTimePicker1
             // 
             this.dateTimePicker1.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dateTimePicker1.Location = new System.Drawing.Point(268, 100);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(937, 35);
+            this.dateTimePicker1.Size = new System.Drawing.Size(685, 35);
             this.dateTimePicker1.TabIndex = 182;
             // 
             // numericDuration
@@ -273,6 +274,7 @@
             this.ctrlPatientInfoSummary1.Location = new System.Drawing.Point(16, 94);
             this.ctrlPatientInfoSummary1.Margin = new System.Windows.Forms.Padding(6);
             this.ctrlPatientInfoSummary1.Name = "ctrlPatientInfoSummary1";
+            this.ctrlPatientInfoSummary1.PatientID = 0;
             this.ctrlPatientInfoSummary1.Size = new System.Drawing.Size(1189, 128);
             this.ctrlPatientInfoSummary1.TabIndex = 145;
             // 
@@ -295,8 +297,6 @@
             this.tbNationalNo.Size = new System.Drawing.Size(828, 40);
             this.tbNationalNo.TabIndex = 22;
             this.tbNationalNo.Text = "National No";
-            this.tbNationalNo.Enter += new System.EventHandler(this.tbNationalNo_Enter);
-            this.tbNationalNo.Leave += new System.EventHandler(this.tbNationalNo_Leave);
             // 
             // btnSearch
             // 
@@ -311,6 +311,41 @@
             this.btnSearch.Text = "Search";
             this.btnSearch.UseVisualStyleBackColor = false;
             this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // cbTimes
+            // 
+            this.cbTimes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbTimes.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbTimes.FormattingEnabled = true;
+            this.cbTimes.Items.AddRange(new object[] {
+            "08:00",
+            "08:30",
+            "09:00",
+            "09:30",
+            "10:00",
+            "10:30",
+            "11:00",
+            "11:30",
+            "12:00",
+            "12:30",
+            "13:00",
+            "13:30",
+            "14:00",
+            "14:30",
+            "15:00",
+            "15:30",
+            "16:00",
+            "16:30",
+            "17:00",
+            "17:30",
+            "18:00",
+            "18:30",
+            "19:00",
+            "19:30"});
+            this.cbTimes.Location = new System.Drawing.Point(959, 100);
+            this.cbTimes.Name = "cbTimes";
+            this.cbTimes.Size = new System.Drawing.Size(246, 36);
+            this.cbTimes.TabIndex = 184;
             // 
             // frmAddUpdateAppointment
             // 
@@ -362,5 +397,6 @@
         private System.Windows.Forms.TextBox tbFees;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private ctrlPatientInfoSummary ctrlPatientInfoSummary1;
+        private System.Windows.Forms.ComboBox cbTimes;
     }
 }

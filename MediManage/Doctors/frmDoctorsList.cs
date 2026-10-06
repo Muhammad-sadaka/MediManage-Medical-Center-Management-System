@@ -1,4 +1,5 @@
-﻿using MediManage_Business;
+﻿using MediManage.Global_Classes;
+using MediManage_Business;
 using MediManage_DataAccess;
 using System;
 using System.Collections;
@@ -24,8 +25,12 @@ namespace MediManage
 
         private void frmDoctorsList_Load(object sender, EventArgs e)
         {
+            tbNationalNo.Enter += clsUIActions.tbNationalNo_Enter;
+            tbNationalNo.Leave += clsUIActions.tbNationalNo_Leave;
+
             SetupDataGridViewColumns();
             RefreshDoctorsList();
+
         }
 
         private void SetupDataGridViewColumns()
@@ -87,22 +92,6 @@ namespace MediManage
             RefreshDoctorsList();
         }
 
-        private void tbNationalNo_Enter(object sender, EventArgs e)
-        {
-            if (tbNationalNo.Text == "Enter National No...")
-                tbNationalNo.Clear();
-            tbNationalNo.ForeColor = Color.Black;
-        }
-
-        private void tbNationalNo_Leave(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(tbNationalNo.Text))
-            {
-                tbNationalNo.ForeColor = Color.Gray;
-                tbNationalNo.Text = "Enter National No...";
-            }
-        }
-
         private void btnSearch_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(tbNationalNo.Text) && tbNationalNo.Text != "Enter National No...")
@@ -155,7 +144,7 @@ namespace MediManage
                     }
                     else
                     {
-                        MessageBox.Show("Delete failed. This Doctor might be linked to other records.", "Not Deleted", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Delete failed. This Doctor might be linked With Active Appointments.", "Not Deleted", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }  

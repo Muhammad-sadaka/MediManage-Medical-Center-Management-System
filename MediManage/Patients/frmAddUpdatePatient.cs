@@ -1,4 +1,5 @@
-﻿using MediManage_Business;
+﻿using MediManage.Global_Classes;
+using MediManage_Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Net;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,7 +20,6 @@ namespace MediManage
         enMode _Mode = enMode.AddNew;
 
         clsPatient Patient = new clsPatient();
-        clsPerson Person = new clsPerson();
 
         public frmAddUpdatePatient()
         {
@@ -33,16 +34,14 @@ namespace MediManage
             Patient.PersonID = PersonId;
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private void frmAddUpdatePatient_Load(object sender, EventArgs e)
         {
             _ResestDefualtValues();
             if (_Mode == enMode.Update)
                 _LoadData();
+
+            tbNationalNo.Enter += clsUIActions.tbNationalNo_Enter;
+            tbNationalNo.Leave += clsUIActions.tbNationalNo_Leave;
         }
 
         private void _ResestDefualtValues()
@@ -50,28 +49,21 @@ namespace MediManage
             cbPatientCase.DataSource = clsPatientCase.GetAllPatientCases();
             cbPatientCase.DisplayMember = "PatientCaseName";
 
-
-
             if (_Mode == enMode.AddNew)
             {
-                Patient = new clsPatient();
                 lblTitle.Text = "Add New Patient                       ";
             }
             else
                 lblTitle.Text = "Update Patient                        ";
 
-
             cbPatientCase.SelectedIndex = 0;
-
             tbSensitivity.Clear();
             tbChronicDiseases.Clear();
-
         }
 
         private void _LoadData()
         {
             Patient = clsPatient.Find(Patient.PersonID);
-            Person = clsPerson.Find(Patient.PersonID);
 
             if (Patient == null)
             {
@@ -86,23 +78,23 @@ namespace MediManage
             tbSensitivity.Text = Patient.Sensitivity;
             tbChronicDiseases.Text = Patient.ChronicDiseases;
             cbPatientCase.SelectedIndex = Patient.PatientCaseID.Value - 1;
-
         }
+
+
+
+      
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if(Patient == null)
+            if (Patient == null)
             {
                 MessageBox.Show("Search about Person First", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-
-            Patient.PersonID = Person.PersonID;
             Patient.Sensitivity = tbSensitivity.Text.Trim();
             Patient.ChronicDiseases = tbChronicDiseases.Text.Trim();
             Patient.JoinDate = DateTime.Now;
-
             Patient.PatientCaseID = cbPatientCase.SelectedIndex + 1;
 
             if (Patient.Save())
@@ -119,33 +111,25 @@ namespace MediManage
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if(clsPerson.IsExist(tbNationalNo.Text))
+            if (clsPerson.IsExist(tbNationalNo.Text.Trim()))
             {
-                Person = clsPerson.Find(tbNationalNo.Text);
-                ctrlPersonInfoSummary1.LoadPersonInfoData(Person.PersonID.Value);
+                if (clsPatient.IsExist(tbNationalNo.Text.Trim()))
+                {
+                    MessageBox.Show("This Person is already patient in the system", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                Patient.PersonID = clsPerson.Find(tbNationalNo.Text).PersonID;
+                ctrlPersonInfoSummary1.LoadPersonInfoData(Patient.PersonID.Value);
             }
             else
             {
-                MessageBox.Show("No Person Found With This National No");
+                MessageBox.Show("No Person Found With This National No", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-            
         }
 
-        private void tbNationalNo_Enter(object sender, EventArgs e)
+        private void btnClose_Click_1(object sender, EventArgs e)
         {
-            if (tbNationalNo.Text == "National No")
-                tbNationalNo.Clear();
-            tbNationalNo.ForeColor = Color.Black;
-        }
-
-        private void tbNationalNo_Leave(object sender, EventArgs e)
-        {
-            if (tbNationalNo.Text == "" || tbNationalNo.Text == null)
-            {
-                tbNationalNo.ForeColor = Color.Gray;
-                tbNationalNo.Text = "National No";
-            }
+            this.Close();
         }
     }
 }

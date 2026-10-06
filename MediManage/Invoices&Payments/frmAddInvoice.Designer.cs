@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.gbSearch = new System.Windows.Forms.GroupBox();
+            this.ctrlPatientInfoSummary1 = new MediManage.ctrlPatientInfoSummary();
             this.label4 = new System.Windows.Forms.Label();
             this.tbNationalNo = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
@@ -36,7 +37,6 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.btnAddItem = new System.Windows.Forms.Button();
-            this.ctrlPatientInfoSummary1 = new MediManage.ctrlPatientInfoSummary();
             this.ctrlBillItemHistory1 = new MediManage.ctrlBillItemHistory();
             this.gbSearch.SuspendLayout();
             this.SuspendLayout();
@@ -54,6 +54,16 @@
             this.gbSearch.TabIndex = 29;
             this.gbSearch.TabStop = false;
             this.gbSearch.Text = "Section 1: Patient Search";
+            // 
+            // ctrlPatientInfoSummary1
+            // 
+            this.ctrlPatientInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ctrlPatientInfoSummary1.Location = new System.Drawing.Point(20, 112);
+            this.ctrlPatientInfoSummary1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.ctrlPatientInfoSummary1.Name = "ctrlPatientInfoSummary1";
+            this.ctrlPatientInfoSummary1.PatientID = 0;
+            this.ctrlPatientInfoSummary1.Size = new System.Drawing.Size(1189, 128);
+            this.ctrlPatientInfoSummary1.TabIndex = 145;
             // 
             // label4
             // 
@@ -74,8 +84,6 @@
             this.tbNationalNo.Size = new System.Drawing.Size(849, 40);
             this.tbNationalNo.TabIndex = 22;
             this.tbNationalNo.Text = "National No";
-            this.tbNationalNo.Enter += new System.EventHandler(this.tbNationalNo_Enter);
-            this.tbNationalNo.Leave += new System.EventHandler(this.tbNationalNo_Leave);
             // 
             // btnSearch
             // 
@@ -143,16 +151,6 @@
             this.btnAddItem.UseVisualStyleBackColor = false;
             this.btnAddItem.Click += new System.EventHandler(this.btnAddItem_Click);
             // 
-            // ctrlPatientInfoSummary1
-            // 
-            this.ctrlPatientInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ctrlPatientInfoSummary1.Location = new System.Drawing.Point(20, 112);
-            this.ctrlPatientInfoSummary1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
-            this.ctrlPatientInfoSummary1.Name = "ctrlPatientInfoSummary1";
-            this.ctrlPatientInfoSummary1.PatientID = 0;
-            this.ctrlPatientInfoSummary1.Size = new System.Drawing.Size(1189, 128);
-            this.ctrlPatientInfoSummary1.TabIndex = 145;
-            // 
             // ctrlBillItemHistory1
             // 
             this.ctrlBillItemHistory1.Location = new System.Drawing.Point(21, 345);
@@ -175,6 +173,7 @@
             this.Name = "frmAddInvoice";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmAddInvoice";
+            this.Load += new System.EventHandler(this.frmAddInvoice_Load);
             this.gbSearch.ResumeLayout(false);
             this.gbSearch.PerformLayout();
             this.ResumeLayout(false);

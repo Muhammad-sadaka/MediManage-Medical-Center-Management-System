@@ -1,0 +1,15 @@
+<Project>
+  <PropertyGroup>
+	<!-- Suppress assembly version mismatch warnings such as MSB3277 when different package versions are present.
+		 This is a pragmatic workaround when updating csproj references is not possible in this environment.
+		 Prefer updating project references to a single package version when feasible. -->
+	<ResolveAssemblyWarnOrErrorOnTargetMismatch>false</ResolveAssemblyWarnOrErrorOnTargetMismatch>
+	<!-- Some SDK projects require System.Resources.Extensions for non-string .resx resources; ensure resource generation succeeds. -->
+	<GenerateResourceUsePreserializedResources>true</GenerateResourceUsePreserializedResources>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<!-- Add System.Resources.Extensions to projects that need it (SDK-style .NET projects). Version chosen to match .NET 8 runtime packages. -->
+	<PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+  </ItemGroup>
+</Project>

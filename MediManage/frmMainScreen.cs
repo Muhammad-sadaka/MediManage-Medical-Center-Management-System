@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MediManage.Global_Classes;
 
 namespace MediManage
 {
@@ -113,22 +114,6 @@ namespace MediManage
             }
         }
 
-        private void Button_MouseHover(object sender, EventArgs e)
-        {
-            if (sender is Control btn)
-            {
-                btn.ForeColor = Color.Red;
-            }
-        }
-
-        private void Button_MouseLeave(object sender, EventArgs e)
-        {
-            if (sender is Control btn)
-            {
-                btn.ForeColor = Color.Black;
-            }
-        }
-
         private void MouseHover_Leave_Buttons() 
         {
             foreach (TabPage item in hopeTabPage1.Controls)
@@ -137,8 +122,8 @@ namespace MediManage
                 {
                     if (ctrl is Button btn)
                     {
-                        btn.MouseHover += Button_MouseHover;
-                        btn.MouseLeave += Button_MouseLeave;
+                        btn.MouseHover += clsUIActions.Button_MouseHover;
+                        btn.MouseLeave += clsUIActions.Button_MouseLeave;
                     }
                 }
             }
