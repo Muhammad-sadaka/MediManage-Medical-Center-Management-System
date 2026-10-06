@@ -1,4 +1,5 @@
-﻿using MediManage_Business;
+﻿using MediManage.Global_Classes;
+using MediManage_Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +15,7 @@ namespace MediManage
     public partial class frmUpdateAnalysis : Form
     {
         int AnalysisID = 0;
+        clsMedicalAnalysis Analysis = new clsMedicalAnalysis();
         public frmUpdateAnalysis(int ID)
         {
             InitializeComponent();
@@ -22,21 +24,26 @@ namespace MediManage
 
         private void frmUpdateAnalysis_Load(object sender, EventArgs e)
         {
+            tbResult.Validating += clsValidation.ValidateEmptyTextBox;
             ctrlAnalysisInfoSummary1.LoadAnalysisInfoData(AnalysisID);
             cbStatuses.DataSource = clsAnalysisStatus.GetAllAnalysisStatuses();
             cbStatuses.DisplayMember = "AnalysisStatusName";
 
+            Analysis = clsMedicalAnalysis.Find(AnalysisID);
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            clsMedicalAnalysis Analysis = clsMedicalAnalysis.Find(AnalysisID);
+            if (!this.ValidateChildren())
+            {
+                MessageBox.Show("Some fields are not valid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             Analysis.Result = tbResult.Text.Trim();
             Analysis.Notes = tbNotes.Text.Trim();
             Analysis.AnalysisStatusID = cbStatuses.SelectedIndex + 1;
             Analysis.ResultDate = DateTime.Now;
-
 
             if (Analysis.Save())
             {

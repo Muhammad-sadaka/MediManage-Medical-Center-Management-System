@@ -402,7 +402,6 @@
             this.tbPhone.Name = "tbPhone";
             this.tbPhone.Size = new System.Drawing.Size(500, 35);
             this.tbPhone.TabIndex = 9;
-            this.tbPhone.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbPhone_KeyPress);
             // 
             // tbEmail
             // 

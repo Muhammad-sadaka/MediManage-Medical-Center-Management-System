@@ -66,7 +66,7 @@ namespace MediManage
 
             if (BillItemList.Count < 1)
             {
-                MessageBox.Show("You should add at least one Medicine Recipe", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("You should add at least one Bill Item", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 

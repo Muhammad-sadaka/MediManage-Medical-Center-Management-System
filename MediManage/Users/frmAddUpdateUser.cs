@@ -42,12 +42,23 @@ namespace MediManage
 
         private void frmAddUpdateUser_Load(object sender, EventArgs e)
         {
-            tbNationalNo.Enter += clsUIActions.tbNationalNo_Enter;
-            tbNationalNo.Leave += clsUIActions.tbNationalNo_Leave;
 
             _ResestDefualtValues();
             if (_Mode == enMode.Update)
                 _LoadData();
+
+            tbNationalNo.Enter += clsUIActions.tbNationalNo_Enter;
+            tbNationalNo.Leave += clsUIActions.tbNationalNo_Leave;
+            tbUsername.Validating += clsValidation.ValidateEmptyTextBox;
+
+            if (_Mode == enMode.AddNew)
+            {
+                tbPassword.Validating += clsValidation.ValidateEmptyTextBox;
+            }
+            else
+            {
+                tbPassword.Validating -= clsValidation.ValidateEmptyTextBox;
+            }
         }
 
         private void _ResestDefualtValues()
@@ -147,14 +158,23 @@ namespace MediManage
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (user == null)
+            if (user.PersonID == null)
             {
                 MessageBox.Show("Search about Person First");
                 return;
             }
 
+            if (!this.ValidateChildren())
+            {
+                MessageBox.Show("Some fields are not valid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             user.Permissions = PermissionsNumber();
-            user.Password = BCrypt.Net.BCrypt.HashPassword(tbConfirmPassword.Text);
+
+            if (_Mode == enMode.AddNew || !string.IsNullOrEmpty(tbConfirmPassword.Text))
+                user.Password = BCrypt.Net.BCrypt.HashPassword(tbConfirmPassword.Text);
+
             user.UserName = tbUsername.Text;
             user.IsActive = chkIsActive.Checked;
             user.CreatedByUser = clsGlobal.CurrentUser.UserID;
@@ -175,20 +195,47 @@ namespace MediManage
         {
             if (clsPerson.IsExist(tbNationalNo.Text))
             {
-                ctrlPersonInfoSummary1.LoadPersonInfoData(tbNationalNo.Text);
-                user.PersonID = clsPerson.Find(tbNationalNo.Text).PersonID;
                 if (clsUser.IsExist(tbNationalNo.Text))
                 {
                     MessageBox.Show("This National No is already used for another User", "", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-                    _Mode = enMode.Update;
-                    _LoadData();
+                    return;
                 }
+                user.PersonID = clsPerson.Find(tbNationalNo.Text).PersonID;
+                ctrlPersonInfoSummary1.LoadPersonInfoData(user.PersonID.Value);
             }
             else
             {
                 MessageBox.Show("No Person Found With This National No", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
+        }
+
+        private void tbConfirmPassword_Validating(object sender, CancelEventArgs e)
+        {
+            ErrorProvider errorProvider = new ErrorProvider();
+            if (tbPassword.Text != tbConfirmPassword.Text)
+            {
+                e.Cancel = true;
+                errorProvider.SetError(tbConfirmPassword, "The Confirm Password field dosn't match Password field");
+            }
+            else
+            {
+                errorProvider.SetError(tbConfirmPassword, null);
+            }
+        }
+
+        private void tbUsername_Validating(object sender, CancelEventArgs e)
+        {
+            ErrorProvider errorProvider = new ErrorProvider();
+            if (clsUser.IsExistByUserName(tbUsername.Text) && tbUsername.Text != user.UserName)
+            {
+                e.Cancel = true;
+                errorProvider.SetError(tbUsername, "This User Name is already exist");
+            }
+            else
+            {
+                errorProvider.SetError(tbUsername, null);
+            }
         }
     }
 }

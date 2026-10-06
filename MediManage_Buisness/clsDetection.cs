@@ -82,7 +82,8 @@ namespace MediManage_Business
         private bool _AddNewDetection()
         {
             this.DetectionID = clsDetectionsDataAccess.AddNewDetection(this.DTO);
-            return (this.DetectionID.HasValue);
+            bool AppointmentCompleted = clsAppointment.SetAppointmentComplete(this.AppointmentID);
+            return (this.DetectionID.HasValue && AppointmentCompleted);
         }
 
         private bool _UpdateDetection()

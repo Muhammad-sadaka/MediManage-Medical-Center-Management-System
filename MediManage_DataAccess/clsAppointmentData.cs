@@ -303,6 +303,82 @@ namespace MediManage_DataAccess
             return isFound;
         }
 
+        public static bool IsCompleted(int? AppointmentID)
+        {
+            bool isFound = false;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("[SP_CheckAppointmentCompleted]", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@AppointmentID", (object)AppointmentID ?? DBNull.Value);
+
+                        SqlParameter returnParameter = new SqlParameter("@ReturnVal", SqlDbType.Int)
+                        {
+                            Direction = ParameterDirection.ReturnValue
+                        };
+                        command.Parameters.Add(returnParameter);
+
+                        connection.Open();
+                        command.ExecuteNonQuery();
+
+                        if (returnParameter.Value != DBNull.Value)
+                        {
+                            isFound = (int)returnParameter.Value == 1;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsDataAccessSettings.EventLogCreate();
+                EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
+            }
+
+            return isFound;
+        }
+
+        public static bool IsCanceledorAbsent(int? AppointmentID)
+        {
+            bool isFound = false;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("[SP_CheckAppointmentCanceledorAbsent]", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@AppointmentID", (object)AppointmentID ?? DBNull.Value);
+
+                        SqlParameter returnParameter = new SqlParameter("@ReturnVal", SqlDbType.Int)
+                        {
+                            Direction = ParameterDirection.ReturnValue
+                        };
+                        command.Parameters.Add(returnParameter);
+
+                        connection.Open();
+                        command.ExecuteNonQuery();
+
+                        if (returnParameter.Value != DBNull.Value)
+                        {
+                            isFound = (int)returnParameter.Value == 1;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsDataAccessSettings.EventLogCreate();
+                EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
+            }
+
+            return isFound;
+        }
+        
         public static List<clsTodayAppointmentDTO> GetTodayAppointments()
         {
             var appointmentsList = new List<clsTodayAppointmentDTO>();
@@ -377,6 +453,33 @@ namespace MediManage_DataAccess
             }
 
             return isFound;
+        }
+
+        public static bool SetAppointmentComplete(int? AppointmentID)
+        {
+            int rowsAffected = 0;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("[SP_SetAppointmentComplete]", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@AppointmentID", (object)AppointmentID ?? DBNull.Value);
+
+                        connection.Open();
+                        rowsAffected = command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsDataAccessSettings.EventLogCreate();
+                EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
+            }
+
+            return rowsAffected > 0;
         }
     }
 }

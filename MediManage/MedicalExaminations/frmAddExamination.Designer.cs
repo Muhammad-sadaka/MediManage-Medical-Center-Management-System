@@ -31,6 +31,7 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -46,11 +47,12 @@
             this.tbSymptoms = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.gbSearch = new System.Windows.Forms.GroupBox();
-            this.ctrlAppointmentInfoSummary1 = new MediManage.ctrlAppointmentInfoSummary();
             this.numericAppointmentID = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.btnSearch = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
+            this.ctrlAppointmentInfoSummary1 = new MediManage.ctrlAppointmentInfoSummary();
+            this.label9 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericTemperature)).BeginInit();
             this.gbSearch.SuspendLayout();
@@ -87,6 +89,8 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label3);
@@ -108,6 +112,16 @@
             this.groupBox1.TabIndex = 24;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Examination Details";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(572, 325);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(44, 34);
+            this.label8.TabIndex = 182;
+            this.label8.Text = "kg";
             // 
             // label6
             // 
@@ -183,7 +197,6 @@
             this.tbNotes.Location = new System.Drawing.Point(328, 371);
             this.tbNotes.Multiline = true;
             this.tbNotes.Name = "tbNotes";
-            this.tbNotes.PasswordChar = '*';
             this.tbNotes.Size = new System.Drawing.Size(872, 56);
             this.tbNotes.TabIndex = 170;
             // 
@@ -223,7 +236,6 @@
             this.tbDiagosis.Location = new System.Drawing.Point(328, 110);
             this.tbDiagosis.Multiline = true;
             this.tbDiagosis.Name = "tbDiagosis";
-            this.tbDiagosis.PasswordChar = '*';
             this.tbDiagosis.Size = new System.Drawing.Size(872, 56);
             this.tbDiagosis.TabIndex = 169;
             // 
@@ -259,15 +271,6 @@
             this.gbSearch.TabIndex = 25;
             this.gbSearch.TabStop = false;
             this.gbSearch.Text = "Appointment Search";
-            // 
-            // ctrlAppointmentInfoSummary1
-            // 
-            this.ctrlAppointmentInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ctrlAppointmentInfoSummary1.Location = new System.Drawing.Point(10, 85);
-            this.ctrlAppointmentInfoSummary1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
-            this.ctrlAppointmentInfoSummary1.Name = "ctrlAppointmentInfoSummary1";
-            this.ctrlAppointmentInfoSummary1.Size = new System.Drawing.Size(1190, 185);
-            this.ctrlAppointmentInfoSummary1.TabIndex = 146;
             // 
             // numericAppointmentID
             // 
@@ -310,6 +313,26 @@
             this.lblTitle.TabIndex = 26;
             this.lblTitle.Text = "Add New Examination                       ";
             // 
+            // ctrlAppointmentInfoSummary1
+            // 
+            this.ctrlAppointmentInfoSummary1.AppointmentID = null;
+            this.ctrlAppointmentInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ctrlAppointmentInfoSummary1.Location = new System.Drawing.Point(10, 85);
+            this.ctrlAppointmentInfoSummary1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.ctrlAppointmentInfoSummary1.Name = "ctrlAppointmentInfoSummary1";
+            this.ctrlAppointmentInfoSummary1.Size = new System.Drawing.Size(1190, 185);
+            this.ctrlAppointmentInfoSummary1.TabIndex = 146;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(572, 279);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(69, 34);
+            this.label9.TabIndex = 183;
+            this.label9.Text = "bpm";
+            // 
             // frmAddExamination
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
@@ -324,6 +347,7 @@
             this.Name = "frmAddExamination";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "frmAddExamination";
+            this.Load += new System.EventHandler(this.frmAddExamination_Load);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericTemperature)).EndInit();
@@ -360,5 +384,7 @@
         private System.Windows.Forms.Label label3;
         private ctrlAppointmentInfoSummary ctrlAppointmentInfoSummary1;
         private System.Windows.Forms.Label lblTitle;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
     }
 }

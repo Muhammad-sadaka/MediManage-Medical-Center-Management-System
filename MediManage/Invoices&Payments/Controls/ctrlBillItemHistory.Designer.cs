@@ -59,9 +59,9 @@
             this.lblAmountRemaining.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAmountRemaining.Location = new System.Drawing.Point(772, 222);
             this.lblAmountRemaining.Name = "lblAmountRemaining";
-            this.lblAmountRemaining.Size = new System.Drawing.Size(321, 34);
+            this.lblAmountRemaining.Size = new System.Drawing.Size(339, 34);
             this.lblAmountRemaining.TabIndex = 180;
-            this.lblAmountRemaining.Text = "Amount Remaining: $";
+            this.lblAmountRemaining.Text = "Amount Remaining: $0";
             // 
             // lblAmountPaid
             // 
@@ -69,9 +69,9 @@
             this.lblAmountPaid.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblAmountPaid.Location = new System.Drawing.Point(393, 222);
             this.lblAmountPaid.Name = "lblAmountPaid";
-            this.lblAmountPaid.Size = new System.Drawing.Size(231, 34);
+            this.lblAmountPaid.Size = new System.Drawing.Size(249, 34);
             this.lblAmountPaid.TabIndex = 179;
-            this.lblAmountPaid.Text = "Amount Paid: $";
+            this.lblAmountPaid.Text = "Amount Paid: $0";
             // 
             // lblTotalAmount
             // 
@@ -79,9 +79,9 @@
             this.lblTotalAmount.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTotalAmount.Location = new System.Drawing.Point(17, 222);
             this.lblTotalAmount.Name = "lblTotalAmount";
-            this.lblTotalAmount.Size = new System.Drawing.Size(241, 34);
+            this.lblTotalAmount.Size = new System.Drawing.Size(259, 34);
             this.lblTotalAmount.TabIndex = 178;
-            this.lblTotalAmount.Text = "Total Amount: $";
+            this.lblTotalAmount.Text = "Total Amount: $0";
             // 
             // DGVBillItemList
             // 

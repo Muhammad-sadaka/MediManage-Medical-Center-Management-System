@@ -36,7 +36,9 @@
             this.tbNationalNo = new System.Windows.Forms.TextBox();
             this.btnSearch = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.ctrlPersonInfoSummary1 = new MediManage.ctrlPersonInfoSummary();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.chkIsActive = new MediManage.CustomCheckBox();
             this.label7 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -45,6 +47,15 @@
             this.tbUsername = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.chkManageUsers = new MediManage.CustomCheckBox();
             this.chkManagePatients = new MediManage.CustomCheckBox();
             this.chkManageInvoicesPayments = new MediManage.CustomCheckBox();
@@ -54,17 +65,6 @@
             this.chkManagePrescriptions = new MediManage.CustomCheckBox();
             this.chkManagePeople = new MediManage.CustomCheckBox();
             this.chkManageDoctors = new MediManage.CustomCheckBox();
-            this.chkIsActive = new MediManage.CustomCheckBox();
-            this.ctrlPersonInfoSummary1 = new MediManage.ctrlPersonInfoSummary();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.label13 = new System.Windows.Forms.Label();
             this.gbSearch.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -167,6 +167,15 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "2 Person Information";
             // 
+            // ctrlPersonInfoSummary1
+            // 
+            this.ctrlPersonInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ctrlPersonInfoSummary1.Location = new System.Drawing.Point(10, 42);
+            this.ctrlPersonInfoSummary1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.ctrlPersonInfoSummary1.Name = "ctrlPersonInfoSummary1";
+            this.ctrlPersonInfoSummary1.Size = new System.Drawing.Size(1195, 172);
+            this.ctrlPersonInfoSummary1.TabIndex = 21;
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.chkIsActive);
@@ -184,6 +193,19 @@
             this.groupBox1.TabIndex = 23;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "User Credentials";
+            // 
+            // chkIsActive
+            // 
+            this.chkIsActive.Checked = true;
+            this.chkIsActive.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkIsActive.FlatAppearance.BorderSize = 0;
+            this.chkIsActive.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.chkIsActive.Location = new System.Drawing.Point(367, 186);
+            this.chkIsActive.Name = "chkIsActive";
+            this.chkIsActive.Size = new System.Drawing.Size(45, 36);
+            this.chkIsActive.TabIndex = 201;
+            this.chkIsActive.Text = "customCheckBox1";
+            this.chkIsActive.UseVisualStyleBackColor = true;
             // 
             // label7
             // 
@@ -220,16 +242,15 @@
             this.tbConfirmPassword.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbConfirmPassword.Location = new System.Drawing.Point(367, 139);
             this.tbConfirmPassword.Name = "tbConfirmPassword";
-            this.tbConfirmPassword.PasswordChar = '*';
             this.tbConfirmPassword.Size = new System.Drawing.Size(670, 35);
             this.tbConfirmPassword.TabIndex = 170;
+            this.tbConfirmPassword.Validating += new System.ComponentModel.CancelEventHandler(this.tbConfirmPassword_Validating);
             // 
             // tbPassword
             // 
             this.tbPassword.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbPassword.Location = new System.Drawing.Point(367, 93);
             this.tbPassword.Name = "tbPassword";
-            this.tbPassword.PasswordChar = '*';
             this.tbPassword.Size = new System.Drawing.Size(670, 35);
             this.tbPassword.TabIndex = 169;
             // 
@@ -240,6 +261,7 @@
             this.tbUsername.Name = "tbUsername";
             this.tbUsername.Size = new System.Drawing.Size(670, 35);
             this.tbUsername.TabIndex = 168;
+            this.tbUsername.Validating += new System.ComponentModel.CancelEventHandler(this.tbUsername_Validating);
             // 
             // label15
             // 
@@ -278,6 +300,96 @@
             this.groupBox3.TabIndex = 24;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Permissions";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label11.Location = new System.Drawing.Point(819, 146);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(191, 34);
+            this.label11.TabIndex = 220;
+            this.label11.Text = "Manage Users";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label12.Location = new System.Drawing.Point(819, 104);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(373, 34);
+            this.label12.TabIndex = 219;
+            this.label12.Text = "Manage Invoices - Payments";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label13.Location = new System.Drawing.Point(819, 64);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(231, 34);
+            this.label13.TabIndex = 218;
+            this.label13.Text = "Manage Analyses";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(418, 146);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(263, 34);
+            this.label8.TabIndex = 217;
+            this.label8.Text = "Mange Prescriptions";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(418, 104);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(287, 34);
+            this.label9.TabIndex = 216;
+            this.label9.Text = "Manage Examinations";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(418, 64);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(292, 34);
+            this.label10.TabIndex = 215;
+            this.label10.Text = "Manage Appointments";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.Location = new System.Drawing.Point(91, 146);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(216, 34);
+            this.label6.TabIndex = 214;
+            this.label6.Text = "Manage Doctors";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(91, 104);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(220, 34);
+            this.label5.TabIndex = 213;
+            this.label5.Text = "Manage Patients";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(91, 64);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(203, 34);
+            this.label3.TabIndex = 212;
+            this.label3.Text = "Manage People";
             // 
             // chkManageUsers
             // 
@@ -395,118 +507,6 @@
             this.chkManageDoctors.TabIndex = 204;
             this.chkManageDoctors.Text = "customCheckBox4";
             this.chkManageDoctors.UseVisualStyleBackColor = true;
-            // 
-            // chkIsActive
-            // 
-            this.chkIsActive.Checked = true;
-            this.chkIsActive.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkIsActive.FlatAppearance.BorderSize = 0;
-            this.chkIsActive.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chkIsActive.Location = new System.Drawing.Point(367, 186);
-            this.chkIsActive.Name = "chkIsActive";
-            this.chkIsActive.Size = new System.Drawing.Size(45, 36);
-            this.chkIsActive.TabIndex = 201;
-            this.chkIsActive.Text = "customCheckBox1";
-            this.chkIsActive.UseVisualStyleBackColor = true;
-            // 
-            // ctrlPersonInfoSummary1
-            // 
-            this.ctrlPersonInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ctrlPersonInfoSummary1.Location = new System.Drawing.Point(10, 42);
-            this.ctrlPersonInfoSummary1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
-            this.ctrlPersonInfoSummary1.Name = "ctrlPersonInfoSummary1";
-            this.ctrlPersonInfoSummary1.Size = new System.Drawing.Size(1195, 172);
-            this.ctrlPersonInfoSummary1.TabIndex = 21;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(91, 64);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(203, 34);
-            this.label3.TabIndex = 212;
-            this.label3.Text = "Manage People";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(91, 104);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(220, 34);
-            this.label5.TabIndex = 213;
-            this.label5.Text = "Manage Patients";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(91, 146);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(216, 34);
-            this.label6.TabIndex = 214;
-            this.label6.Text = "Manage Doctors";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(418, 146);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(263, 34);
-            this.label8.TabIndex = 217;
-            this.label8.Text = "Mange Prescriptions";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(418, 104);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(287, 34);
-            this.label9.TabIndex = 216;
-            this.label9.Text = "Manage Examinations";
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(418, 64);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(292, 34);
-            this.label10.TabIndex = 215;
-            this.label10.Text = "Manage Appointments";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(819, 146);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(191, 34);
-            this.label11.TabIndex = 220;
-            this.label11.Text = "Manage Users";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(819, 104);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(373, 34);
-            this.label12.TabIndex = 219;
-            this.label12.Text = "Manage Invoices - Payments";
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label13.Location = new System.Drawing.Point(819, 64);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(231, 34);
-            this.label13.TabIndex = 218;
-            this.label13.Text = "Manage Analyses";
             // 
             // frmAddUpdateUser
             // 

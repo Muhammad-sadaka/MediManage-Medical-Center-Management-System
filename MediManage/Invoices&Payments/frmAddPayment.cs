@@ -1,4 +1,5 @@
-﻿using MediManage_Business;
+﻿using MediManage.Global_Classes;
+using MediManage_Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,10 +30,22 @@ namespace MediManage
 
             if(Bill.AmountOfRemaining == 0)
                 btnAddPayment.Enabled = false;
+
+            btnAddPayment.Enabled = (Bill.AmountOfRemaining > 0);
+            tbAmount.Enabled = btnAddPayment.Enabled;
+
+            tbAmount.Validating += clsValidation.ValidateEmptyTextBox;
+            tbAmount.KeyPress += clsValidation.ValidateNumbersOnly;
         }
 
         private void btnAddPayment_Click(object sender, EventArgs e)
         {
+            if (!this.ValidateChildren())
+            {
+                MessageBox.Show("Some fields are not valid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             decimal? Amount = Convert.ToDecimal(tbAmount.Text);
 
             if (Bill.AmountOfRemaining < Amount)
@@ -85,14 +98,6 @@ namespace MediManage
             else
             {
                 MessageBox.Show("Error:Bill Data Is not Saved Successfully.", "Did Not Saved", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void tbAmount_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (Char)Keys.Back)
-            {
-                e.Handled = true;
             }
         }
     }

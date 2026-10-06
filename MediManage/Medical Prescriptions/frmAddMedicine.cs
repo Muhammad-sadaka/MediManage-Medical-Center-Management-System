@@ -1,4 +1,5 @@
-﻿using MediManage_Business;
+﻿using MediManage.Global_Classes;
+using MediManage_Business;
 using MediManage_DataAccess;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,10 @@ namespace MediManage
             Medicines = clsMedicine.GetAllMedicines();
             cbMedicineName.DataSource = Medicines;
             cbMedicineName.DisplayMember = "MedicineName";
+
+            tbDosage.Validating += clsValidation.ValidateEmptyTextBox;
+            tbDuration.Validating += clsValidation.ValidateEmptyTextBox;
+            tbFrequency.Validating += clsValidation.ValidateEmptyTextBox;
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -39,6 +44,12 @@ namespace MediManage
 
         private void btnSave_Click(object sender, EventArgs e)
         {
+            if (!this.ValidateChildren())
+            {
+                MessageBox.Show("Some fields are not valid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             clsMedicineRecipeListDTO medicineRecipeList = new clsMedicineRecipeListDTO
             (
                 cbMedicineName.Text.Trim(),

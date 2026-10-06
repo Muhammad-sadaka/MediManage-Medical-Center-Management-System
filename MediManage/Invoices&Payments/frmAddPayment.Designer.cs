@@ -71,7 +71,6 @@
             this.tbAmount.Name = "tbAmount";
             this.tbAmount.Size = new System.Drawing.Size(275, 40);
             this.tbAmount.TabIndex = 168;
-            this.tbAmount.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.tbAmount_KeyPress);
             // 
             // label1
             // 

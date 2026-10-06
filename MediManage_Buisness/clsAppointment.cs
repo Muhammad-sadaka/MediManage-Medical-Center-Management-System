@@ -143,5 +143,20 @@ namespace MediManage_Business
         {
             return clsAppointmentsDataAccess.IsAppointmentExist(ID);
         }
+
+        public static bool IsCompleted(int? ID)
+        {
+            return clsAppointmentsDataAccess.IsCompleted(ID);
+        }
+
+        public static bool IsCanceledorAbsent(int? ID)
+        {
+            return clsAppointmentsDataAccess.IsCanceledorAbsent(ID);
+        }
+
+        public static bool SetAppointmentComplete(int? AppointmentID)
+        {
+            return clsAppointmentsDataAccess.SetAppointmentComplete(AppointmentID);
+        }
     }
 }

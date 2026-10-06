@@ -46,6 +46,7 @@ namespace MediManage
                     ctrl.Validating += clsValidation.ValidateEmptyTextBox;
                 }
             }
+            tbPhone.KeyPress += clsValidation.ValidateNumbersOnly;
 
             _ResestDefualtValues();
             if (_Mode == enMode.Update)
@@ -244,14 +245,6 @@ namespace MediManage
             klblChangeImage.Visible = false;
             klblClicktoAddPhoto.Visible = true;
             pbPersonImage.Image = Resources.Person32;
-        }
-
-        private void tbPhone_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
-            {
-                e.Handled = true;
-            }
         }
 
         private void tbEmail_Validating(object sender, CancelEventArgs e)

@@ -1,4 +1,5 @@
-﻿using MediManage_Business;
+﻿using MediManage.Global_Classes;
+using MediManage_Business;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,7 +15,6 @@ namespace MediManage
     public partial class frmAddExamination : Form
     {
         clsDetection Examination = new clsDetection();
-        int? AppointmentID;
 
         public frmAddExamination()
         {
@@ -28,14 +28,24 @@ namespace MediManage
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            AppointmentID = Convert.ToInt32(numericAppointmentID.Value);
-            if (clsAppointment.IsExist(AppointmentID))
+            Examination.AppointmentID = Convert.ToInt32(numericAppointmentID.Value);
+            if (clsAppointment.IsExist(Examination.AppointmentID))
             {
-                ctrlAppointmentInfoSummary1.LoadAppointmentInfoData(AppointmentID.Value);
+                if (clsAppointment.IsCompleted(Examination.AppointmentID))
+                {
+                    MessageBox.Show("This Appointment already has a Medical Examination", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                else if (clsAppointment.IsCanceledorAbsent(Examination.AppointmentID))
+                {
+                    MessageBox.Show("Can't add an Examination of this appointment", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                ctrlAppointmentInfoSummary1.LoadAppointmentInfoData(Examination.AppointmentID.Value);
             }
             else
             {
-                AppointmentID = null;
+                Examination.AppointmentID = null;
                 MessageBox.Show("No Appointment Found With This ID", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -43,9 +53,15 @@ namespace MediManage
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (AppointmentID == null)
+            if (Examination.AppointmentID == null)
             {
                 MessageBox.Show("Search about Appointment First", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            if (!this.ValidateChildren())
+            {
+                MessageBox.Show("Some fields are not valid", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -68,6 +84,22 @@ namespace MediManage
             {
                 MessageBox.Show("Error: Data Is not Saved Successfully.", "Did Not Saved", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }   
+        }
+
+        
+
+        private void frmAddExamination_Load(object sender, EventArgs e)
+        {
+            foreach (Control ctrl in this.groupBox1.Controls)
+            {
+                if (ctrl is TextBox && ctrl != tbNotes)
+                {
+                    ctrl.Validating += clsValidation.ValidateEmptyTextBox;
+                }
+            }
+            tbWeight.KeyPress += clsValidation.ValidateNumbersOnly;
+            tbHeartRate.KeyPress += clsValidation.ValidateNumbersOnly;
+            tbBloodPressure.KeyPress += clsValidation.ValidateNumbersOnly;
         }
     }
 }

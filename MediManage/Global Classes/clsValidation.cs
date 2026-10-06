@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using MediManage_Business;
+using System.ComponentModel;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -29,5 +30,15 @@ namespace MediManage.Global_Classes
                 errorProvider.SetError(Temp, null);
             }
         }
+
+        public static void ValidateNumbersOnly(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != (char)Keys.Back)
+            {
+                e.Handled = true;
+
+            }
+        }
+
     }
 }

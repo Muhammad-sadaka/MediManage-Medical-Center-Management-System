@@ -32,15 +32,18 @@ namespace MediManage
             DGVBillItemList.Enabled = false;
         }
 
-        public void LoadDGVBillItems(List<clsBillItemListDTO> BillItems)
+        void CalaculateAmounts()
         {
-            BillItemList = BillItems;
-            RefreshBillsRecipesList();
-
             decimal? Total = BillItemList.Sum(b => b.Total);
             lblAmountRemaining.Text = "Amount Remaining: $" + Total;
             lblAmountPaid.Text = "Amount Paid: $" + 0;
             lblTotalAmount.Text = "Total Amount: $" + Total;
+        }
+
+        public void LoadDGVBillItems(List<clsBillItemListDTO> BillItems)
+        {
+            BillItemList = BillItems;
+            RefreshBillsRecipesList();
         }
 
         public void ChangeGroubBoxText(string str)
@@ -87,6 +90,8 @@ namespace MediManage
                 b.Quantity,
                 b.Total
             }).ToList();
+
+            CalaculateAmounts();
         }
 
         private void DGVBillItemList_CellContentClick(object sender, DataGridViewCellEventArgs e)

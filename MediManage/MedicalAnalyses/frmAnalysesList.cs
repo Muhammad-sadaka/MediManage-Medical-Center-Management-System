@@ -119,7 +119,7 @@ namespace MediManage
                     }
                     else
                     {
-                        MessageBox.Show("Delete failed. This Analysis might be linked to other records.", "Not Deleted", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Delete failed. Can't delete a completed Analysis.", "Not Deleted", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
