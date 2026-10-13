@@ -3,23 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using SharedDTOs;
 
 namespace MediManage_DataAccess
 {
-    // 1. Data Transfer Object (DTO)
-    public class clsMaritalStatusDTO
-    {
-        public int? MaritalStatusID { get; set; }
-        public string MaritalStatusName { get; set; }
-
-        public clsMaritalStatusDTO(int? maritalStatusID, string maritalStatusName)
-        {
-            this.MaritalStatusID = maritalStatusID;
-            this.MaritalStatusName = maritalStatusName;
-        }
-    }
-
-    // 2. Data Access Layer
     public class clsMaritalStatusesDataAccess
     {
         public static clsMaritalStatusDTO GetMaritalStatusInfoByID(int? MaritalStatusID)

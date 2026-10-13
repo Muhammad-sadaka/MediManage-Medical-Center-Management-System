@@ -227,7 +227,7 @@ namespace MediManage
         private void tbUsername_Validating(object sender, CancelEventArgs e)
         {
             ErrorProvider errorProvider = new ErrorProvider();
-            if (clsUser.IsExistByUserName(tbUsername.Text) && tbUsername.Text != user.UserName)
+            if (clsUser.IsExistByUserName(tbUsername.Text, user))
             {
                 e.Cancel = true;
                 errorProvider.SetError(tbUsername, "This User Name is already exist");

@@ -3,22 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using SharedDTOs;
 
 namespace MediManage_DataAccess
 {
-    public class clsAnalysisTypeDTO
-    {
-        public int? AnalysisTypeID { get; set; }
-        public string AnalysisTypeName { get; set; }
-        public decimal? Price { get; set; }
-
-        public clsAnalysisTypeDTO(int? analysisTypeID, string analysisTypeName, decimal? price)
-        {
-            this.AnalysisTypeID = analysisTypeID;
-            this.AnalysisTypeName = analysisTypeName;
-            this.Price = price;
-        }
-    }
 
     public class clsAnalysisTypeData
     {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using MediManage_DataAccess;
+using SharedDTOs;
 
 namespace MediManage_Business
 {
@@ -122,9 +123,12 @@ namespace MediManage_Business
             return clsUsersDataAccess.IsUserExist(ID);
         }
 
-        public static bool IsExistByUserName(string NationalNo)
+        public static bool IsExistByUserName(string UserName, clsUser user = null)
         {
-            return clsUsersDataAccess.IsUserExistByUserName(NationalNo);
+            if (user != null)
+                 if (UserName == user.UserName)
+                    return false;
+            return clsUsersDataAccess.IsUserExistByUserName(UserName);
         }
 
         public static bool IsExist(string NationalNo)

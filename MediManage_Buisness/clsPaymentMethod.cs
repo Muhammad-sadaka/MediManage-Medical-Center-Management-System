@@ -1,10 +1,11 @@
-﻿namespace MediManage_Business
-{
-    using System;
-    using System.Collections.Generic;
-    using MediManage_DataAccess;
+﻿using SharedDTOs;
+using System;
+using System.Collections.Generic;
+using MediManage_DataAccess;
 
-    // 3. Business Layer
+
+namespace MediManage_Business
+{
     public class clsPaymentMethod
     {
         public enum enMode { AddNew = 0, Update = 1 }

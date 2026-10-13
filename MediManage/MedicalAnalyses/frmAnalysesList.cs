@@ -1,6 +1,5 @@
 ﻿using MediManage.Global_Classes;
 using MediManage_Business;
-using MediManage_DataAccess;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SharedDTOs;
 
 namespace MediManage
 {

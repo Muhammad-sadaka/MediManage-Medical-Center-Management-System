@@ -1,6 +1,7 @@
 ﻿using MediManage.Global_Classes;
 using MediManage_Business;
-using MediManage_DataAccess;
+using Microsoft.VisualBasic.ApplicationServices;
+using SharedDTOs;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -74,7 +75,7 @@ namespace MediManage
 
             if (Doctor == null)
             {
-                MessageBox.Show("This form will be closed because No Doctor with ID = " + Doctor.DoctorID,"Error",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                MessageBox.Show("This form will be closed because No Doctor with ID = " + Doctor.DoctorID, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.Close();
                 return;
             }
@@ -100,7 +101,7 @@ namespace MediManage
             {
                 if (clsDoctor.IsExist(tbNationalNo.Text.Trim()))
                 {
-                    MessageBox.Show("This Person is already exist in the system","Error",MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
+                    MessageBox.Show("This Person is already exist in the system", "Error", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return;
                 }
                 Doctor.PersonID = clsPerson.Find(tbNationalNo.Text).PersonID;
@@ -142,6 +143,20 @@ namespace MediManage
         private void cbSpecialties_SelectedIndexChanged(object sender, EventArgs e)
         {
             tbConsultationFees.Text = Specialties.Where(s => s.SpecialtyName == cbSpecialties.Text).Select(s => s.Fees).FirstOrDefault().ToString();
+        }
+
+        private void tbLicenseNo_Validating(object sender, CancelEventArgs e)
+        {
+            ErrorProvider errorProvider = new ErrorProvider();
+            if (clsDoctor.IsLicenseNoExist(tbLicenseNo.Text , Doctor))
+            {
+                e.Cancel = true;
+                errorProvider.SetError(tbLicenseNo, "This User Name is already exist");
+            }
+            else
+            {
+                errorProvider.SetError(tbLicenseNo, null);
+            }
         }
     }
 }

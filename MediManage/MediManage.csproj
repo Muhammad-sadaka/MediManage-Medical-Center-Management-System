@@ -17,6 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MediManage_Buisness\MediManage_Buisness.csproj" />
-    <ProjectReference Include="..\MediManage_DataAccess\MediManage_DataAccess.csproj" />
+    <ProjectReference Include="..\SharedDTOs\SharedDTOs.csproj" />
   </ItemGroup>
 </Project>

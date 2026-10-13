@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using MediManage_DataAccess;
+using SharedDTOs;
 
 namespace MediManage_Business
 {
@@ -161,6 +162,11 @@ namespace MediManage_Business
             return false;
         }
 
+        public static bool IsThereFutureAppointmentforDoctor(int? DoctorID)
+        {
+            return clsAppointmentsDataAccess.IsThereFutureAppointmentforDoctor(DoctorID);
+        }
+
         public static bool IsExist(int? ID)
         {
             return clsDoctorsDataAccess.IsDoctorExist(ID);
@@ -169,6 +175,14 @@ namespace MediManage_Business
         public static bool IsExist(string NationalNo)
         {
             return clsDoctorsDataAccess.IsDoctorExist(NationalNo);
+        }
+
+        public static bool IsLicenseNoExist(string licenseNo,clsDoctor doctor)
+        {
+            if (doctor.LicenseNo == licenseNo)
+                return false;
+            
+            return clsDoctorsDataAccess.IsLicenseNoExist(licenseNo);
         }
     }
 }

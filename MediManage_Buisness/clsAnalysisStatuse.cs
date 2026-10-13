@@ -1,5 +1,6 @@
 ﻿using MediManage_DataAccess;
 using System.Collections.Generic;
+using SharedDTOs;
 
 
 namespace MediManage_Business

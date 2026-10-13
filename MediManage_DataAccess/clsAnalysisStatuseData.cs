@@ -3,20 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using SharedDTOs;
 
 namespace MediManage_DataAccess
 {
-    public class clsAnalysisStatusDTO
-    {
-        public int? AnalysisStatusID { get; set; }
-        public string AnalysisStatusName { get; set; }
-
-        public clsAnalysisStatusDTO(int? analysisStatusID, string analysisStatusName)
-        {
-            this.AnalysisStatusID = analysisStatusID;
-            this.AnalysisStatusName = analysisStatusName;
-        }
-    }
     public class clsAnalysisStatuseData
     {
         public static clsAnalysisStatusDTO GetAnalysisStatusInfoByID(int? AnalysisStatusID)

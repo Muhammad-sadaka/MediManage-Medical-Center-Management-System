@@ -28,306 +28,324 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.chkIsActive = new MediManage.CustomCheckBox();
-            this.tbConsultationFees = new System.Windows.Forms.TextBox();
-            this.cbSpecialties = new System.Windows.Forms.ComboBox();
-            this.numericEcperienceYears = new System.Windows.Forms.NumericUpDown();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label10 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.tbQualification = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.tbLicenseNo = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.ctrlPersonInfoSummary1 = new MediManage.ctrlPersonInfoSummary();
-            this.gbSearch = new System.Windows.Forms.GroupBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.tbNationalNo = new System.Windows.Forms.TextBox();
-            this.btnSearch = new System.Windows.Forms.Button();
-            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericEcperienceYears)).BeginInit();
-            this.groupBox2.SuspendLayout();
-            this.gbSearch.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
-            this.SuspendLayout();
+            components = new System.ComponentModel.Container();
+            btnSave = new System.Windows.Forms.Button();
+            btnClose = new System.Windows.Forms.Button();
+            lblTitle = new System.Windows.Forms.Label();
+            groupBox3 = new System.Windows.Forms.GroupBox();
+            chkIsActive = new CustomCheckBox();
+            tbConsultationFees = new System.Windows.Forms.TextBox();
+            cbSpecialties = new System.Windows.Forms.ComboBox();
+            numericEcperienceYears = new System.Windows.Forms.NumericUpDown();
+            label11 = new System.Windows.Forms.Label();
+            label10 = new System.Windows.Forms.Label();
+            label9 = new System.Windows.Forms.Label();
+            label7 = new System.Windows.Forms.Label();
+            tbQualification = new System.Windows.Forms.TextBox();
+            label6 = new System.Windows.Forms.Label();
+            tbLicenseNo = new System.Windows.Forms.TextBox();
+            label5 = new System.Windows.Forms.Label();
+            groupBox2 = new System.Windows.Forms.GroupBox();
+            ctrlPersonInfoSummary1 = new ctrlPersonInfoSummary();
+            gbSearch = new System.Windows.Forms.GroupBox();
+            label8 = new System.Windows.Forms.Label();
+            tbNationalNo = new System.Windows.Forms.TextBox();
+            btnSearch = new System.Windows.Forms.Button();
+            errorProvider1 = new System.Windows.Forms.ErrorProvider(components);
+            groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numericEcperienceYears).BeginInit();
+            groupBox2.SuspendLayout();
+            gbSearch.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
+            SuspendLayout();
             // 
             // btnSave
             // 
-            this.btnSave.BackColor = System.Drawing.Color.Green;
-            this.btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSave.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.ForeColor = System.Drawing.Color.White;
-            this.btnSave.Location = new System.Drawing.Point(427, 826);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(190, 58);
-            this.btnSave.TabIndex = 9;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            btnSave.BackColor = System.Drawing.Color.Green;
+            btnSave.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnSave.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            btnSave.ForeColor = System.Drawing.Color.White;
+            btnSave.Location = new System.Drawing.Point(488, 1032);
+            btnSave.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new System.Drawing.Size(217, 72);
+            btnSave.TabIndex = 9;
+            btnSave.Text = "Save";
+            btnSave.UseVisualStyleBackColor = false;
+            btnSave.Click += btnSave_Click;
             // 
             // btnClose
             // 
-            this.btnClose.BackColor = System.Drawing.Color.Silver;
-            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClose.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnClose.Location = new System.Drawing.Point(623, 826);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(190, 58);
-            this.btnClose.TabIndex = 10;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = false;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            btnClose.BackColor = System.Drawing.Color.Silver;
+            btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            btnClose.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnClose.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            btnClose.Location = new System.Drawing.Point(712, 1032);
+            btnClose.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            btnClose.Name = "btnClose";
+            btnClose.Size = new System.Drawing.Size(217, 72);
+            btnClose.TabIndex = 10;
+            btnClose.Text = "Close";
+            btnClose.UseVisualStyleBackColor = false;
+            btnClose.Click += btnClose_Click;
             // 
             // lblTitle
             // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Arial", 25.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.Location = new System.Drawing.Point(12, 20);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(645, 51);
-            this.lblTitle.TabIndex = 25;
-            this.lblTitle.Text = "Add New Doctor                        ";
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new System.Drawing.Font("Arial", 25.8F, System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, 0);
+            lblTitle.Location = new System.Drawing.Point(14, 25);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new System.Drawing.Size(645, 51);
+            lblTitle.TabIndex = 25;
+            lblTitle.Text = "Add New Doctor                        ";
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.chkIsActive);
-            this.groupBox3.Controls.Add(this.tbConsultationFees);
-            this.groupBox3.Controls.Add(this.cbSpecialties);
-            this.groupBox3.Controls.Add(this.numericEcperienceYears);
-            this.groupBox3.Controls.Add(this.label11);
-            this.groupBox3.Controls.Add(this.label10);
-            this.groupBox3.Controls.Add(this.label9);
-            this.groupBox3.Controls.Add(this.label7);
-            this.groupBox3.Controls.Add(this.tbQualification);
-            this.groupBox3.Controls.Add(this.label6);
-            this.groupBox3.Controls.Add(this.tbLicenseNo);
-            this.groupBox3.Controls.Add(this.label5);
-            this.groupBox3.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox3.Location = new System.Drawing.Point(12, 431);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(1209, 384);
-            this.groupBox3.TabIndex = 4;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "3 ";
+            groupBox3.Controls.Add(chkIsActive);
+            groupBox3.Controls.Add(tbConsultationFees);
+            groupBox3.Controls.Add(cbSpecialties);
+            groupBox3.Controls.Add(numericEcperienceYears);
+            groupBox3.Controls.Add(label11);
+            groupBox3.Controls.Add(label10);
+            groupBox3.Controls.Add(label9);
+            groupBox3.Controls.Add(label7);
+            groupBox3.Controls.Add(tbQualification);
+            groupBox3.Controls.Add(label6);
+            groupBox3.Controls.Add(tbLicenseNo);
+            groupBox3.Controls.Add(label5);
+            groupBox3.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            groupBox3.Location = new System.Drawing.Point(14, 539);
+            groupBox3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            groupBox3.Name = "groupBox3";
+            groupBox3.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            groupBox3.Size = new System.Drawing.Size(1382, 480);
+            groupBox3.TabIndex = 4;
+            groupBox3.TabStop = false;
+            groupBox3.Text = "3 ";
             // 
             // chkIsActive
             // 
-            this.chkIsActive.Checked = true;
-            this.chkIsActive.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkIsActive.FlatAppearance.BorderSize = 0;
-            this.chkIsActive.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.chkIsActive.Location = new System.Drawing.Point(313, 326);
-            this.chkIsActive.Name = "chkIsActive";
-            this.chkIsActive.Size = new System.Drawing.Size(48, 38);
-            this.chkIsActive.TabIndex = 178;
-            this.chkIsActive.Text = "customCheckBox1";
-            this.chkIsActive.UseVisualStyleBackColor = true;
+            chkIsActive.Checked = true;
+            chkIsActive.CheckState = System.Windows.Forms.CheckState.Checked;
+            chkIsActive.FlatAppearance.BorderSize = 0;
+            chkIsActive.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            chkIsActive.Location = new System.Drawing.Point(358, 408);
+            chkIsActive.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            chkIsActive.Name = "chkIsActive";
+            chkIsActive.Size = new System.Drawing.Size(55, 48);
+            chkIsActive.TabIndex = 178;
+            chkIsActive.Text = "customCheckBox1";
+            chkIsActive.UseVisualStyleBackColor = true;
             // 
             // tbConsultationFees
             // 
-            this.tbConsultationFees.Location = new System.Drawing.Point(311, 268);
-            this.tbConsultationFees.Name = "tbConsultationFees";
-            this.tbConsultationFees.ReadOnly = true;
-            this.tbConsultationFees.Size = new System.Drawing.Size(887, 40);
-            this.tbConsultationFees.TabIndex = 177;
+            tbConsultationFees.Location = new System.Drawing.Point(355, 335);
+            tbConsultationFees.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            tbConsultationFees.Name = "tbConsultationFees";
+            tbConsultationFees.ReadOnly = true;
+            tbConsultationFees.Size = new System.Drawing.Size(1013, 40);
+            tbConsultationFees.TabIndex = 177;
             // 
             // cbSpecialties
             // 
-            this.cbSpecialties.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbSpecialties.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbSpecialties.FormattingEnabled = true;
-            this.cbSpecialties.Location = new System.Drawing.Point(311, 36);
-            this.cbSpecialties.Name = "cbSpecialties";
-            this.cbSpecialties.Size = new System.Drawing.Size(889, 36);
-            this.cbSpecialties.TabIndex = 4;
-            this.cbSpecialties.SelectedIndexChanged += new System.EventHandler(this.cbSpecialties_SelectedIndexChanged);
+            cbSpecialties.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            cbSpecialties.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            cbSpecialties.FormattingEnabled = true;
+            cbSpecialties.Location = new System.Drawing.Point(355, 45);
+            cbSpecialties.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            cbSpecialties.Name = "cbSpecialties";
+            cbSpecialties.Size = new System.Drawing.Size(1015, 36);
+            cbSpecialties.TabIndex = 4;
+            cbSpecialties.SelectedIndexChanged += cbSpecialties_SelectedIndexChanged;
             // 
             // numericEcperienceYears
             // 
-            this.numericEcperienceYears.Location = new System.Drawing.Point(311, 150);
-            this.numericEcperienceYears.Name = "numericEcperienceYears";
-            this.numericEcperienceYears.Size = new System.Drawing.Size(889, 40);
-            this.numericEcperienceYears.TabIndex = 6;
+            numericEcperienceYears.Location = new System.Drawing.Point(355, 188);
+            numericEcperienceYears.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            numericEcperienceYears.Name = "numericEcperienceYears";
+            numericEcperienceYears.Size = new System.Drawing.Size(1016, 40);
+            numericEcperienceYears.TabIndex = 6;
             // 
             // label11
             // 
-            this.label11.AutoSize = true;
-            this.label11.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(34, 268);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(245, 34);
-            this.label11.TabIndex = 170;
-            this.label11.Text = "Consultation Fees:";
+            label11.AutoSize = true;
+            label11.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            label11.Location = new System.Drawing.Point(39, 335);
+            label11.Name = "label11";
+            label11.Size = new System.Drawing.Size(245, 34);
+            label11.TabIndex = 170;
+            label11.Text = "Consultation Fees:";
             // 
             // label10
             // 
-            this.label10.AutoSize = true;
-            this.label10.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label10.Location = new System.Drawing.Point(34, 210);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(177, 34);
-            this.label10.TabIndex = 169;
-            this.label10.Text = "Qualification:";
+            label10.AutoSize = true;
+            label10.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            label10.Location = new System.Drawing.Point(39, 262);
+            label10.Name = "label10";
+            label10.Size = new System.Drawing.Size(177, 34);
+            label10.TabIndex = 169;
+            label10.Text = "Qualification:";
             // 
             // label9
             // 
-            this.label9.AutoSize = true;
-            this.label9.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(34, 152);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(271, 34);
-            this.label9.TabIndex = 168;
-            this.label9.Text = "Years of Experience:";
+            label9.AutoSize = true;
+            label9.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            label9.Location = new System.Drawing.Point(39, 190);
+            label9.Name = "label9";
+            label9.Size = new System.Drawing.Size(271, 34);
+            label9.TabIndex = 168;
+            label9.Text = "Years of Experience:";
             // 
             // label7
             // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(34, 326);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(131, 34);
-            this.label7.TabIndex = 149;
-            this.label7.Text = "Is Active:";
+            label7.AutoSize = true;
+            label7.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            label7.Location = new System.Drawing.Point(39, 408);
+            label7.Name = "label7";
+            label7.Size = new System.Drawing.Size(131, 34);
+            label7.TabIndex = 149;
+            label7.Text = "Is Active:";
             // 
             // tbQualification
             // 
-            this.tbQualification.Location = new System.Drawing.Point(313, 210);
-            this.tbQualification.Name = "tbQualification";
-            this.tbQualification.Size = new System.Drawing.Size(887, 40);
-            this.tbQualification.TabIndex = 7;
+            tbQualification.Location = new System.Drawing.Point(358, 262);
+            tbQualification.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            tbQualification.Name = "tbQualification";
+            tbQualification.Size = new System.Drawing.Size(1013, 40);
+            tbQualification.TabIndex = 7;
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(34, 94);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(160, 34);
-            this.label6.TabIndex = 147;
-            this.label6.Text = "License No:";
+            label6.AutoSize = true;
+            label6.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            label6.Location = new System.Drawing.Point(39, 118);
+            label6.Name = "label6";
+            label6.Size = new System.Drawing.Size(160, 34);
+            label6.TabIndex = 147;
+            label6.Text = "License No:";
             // 
             // tbLicenseNo
             // 
-            this.tbLicenseNo.Location = new System.Drawing.Point(313, 91);
-            this.tbLicenseNo.Name = "tbLicenseNo";
-            this.tbLicenseNo.Size = new System.Drawing.Size(887, 40);
-            this.tbLicenseNo.TabIndex = 5;
+            tbLicenseNo.Location = new System.Drawing.Point(358, 114);
+            tbLicenseNo.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            tbLicenseNo.Name = "tbLicenseNo";
+            tbLicenseNo.Size = new System.Drawing.Size(1013, 40);
+            tbLicenseNo.TabIndex = 5;
+            tbLicenseNo.Validating += tbLicenseNo_Validating;
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(34, 36);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(134, 34);
-            this.label5.TabIndex = 145;
-            this.label5.Text = "Specialty:";
+            label5.AutoSize = true;
+            label5.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            label5.Location = new System.Drawing.Point(39, 45);
+            label5.Name = "label5";
+            label5.Size = new System.Drawing.Size(134, 34);
+            label5.TabIndex = 145;
+            label5.Text = "Specialty:";
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.ctrlPersonInfoSummary1);
-            this.groupBox2.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(12, 189);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(1209, 236);
-            this.groupBox2.TabIndex = 3;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "2 Person Information";
+            groupBox2.Controls.Add(ctrlPersonInfoSummary1);
+            groupBox2.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            groupBox2.Location = new System.Drawing.Point(14, 236);
+            groupBox2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            groupBox2.Name = "groupBox2";
+            groupBox2.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            groupBox2.Size = new System.Drawing.Size(1382, 295);
+            groupBox2.TabIndex = 3;
+            groupBox2.TabStop = false;
+            groupBox2.Text = "2 Person Information";
             // 
             // ctrlPersonInfoSummary1
             // 
-            this.ctrlPersonInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ctrlPersonInfoSummary1.Location = new System.Drawing.Point(10, 42);
-            this.ctrlPersonInfoSummary1.Margin = new System.Windows.Forms.Padding(7, 6, 7, 6);
-            this.ctrlPersonInfoSummary1.Name = "ctrlPersonInfoSummary1";
-            this.ctrlPersonInfoSummary1.Size = new System.Drawing.Size(1190, 185);
-            this.ctrlPersonInfoSummary1.TabIndex = 0;
+            ctrlPersonInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            ctrlPersonInfoSummary1.Location = new System.Drawing.Point(11, 52);
+            ctrlPersonInfoSummary1.Margin = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            ctrlPersonInfoSummary1.Name = "ctrlPersonInfoSummary1";
+            ctrlPersonInfoSummary1.Size = new System.Drawing.Size(1360, 231);
+            ctrlPersonInfoSummary1.TabIndex = 0;
             // 
             // gbSearch
             // 
-            this.gbSearch.Controls.Add(this.label8);
-            this.gbSearch.Controls.Add(this.tbNationalNo);
-            this.gbSearch.Controls.Add(this.btnSearch);
-            this.gbSearch.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbSearch.Location = new System.Drawing.Point(12, 83);
-            this.gbSearch.Name = "gbSearch";
-            this.gbSearch.Size = new System.Drawing.Size(1209, 100);
-            this.gbSearch.TabIndex = 1;
-            this.gbSearch.TabStop = false;
-            this.gbSearch.Text = "1 Search";
+            gbSearch.Controls.Add(label8);
+            gbSearch.Controls.Add(tbNationalNo);
+            gbSearch.Controls.Add(btnSearch);
+            gbSearch.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
+            gbSearch.Location = new System.Drawing.Point(14, 104);
+            gbSearch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            gbSearch.Name = "gbSearch";
+            gbSearch.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            gbSearch.Size = new System.Drawing.Size(1382, 125);
+            gbSearch.TabIndex = 1;
+            gbSearch.TabStop = false;
+            gbSearch.Text = "1 Search";
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label8.Location = new System.Drawing.Point(34, 44);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(169, 34);
-            this.label8.TabIndex = 144;
-            this.label8.Text = "National No:";
+            label8.AutoSize = true;
+            label8.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            label8.Location = new System.Drawing.Point(39, 55);
+            label8.Name = "label8";
+            label8.Size = new System.Drawing.Size(169, 34);
+            label8.TabIndex = 144;
+            label8.Text = "National No:";
             // 
             // tbNationalNo
             // 
-            this.tbNationalNo.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbNationalNo.ForeColor = System.Drawing.Color.Silver;
-            this.tbNationalNo.Location = new System.Drawing.Point(209, 42);
-            this.tbNationalNo.Name = "tbNationalNo";
-            this.tbNationalNo.Size = new System.Drawing.Size(823, 40);
-            this.tbNationalNo.TabIndex = 1;
-            this.tbNationalNo.Text = "National No";
+            tbNationalNo.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            tbNationalNo.ForeColor = System.Drawing.Color.Silver;
+            tbNationalNo.Location = new System.Drawing.Point(239, 52);
+            tbNationalNo.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            tbNationalNo.Name = "tbNationalNo";
+            tbNationalNo.Size = new System.Drawing.Size(940, 40);
+            tbNationalNo.TabIndex = 1;
+            tbNationalNo.Text = "National No";
             // 
             // btnSearch
             // 
-            this.btnSearch.BackColor = System.Drawing.Color.Blue;
-            this.btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSearch.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSearch.ForeColor = System.Drawing.Color.White;
-            this.btnSearch.Location = new System.Drawing.Point(1038, 39);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(162, 47);
-            this.btnSearch.TabIndex = 2;
-            this.btnSearch.Text = "Search";
-            this.btnSearch.UseVisualStyleBackColor = false;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            btnSearch.BackColor = System.Drawing.Color.Blue;
+            btnSearch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnSearch.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            btnSearch.ForeColor = System.Drawing.Color.White;
+            btnSearch.Location = new System.Drawing.Point(1186, 49);
+            btnSearch.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            btnSearch.Name = "btnSearch";
+            btnSearch.Size = new System.Drawing.Size(185, 59);
+            btnSearch.TabIndex = 2;
+            btnSearch.Text = "Search";
+            btnSearch.UseVisualStyleBackColor = false;
+            btnSearch.Click += btnSearch_Click;
             // 
             // errorProvider1
             // 
-            this.errorProvider1.ContainerControl = this;
+            errorProvider1.ContainerControl = this;
             // 
             // frmAddUpdateDoctor
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1233, 896);
-            this.Controls.Add(this.groupBox3);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.gbSearch);
-            this.Controls.Add(this.lblTitle);
-            this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.btnClose);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Name = "frmAddUpdateDoctor";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "frmAddUpdateDoctor";
-            this.Load += new System.EventHandler(this.frmAddUpdateDoctor_Load);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericEcperienceYears)).EndInit();
-            this.groupBox2.ResumeLayout(false);
-            this.gbSearch.ResumeLayout(false);
-            this.gbSearch.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
-            this.ResumeLayout(false);
-            this.PerformLayout();
+            AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            ClientSize = new System.Drawing.Size(1409, 1102);
+            Controls.Add(groupBox3);
+            Controls.Add(groupBox2);
+            Controls.Add(gbSearch);
+            Controls.Add(lblTitle);
+            Controls.Add(btnSave);
+            Controls.Add(btnClose);
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            Name = "frmAddUpdateDoctor";
+            StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            Text = "frmAddUpdateDoctor";
+            Load += frmAddUpdateDoctor_Load;
+            groupBox3.ResumeLayout(false);
+            groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numericEcperienceYears).EndInit();
+            groupBox2.ResumeLayout(false);
+            gbSearch.ResumeLayout(false);
+            gbSearch.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
+            ResumeLayout(false);
+            PerformLayout();
 
         }
 

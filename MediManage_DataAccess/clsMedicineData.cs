@@ -3,21 +3,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using SharedDTOs;
 
 namespace MediManage_DataAccess
 {
-    public class clsMedicineDTO
-    {
-        public int? MedicineID { get; set; }
-        public string MedicineName { get; set; }
-
-        public clsMedicineDTO(int? medicineID, string medicineName)
-        {
-            this.MedicineID = medicineID;
-            this.MedicineName = medicineName;
-
-        }
-
+  
         public class clsMedicineDataAccess
         {
             public static clsMedicineDTO GetMedicineInfoByID(int? MedicineID)
@@ -223,5 +213,5 @@ namespace MediManage_DataAccess
                 return isFound;
             }
         }
-    }
+    
 }

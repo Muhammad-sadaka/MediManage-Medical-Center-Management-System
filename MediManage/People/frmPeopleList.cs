@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MediManage_Business;
-using MediManage_DataAccess;
+using SharedDTOs;
 using MediManage.Global_Classes;
 
 namespace MediManage

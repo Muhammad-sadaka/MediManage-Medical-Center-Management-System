@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using MediManage_DataAccess;
+using SharedDTOs;
 
 namespace MediManage_Business
 {
@@ -82,8 +83,7 @@ namespace MediManage_Business
         private bool _AddNewDetection()
         {
             this.DetectionID = clsDetectionsDataAccess.AddNewDetection(this.DTO);
-            bool AppointmentCompleted = clsAppointment.SetAppointmentComplete(this.AppointmentID);
-            return (this.DetectionID.HasValue && AppointmentCompleted);
+            return this.DetectionID.HasValue;
         }
 
         private bool _UpdateDetection()

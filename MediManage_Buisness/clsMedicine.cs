@@ -1,7 +1,7 @@
 ﻿using MediManage_DataAccess;
 using System;
 using System.Collections.Generic;
-using static MediManage_DataAccess.clsMedicineDTO;
+using SharedDTOs;
 
 namespace MediManage_Business
 {

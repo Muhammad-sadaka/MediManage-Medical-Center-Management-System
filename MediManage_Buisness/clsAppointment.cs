@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using MediManage_DataAccess;
+using SharedDTOs;
 
 namespace MediManage_Business
 {
@@ -154,9 +155,9 @@ namespace MediManage_Business
             return clsAppointmentsDataAccess.IsCanceledorAbsent(ID);
         }
 
-        public static bool SetAppointmentComplete(int? AppointmentID)
+        public static void UpdateAbsentAppointments()
         {
-            return clsAppointmentsDataAccess.SetAppointmentComplete(AppointmentID);
+            clsAppointmentsDataAccess.UpdateAbsentAppointments();
         }
     }
 }

@@ -3,23 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using SharedDTOs;
 
 namespace MediManage_DataAccess
 {
-    // 1. Data Transfer Object (DTO)
-    public class clsCountryDTO
-    {
-        public int? CountryID { get; set; }
-        public string CountryName { get; set; }
-
-        public clsCountryDTO(int? countryID, string countryName)
-        {
-            this.CountryID = countryID;
-            this.CountryName = countryName;
-        }
-    }
-
-    // 2. Data Access Layer
     public class clsCountryData
     {
         public static clsCountryDTO GetCountryInfoByID(int? CountryID)

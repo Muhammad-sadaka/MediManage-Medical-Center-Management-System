@@ -90,13 +90,8 @@ namespace MediManage
 
         private void frmAddExamination_Load(object sender, EventArgs e)
         {
-            foreach (Control ctrl in this.groupBox1.Controls)
-            {
-                if (ctrl is TextBox && ctrl != tbNotes)
-                {
-                    ctrl.Validating += clsValidation.ValidateEmptyTextBox;
-                }
-            }
+            tbSymptoms.Validating += clsValidation.ValidateEmptyTextBox;
+            tbDiagosis.Validating += clsValidation.ValidateEmptyTextBox;
             tbWeight.KeyPress += clsValidation.ValidateNumbersOnly;
             tbHeartRate.KeyPress += clsValidation.ValidateNumbersOnly;
             tbBloodPressure.KeyPress += clsValidation.ValidateNumbersOnly;

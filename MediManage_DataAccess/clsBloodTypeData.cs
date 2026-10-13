@@ -3,23 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using SharedDTOs;
 
 namespace MediManage_DataAccess
 {
-    // 1. Data Transfer Object (DTO)
-    public class clsBloodTypeDTO
-    {
-        public int? BloodTypeID { get; set; }
-        public string BloodTypeSymbol { get; set; }
-
-        public clsBloodTypeDTO(int? bloodTypeID, string bloodTypeSymbol)
-        {
-            this.BloodTypeID = bloodTypeID;
-            this.BloodTypeSymbol = bloodTypeSymbol;
-        }
-    }
-
-    // 2. Data Access Layer
     public class clsBloodTypesDataAccess
     {
         public static clsBloodTypeDTO GetBloodTypeInfoByID(int? BloodTypeID)

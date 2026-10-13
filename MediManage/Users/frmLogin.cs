@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
+using MediManage.Global_Classes;
 using MediManage_Business;
 
 namespace MediManage
@@ -11,12 +12,12 @@ namespace MediManage
         public frmLogin()
         {
             InitializeComponent();
-
-            Login_Load();
         }
 
-        private void Login_Load()
+        private void frmLogin_Load(object sender, EventArgs e)
         {
+            
+
             string UserName = "", Password = "";
 
             if (clsGlobal.GetStoredCredentialFromRegistry(ref UserName, ref Password))
@@ -33,6 +34,8 @@ namespace MediManage
             {
                 chkRememberMe.Checked = false;
             }
+
+            clsAppointment.UpdateAbsentAppointments();
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -51,6 +54,43 @@ namespace MediManage
         {
             tbUserName.Focus();
             MessageBox.Show("Invalid credentials", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
+
+
+        private void tbUserName_Enter(object sender, EventArgs e)
+        {
+            if (tbUserName.TextButton == "User name")
+                tbUserName.textBox.Clear();
+            tbUserName.ForeColor = Color.Black;
+        }
+
+        private void tbPassword_Enter(object sender, EventArgs e)
+        {
+            if (tbPassword.TextButton == "Password")
+            {
+                tbPassword.textBox.Clear();
+                tbPassword.Password = true;
+            }
+            tbPassword.ForeColor = Color.Black;
+        }
+
+        private void tbPassword_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(tbPassword.TextButton))
+            {
+                tbPassword.ForeColor = Color.Gray;
+                tbPassword.TextButton = "Password";
+                tbPassword.Password = false;
+            }
+        }
+
+        private void tbUserName_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(tbUserName.TextButton))
+            {
+                tbUserName.ForeColor = Color.Gray;
+                tbUserName.TextButton = "User name";
+            }
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -102,60 +142,5 @@ namespace MediManage
             }
         }
 
-        private void tbUserName_Enter(object sender, EventArgs e)
-        {
-            if (tbUserName.TextButton == "User name")
-                tbUserName.textBox.Clear();
-            tbUserName.ForeColor = Color.Black;
-        }
-
-        private void tbPassword_Enter(object sender, EventArgs e)
-        {
-            if (tbPassword.TextButton == "Password")
-            {
-                tbPassword.textBox.Clear();
-                tbPassword.Password = true;
-            }
-            tbPassword.ForeColor = Color.Black;
-        }
-
-        private void tbPassword_Leave(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(tbPassword.TextButton))
-            {
-                tbPassword.ForeColor = Color.Gray;
-                tbPassword.TextButton = "Password";
-                tbPassword.Password = false;
-            }
-        }
-
-        private void tbUserName_Leave(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(tbUserName.TextButton))
-            {
-                tbUserName.ForeColor = Color.Gray;
-                tbUserName.TextButton = "User name";
-            }
-        }
-
-        private void tbUserName_Validating(object sender, CancelEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(tbUserName.TextButton) || tbUserName.TextButton == "User name")
-            {
-                e.Cancel = true;
-                tbUserName.Focus();
-                errorProvider1.SetError(tbUserName, "UserName should have a value");
-            }
-        }
-
-        private void tbPassword_Validating(object sender, CancelEventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(tbPassword.TextButton) || tbPassword.TextButton == "Password")
-            {
-                e.Cancel = true;
-                tbPassword.Focus();
-                errorProvider1.SetError(tbPassword, "Password should have a value");
-            }
-        }
     }
 }

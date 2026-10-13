@@ -1,6 +1,6 @@
 ﻿using MediManage.Global_Classes;
 using MediManage_Business;
-using MediManage_DataAccess;
+using SharedDTOs;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -134,7 +134,13 @@ namespace MediManage
 
             else if (DGVDoctorsList.Columns[e.ColumnIndex].Name == "btnDelete")
             {
-                DialogResult result = MessageBox.Show("Are you sure you want to delete this Doctor?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                DialogResult result;
+
+                if (clsDoctor.IsThereFutureAppointmentforDoctor(DoctorID))
+                    result = MessageBox.Show("This Doctor Has Future Booked Appointments are you sure you want to delete this Doctor?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                else
+                    result = MessageBox.Show("Are you sure you want to delete this Doctor?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+
                 if (result == DialogResult.Yes)
                 {
                     if (clsDoctor.DeleteDoctor(DoctorID))

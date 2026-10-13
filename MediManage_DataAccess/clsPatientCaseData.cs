@@ -3,23 +3,11 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using SharedDTOs;
+
 
 namespace MediManage_DataAccess
 {
-    // 1. Data Transfer Object (DTO)
-    public class clsPatientCaseDTO
-    {
-        public int? PatientCaseID { get; set; }
-        public string PatientCaseName { get; set; }
-
-        public clsPatientCaseDTO(int? patientCaseID, string patientCaseName)
-        {
-            this.PatientCaseID = patientCaseID;
-            this.PatientCaseName = patientCaseName;
-        }
-    }
-
-    // 2. Data Access Layer
     public class clsPatientCasesDataAccess
     {
         public static clsPatientCaseDTO GetPatientCaseInfoByID(int? PatientCaseID)

@@ -3,23 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using SharedDTOs;
 
 namespace MediManage_DataAccess
 {
-    // 1. Data Transfer Object (DTO)
-    public class clsPaymentMethodDTO
-    {
-        public int? PaymentMethodID { get; set; }
-        public string PaymentMethodName { get; set; }
-
-        public clsPaymentMethodDTO(int? paymentMethodID, string paymentMethodName)
-        {
-            this.PaymentMethodID = paymentMethodID;
-            this.PaymentMethodName = paymentMethodName;
-        }
-    }
-
-    // 2. Data Access Layer
     public class clsPaymentMethodsDataAccess
     {
         public static clsPaymentMethodDTO GetPaymentMethodInfoByID(int? PaymentMethodID)
