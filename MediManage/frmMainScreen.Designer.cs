@@ -28,8 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMainScreen));
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.btnDoctorsList = new System.Windows.Forms.Button();
             this.btnAddNewDoctor = new System.Windows.Forms.Button();
@@ -80,14 +81,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.tabPage11 = new System.Windows.Forms.TabPage();
             this.label24 = new System.Windows.Forms.Label();
-            this.label23 = new System.Windows.Forms.Label();
-            this.label22 = new System.Windows.Forms.Label();
-            this.label21 = new System.Windows.Forms.Label();
             this.label20 = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
@@ -99,6 +93,13 @@
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.tabPage12 = new System.Windows.Forms.TabPage();
+            this.klblEmail = new System.Windows.Forms.LinkLabel();
+            this.klblGitHub = new System.Windows.Forms.LinkLabel();
+            this.klblLinkedIn = new System.Windows.Forms.LinkLabel();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tabPage4.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.hopeTabPage1.SuspendLayout();
@@ -286,8 +287,8 @@
             // 
             this.DGVTodayAppointments.AllowUserToAddRows = false;
             this.DGVTodayAppointments.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            this.DGVTodayAppointments.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            this.DGVTodayAppointments.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.DGVTodayAppointments.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.DGVTodayAppointments.BackgroundColor = System.Drawing.Color.White;
             this.DGVTodayAppointments.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -296,8 +297,8 @@
             this.DGVTodayAppointments.Name = "DGVTodayAppointments";
             this.DGVTodayAppointments.ReadOnly = true;
             this.DGVTodayAppointments.RowHeadersWidth = 51;
-            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.ScrollBar;
-            this.DGVTodayAppointments.RowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.DGVTodayAppointments.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.DGVTodayAppointments.RowTemplate.Height = 26;
             this.DGVTodayAppointments.Size = new System.Drawing.Size(1073, 362);
             this.DGVTodayAppointments.TabIndex = 17;
@@ -734,10 +735,10 @@
             // 
             // tabPage11
             // 
+            this.tabPage11.Controls.Add(this.klblLinkedIn);
+            this.tabPage11.Controls.Add(this.klblGitHub);
+            this.tabPage11.Controls.Add(this.klblEmail);
             this.tabPage11.Controls.Add(this.label24);
-            this.tabPage11.Controls.Add(this.label23);
-            this.tabPage11.Controls.Add(this.label22);
-            this.tabPage11.Controls.Add(this.label21);
             this.tabPage11.Controls.Add(this.label20);
             this.tabPage11.Controls.Add(this.pictureBox2);
             this.tabPage11.Controls.Add(this.pictureBox4);
@@ -765,83 +766,21 @@
             // 
             this.label24.AutoSize = true;
             this.label24.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label24.Location = new System.Drawing.Point(374, 626);
+            this.label24.Location = new System.Drawing.Point(390, 626);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(637, 34);
             this.label24.TabIndex = 165;
             this.label24.Text = " billing, and streamline clinic operations efficiently.";
             // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(494, 404);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(417, 34);
-            this.label23.TabIndex = 164;
-            this.label23.Text = "muhammadsadka95@gmail.com";
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label22.Location = new System.Drawing.Point(452, 447);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(501, 34);
-            this.label22.TabIndex = 163;
-            this.label22.Text = "https://github.com/Muhammad-sadaka";
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label21.Location = new System.Drawing.Point(323, 491);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(729, 34);
-            this.label21.TabIndex = 162;
-            this.label21.Text = "https://linkedin.com/in/muhammad-al-sadaka-338956323";
-            // 
             // label20
             // 
             this.label20.AutoSize = true;
             this.label20.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label20.Location = new System.Drawing.Point(619, 360);
+            this.label20.Location = new System.Drawing.Point(570, 360);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(165, 34);
             this.label20.TabIndex = 161;
             this.label20.Text = "0983873645";
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Location = new System.Drawing.Point(109, 768);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(80, 65);
-            this.pictureBox2.TabIndex = 160;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox4
-            // 
-            this.pictureBox4.Location = new System.Drawing.Point(873, 768);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(80, 65);
-            this.pictureBox4.TabIndex = 159;
-            this.pictureBox4.TabStop = false;
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Location = new System.Drawing.Point(575, 768);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(80, 65);
-            this.pictureBox3.TabIndex = 158;
-            this.pictureBox3.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(625, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(143, 130);
-            this.pictureBox1.TabIndex = 156;
-            this.pictureBox1.TabStop = false;
             // 
             // label19
             // 
@@ -857,7 +796,7 @@
             // 
             this.label18.AutoSize = true;
             this.label18.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label18.Location = new System.Drawing.Point(661, 782);
+            this.label18.Location = new System.Drawing.Point(623, 782);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(154, 34);
             this.label18.TabIndex = 154;
@@ -877,7 +816,7 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Microsoft YaHei", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(627, 723);
+            this.label16.Location = new System.Drawing.Point(569, 711);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(158, 37);
             this.label16.TabIndex = 152;
@@ -887,7 +826,7 @@
             // 
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label15.Location = new System.Drawing.Point(179, 582);
+            this.label15.Location = new System.Drawing.Point(255, 581);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(981, 34);
             this.label15.TabIndex = 151;
@@ -897,7 +836,7 @@
             // 
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft YaHei", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label14.Location = new System.Drawing.Point(618, 535);
+            this.label14.Location = new System.Drawing.Point(557, 535);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(178, 37);
             this.label14.TabIndex = 150;
@@ -908,7 +847,7 @@
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label13.ForeColor = System.Drawing.Color.Gray;
-            this.label13.Location = new System.Drawing.Point(620, 204);
+            this.label13.Location = new System.Drawing.Point(571, 204);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(146, 28);
             this.label13.TabIndex = 149;
@@ -918,7 +857,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft YaHei", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(591, 264);
+            this.label12.Location = new System.Drawing.Point(541, 265);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(224, 37);
             this.label12.TabIndex = 148;
@@ -928,7 +867,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(553, 316);
+            this.label11.Location = new System.Drawing.Point(512, 316);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(294, 34);
             this.label11.TabIndex = 147;
@@ -953,6 +892,80 @@
             this.tabPage12.TabIndex = 11;
             this.tabPage12.Text = "Logout";
             this.tabPage12.UseVisualStyleBackColor = true;
+            // 
+            // klblEmail
+            // 
+            this.klblEmail.AutoSize = true;
+            this.klblEmail.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.klblEmail.Location = new System.Drawing.Point(463, 403);
+            this.klblEmail.Name = "klblEmail";
+            this.klblEmail.Size = new System.Drawing.Size(417, 34);
+            this.klblEmail.TabIndex = 166;
+            this.klblEmail.TabStop = true;
+            this.klblEmail.Text = "muhammadsadka95@gmail.com";
+            // 
+            // klblGitHub
+            // 
+            this.klblGitHub.AutoSize = true;
+            this.klblGitHub.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.klblGitHub.Location = new System.Drawing.Point(428, 447);
+            this.klblGitHub.Name = "klblGitHub";
+            this.klblGitHub.Size = new System.Drawing.Size(501, 34);
+            this.klblGitHub.TabIndex = 167;
+            this.klblGitHub.TabStop = true;
+            this.klblGitHub.Text = "https://github.com/Muhammad-sadaka";
+            // 
+            // klblLinkedIn
+            // 
+            this.klblLinkedIn.AutoSize = true;
+            this.klblLinkedIn.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.klblLinkedIn.Location = new System.Drawing.Point(342, 490);
+            this.klblLinkedIn.Name = "klblLinkedIn";
+            this.klblLinkedIn.Size = new System.Drawing.Size(729, 34);
+            this.klblLinkedIn.TabIndex = 168;
+            this.klblLinkedIn.TabStop = true;
+            this.klblLinkedIn.Text = "https://linkedin.com/in/muhammad-al-sadaka-338956323";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::MediManage.Properties.Resources.logo_c_64;
+            this.pictureBox2.Location = new System.Drawing.Point(109, 768);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(80, 65);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox2.TabIndex = 160;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox4.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox4.Image")));
+            this.pictureBox4.Location = new System.Drawing.Point(881, 768);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(72, 65);
+            this.pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox4.TabIndex = 159;
+            this.pictureBox4.TabStop = false;
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Image = global::MediManage.Properties.Resources.SQLServer64;
+            this.pictureBox3.Location = new System.Drawing.Point(537, 768);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(80, 65);
+            this.pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox3.TabIndex = 158;
+            this.pictureBox3.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(548, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(143, 130);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 156;
+            this.pictureBox1.TabStop = false;
             // 
             // frmMainScreen
             // 
@@ -1068,14 +1081,14 @@
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.Label label21;
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox4;
         private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.LinkLabel klblLinkedIn;
+        private System.Windows.Forms.LinkLabel klblGitHub;
+        private System.Windows.Forms.LinkLabel klblEmail;
     }
 }

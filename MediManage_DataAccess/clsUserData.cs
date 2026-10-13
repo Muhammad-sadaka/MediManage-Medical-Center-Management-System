@@ -429,5 +429,34 @@ namespace MediManage_DataAccess
 
             return null;
         }
+
+        public static bool ChangeUserStatus(int? UserID, bool? IsActive)
+        {
+            int rowsAffected = 0;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
+                {
+                    using (SqlCommand command = new SqlCommand("[SP_ChangeUserStatus]", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+                        command.Parameters.AddWithValue("@UserID", (object)UserID ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@IsActive", (object)IsActive ?? DBNull.Value);
+
+                        connection.Open();
+                        rowsAffected = command.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                clsDataAccessSettings.EventLogCreate();
+                EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
+            }
+
+            return rowsAffected > 0;
+        }
+
     }
 }

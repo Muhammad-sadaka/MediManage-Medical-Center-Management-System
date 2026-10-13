@@ -17,7 +17,6 @@ namespace MediManage_DataAccess
             this.AnalysisStatusName = analysisStatusName;
         }
     }
-
     public class clsAnalysisStatuseData
     {
         public static clsAnalysisStatusDTO GetAnalysisStatusInfoByID(int? AnalysisStatusID)

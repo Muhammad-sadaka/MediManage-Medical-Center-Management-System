@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.8.12023.21 stable
+VisualStudioVersion = 18.8.12023.21
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediManage", "MediManage.csproj", "{62C0C8B0-3930-4DFD-AF0C-48AD46BAF4BF}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediManage_Buisness", "..\MediManage_Buisness\MediManage_Buisness.csproj", "{0FF005F6-F3FE-4B77-A4E5-A33A67F78FF9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MediManage_API", "..\MediManage_API\MediManage_API.csproj", "{81EEA471-4BBE-4DF2-BF66-F658CFD8C411}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharedDTOs", "..\SharedDTOs\SharedDTOs.csproj", "{262A5E80-3CA0-4F17-876F-11340B63803B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{81EEA471-4BBE-4DF2-BF66-F658CFD8C411}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81EEA471-4BBE-4DF2-BF66-F658CFD8C411}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81EEA471-4BBE-4DF2-BF66-F658CFD8C411}.Release|Any CPU.Build.0 = Release|Any CPU
+		{262A5E80-3CA0-4F17-876F-11340B63803B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{262A5E80-3CA0-4F17-876F-11340B63803B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{262A5E80-3CA0-4F17-876F-11340B63803B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{262A5E80-3CA0-4F17-876F-11340B63803B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

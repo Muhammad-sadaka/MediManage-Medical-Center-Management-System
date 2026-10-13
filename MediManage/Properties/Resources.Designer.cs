@@ -73,9 +73,29 @@ namespace MediManage.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap logo_c_64 {
+            get {
+                object obj = ResourceManager.GetObject("logo_c#64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Person32 {
             get {
                 object obj = ResourceManager.GetObject("Person32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap SQLServer64 {
+            get {
+                object obj = ResourceManager.GetObject("SQLServer64", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

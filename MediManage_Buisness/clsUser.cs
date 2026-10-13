@@ -131,5 +131,10 @@ namespace MediManage_Business
         {
             return clsUsersDataAccess.IsUserExist(NationalNo);
         }
+
+        public static bool ChangeUserStatus(int? userID, bool? isActive)
+        {
+            return clsUsersDataAccess.ChangeUserStatus(userID , !isActive);
+        }
     }
 }
