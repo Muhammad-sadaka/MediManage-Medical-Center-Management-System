@@ -79,6 +79,7 @@
             btnAddNewUser = new System.Windows.Forms.Button();
             label5 = new System.Windows.Forms.Label();
             tabPage11 = new System.Windows.Forms.TabPage();
+            btnAbout = new System.Windows.Forms.Button();
             label10 = new System.Windows.Forms.Label();
             tabPage12 = new System.Windows.Forms.TabPage();
             tabPage4.SuspendLayout();
@@ -255,7 +256,7 @@
             groupBox1.Controls.Add(DGVTodayAppointments);
             groupBox1.Location = new System.Drawing.Point(72, 385);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new System.Drawing.Size(1112, 442);
+            groupBox1.Size = new System.Drawing.Size(1378, 519);
             groupBox1.TabIndex = 5;
             groupBox1.TabStop = false;
             groupBox1.Text = "Today Appointments";
@@ -277,7 +278,7 @@
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.ScrollBar;
             DGVTodayAppointments.RowsDefaultCellStyle = dataGridViewCellStyle2;
             DGVTodayAppointments.RowTemplate.Height = 26;
-            DGVTodayAppointments.Size = new System.Drawing.Size(1073, 362);
+            DGVTodayAppointments.Size = new System.Drawing.Size(1332, 433);
             DGVTodayAppointments.TabIndex = 17;
             // 
             // lblTodayDate
@@ -285,7 +286,7 @@
             lblTodayDate.AutoSize = true;
             lblTodayDate.Font = new System.Drawing.Font("Arial Narrow", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
             lblTodayDate.ForeColor = System.Drawing.Color.Black;
-            lblTodayDate.Location = new System.Drawing.Point(891, 91);
+            lblTodayDate.Location = new System.Drawing.Point(949, 89);
             lblTodayDate.Name = "lblTodayDate";
             lblTodayDate.Size = new System.Drawing.Size(136, 27);
             lblTodayDate.TabIndex = 4;
@@ -294,7 +295,7 @@
             // lblWelcome
             // 
             lblWelcome.AutoSize = true;
-            lblWelcome.Location = new System.Drawing.Point(858, 37);
+            lblWelcome.Location = new System.Drawing.Point(916, 35);
             lblWelcome.Name = "lblWelcome";
             lblWelcome.Size = new System.Drawing.Size(170, 45);
             lblWelcome.TabIndex = 3;
@@ -308,11 +309,11 @@
             foreverGroupBox3.BaseColor = System.Drawing.Color.OrangeRed;
             foreverGroupBox3.Controls.Add(lblTodayRevenue);
             foreverGroupBox3.Font = new System.Drawing.Font("Segoe UI", 10F);
-            foreverGroupBox3.Location = new System.Drawing.Point(866, 174);
+            foreverGroupBox3.Location = new System.Drawing.Point(1048, 174);
             foreverGroupBox3.Name = "foreverGroupBox3";
             foreverGroupBox3.ShowArrow = true;
             foreverGroupBox3.ShowText = true;
-            foreverGroupBox3.Size = new System.Drawing.Size(318, 167);
+            foreverGroupBox3.Size = new System.Drawing.Size(402, 167);
             foreverGroupBox3.TabIndex = 2;
             foreverGroupBox3.TextColor = System.Drawing.Color.White;
             // 
@@ -335,11 +336,11 @@
             foreverGroupBox2.BaseColor = System.Drawing.Color.SeaGreen;
             foreverGroupBox2.Controls.Add(lblTodayAppointments);
             foreverGroupBox2.Font = new System.Drawing.Font("Segoe UI", 10F);
-            foreverGroupBox2.Location = new System.Drawing.Point(471, 174);
+            foreverGroupBox2.Location = new System.Drawing.Point(560, 174);
             foreverGroupBox2.Name = "foreverGroupBox2";
             foreverGroupBox2.ShowArrow = true;
             foreverGroupBox2.ShowText = true;
-            foreverGroupBox2.Size = new System.Drawing.Size(318, 167);
+            foreverGroupBox2.Size = new System.Drawing.Size(402, 167);
             foreverGroupBox2.TabIndex = 1;
             foreverGroupBox2.TextColor = System.Drawing.Color.White;
             // 
@@ -366,7 +367,7 @@
             foreverGroupBox1.Name = "foreverGroupBox1";
             foreverGroupBox1.ShowArrow = true;
             foreverGroupBox1.ShowText = true;
-            foreverGroupBox1.Size = new System.Drawing.Size(318, 167);
+            foreverGroupBox1.Size = new System.Drawing.Size(402, 167);
             foreverGroupBox1.TabIndex = 0;
             foreverGroupBox1.TextColor = System.Drawing.Color.White;
             // 
@@ -712,6 +713,7 @@
             // 
             // tabPage11
             // 
+            tabPage11.Controls.Add(btnAbout);
             tabPage11.Controls.Add(label10);
             tabPage11.Location = new System.Drawing.Point(290, 0);
             tabPage11.Name = "tabPage11";
@@ -721,15 +723,27 @@
             tabPage11.Text = "Settings";
             tabPage11.UseVisualStyleBackColor = true;
             // 
+            // btnAbout
+            // 
+            btnAbout.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            btnAbout.Location = new System.Drawing.Point(51, 146);
+            btnAbout.Name = "btnAbout";
+            btnAbout.Size = new System.Drawing.Size(444, 82);
+            btnAbout.TabIndex = 13;
+            btnAbout.Text = "About";
+            btnAbout.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            btnAbout.UseVisualStyleBackColor = true;
+            btnAbout.Click += btnAbout_Click;
+            // 
             // label10
             // 
             label10.AutoSize = true;
             label10.Font = new System.Drawing.Font("Arial", 25.8F, System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, 0);
             label10.Location = new System.Drawing.Point(39, 58);
             label10.Name = "label10";
-            label10.Size = new System.Drawing.Size(503, 51);
+            label10.Size = new System.Drawing.Size(467, 51);
             label10.TabIndex = 11;
-            label10.Text = "Settings                          ";
+            label10.Text = "Settings                       ";
             // 
             // tabPage12
             // 
@@ -842,5 +856,6 @@
         private System.Windows.Forms.Button btnAddNewInvoice;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button btnAbout;
     }
 }

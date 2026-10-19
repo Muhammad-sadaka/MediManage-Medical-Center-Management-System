@@ -58,40 +58,43 @@
             // 
             klblLinkedIn.AutoSize = true;
             klblLinkedIn.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            klblLinkedIn.Location = new System.Drawing.Point(263, 488);
+            klblLinkedIn.Location = new System.Drawing.Point(359, 491);
             klblLinkedIn.Name = "klblLinkedIn";
             klblLinkedIn.Size = new System.Drawing.Size(729, 34);
             klblLinkedIn.TabIndex = 187;
             klblLinkedIn.TabStop = true;
             klblLinkedIn.Text = "https://linkedin.com/in/muhammad-al-sadaka-338956323";
+            klblLinkedIn.LinkClicked += klblLinkedIn_LinkClicked;
             // 
             // klblGitHub
             // 
             klblGitHub.AutoSize = true;
             klblGitHub.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            klblGitHub.Location = new System.Drawing.Point(349, 445);
+            klblGitHub.Location = new System.Drawing.Point(450, 446);
             klblGitHub.Name = "klblGitHub";
             klblGitHub.Size = new System.Drawing.Size(501, 34);
             klblGitHub.TabIndex = 186;
             klblGitHub.TabStop = true;
             klblGitHub.Text = "https://github.com/Muhammad-sadaka";
+            klblGitHub.LinkClicked += klblGitHub_LinkClicked;
             // 
             // klblEmail
             // 
             klblEmail.AutoSize = true;
             klblEmail.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            klblEmail.Location = new System.Drawing.Point(384, 401);
+            klblEmail.Location = new System.Drawing.Point(496, 402);
             klblEmail.Name = "klblEmail";
             klblEmail.Size = new System.Drawing.Size(417, 34);
             klblEmail.TabIndex = 185;
             klblEmail.TabStop = true;
             klblEmail.Text = "muhammadsadka95@gmail.com";
+            klblEmail.LinkClicked += klblEmail_LinkClicked;
             // 
             // label24
             // 
             label24.AutoSize = true;
             label24.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label24.Location = new System.Drawing.Point(311, 624);
+            label24.Location = new System.Drawing.Point(404, 635);
             label24.Name = "label24";
             label24.Size = new System.Drawing.Size(637, 34);
             label24.TabIndex = 184;
@@ -101,7 +104,7 @@
             // 
             label20.AutoSize = true;
             label20.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label20.Location = new System.Drawing.Point(491, 358);
+            label20.Location = new System.Drawing.Point(597, 358);
             label20.Name = "label20";
             label20.Size = new System.Drawing.Size(165, 34);
             label20.TabIndex = 183;
@@ -121,9 +124,9 @@
             // 
             pictureBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             pictureBox4.Image = (System.Drawing.Image)resources.GetObject("pictureBox4.Image");
-            pictureBox4.Location = new System.Drawing.Point(940, 750);
+            pictureBox4.Location = new System.Drawing.Point(961, 766);
             pictureBox4.Name = "pictureBox4";
-            pictureBox4.Size = new System.Drawing.Size(101, 81);
+            pictureBox4.Size = new System.Drawing.Size(80, 65);
             pictureBox4.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             pictureBox4.TabIndex = 181;
             pictureBox4.TabStop = false;
@@ -131,7 +134,7 @@
             // pictureBox3
             // 
             pictureBox3.Image = Properties.Resources.SQLServer64;
-            pictureBox3.Location = new System.Drawing.Point(458, 766);
+            pictureBox3.Location = new System.Drawing.Point(577, 766);
             pictureBox3.Name = "pictureBox3";
             pictureBox3.Size = new System.Drawing.Size(80, 65);
             pictureBox3.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -141,7 +144,7 @@
             // pictureBox1
             // 
             pictureBox1.Image = (System.Drawing.Image)resources.GetObject("pictureBox1.Image");
-            pictureBox1.Location = new System.Drawing.Point(469, 10);
+            pictureBox1.Location = new System.Drawing.Point(604, 12);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new System.Drawing.Size(143, 130);
             pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -162,7 +165,7 @@
             // 
             label18.AutoSize = true;
             label18.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label18.Location = new System.Drawing.Point(544, 780);
+            label18.Location = new System.Drawing.Point(663, 780);
             label18.Name = "label18";
             label18.Size = new System.Drawing.Size(154, 34);
             label18.TabIndex = 177;
@@ -182,7 +185,7 @@
             // 
             label16.AutoSize = true;
             label16.Font = new System.Drawing.Font("Microsoft YaHei", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            label16.Location = new System.Drawing.Point(490, 709);
+            label16.Location = new System.Drawing.Point(604, 702);
             label16.Name = "label16";
             label16.Size = new System.Drawing.Size(158, 37);
             label16.TabIndex = 175;
@@ -192,7 +195,7 @@
             // 
             label15.AutoSize = true;
             label15.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label15.Location = new System.Drawing.Point(176, 579);
+            label15.Location = new System.Drawing.Point(255, 591);
             label15.Name = "label15";
             label15.Size = new System.Drawing.Size(981, 34);
             label15.TabIndex = 174;
@@ -202,7 +205,7 @@
             // 
             label14.AutoSize = true;
             label14.Font = new System.Drawing.Font("Microsoft YaHei", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            label14.Location = new System.Drawing.Point(478, 533);
+            label14.Location = new System.Drawing.Point(597, 542);
             label14.Name = "label14";
             label14.Size = new System.Drawing.Size(178, 37);
             label14.TabIndex = 173;
@@ -213,7 +216,7 @@
             label13.AutoSize = true;
             label13.Font = new System.Drawing.Font("Tahoma", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             label13.ForeColor = System.Drawing.Color.Gray;
-            label13.Location = new System.Drawing.Point(492, 202);
+            label13.Location = new System.Drawing.Point(613, 211);
             label13.Name = "label13";
             label13.Size = new System.Drawing.Size(146, 28);
             label13.TabIndex = 172;
@@ -223,7 +226,7 @@
             // 
             label12.AutoSize = true;
             label12.Font = new System.Drawing.Font("Microsoft YaHei", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            label12.Location = new System.Drawing.Point(462, 263);
+            label12.Location = new System.Drawing.Point(577, 262);
             label12.Name = "label12";
             label12.Size = new System.Drawing.Size(224, 37);
             label12.TabIndex = 171;
@@ -233,7 +236,7 @@
             // 
             label11.AutoSize = true;
             label11.Font = new System.Drawing.Font("Tahoma", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
-            label11.Location = new System.Drawing.Point(433, 314);
+            label11.Location = new System.Drawing.Point(544, 313);
             label11.Name = "label11";
             label11.Size = new System.Drawing.Size(294, 34);
             label11.TabIndex = 170;
@@ -243,7 +246,7 @@
             // 
             label10.AutoSize = true;
             label10.Font = new System.Drawing.Font("Arial", 25.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, 0);
-            label10.Location = new System.Drawing.Point(321, 140);
+            label10.Location = new System.Drawing.Point(419, 145);
             label10.Name = "label10";
             label10.Size = new System.Drawing.Size(579, 51);
             label10.TabIndex = 169;
@@ -253,7 +256,9 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            ClientSize = new System.Drawing.Size(1375, 865);
+            AutoSize = true;
+            BackColor = System.Drawing.Color.FromArgb(224, 224, 224);
+            ClientSize = new System.Drawing.Size(1372, 865);
             Controls.Add(klblLinkedIn);
             Controls.Add(klblGitHub);
             Controls.Add(klblEmail);
@@ -276,7 +281,7 @@
             FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             Name = "frmAbout";
             StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            Text = "frmAbout";
+            Text = "About";
             ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox4).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox3).EndInit();

@@ -16,23 +16,25 @@ namespace MediManage
 
         private void frmLogin_Load(object sender, EventArgs e)
         {
-            
-
             string UserName = "", Password = "";
 
             if (clsGlobal.GetStoredCredentialFromRegistry(ref UserName, ref Password))
             {
-                tbUserName.TextButton = UserName;
-                tbPassword.TextButton = Password;
+                txtUserName.Text = UserName;
+                txtPassword.Text = Password;
                 chkRememberMe.Checked = true;
 
-                tbUserName.ForeColor = Color.Black;
-                tbPassword.ForeColor = Color.Black;
-                tbPassword.Password = true;
+                txtUserName.ForeColor = Color.Black;
+                txtPassword.ForeColor = Color.Black;
             }
             else
             {
                 chkRememberMe.Checked = false;
+                txtUserName.Text = "User name";
+                txtUserName.ForeColor = Color.Gray;
+                txtPassword.Text = "Password";
+                txtPassword.ForeColor = Color.Gray;
+                txtPassword.UseSystemPasswordChar = false;
             }
 
             clsAppointment.UpdateAbsentAppointments();
@@ -52,46 +54,10 @@ namespace MediManage
 
         void InvalidCredentials()
         {
-            tbUserName.Focus();
+            txtUserName.Focus();
             MessageBox.Show("Invalid credentials", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-
-        private void tbUserName_Enter(object sender, EventArgs e)
-        {
-            if (tbUserName.TextButton == "User name")
-                tbUserName.textBox.Clear();
-            tbUserName.ForeColor = Color.Black;
-        }
-
-        private void tbPassword_Enter(object sender, EventArgs e)
-        {
-            if (tbPassword.TextButton == "Password")
-            {
-                tbPassword.textBox.Clear();
-                tbPassword.Password = true;
-            }
-            tbPassword.ForeColor = Color.Black;
-        }
-
-        private void tbPassword_Leave(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(tbPassword.TextButton))
-            {
-                tbPassword.ForeColor = Color.Gray;
-                tbPassword.TextButton = "Password";
-                tbPassword.Password = false;
-            }
-        }
-
-        private void tbUserName_Leave(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(tbUserName.TextButton))
-            {
-                tbUserName.ForeColor = Color.Gray;
-                tbUserName.TextButton = "User name";
-            }
-        }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
@@ -101,8 +67,8 @@ namespace MediManage
                 return;
             }
 
-            string enteredUsername = tbUserName.TextButton.Trim();
-            string enteredPassword = tbPassword.TextButton.Trim();
+            string enteredUsername = (txtUserName.Text == "User name") ? "" : txtUserName.Text.Trim();
+            string enteredPassword = (txtPassword.Text == "Password") ? "" : txtPassword.Text.Trim();
 
             if (clsUser.IsExistByUserName(enteredUsername))
             {
@@ -116,7 +82,7 @@ namespace MediManage
 
                 if (!user.IsActive.Value)
                 {
-                    tbUserName.Focus();
+                    txtUserName.Focus();
                     MessageBox.Show("Your account is not Active, Contact Admin.", "In Active Account", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
@@ -142,5 +108,69 @@ namespace MediManage
             }
         }
 
+        private void txtUserName_Enter(object sender, EventArgs e)
+        {
+            if (txtUserName.Text == "User name")
+            {
+                txtUserName.Text = "";
+            }
+            txtUserName.ForeColor = Color.Black;
+        }
+
+        private void txtUserName_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtUserName.Text))
+            {
+                txtUserName.ForeColor = Color.Gray;
+                txtUserName.Text = "User name";
+            }
+        }
+
+        private void txtPassword_Enter(object sender, EventArgs e)
+        {
+            if (txtPassword.Text == "Password")
+            {
+                txtPassword.Text = "";
+
+            }
+            txtPassword.ForeColor = Color.Black;
+        }
+
+        private void txtPassword_Leave(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtPassword.Text))
+            {
+                txtPassword.ForeColor = Color.Gray;
+                txtPassword.Text = "Password";
+            }
+        }
+
+        private void txtPassword_Validating(object sender, CancelEventArgs e)
+        {
+            ErrorProvider errorProvider = new ErrorProvider();
+            if (string.IsNullOrWhiteSpace(txtPassword.Text.Trim()) || txtPassword.Text == "Password")
+            {
+                e.Cancel = true;
+                errorProvider.SetError(txtPassword, $"{"Password" ?? "This field"} is required!");
+            }
+            else
+            {
+                errorProvider.SetError(txtPassword, null);
+            }
+        }
+
+        private void txtUserName_Validating(object sender, CancelEventArgs e)
+        {
+            ErrorProvider errorProvider = new ErrorProvider();
+            if (string.IsNullOrWhiteSpace(txtUserName.Text.Trim()) || txtUserName.Text == "User name")
+            {
+                e.Cancel = true;
+                errorProvider.SetError(txtUserName, $"{"User name" ?? "This field"} is required!"); 
+            }
+            else
+            {
+                errorProvider.SetError(txtUserName, null);
+            }
+        }
     }
 }

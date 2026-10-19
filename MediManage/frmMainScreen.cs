@@ -172,5 +172,7 @@ namespace MediManage
         private void btnUsersList_Click(object sender, EventArgs e) => OpenForm<frmUsersList>();
 
         private void btnAddNewUser_Click(object sender, EventArgs e) => OpenForm<frmAddUpdateUser>();
+
+        private void btnAbout_Click(object sender, EventArgs e) => OpenForm<frmAbout>();
     }
 }

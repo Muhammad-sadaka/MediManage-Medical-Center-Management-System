@@ -260,7 +260,7 @@
             // 
             ctrlPersonInfoSummary1.Font = new System.Drawing.Font("Tahoma", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
             ctrlPersonInfoSummary1.Location = new System.Drawing.Point(11, 52);
-            ctrlPersonInfoSummary1.Margin = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            ctrlPersonInfoSummary1.Margin = new System.Windows.Forms.Padding(8);
             ctrlPersonInfoSummary1.Name = "ctrlPersonInfoSummary1";
             ctrlPersonInfoSummary1.Size = new System.Drawing.Size(1360, 231);
             ctrlPersonInfoSummary1.TabIndex = 0;
@@ -324,6 +324,7 @@
             // 
             AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            AutoSize = true;
             ClientSize = new System.Drawing.Size(1409, 1102);
             Controls.Add(groupBox3);
             Controls.Add(groupBox2);

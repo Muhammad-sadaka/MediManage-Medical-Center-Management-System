@@ -16,5 +16,20 @@ namespace MediManage
         {
             InitializeComponent();
         }
+
+        private void klblEmail_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
+        }
+
+        private void klblGitHub_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
+        }
+
+        private void klblLinkedIn_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+
+        }
     }
 }

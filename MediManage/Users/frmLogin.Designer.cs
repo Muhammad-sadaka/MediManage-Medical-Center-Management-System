@@ -32,9 +32,9 @@
             WorkingArea = new System.Windows.Forms.Panel();
             errorProvider1 = new System.Windows.Forms.ErrorProvider(components);
             airForm1 = new ReaLTaiizor.Forms.AirForm();
-            panel1 = new System.Windows.Forms.Panel();
-            tbUserName = new ReaLTaiizor.Controls.CyberTextBox();
-            tbPassword = new ReaLTaiizor.Controls.CyberTextBox();
+            panelMain = new System.Windows.Forms.Panel();
+            txtUserName = new MediManage.Controls.CustomTextBox();
+            txtPassword = new MediManage.Controls.CustomTextBox();
             crownLabel1 = new ReaLTaiizor.Controls.CrownLabel();
             chkRememberMe = new System.Windows.Forms.CheckBox();
             btnLogin = new ReaLTaiizor.Controls.CyberButton();
@@ -43,7 +43,7 @@
             bigLabel1 = new ReaLTaiizor.Controls.BigLabel();
             ((System.ComponentModel.ISupportInitialize)errorProvider1).BeginInit();
             airForm1.SuspendLayout();
-            panel1.SuspendLayout();
+            panelMain.SuspendLayout();
             SuspendLayout();
             // 
             // WorkingArea
@@ -63,7 +63,7 @@
             // 
             airForm1.BackColor = System.Drawing.Color.White;
             airForm1.BorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            airForm1.Controls.Add(panel1);
+            airForm1.Controls.Add(panelMain);
             airForm1.Customization = "AAAA/1paWv9ycnL/";
             airForm1.Dock = System.Windows.Forms.DockStyle.Fill;
             airForm1.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -82,86 +82,65 @@
             airForm1.TransparencyKey = System.Drawing.Color.Fuchsia;
             airForm1.Transparent = false;
             // 
-            // panel1
+            // panelMain
             // 
-            panel1.BackgroundImage = Properties.Resources.Login;
-            panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            panel1.Controls.Add(tbUserName);
-            panel1.Controls.Add(tbPassword);
-            panel1.Controls.Add(crownLabel1);
-            panel1.Controls.Add(chkRememberMe);
-            panel1.Controls.Add(btnLogin);
-            panel1.Controls.Add(bigLabel3);
-            panel1.Controls.Add(bigLabel2);
-            panel1.Controls.Add(bigLabel1);
-            panel1.Location = new System.Drawing.Point(0, 37);
-            panel1.Name = "panel1";
-            panel1.Size = new System.Drawing.Size(1074, 551);
-            panel1.TabIndex = 0;
+            panelMain.BackgroundImage = Properties.Resources.Login;
+            panelMain.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            panelMain.Controls.Add(txtUserName);
+            panelMain.Controls.Add(txtPassword);
+            panelMain.Controls.Add(crownLabel1);
+            panelMain.Controls.Add(chkRememberMe);
+            panelMain.Controls.Add(btnLogin);
+            panelMain.Controls.Add(bigLabel3);
+            panelMain.Controls.Add(bigLabel2);
+            panelMain.Controls.Add(bigLabel1);
+            panelMain.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            panelMain.Location = new System.Drawing.Point(0, 37);
+            panelMain.Name = "panelMain";
+            panelMain.Size = new System.Drawing.Size(1074, 551);
+            panelMain.TabIndex = 0;
             // 
-            // tbUserName
+            // txtUserName
             // 
-            tbUserName.Alpha = 20;
-            tbUserName.BackColor = System.Drawing.Color.Transparent;
-            tbUserName.Background_WidthPen = 3F;
-            tbUserName.BackgroundPen = true;
-            tbUserName.ColorBackground = System.Drawing.Color.White;
-            tbUserName.ColorBackground_Pen = System.Drawing.Color.FromArgb(192, 0, 0);
-            tbUserName.ColorLighting = System.Drawing.Color.FromArgb(192, 0, 0);
-            tbUserName.ColorPen_1 = System.Drawing.Color.FromArgb(192, 0, 0);
-            tbUserName.ColorPen_2 = System.Drawing.Color.White;
-            tbUserName.CyberTextBoxStyle = ReaLTaiizor.Enum.Cyber.StateStyle.Custom;
-            tbUserName.Font = new System.Drawing.Font("Franklin Gothic Medium", 14F);
-            tbUserName.ForeColor = System.Drawing.Color.Gray;
-            tbUserName.Lighting = false;
-            tbUserName.LinearGradientPen = false;
-            tbUserName.Location = new System.Drawing.Point(611, 181);
-            tbUserName.Name = "tbUserName";
-            tbUserName.PenWidth = 15;
-            tbUserName.RGB = false;
-            tbUserName.Rounding = true;
-            tbUserName.RoundingInt = 60;
-            tbUserName.Size = new System.Drawing.Size(347, 57);
-            tbUserName.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            tbUserName.TabIndex = 14;
-            tbUserName.Tag = "Cyber";
-            tbUserName.TextButton = "Cyber Text";
-            tbUserName.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-            tbUserName.Timer_RGB = 300;
-            tbUserName.Enter += tbUserName_Enter;
-            tbUserName.Leave += tbUserName_Leave;
+            txtUserName.BackColor = System.Drawing.Color.White;
+            txtUserName.BorderColor = System.Drawing.Color.Maroon;
+            txtUserName.BorderRadius = 15;
+            txtUserName.BorderSize = 2;
+            txtUserName.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            txtUserName.Location = new System.Drawing.Point(599, 183);
+            txtUserName.Margin = new System.Windows.Forms.Padding(5);
+            txtUserName.Name = "txtUserName";
+            txtUserName.Padding = new System.Windows.Forms.Padding(15, 8, 15, 8);
+            txtUserName.PasswordChar = '\0';
+            txtUserName.Size = new System.Drawing.Size(366, 55);
+            txtUserName.TabIndex = 17;
+            txtUserName.Text = "User Name";
+            txtUserName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            txtUserName.UseSystemPasswordChar = false;
+            txtUserName.Enter += txtUserName_Enter;
+            txtUserName.Leave += txtUserName_Leave;
+            txtUserName.Validating += txtUserName_Validating;
             // 
-            // tbPassword
+            // txtPassword
             // 
-            tbPassword.Alpha = 20;
-            tbPassword.BackColor = System.Drawing.Color.Transparent;
-            tbPassword.Background_WidthPen = 3F;
-            tbPassword.BackgroundPen = true;
-            tbPassword.ColorBackground = System.Drawing.Color.White;
-            tbPassword.ColorBackground_Pen = System.Drawing.Color.FromArgb(192, 0, 0);
-            tbPassword.ColorLighting = System.Drawing.Color.FromArgb(192, 0, 0);
-            tbPassword.ColorPen_1 = System.Drawing.Color.FromArgb(192, 0, 0);
-            tbPassword.ColorPen_2 = System.Drawing.Color.White;
-            tbPassword.CyberTextBoxStyle = ReaLTaiizor.Enum.Cyber.StateStyle.Custom;
-            tbPassword.Font = new System.Drawing.Font("Franklin Gothic Medium", 14F);
-            tbPassword.ForeColor = System.Drawing.Color.Gray;
-            tbPassword.Lighting = false;
-            tbPassword.LinearGradientPen = false;
-            tbPassword.Location = new System.Drawing.Point(611, 253);
-            tbPassword.Name = "tbPassword";
-            tbPassword.PenWidth = 15;
-            tbPassword.RGB = false;
-            tbPassword.Rounding = true;
-            tbPassword.RoundingInt = 60;
-            tbPassword.Size = new System.Drawing.Size(347, 57);
-            tbPassword.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            tbPassword.TabIndex = 15;
-            tbPassword.Tag = "Cyber";
-            tbPassword.TextButton = "Cyber Text";
-            tbPassword.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
-            tbPassword.Timer_RGB = 300;
-            tbPassword.Enter += tbPassword_Enter;
-            tbPassword.Leave += tbPassword_Leave;
+            txtPassword.BackColor = System.Drawing.Color.White;
+            txtPassword.BorderColor = System.Drawing.Color.Maroon;
+            txtPassword.BorderRadius = 15;
+            txtPassword.BorderSize = 2;
+            txtPassword.Font = new System.Drawing.Font("Franklin Gothic Medium", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, 0);
+            txtPassword.Location = new System.Drawing.Point(599, 257);
+            txtPassword.Margin = new System.Windows.Forms.Padding(5);
+            txtPassword.Name = "txtPassword";
+            txtPassword.Padding = new System.Windows.Forms.Padding(15, 8, 15, 8);
+            txtPassword.PasswordChar = '*';
+            txtPassword.Size = new System.Drawing.Size(366, 55);
+            txtPassword.TabIndex = 16;
+            txtPassword.Text = "Password";
+            txtPassword.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            txtPassword.UseSystemPasswordChar = false;
+            txtPassword.Enter += txtPassword_Enter;
+            txtPassword.Leave += txtPassword_Leave;
+            txtPassword.Validating += txtPassword_Validating;
             // 
             // crownLabel1
             // 
@@ -286,8 +265,8 @@
             Load += frmLogin_Load;
             ((System.ComponentModel.ISupportInitialize)errorProvider1).EndInit();
             airForm1.ResumeLayout(false);
-            panel1.ResumeLayout(false);
-            panel1.PerformLayout();
+            panelMain.ResumeLayout(false);
+            panelMain.PerformLayout();
             ResumeLayout(false);
 
         }
@@ -297,14 +276,14 @@
         private System.Windows.Forms.Panel WorkingArea;
         private System.Windows.Forms.ErrorProvider errorProvider1;
         private ReaLTaiizor.Forms.AirForm airForm1;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panelMain;
         private ReaLTaiizor.Controls.BigLabel bigLabel3;
         private ReaLTaiizor.Controls.BigLabel bigLabel2;
         private ReaLTaiizor.Controls.BigLabel bigLabel1;
         private ReaLTaiizor.Controls.CrownLabel crownLabel1;
         private System.Windows.Forms.CheckBox chkRememberMe;
         private ReaLTaiizor.Controls.CyberButton btnLogin;
-        private ReaLTaiizor.Controls.CyberTextBox tbPassword;
-        private ReaLTaiizor.Controls.CyberTextBox tbUserName;
+        private Controls.CustomTextBox txtUserName;
+        private Controls.CustomTextBox txtPassword;
     }
 }
