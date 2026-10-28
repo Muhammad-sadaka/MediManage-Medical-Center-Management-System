@@ -26,14 +26,17 @@ namespace MediManage_DataAccess
                             if (reader.Read())
                             {
                                 return new clsUserDTO(
-                                       reader["UserID"] == DBNull.Value ? null : (int?)reader["UserID"],
-                                       reader["PersonID"] == DBNull.Value ? null : (int?)reader["PersonID"],
-                                       reader["UserName"] == DBNull.Value ? null : (string)reader["UserName"],
-                                       reader["Password"] == DBNull.Value ? null : (string)reader["Password"],
-                                       reader["Permissions"] == DBNull.Value ? null : (int?)reader["Permissions"],
-                                       reader["IsActive"] == DBNull.Value ? null : (bool?)reader["IsActive"],
-                                       reader["CreatedByUser"] == DBNull.Value ? null : (int?)reader["CreatedByUser"]
-                                   );
+                                    reader["UserID"] == DBNull.Value ? null : (int?)reader["UserID"],
+                                    reader["PersonID"] == DBNull.Value ? null : (int?)reader["PersonID"],
+                                    reader["UserName"] == DBNull.Value ? null : (string)reader["UserName"],
+                                    reader["Password"] == DBNull.Value ? null : (string)reader["Password"],
+                                    reader["Permissions"] == DBNull.Value ? null : (int?)reader["Permissions"],
+                                    reader["IsActive"] == DBNull.Value ? null : (bool?)reader["IsActive"],
+                                    reader["CreatedByUser"] == DBNull.Value ? null : (int?)reader["CreatedByUser"],
+                                    reader["RefreshTokenHash"] == DBNull.Value ? null : (string)reader["RefreshTokenHash"],
+                                    reader["RefreshTokenExpiresAt"] == DBNull.Value ? null : (DateTime?)reader["RefreshTokenExpiresAt"],
+                                    reader["RefreshTokenRevokedAt"] == DBNull.Value ? null : (DateTime?)reader["RefreshTokenRevokedAt"]
+                                );
                             }
                         }
                     }
@@ -65,14 +68,17 @@ namespace MediManage_DataAccess
                             if (reader.Read())
                             {
                                 return new clsUserDTO(
-                                       reader["UserID"] == DBNull.Value ? null : (int?)reader["UserID"],
-                                       reader["PersonID"] == DBNull.Value ? null : (int?)reader["PersonID"],
-                                       reader["UserName"] == DBNull.Value ? null : (string)reader["UserName"],
-                                       reader["Password"] == DBNull.Value ? null : (string)reader["Password"],
-                                       reader["Permissions"] == DBNull.Value ? null : (int?)reader["Permissions"],
-                                       reader["IsActive"] == DBNull.Value ? null : (bool?)reader["IsActive"],
-                                       reader["CreatedByUser"] == DBNull.Value ? null : (int?)reader["CreatedByUser"]
-                                   );
+                                    reader["UserID"] == DBNull.Value ? null : (int?)reader["UserID"],
+                                    reader["PersonID"] == DBNull.Value ? null : (int?)reader["PersonID"],
+                                    reader["UserName"] == DBNull.Value ? null : (string)reader["UserName"],
+                                    reader["Password"] == DBNull.Value ? null : (string)reader["Password"],
+                                    reader["Permissions"] == DBNull.Value ? null : (int?)reader["Permissions"],
+                                    reader["IsActive"] == DBNull.Value ? null : (bool?)reader["IsActive"],
+                                    reader["CreatedByUser"] == DBNull.Value ? null : (int?)reader["CreatedByUser"],
+                                    reader["RefreshTokenHash"] == DBNull.Value ? null : (string)reader["RefreshTokenHash"],
+                                    reader["RefreshTokenExpiresAt"] == DBNull.Value ? null : (DateTime?)reader["RefreshTokenExpiresAt"],
+                                    reader["RefreshTokenRevokedAt"] == DBNull.Value ? null : (DateTime?)reader["RefreshTokenRevokedAt"]
+                                );
                             }
                         }
                     }
@@ -106,7 +112,11 @@ namespace MediManage_DataAccess
                         command.Parameters.AddWithValue("@IsActive", (object)userDTO.IsActive ?? DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedByUser", (object)userDTO.CreatedByUser ?? DBNull.Value);
 
-                        
+                        // تمرير حقول الـ Refresh Token في حالة الإضافة (إذا وجِدت)
+                        command.Parameters.AddWithValue("@RefreshTokenHash", (object)userDTO.RefreshTokenHash ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@RefreshTokenExpiresAt", (object)userDTO.RefreshTokenExpiresAt ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@RefreshTokenRevokedAt", (object)userDTO.RefreshTokenRevokedAt ?? DBNull.Value);
+
                         SqlParameter outputIdParam = new SqlParameter("@NewUserID", SqlDbType.Int)
                         {
                             Direction = ParameterDirection.Output
@@ -149,6 +159,11 @@ namespace MediManage_DataAccess
                         command.Parameters.AddWithValue("@Permissions", (object)userDTO.Permissions ?? DBNull.Value);
                         command.Parameters.AddWithValue("@IsActive", (object)userDTO.IsActive ?? DBNull.Value);
                         command.Parameters.AddWithValue("@CreatedByUser", (object)userDTO.CreatedByUser ?? DBNull.Value);
+
+                        // تمرير وتحديث حقول الـ Refresh Token عند كل عملية حفظ/تحديث (مثل تسجيل الدخول أو الـ Refresh أو الـ Logout)
+                        command.Parameters.AddWithValue("@RefreshTokenHash", (object)userDTO.RefreshTokenHash ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@RefreshTokenExpiresAt", (object)userDTO.RefreshTokenExpiresAt ?? DBNull.Value);
+                        command.Parameters.AddWithValue("@RefreshTokenRevokedAt", (object)userDTO.RefreshTokenRevokedAt ?? DBNull.Value);
 
                         connection.Open();
                         rowsAffected = command.ExecuteNonQuery();
@@ -344,46 +359,6 @@ namespace MediManage_DataAccess
             return isFound;
         }
 
-        public static clsUserDTO FindByUsernameAndPassword(string UserName, string Password)
-        {
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(clsDataAccessSettings.ConnectionString))
-                {
-                    using (SqlCommand command = new SqlCommand("SP_GetUserByUserNameAndPassword", connection))
-                    {
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("@UserName", (object)UserName ?? DBNull.Value);
-                        command.Parameters.AddWithValue("@Password", (object)Password ?? DBNull.Value);
-
-                        connection.Open();
-                        using (SqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                return new clsUserDTO(
-                                    reader["UserID"] == DBNull.Value ? null : (int?)reader["UserID"],
-                                    reader["PersonID"] == DBNull.Value ? null : (int?)reader["PersonID"],
-                                    reader["UserName"] == DBNull.Value ? null : (string)reader["UserName"],
-                                    reader["Password"] == DBNull.Value ? null : (string)reader["Password"],
-                                    reader["Permissions"] == DBNull.Value ? null : (int?)reader["Permissions"],
-                                    reader["IsActive"] == DBNull.Value ? null : (bool?)reader["IsActive"],
-                                    reader["CreatedByUser"] == DBNull.Value ? null : (int?)reader["CreatedByUser"]     
-                                                     );
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                clsDataAccessSettings.EventLogCreate();
-                EventLog.WriteEntry(clsDataAccessSettings.sourceName, "Error: " + ex.Message, EventLogEntryType.Error);
-            }
-
-            return null;
-        }
-
         public static bool ChangeUserStatus(int? UserID, bool? IsActive)
         {
             int rowsAffected = 0;
@@ -411,6 +386,5 @@ namespace MediManage_DataAccess
 
             return rowsAffected > 0;
         }
-
     }
 }

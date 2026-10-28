@@ -6,15 +6,6 @@ using System.Threading.Tasks;
 
 namespace SharedDTOs
 {
-    internal class UserDTO
-    {
-    }
-    public class LoginRequestDTO
-    {
-        public string UserName { get; set; }
-        public string Password { get; set; }
-    }
-
     public class clsUserDTO
     {
         public int? UserID { get; set; }
@@ -25,7 +16,21 @@ namespace SharedDTOs
         public bool? IsActive { get; set; }
         public int? CreatedByUser { get; set; }
 
-        public clsUserDTO(int? userID, int? personID, string userName, string password, int? permissions, bool? isActive, int? CreatedByUser)
+        public string RefreshTokenHash { get; set; }
+        public DateTime? RefreshTokenExpiresAt { get; set; }
+        public DateTime? RefreshTokenRevokedAt { get; set; }
+
+        public clsUserDTO(
+            int? userID,
+            int? personID,
+            string userName,
+            string password,
+            int? permissions,
+            bool? isActive,
+            int? createdByUser,
+            string refreshTokenHash = null,
+            DateTime? refreshTokenExpiresAt = null,
+            DateTime? refreshTokenRevokedAt = null)
         {
             this.UserID = userID;
             this.PersonID = personID;
@@ -33,7 +38,10 @@ namespace SharedDTOs
             this.Password = password;
             this.Permissions = permissions;
             this.IsActive = isActive;
-            this.CreatedByUser = CreatedByUser;
+            this.CreatedByUser = createdByUser;
+            this.RefreshTokenHash = refreshTokenHash;
+            this.RefreshTokenExpiresAt = refreshTokenExpiresAt;
+            this.RefreshTokenRevokedAt = refreshTokenRevokedAt;
         }
     }
 

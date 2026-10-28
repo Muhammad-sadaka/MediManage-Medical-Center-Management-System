@@ -19,4 +19,10 @@
     <ProjectReference Include="..\MediManage_Buisness\MediManage_Buisness.csproj" />
     <ProjectReference Include="..\SharedDTOs\SharedDTOs.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

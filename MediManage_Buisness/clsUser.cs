@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
-using MediManage_DataAccess;
+﻿using MediManage_DataAccess;
 using SharedDTOs;
+using System;
+using System.Collections.Generic;
 
 namespace MediManage_Business
 {
@@ -18,8 +19,22 @@ namespace MediManage_Business
         public int? CreatedByUser { get; set; }
         public clsPerson PersonInfo { get; set; }
 
+        public string RefreshTokenHash { get; set; }
+        public DateTime? RefreshTokenExpiresAt { get; set; }
+        public DateTime? RefreshTokenRevokedAt { get; set; }
 
-        public clsUserDTO DTO => new clsUserDTO(this.UserID, this.PersonID, this.UserName, this.Password, this.Permissions, this.IsActive,this.CreatedByUser);
+        public clsUserDTO DTO => new clsUserDTO(
+            this.UserID,
+            this.PersonID,
+            this.UserName,
+            this.Password,
+            this.Permissions,
+            this.IsActive,
+            this.CreatedByUser,
+            this.RefreshTokenHash,
+            this.RefreshTokenExpiresAt,
+            this.RefreshTokenRevokedAt
+        );
 
         public clsUser()
         {
@@ -31,6 +46,10 @@ namespace MediManage_Business
             this.IsActive = null;
             this.CreatedByUser = null;
             this.PersonInfo = null;
+
+            this.RefreshTokenHash = null;
+            this.RefreshTokenExpiresAt = null;
+            this.RefreshTokenRevokedAt = null;
 
             this.Mode = enMode.AddNew;
         }
@@ -44,6 +63,10 @@ namespace MediManage_Business
             this.Permissions = dto.Permissions;
             this.IsActive = dto.IsActive;
             this.CreatedByUser = dto.CreatedByUser;
+            this.RefreshTokenHash = dto.RefreshTokenHash;
+            this.RefreshTokenExpiresAt = dto.RefreshTokenExpiresAt;
+            this.RefreshTokenRevokedAt = dto.RefreshTokenRevokedAt;
+
             this.PersonInfo = clsPerson.Find(this.PersonID);
 
             this.Mode = mode;
@@ -69,19 +92,10 @@ namespace MediManage_Business
 
             return null;
         }
+
         public static clsUser Find(string username)
         {
             clsUserDTO dto = clsUsersDataAccess.GetUserInfoByUserName(username);
-
-            if (dto != null)
-                return new clsUser(dto, enMode.Update);
-
-            return null;
-        }
-
-        public static clsUser FindByUsernameAndPassword(string userName, string password)
-        {
-            clsUserDTO dto = clsUsersDataAccess.FindByUsernameAndPassword(userName, password);
 
             if (dto != null)
                 return new clsUser(dto, enMode.Update);
@@ -126,7 +140,7 @@ namespace MediManage_Business
         public static bool IsExistByUserName(string UserName, clsUser user = null)
         {
             if (user != null)
-                 if (UserName == user.UserName)
+                if (UserName == user.UserName)
                     return false;
             return clsUsersDataAccess.IsUserExistByUserName(UserName);
         }
@@ -138,7 +152,7 @@ namespace MediManage_Business
 
         public static bool ChangeUserStatus(int? userID, bool? isActive)
         {
-            return clsUsersDataAccess.ChangeUserStatus(userID , !isActive);
+            return clsUsersDataAccess.ChangeUserStatus(userID, !isActive);
         }
     }
 }
