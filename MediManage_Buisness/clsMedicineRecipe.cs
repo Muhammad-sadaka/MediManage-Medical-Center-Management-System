@@ -114,7 +114,7 @@ namespace MediManage_Business
             return false;
         }
 
-        public static bool DeleteMedicine(int? ID)
+        public static bool DeleteMedicineRecipe(int? ID)
         {
             return clsMedicineRecipeDataAccess.DeleteMedicineRecipe(ID);
         }

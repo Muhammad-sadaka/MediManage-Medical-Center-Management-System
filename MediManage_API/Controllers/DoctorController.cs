@@ -1,12 +1,14 @@
 ﻿using FluentValidation;
 using MediManage_Business;
-using MediManage_DataAccess;
+using SharedDTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DoctorController : ControllerBase
@@ -228,6 +230,49 @@ namespace MediManage_API.Controllers
             }
 
             return NotFound(false);
+        }
+
+        // [تعديل]: إضافة Endpoint للتحقق مما إذا كان لدى الطبيب مواعيد مستقبلية بناءً على دالة IsThereFutureAppointmentforDoctor
+        [HttpGet("HasFutureAppointments/{id}", Name = "IsThereFutureAppointmentforDoctor")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<bool> IsThereFutureAppointmentforDoctor(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsDoctor.IsExist(id))
+            {
+                return NotFound($"Doctor with ID {id} not found.");
+            }
+
+            bool hasFutureAppointments = clsDoctor.IsThereFutureAppointmentforDoctor(id);
+            return Ok(hasFutureAppointments);
+        }
+
+        // [تعديل]: إضافة Endpoint للتحقق مما إذا كان رقم الترخيص مستخدماً مسبقاً بناءً على دالة IsLicenseNoExist
+        [HttpGet("Exists/LicenseNo/{licenseNo}/{doctorId}", Name = "IsLicenseNoExist")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<bool> IsLicenseNoExist(string licenseNo, int doctorId)
+        {
+            if (string.IsNullOrWhiteSpace(licenseNo))
+            {
+                return BadRequest("Invalid License No.");
+            }
+
+            clsDoctor doctor = clsDoctor.Find(doctorId);
+            if (doctor == null)
+            {
+                return NotFound($"Doctor with ID {doctorId} not found.");
+            }
+
+            bool isExist = clsDoctor.IsLicenseNoExist(licenseNo, doctor);
+            return Ok(isExist);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
-using MediManage_DataAccess;
+using SharedDTOs;
+using SharedDTOs.Auth;
 
 namespace MediManage_API.Validators
 {

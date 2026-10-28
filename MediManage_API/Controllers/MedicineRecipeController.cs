@@ -1,12 +1,14 @@
 ﻿using FluentValidation;
 using MediManage_Business;
-using MediManage_DataAccess;
+using SharedDTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class MedicineRecipeController : ControllerBase
@@ -135,7 +137,7 @@ namespace MediManage_API.Controllers
                 return NotFound($"Medicine Recipe with ID {id} not found.");
             }
 
-            if (clsMedicineRecipe.DeleteMedicine(id))
+            if (clsMedicineRecipe.DeleteMedicineRecipe(id))
             {
                 return Ok($"Medicine Recipe with ID {id} has been deleted.");
             }

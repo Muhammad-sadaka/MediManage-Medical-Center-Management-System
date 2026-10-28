@@ -1,12 +1,14 @@
 ﻿using FluentValidation;
 using MediManage_Business;
-using MediManage_DataAccess;
+using SharedDTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AnalysisStatuseController : ControllerBase
@@ -19,6 +21,7 @@ namespace MediManage_API.Controllers
             _validator = validator;
         }
 
+        [AllowAnonymous]
         [HttpGet("All", Name = "GetAllAnalysisStatuses")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

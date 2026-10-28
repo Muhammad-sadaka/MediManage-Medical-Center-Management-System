@@ -1,12 +1,14 @@
 ﻿using FluentValidation;
 using MediManage_Business;
-using MediManage_DataAccess;
+using SharedDTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
 namespace MediManage_API.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class AppointmentController : ControllerBase
@@ -170,6 +172,57 @@ namespace MediManage_API.Controllers
             }
 
             return NotFound(false);
+        }
+
+        // [تعديل]: إضافة Endpoint للتحقق مما إذا كان الموعد قد اكتمل بناءً على دالة IsCompleted في الـ Business Layer.
+        [HttpGet("IsCompleted/{id}", Name = "IsAppointmentCompleted")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<bool> IsAppointmentCompleted(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsAppointment.IsExist(id))
+            {
+                return NotFound($"Appointment with ID {id} not found.");
+            }
+
+            bool isCompleted = clsAppointment.IsCompleted(id);
+            return Ok(isCompleted);
+        }
+
+        // [تعديل]: إضافة Endpoint للتحقق مما إذا كان الموعد ملغياً أو غائباً عنه بناءً على دالة IsCanceledorAbsent في الـ Business Layer.
+        [HttpGet("IsCanceledOrAbsent/{id}", Name = "IsAppointmentCanceledOrAbsent")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<bool> IsAppointmentCanceledOrAbsent(int id)
+        {
+            if (id <= 0)
+            {
+                return BadRequest($"Invalid ID {id}");
+            }
+
+            if (!clsAppointment.IsExist(id))
+            {
+                return NotFound($"Appointment with ID {id} not found.");
+            }
+
+            bool isCanceledOrAbsent = clsAppointment.IsCanceledorAbsent(id);
+            return Ok(isCanceledOrAbsent);
+        }
+
+        // [تعديل]: إضافة Endpoint من نوع HttpPost لتشغيل دالة التحديث التلقائي للمواعيد الغائبة UpdateAbsentAppointments الموجودة في الـ Business Layer.
+        [HttpPost("UpdateAbsent", Name = "UpdateAbsentAppointments")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult UpdateAbsentAppointments()
+        {
+            clsAppointment.UpdateAbsentAppointments();
+            return Ok("Absent appointments have been updated successfully.");
         }
     }
 }

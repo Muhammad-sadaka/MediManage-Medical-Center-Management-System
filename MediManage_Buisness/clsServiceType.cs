@@ -27,6 +27,7 @@ namespace MediManage_Business
         {
             this.ServiceTypeID = dto.ServiceTypeID;
             this.ServicTypeName = dto.ServicTypeName;
+            this.Price = dto.Price;
             this.Mode = mode;
         }
 
