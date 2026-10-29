@@ -138,7 +138,7 @@ namespace MediManage
                 DialogResult result = MessageBox.Show("Are you sure you want to delete this Prescription?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                 if (result == DialogResult.Yes)
                 {
-                    if (clsMedicineRecipe.DeleteMedicine(PrescriptionID))
+                    if (clsMedicineRecipe.DeleteMedicineRecipe(PrescriptionID))
                     {
                         if (clsMedicalPrescription.DeleteMedicalPrescription(PrescriptionID))                    
                             MessageBox.Show("Deleted successfully.", "Deleted", MessageBoxButtons.OK, MessageBoxIcon.Information);
